@@ -11,26 +11,26 @@
     <h2 id="rightNumber">2</h2> -->
 
     <?php
-            $csv = array();
+        $csv = array();
 
-            if(($handle = fopen("data.csv", "r")) !== FALSE) {
-                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                    $csv[] = $data;
-                }
+        if(($handle = fopen("data.csv", "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $csv[] = $data;
             }
+        }
 
-            fclose($handle);
+        fclose($handle);
 
 
-            // This is for if there were multiple rows
-            // for ($i = 1; $i < count($csv); $i++) {
-                for ($ii = 0; $ii <=count($csv[1]); $ii++) {
-                    echo "<h1 class=" . $csv[0][$ii] . ">" . $csv[1][$ii] . "</h1>";
-                    
-                }
-            // }
+        // This is for if there were multiple rows
+        // for ($i = 1; $i < count($csv); $i++) {
+            for ($ii = 0; $ii <=count($csv[1]); $ii++) {
+                echo "<h1 class=" . $csv[0][$ii] . ">" . $csv[1][$ii] . "</h1>";
+                
+            }
+        // }
 
-        ?>
+    ?>
 
     <style>
         body {
