@@ -35,7 +35,7 @@
     <style>
         body {
             background-color: antiquewhite;
-
+            
         }
 
         #logo {
@@ -70,7 +70,6 @@
             z-index: 1000;
             top:55px;
             left:467.5px;
-            width: 50px;
             height: 50px;
             color: white;
         }
@@ -80,7 +79,6 @@
             z-index: 1000;
             top:55px;
             right:507.5px;
-            width: 50px;
             height: 50px;
             color: white;
         }
