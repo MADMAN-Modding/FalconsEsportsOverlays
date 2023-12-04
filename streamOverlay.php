@@ -56,6 +56,19 @@
             echo '<img id="logo" class="fallback" src="Overlay/Logo.png">';
         }
 
+        // Checks the left for won or lost status
+        if(strtolower($csv[2][0]) == "won" || strtolower($csv[2][0]) == "win") {
+            echo '<img class="wonLeft" src="Overlay/[W].png">';
+        }   elseif(strtolower($csv[2][0]) == "lost" || strtolower($csv[2][0]) == "lose") {
+            echo '<img class="lostLeft" src="Overlay/[L].png">';
+        }
+
+        // Checks the right for won or lost status
+        if(strtolower($csv[2][1]) == "won" || strtolower($csv[2][1]) == "win") {
+            echo '<img class="wonRight" src="Overlay/[W].png">';
+        }   elseif(strtolower($csv[2][1]) == "lost" || strtolower($csv[2][1]) == "lose") {
+            echo '<img class="lostRight" src="Overlay/[L].png">';
+        }
     ?>
 
     <style>
@@ -109,6 +122,19 @@
             color: white;
         }
         
+        .wonLeft, .lostLeft {
+            position: absolute;
+            z-index: 1000;
+            left: 670px;
+            top: 130px;
+        }
+        
+        .wonRight, .lostRight {
+            position: absolute;
+            z-index: 1000;
+            right: 670px;
+            top: 130px;
+        }
 
     </style>
     <!--1920x1080-->
