@@ -34,40 +34,40 @@
 
         // For the DC logo use DC
         if (strtoupper($csv[1][4]) == "DC") {
-            echo '<img id="logo" src="Overlay/Logo.png">';
+            echo '<img id="logo" src="images/Logo.png">';
         } 
         
         // For SSBU use SSBU or Super Smash Bros. Ultimate
         elseif (strtoupper($csv[1][4]) == "SSBU" || strtolower($csv[1][4]) == "super smash bros. ultimate") {
-            echo '<img id="logo" src="Overlay/SSBU.png">';
+            echo '<img id="logo" src="images/SSBU.png">';
         } 
         
         // For Rocket League use RL or Rocket League
         elseif (strtoupper($csv[1][4]) == "RL" || strtolower($csv[1][4]) == "rocket league") {
-            echo '<img id="logo" src="Overlay/rocketLeague.png">';
+            echo '<img id="logo" src="images/rocketLeague.png">';
         }
 
         // For Splatoon use SPLAT or Splatoon
         elseif (strtoupper($csv[1][4]) == "SPLAT" || strtolower($csv[1][4]) == "splatoon") {
-            echo '<img id="logo" src="Overlay/Splatoon.png">';
+            echo '<img id="logo" src="images/Splatoon.png">';
         }
 
         else {
-            echo '<img id="logo" class="fallback" src="Overlay/Logo.png">';
+            echo '<img id="logo" class="fallback" src="images/Logo.png">';
         }
 
         // Checks the left for won or lost status
         if(strtolower($csv[2][0]) == "won" || strtolower($csv[2][0]) == "win") {
-            echo '<img class="wonLeft" src="Overlay/[W].png">';
+            echo '<img class="wonLeft" src="images/[W].png">';
         }   elseif(strtolower($csv[2][0]) == "lost" || strtolower($csv[2][0]) == "lose") {
-            echo '<img class="lostLeft" src="Overlay/[L].png">';
+            echo '<img class="lostLeft" src="images/[L].png">';
         }
 
         // Checks the right for won or lost status
         if(strtolower($csv[2][1]) == "won" || strtolower($csv[2][1]) == "win") {
-            echo '<img class="wonRight" src="Overlay/[W].png">';
+            echo '<img class="wonRight" src="images/[W].png">';
         }   elseif(strtolower($csv[2][1]) == "lost" || strtolower($csv[2][1]) == "lose") {
-            echo '<img class="lostRight" src="Overlay/[L].png">';
+            echo '<img class="lostRight" src="images/[L].png">';
         }
     ?>
 
@@ -141,7 +141,7 @@
 </head>
 
 <body>
-    <img src="Overlay/scoreboardNew.png">
+    <img src="images/scoreboardNew.png">
     <div id="leftScore"></div>
     <div id="rightScore"></div>
    
