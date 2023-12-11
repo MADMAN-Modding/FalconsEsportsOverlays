@@ -6,10 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DCScoreboardOverlay</title>
 
-    <!-- These will be echoed by php, but yeah this should work hopefully -->
-    <!-- <h2 id="leftNumber">1</h2>
-    <h2 id="rightNumber">2</h2> -->
-
     <?php
         $csv = array();
 
@@ -50,6 +46,10 @@
         // For Splatoon use SPLAT or Splatoon
         elseif (strtoupper($csv[1][4]) == "SPLAT" || strtolower($csv[1][4]) == "splatoon") {
             echo '<img id="logo" src="images/Splatoon.png">';
+        } 
+        
+        elseif (strtoupper($csv[1][4]) == "VAL" || strtolower($csv[1][4]) == "valorant") {
+            echo '<img id="logo" src="images/Valorant.png';
         }
 
         else {
@@ -139,12 +139,9 @@
     </style>
     <!--1920x1080-->
 </head>
-
-<body>
-    <img src="images/scoreboardNew.png">
-    <div id="leftScore"></div>
-    <div id="rightScore"></div>
-   
-</body>
-
+    <body>
+        <img src="images/scoreboardNew.png">
+        <div id="leftScore"></div>
+        <div id="rightScore"></div>
+    </body>
 </html>
