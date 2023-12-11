@@ -73,7 +73,7 @@
 
     <style>
         body {
-            background-color: antiquewhite;
+            background-color: transparent;
             max-width: 1920px;
         }
 
