@@ -74,7 +74,7 @@
     <style>
         body {
             background-color: antiquewhite;
-            
+            max-width: 1920px;
         }
 
         #logo {
