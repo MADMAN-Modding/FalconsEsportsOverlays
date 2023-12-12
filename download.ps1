@@ -68,29 +68,33 @@ if ($gitInstalled.ToLower() -eq "y") {
     }
 }
 
-# Waits for input before continuing the script
-Read-Host "Press enter to download php"
+$php = Read-Host "Have you already downloaded php with this script? [Y/N]"
 
-# Delets current php stuff if there is any
-Remove-Item $phpPath -r -force 
+if ($php.ToLower() -eq "y") {
+    # Waits for input before continuing the script
+    Read-Host "Press enter to download php"
 
-# Makes the php directory
-mkdir $phpPath;
+    # Delets current php stuff if there is any
+    Remove-Item $phpPath -r -force 
 
-# Starts the php download
-Start-BitsTransfer -Source "https://windows.php.net/downloads/releases/php-8.3.0-nts-Win32-vs16-x64.zip" -Destination $phpPath
+    # Makes the php directory
+    mkdir $phpPath;
 
-# Sets the location to do the php downloading and extracting
-Set-Location $phpPath;
+    # Starts the php download
+    Start-BitsTransfer -Source "https://windows.php.net/downloads/releases/php-8.3.0-nts-Win32-vs16-x64.zip" -Destination $phpPath
 
-# Extracts PHP
-Expand-Archive -LiteralPath "php-8.3.0-nts-Win32-vs16-x64.zip" -DestinationPath ".";
+    # Sets the location to do the php downloading and extracting
+    Set-Location $phpPath;
 
-# Removes the downloaded zip
-Remove-Item "php-8.3.0-nts-Win32-vs16-x64.zip" -r -force
+    # Extracts PHP
+    Expand-Archive -LiteralPath "php-8.3.0-nts-Win32-vs16-x64.zip" -DestinationPath ".";
 
-# Simply waits for any kind of input
-Read-Host "Press enter to start the php server on localhost:8080";
+    # Removes the downloaded zip
+    Remove-Item "php-8.3.0-nts-Win32-vs16-x64.zip" -r -force
+
+    # Simply waits for any kind of input
+    Read-Host "Press enter to start the php server on localhost:8080";
+}
 
 # Sets the propper location for the files
 Set-Location $data
