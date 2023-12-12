@@ -52,7 +52,7 @@ if ($gitInstalled.ToLower() -eq "y") {
         Set-Location $data;
         
         # Downloads the latest release
-        Start-BitsTransfer -Source "https://github.com/HeinzEric/FalconsEsportsOverlays/releases/download/latest/FalconsEsportsOverlays-main.zip" -Destination "main.zip";
+        Start-BitsTransfer -Source "https://github.com/HeinzEric/FalconsEsportsOverlays/releases/latest/download/FalconsEsportsOverlays-main.zip" -Destination "main.zip";
 
         # Extracts the file
         Expand-Archive -LiteralPath "$data\main.zip" -DestinationPath $data;
