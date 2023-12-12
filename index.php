@@ -49,7 +49,7 @@
         } 
         
         elseif (strtoupper($csv[1][4]) == "VAL" || strtolower($csv[1][4]) == "valorant") {
-            echo '<img id="logo" src="images/Valorant.png';
+            echo '<img id="logo" src="images/Valorant.png"';
         }
 
         else {

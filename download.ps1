@@ -4,6 +4,8 @@ $data = "C:\Users\$env:UserName\Documents\Overlay\"
 # The variable where the php server will go
 $phpPath = "C:\Users\$env:UserName\Documents\php"
 
+Remove-Item $data\download.ps1
+
 # Asks the user if they've installed git
 $gitInstalled = Read-Host "Do you have git installed? [Y/N]";
 
@@ -50,7 +52,7 @@ if ($gitInstalled.ToLower() -eq "y") {
         Set-Location $data;
         
         # Downloads the latest release
-        Start-BitsTransfer -Source "https://github.com/HeinzEric/FalconsEsportsOverlays/releases/download/1.4/FalconsEsportsOverlays-main.zip" -Destination "main.zip";
+        Start-BitsTransfer -Source "https://github.com/HeinzEric/FalconsEsportsOverlays/releases/download/latest/FalconsEsportsOverlays-main.zip" -Destination "main.zip";
 
         # Extracts the file
         Expand-Archive -LiteralPath "$data\main.zip" -DestinationPath $data;
