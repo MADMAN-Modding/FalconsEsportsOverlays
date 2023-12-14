@@ -12,13 +12,13 @@
         <center>
             <div class="row">
                 <div class="col-4">
-                    <input type="image" src="images/SSBU.png" style="width: 300px;" name="SSBU" value="SSBU"/>
+                    <input type="submit" style="background-image: url('images/SSBU.png'); border:none; background-repeat:no-repeat;background-size:100% 100%; width: 300px; height: 300px; background-color: transparent; color: transparent;"" name="SSBU" value="SSBU"/>
                 </div>
                 <div class="col-4">
-                    <input type="image" src="images/Splatoon.png" style="width: 300px;" name="Splat" value="Splat"/>
+                    <input type="submit" style="background-image: url('images/Splatoon.png'); border:none; background-repeat:no-repeat;background-size:100% 100%; width: 300px; height: 300px; background-color: transparent; color: transparent;"" name="Splat" value="Splat"/>
                 </div>
                 <div class="col-4">
-                    <input type="submit" name="Rocket League" class="button" value="Rocket League" style="background-image: url('images/rocketLeague.png'); border:none; background-repeat:no-repeat;background-size:100% 100%; width: 300px; height: 300px; background-color: transparent; color: transparent;"/> 
+                    <input type="submit" name="RL" class="button" value="Rocket League" style="background-image: url('images/rocketLeague.png'); border:none; background-repeat:no-repeat;background-size:100% 100%; width: 300px; height: 300px; background-color: transparent; color: transparent;"/> 
                 </div>
                 
             </div>
@@ -27,10 +27,10 @@
         <center>
             <div class="row">
                 <div class="col-6">
-                    <input type="image" src="images/Valorant.png" style="width: 300px;" name="Valorant" value="Valorant"/>
+                    <input type="submit" style="background-image: url('images/Valorant.png'); border:none; background-repeat:no-repeat;background-size:100% 100%; width: 300px; height: 300px; background-color: transparent; color: transparent;"" name="Valorant" value="Valorant"/>
                 </div>
                 <div class="col-6">
-                    <input type="image" src="images/Logo.png" style="width: 300px;" name="DC" value="DC"/>
+                    <input type="submit" style="background-image: url('images/Logo.png'); border:none; background-repeat:no-repeat;background-size:100% 100%; width: 300px; height: 300px; background-color: transparent; color: transparent;"" name="DC" value="DC"/>
                 </div>
             </div>
         </center>
@@ -48,16 +48,13 @@
 </html>
 
 <?php
-        if(array_key_exists('Rocket League', $_POST)) { 
-            $overlay = "rl";
-        } 
     if(isset($_POST['SSBU'])) { 
         $overlay = "ssbu";
     } 
     if(isset($_POST['Splat'])) { 
         $overlay = "splat";
     }
-    if(isset($_POST['Rocket League'])) { 
+    if(isset($_POST['RL'])) { 
         $overlay = "rl";
     }
     if(isset($_POST['Valorant'])) { 
