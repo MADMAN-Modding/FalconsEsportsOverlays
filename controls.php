@@ -68,17 +68,18 @@
     // CSV Values
     $teamName1 = $csvArray[1][0];
     $teamName2 = $csvArray[1][1];
-    $score1 = $csvArray[1][2];
-    $score2 = $csvArray[1][3];
+    $score1 = $_POST['score1'];
+    $score2 = $_POST['score2'];
     $winLost1 = $csvArray[2][0];
     $winLost2 = $csvArray[2][1];
+    $overlay = $csvArray[1][4];
 
 // Left and right score
 echo "<center>";
     echo "<h2>Scores</h2>";
     echo "<form method=\"post\" action=\"controls.php\">";
-        echo "<input type=\"number\" id=\"numberInput\" name=\"score1\" value=\"" . $csvArray[1][2] . "\" required>";
-        echo "<input type=\"number\" id=\"numberInput\" name=\"score2\" value=\"" . $csvArray[1][3] . "\" required>";
+        echo "<input type=\"number\" id=\"numberInput\" name=\"score1\" value=\"" . $score1 . "\" required>";
+        echo "<input type=\"number\" id=\"numberInput\" name=\"score2\" value=\"" . $score2 . "\" required>";
         echo "<button type=\"submit\">Submit</button>";
     echo "</form>";
 echo "</center>";
@@ -87,7 +88,7 @@ echo "</center>";
 
 <!-- Data Checking PHP -->
 <?php
-    if(isset($_POST['SSBU'])) { 
+    if(isset($_POST['SSBU'])) {
         $overlay = "ssbu";
     } 
     if(isset($_POST['Splat'])) { 
