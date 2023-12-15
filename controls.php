@@ -32,6 +32,7 @@
                 <div class="col-6">
                     <input type="submit" style="background-image: url('images/Logo.png'); border:none; background-repeat:no-repeat;background-size:100% 100%; width: 300px; height: 300px; background-color: transparent; color: transparent;"" name="DC" value="DC"/>
                 </div>
+                <input class="quantity" id="id_form-0-quantity" min="0" name="form-0-quantity" value="1" type="number" style="width: 50px;">
             </div>
         </center>
     </form>
