@@ -27,32 +27,13 @@
         // All of these read the overlay and use a different image for the middle depending on what it is, none of these are case sensitive
         // If no correct arguement is found, it will default to the DC logo
 
-        // For the DC logo use DC
-        if (strtoupper($csvArray[1][4]) == "DC") {
-            echo '<img id="logo" src="images/Logo.png">';
-        } 
-        
-        // For SSBU use SSBU or Super Smash Bros. Ultimate
-        elseif (strtoupper($csvArray[1][4]) == "SSBU" || strtolower($csvArray[1][4]) == "super smash bros. ultimate") {
-            echo '<img id="logo" src="images/SSBU.png">';
-        } 
-        
-        // For Rocket League use RL or Rocket League
-        elseif (strtoupper($csvArray[1][4]) == "RL" || strtolower($csvArray[1][4]) == "rocket league") {
-            echo '<img id="logo" src="images/rocketLeague.png">';
-        }
+        $overlayArray = array("DC", "SSBU", "RL", "SPLAT", "VAL");
 
-        // For Splatoon use SPLAT or Splatoon
-        elseif (strtoupper($csvArray[1][4]) == "SPLAT" || strtolower($csvArray[1][4]) == "splatoon") {
-            echo '<img id="logo" src="images/Splatoon.png">';
-        } 
-        
-        elseif (strtoupper($csvArray[1][4]) == "VAL" || strtolower($csvArray[1][4]) == "valorant") {
-            echo '<img id="logo" src="images/Valorant.png">';
-        }
-
-        else {
-            echo '<img id="logo" class="fallback" src="images/Logo.png">';
+        // Fancy foreach loop to check the overlay value
+        foreach ($overlayArray as $list) {
+            if (strtoupper($csvArray[1][4]) == $list) {
+                echo "<img id=\"logo\" src=\"images/" . strtoupper($list) . ".png\">";
+            }
         }
 
         // Checks the left for won or lost status
@@ -84,7 +65,7 @@
 
         }
 
-        .score1 {
+        .scoreLeft {
             position:absolute;
             top:55px;
             left:397px;
@@ -94,7 +75,7 @@
         }
 
 
-        .score2  {
+        .scoreRight  {
             position:absolute;
             z-index: 1000;
             top:55px;
@@ -103,7 +84,7 @@
             height: 50px;
         }
            
-        .teamName1  {
+        .teamNameLeft  {
             position:absolute;
             z-index: 1000;
             top:55px;
@@ -112,7 +93,7 @@
             color: white;
         }
 
-        .teamName2  {
+        .teamNameRight  {
             position:absolute;
             z-index: 1000;
             top:55px;
