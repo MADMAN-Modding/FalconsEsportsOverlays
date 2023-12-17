@@ -34,8 +34,6 @@
                 </div>
             </div>
         </center>
-
-
     </form>
 
     <style>
@@ -66,8 +64,8 @@
     }
     
     // CSV Values
-    $teamName1 = $csvArray[1][0];
-    $teamName2 = $csvArray[1][1];
+    $teamName1 = $_POST['teamName1'];
+    $teamName2 = $_POST['teamName2'];
     $score1 = $_POST['score1'];
     $score2 = $_POST['score2'];
     $winLost1 = $csvArray[2][0];
@@ -76,10 +74,18 @@
 
 // Left and right score
 echo "<center>";
-    echo "<h2>Scores</h2>";
+    echo "<h2 class=\"scores\">Scores</h2>";
     echo "<form method=\"post\" action=\"controls.php\">";
         echo "<input type=\"number\" id=\"numberInput\" name=\"score1\" value=\"" . $score1 . "\" required>";
         echo "<input type=\"number\" id=\"numberInput\" name=\"score2\" value=\"" . $score2 . "\" required>";
+
+echo "</center>";
+
+// Left and right teamss
+echo "<center>";
+    echo "<h2 class=\"teams\">Teams</h2>";
+        echo "<input type=\"string\" id=\"teamInput\" name=\"teamName1\" value=\"" . $teamName1 . "\" required>";
+        echo "<input type=\"string\" id=\"teamInput\" name=\"teamName2\" value=\"" . $teamName2 . "\" required>";
         echo "<button type=\"submit\">Submit</button>";
     echo "</form>";
 echo "</center>";
@@ -106,7 +112,15 @@ echo "</center>";
     if(isset($_POST['score1'])) { 
         $score1 = $_POST['score1'];
     } 
-
+    if(isset($_POST['score2'])) { 
+        $score1 = $_POST['score2'];
+    }
+    if(isset($_POST['teamName1'])) { 
+        $score1 = $_POST['teamName1'];
+    }
+    if(isset($_POST['teamName2'])) { 
+        $score1 = $_POST['teamName2'];
+    }
     $dataArray = array(
         array("teamName1", "teamName2", "score1", "score2", "overlay"),
         array($teamName1, $teamName2, $score1, $score2, $overlay),
