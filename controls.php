@@ -83,7 +83,7 @@
     // Integer for where in the valueArray to look  
     $valueArrayInt = 0;
 
-    // For loop that assigns the variables for scores, teams, and win/lost
+    // Foreach loop that assigns the variables for scores, teams, and win/lost
     foreach($valueArray as $list) {
         if(isset($_POST["$list"])) {
             $valueArrayOutput[$valueArrayInt] = $_POST[$list];
@@ -144,6 +144,8 @@
     $formArrayNiceNamesInt = 0;
 
     echo "<form method=\"post\" action=\"controls.php\">";
+
+    // Foreach loop that makes the forms 
     foreach ($formArray as $list) {
 
         // If the int is even it opens the center tag
@@ -180,5 +182,6 @@
     fclose($csvOpener);
 
 ?>
+
     </body>
 </html>

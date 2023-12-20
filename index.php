@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="3">
     <title>DCScoreboardOverlay</title>
 
     <?php
@@ -67,7 +68,7 @@
 
         .scoreLeft {
             position:absolute;
-            top:55px;
+            top:36px;
             left:397px;
             width: 50px;
             height: 50px;
@@ -78,8 +79,8 @@
         .scoreRight  {
             position:absolute;
             z-index: 1000;
-            top:55px;
-            right:367.5px;
+            top:36px;
+            right:382.5px;
             width: 50px;
             height: 50px;
         }
@@ -87,8 +88,8 @@
         .teamNameLeft  {
             position:absolute;
             z-index: 1000;
-            top:55px;
-            left:467.5px;
+            top:36px;
+            left:587.5px;
             height: 50px;
             color: white;
         }
@@ -96,8 +97,8 @@
         .teamNameRight  {
             position:absolute;
             z-index: 1000;
-            top:55px;
-            right:507.5px;
+            top:36px;
+            right:537.5px;
             height: 50px;
             color: white;
         }
@@ -106,14 +107,14 @@
             position: absolute;
             z-index: 1000;
             left: 670px;
-            top: 130px;
+            top: 125px;
         }
         
         .wonRight, .lostRight {
             position: absolute;
             z-index: 1000;
             right: 670px;
-            top: 130px;
+            top: 125px;
         }
 
     </style>
@@ -121,7 +122,5 @@
 </head>
     <body>
         <img src="images/scoreboardNew.png">
-        <div id="leftScore"></div>
-        <div id="rightScore"></div>
     </body>
 </html>
