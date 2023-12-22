@@ -3,6 +3,8 @@
 
 <h1>Setup</h1>
 
+<h1>The below is kinda broken, just clone/update with git cli</h1>
+
 <p>Download the <a href="https://raw.githubusercontent.com/HeinzEric/FalconsEsportsOverlays/main/update.ps1">update.ps1</a> file, then right-click it and press run with powershell</p>
 
 <p>Updating is the same process</p>
