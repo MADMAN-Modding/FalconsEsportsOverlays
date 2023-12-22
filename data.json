@@ -1,0 +1,15 @@
+{
+    "players": {
+        "masonD": {
+            "main": "Sephiroth",
+            "gamerTag": "MADMAN Modding",
+            "niceName": "Mason D"
+        },
+
+        "jamesT": {
+            "main": "Roy",
+            "gamerTag": "Roy the Arsonist",
+            "niceName": "James T"
+        }
+    }
+}
