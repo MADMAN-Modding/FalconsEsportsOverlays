@@ -7,6 +7,7 @@
 </head>
 
 <body>
+    <!-- Just basic radio buttons -->
     <form method="post" action="ssbuPlayerData.php">
         <input type="radio" id="stringInput" name="playerNameLeft" value="Mason D">Mason D
         <input type="radio" id="stringInput" name="playerNameLeft" value="James T">James T
@@ -16,20 +17,20 @@
     <?php
     class jsonData
     {
-
+        // Makes the variable
         public String $playerName;
 
-
+        // Function for taking input and setting to the playerName value __contruct runs something on class call btw
         function __construct($playerNameGiven)
         {
             $this->playerName = $playerNameGiven;
         }
 
+        // This takes the name given by the buttons and gives the data for the name given
         function getPlayerInfo()
         {
-            $jsonDataEncoded = file_get_contents("data.json");
-
-            $jsonData = json_decode($jsonDataEncoded, true);
+            // Decodes the json data
+            $jsonData = json_decode(file_get_contents("data.json"), true);
 
             foreach ($jsonData as $jsonData => $playerListValues) {
                 foreach ($playerListValues as $playerData => $playerDataValues) {
@@ -41,13 +42,14 @@
         }
     }
 
+    // Tells the class what playerNameGiven should be equal to
     $niceName = new jsonData($_POST["playerNameLeft"]);
 
+    // Sets the value of playerInfo
     $playerInfo = $niceName->getPlayerInfo();
 
+    // Outputs the player data
     echo "<h1 class=\"playerLeft\">$playerInfo[gamerTag] | $playerInfo[niceName] | $playerInfo[main]";
-
-    // echo $playerInfo["masonD"];
 
     ?>
 
