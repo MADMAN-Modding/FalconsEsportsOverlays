@@ -54,7 +54,7 @@
     // }
 
     $jsonData = json_decode(file_get_contents("overlay.json"), true);
-    
+
     foreach ($jsonData as $jsonData => $overlayEntryName) {
             echo "<h1 class=\"$jsonData\">$overlayEntryName</h1>";
     }
@@ -114,6 +114,10 @@
             top: 28px;
             right: 457.5px;
             height: 50px;
+        }
+
+        .overlay {
+            display: none;
         }
 
         /*left over code from win/lose overlay. Will remove in future update.
