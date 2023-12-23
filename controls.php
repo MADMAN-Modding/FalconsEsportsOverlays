@@ -105,15 +105,15 @@
     $scoreLeft = $valueArrayOutput[2];
     $scoreRight = $valueArrayOutput[3];
     $overlay = $valueArrayOutput[4];
-    $winLoseLeft = $valueArrayOutput[5];
-    $winLoseRight = $valueArrayOutput[6];
 
     // Array for csv
-    $dataArray = array(
-        array("teamNameLeft", "teamNameRight", "scoreLeft", "scoreRight", "overlay"),
-        array($teamNameLeft, $teamNameRight, $scoreLeft, $scoreRight, $overlay),
-        array($winLoseLeft, $winLoseRight)
-    );
+    $dataArray = [[
+        "teamNameLeft" => "$teamNameLeft",
+        "teamNameRight" => "$teamNameRight",
+        "scoreLeft" => "$scoreLeft",
+        "scoreRight" => "$scoreRight",
+        "overlay" => "$overlay"
+    ]];
 
     // Opens the csv
     $csvFile = fopen("data.csv", "c+");
@@ -129,7 +129,7 @@
 <?php
 
     // Array of all the value names
-    $formArray = array("scoreLeft", "scoreRight", "teamNameLeft", "teamNameRight", "winLoseLeft", "winLoseRight");
+    $formArray = array("scoreLeft", "scoreRight", "teamNameLeft", "teamNameRight");
     
     // Array of all the values individual value's
     $formArrayValues = array($scoreLeft, $scoreRight, $teamNameLeft, $teamNameRight, $winLoseLeft, $winLoseRight);
@@ -138,7 +138,7 @@
     $formArrayInt = 0;
 
     // List of the names to display
-    $formArrayNiceNames = array("Scores", "Teams", "Win/Lose");
+    $formArrayNiceNames = array("Scores", "Teams");
 
     // Counter for how many times it made an h2 tag
     $formArrayNiceNamesInt = 0;
