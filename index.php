@@ -28,14 +28,14 @@
         // All of these read the overlay and use a different image for the middle depending on what it is, none of these are case sensitive
         // If no correct arguement is found, it will default to the DC logo
 
-        $overlayArray = array("DC", "SSBU", "RL", "SPLAT", "VAL");
+        //$overlayArray = array("DC", "SSBU", "RL", "SPLAT", "VAL");
 
         // Fancy foreach loop to check the overlay value
-        foreach ($overlayArray as $list) {
-            if (strtoupper($csvArray[1][4]) == $list) {
-                echo "<img id=\"logo\" src=\"images/" . strtoupper($list) . ".png\">";
-            }
-        }
+        //foreach ($overlayArray as $list) {
+        //    if (strtoupper($csvArray[1][4]) == $list) {
+        //      echo "<img id=\"logo\" src=\"images/" . strtoupper($list) . ".png\">";
+        //    }
+       // }
 
         // Checks the left for won or lost status
         if(strtolower($csvArray[2][0]) == "won" || strtolower($csvArray[2][0]) == "win") {
@@ -45,11 +45,11 @@
         }
 
         // Checks the right for won or lost status
-        if(strtolower($csvArray[2][1]) == "won" || strtolower($csvArray[2][1]) == "win") {
-            echo '<img class="wonRight" src="images/[W].png">';
-        }   elseif(strtolower($csvArray[2][1]) == "lost" || strtolower($csvArray[2][1]) == "lose") {
-            echo '<img class="lostRight" src="images/[L].png">';
-        }
+        // if(strtolower($csvArray[2][1]) == "won" || strtolower($csvArray[2][1]) == "win") {
+        //     echo '<img class="wonRight" src="images/[W].png">';
+        // }   elseif(strtolower($csvArray[2][1]) == "lost" || strtolower($csvArray[2][1]) == "lose") {
+        //     echo '<img class="lostRight" src="images/[L].png">';
+        // }
     ?>
 
     <style>
@@ -64,6 +64,9 @@
             left: 890px;
             width: 10%;
 
+        }
+        h1{
+            text-shadow: 2px 2px 2px black;
         }
 
         .scoreLeft {
@@ -88,8 +91,8 @@
         .teamNameLeft  {
             position:absolute;
             z-index: 1000;
-            top:36px;
-            left:587.5px;
+            top:28px;
+            left:87.5px;
             height: 50px;
             color: white;
         }
@@ -97,13 +100,13 @@
         .teamNameRight  {
             position:absolute;
             z-index: 1000;
-            top:36px;
-            right:537.5px;
+            top:28px;
+            right:257.5px;
             height: 50px;
             color: white;
         }
-        
-        .wonLeft, .lostLeft {
+        /*left over code from win/lose overlay. Will remove in future update.
+        /* .wonLeft, .lostLeft {
             position: absolute;
             z-index: 1000;
             left: 670px;
@@ -115,7 +118,7 @@
             z-index: 1000;
             right: 670px;
             top: 125px;
-        }
+        } */
 
     </style>
     <!--1920x1080-->
