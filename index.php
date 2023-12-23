@@ -38,11 +38,11 @@
        // }
 
         // Checks the left for won or lost status
-        if(strtolower($csvArray[2][0]) == "won" || strtolower($csvArray[2][0]) == "win") {
-            echo '<img class="wonLeft" src="images/[W].png">';
-        }   elseif(strtolower($csvArray[2][0]) == "lost" || strtolower($csvArray[2][0]) == "lose") {
-            echo '<img class="lostLeft" src="images/[L].png">';
-        }
+        // if(strtolower($csvArray[2][0]) == "won" || strtolower($csvArray[2][0]) == "win") {
+        //     echo '<img class="wonLeft" src="images/[W].png">';
+        // }   elseif(strtolower($csvArray[2][0]) == "lost" || strtolower($csvArray[2][0]) == "lose") {
+        //     echo '<img class="lostLeft" src="images/[L].png">';
+        // }
 
         // Checks the right for won or lost status
         // if(strtolower($csvArray[2][1]) == "won" || strtolower($csvArray[2][1]) == "win") {
@@ -71,8 +71,8 @@
 
         .scoreLeft {
             position:absolute;
-            top:36px;
-            left:397px;
+            top:32px;
+            left:400px;
             width: 50px;
             height: 50px;
             z-index: 1000;
@@ -82,8 +82,8 @@
         .scoreRight  {
             position:absolute;
             z-index: 1000;
-            top:36px;
-            right:382.5px;
+            top:32px;
+            right:500px;
             width: 50px;
             height: 50px;
         }
@@ -91,8 +91,8 @@
         .teamNameLeft  {
             position:absolute;
             z-index: 1000;
-            top:28px;
-            left:87.5px;
+            top:32px;
+            left:457.5px;
             height: 50px;
             color: white;
         }
@@ -100,8 +100,8 @@
         .teamNameRight  {
             position:absolute;
             z-index: 1000;
-            top:28px;
-            right:257.5px;
+            top:32px;
+            right:567.5px;
             height: 50px;
             color: white;
         }
@@ -124,6 +124,6 @@
     <!--1920x1080-->
 </head>
     <body>
-        <img src="images/newSmashOverlay.png">
+        <img src="images/newSmashOverlay1920x1080.png">
     </body>
 </html>
