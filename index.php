@@ -121,6 +121,6 @@
     <!--1920x1080-->
 </head>
     <body>
-        <img src="images/scoreboardNew.png">
+        <img src="images/newSmashOverlay.png">
     </body>
 </html>
