@@ -14,10 +14,17 @@
     $jsonData = json_decode(file_get_contents("overlay.json"), true);
 
     foreach ($jsonData as $jsonData => $overlayEntryName) {
-            echo "<h1 class=\"$jsonData\">$overlayEntryName</h1>";
+        echo "<h1 class=\"$jsonData\">$overlayEntryName</h1>";
     }
 
     ?>
+
+    <!-- Score numbers go from left to right -->
+    <!-- <div class="leftScoreOne"></div> -->
+
+    <center>
+        <img src="images/newSmashOverlay.png" class="overlayImage">
+    </center>
 
     <style>
         body {
@@ -45,13 +52,13 @@
             left: 407px;
             width: 50px;
             height: 50px;
-            z-index: 1000;
+            z-index: 999;
         }
 
 
         .scoreRight {
             position: absolute;
-            z-index: 1000;
+            z-index: 999;
             top: 28px;
             right: 380px;
             width: 50px;
@@ -60,7 +67,7 @@
 
         .teamNameLeft {
             position: absolute;
-            z-index: 1000;
+            z-index: 999;
             top: 28px;
             left: 487.5px;
             height: 50px;
@@ -68,7 +75,7 @@
 
         .teamNameRight {
             position: absolute;
-            z-index: 1000;
+            z-index: 999;
             top: 28px;
             right: 457.5px;
             height: 50px;
@@ -78,11 +85,23 @@
             display: none;
         }
 
+        .overlayImage {
+            display: block;
+            z-index: 999;
+        }
+
+        .leftScoreOne {
+            width: 20px;
+            height: 40px;
+            background-color: red;
+            z-index: 1000;
+            left: 700px;
+            top: 150px;
+            transform: rotate(-15deg);
+            display: block;
+            position: absolute;
+        }
     </style>
-    <!--1920x1080-->
-    <center>
-        <img src="images/newSmashOverlay.png">
-    </center>
 </body>
 
 </html>
