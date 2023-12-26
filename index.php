@@ -27,9 +27,14 @@
     </center>
 
     <style>
+        html {
+            /* Determined from image width of the overlay */
+            width: 1157px;
+            margin: auto;
+        }
+
         body {
             background-color: transparent;
-            width: 1920px;
             overflow: hidden;
             color: white;
         }
@@ -46,39 +51,45 @@
             text-shadow: 2px 2px 2px black;
         }
 
-        .scoreLeft {
+        .scoreLeft,.teamNameLeft {
+            width: 390px;
+            margin-left: 15px;
+            text-align: right;
             position: absolute;
+
+        }
+
+        .scoreRight,.teamNameRight {
+            width: 390px;
+            text-align: left;
+            position: absolute;
+            margin-left: 745px;
+        }
+
+
+        .scoreLeft {
             top: 28px;
-            left: 407px;
-            width: 50px;
             height: 50px;
-            z-index: 999;
+            text-align: left;
         }
 
 
         .scoreRight {
-            position: absolute;
-            z-index: 999;
             top: 28px;
-            right: 380px;
-            width: 50px;
             height: 50px;
+            text-align: right;
         }
 
         .teamNameLeft {
-            position: absolute;
-            z-index: 999;
             top: 28px;
-            left: 487.5px;
             height: 50px;
+            margin-left: 20px;
         }
 
         .teamNameRight {
-            position: absolute;
-            z-index: 999;
             top: 28px;
-            right: 457.5px;
             height: 50px;
+            margin-right: 10px;
         }
 
         .overlay {
