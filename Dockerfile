@@ -1,29 +1,24 @@
-# Use the Alpine Linux base image
 FROM alpine:latest
 
-# Install Apache, PHP, and git
+# Install dependencies
 RUN apk --update add \
     apache2 \
     php \
     php-apache2 \
     git \
-    && rm -rf /var/cache/apk/* \
-    && rm -r /var/www/localhost/htdocs/*
+    && rm -rf /var/cache/apk/*
 
-# Clones the repos
+# Clone repository
+RUN rm -r /var/www/localhost/htdocs/*
+
 RUN git clone https://github.com/HeinzEric/FalconsEsportsOverlays.git /var/www/localhost/htdocs/
 
-# sets the directory permissions for the files
-RUN chmod 777 -R /var/www/localhost/htdocs/*
+# Set permissions
+RUN chmod -R 777 /var/www/localhost/htdocs/ \
+    && chmod +x /var/www/localhost/htdocs/entrypointCommands.sh
 
-# Sets the permissions of the command list
-RUN chmod +x /var/www/localhost/htdocs/entrypointCommands.sh
-
-# Set the working directory
 WORKDIR /var/www/localhost/htdocs
 
-# Expose port 80 for Apache
 EXPOSE 80/tcp
 
-# Runs the startup commands
 ENTRYPOINT ["./entrypointCommands.sh"]
