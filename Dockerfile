@@ -11,9 +11,7 @@ RUN apk --update add \
     && rm -rf /var/cache/apk/* \
     && rm -r /var/www/localhost/htdocs/*
 
-# RUN git clone https://github.com/HeinzEric/FalconsEsportsOverlays.git /var/www/localhost/htdocs/
-
-COPY . /var/www/localhost/htdocs/
+RUN git clone https://github.com/HeinzEric/FalconsEsportsOverlays.git /var/www/localhost/htdocs/
 
 RUN chmod 777 -R /var/www/localhost/htdocs/*
 
