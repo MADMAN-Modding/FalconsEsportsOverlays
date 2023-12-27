@@ -7,7 +7,6 @@ RUN apk --update add \
     php \
     php-apache2 \
     git \
-    neofetch \
     && rm -rf /var/cache/apk/* \
     && rm -r /var/www/localhost/htdocs/*
 
