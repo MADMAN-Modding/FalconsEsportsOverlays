@@ -1,2 +1,2 @@
 #!/bin/bash
-git pull && httpd -D FOREGROUND
+git clean -f -d && git pull && httpd -D FOREGROUND

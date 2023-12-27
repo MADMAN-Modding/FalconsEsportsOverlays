@@ -11,7 +11,9 @@ RUN apk --update add \
     && rm -rf /var/cache/apk/* \
     && rm -r /var/www/localhost/htdocs/*
 
-RUN git clone https://github.com/HeinzEric/FalconsEsportsOverlays.git /var/www/localhost/htdocs/
+# RUN git clone https://github.com/HeinzEric/FalconsEsportsOverlays.git /var/www/localhost/htdocs/
+
+COPY . /var/www/localhost/htdocs/
 
 RUN chmod 777 -R /var/www/localhost/htdocs/*
 
@@ -21,7 +23,7 @@ RUN chmod +x /var/www/localhost/htdocs/entrypointCommands.sh
 WORKDIR /var/www/localhost/htdocs
 
 # Expose port 80 for Apache
-EXPOSE 80
+EXPOSE 80/tcp
 
 # Start Apache in the foreground
 ENTRYPOINT ["./entrypointCommands.sh"]
