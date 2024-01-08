@@ -6,56 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="3">
     <title>DCScoreboardOverlay</title>
+</head>
 
+<body>
     <?php
-        $csvArray = array();
+    // Echos the json data
+    $jsonData = json_decode(file_get_contents("overlay.json"), true);
 
-        if(($handle = fopen("data.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                $csvArray[] = $data;
-            }
-        }
+    foreach ($jsonData as $jsonData => $overlayEntryName) {
+        echo "<h1 class=\"$jsonData\">$overlayEntryName</h1>";
+    }
 
-        fclose($handle);
-
-        // This is for if there were multiple rows
-        // for ($i = 1; $i < count($csvArray); $i++) {
-            for ($ii = 0; $ii < count($csvArray[1])-1; $ii++) {
-                echo "<h1 class=" . $csvArray[0][$ii] . ">" . $csvArray[1][$ii] . "</h1>";
-            }
-        // }
-
-        // All of these read the overlay and use a different image for the middle depending on what it is, none of these are case sensitive
-        // If no correct arguement is found, it will default to the DC logo
-
-        //$overlayArray = array("DC", "SSBU", "RL", "SPLAT", "VAL");
-
-        // Fancy foreach loop to check the overlay value
-        //foreach ($overlayArray as $list) {
-        //    if (strtoupper($csvArray[1][4]) == $list) {
-        //      echo "<img id=\"logo\" src=\"images/" . strtoupper($list) . ".png\">";
-        //    }
-       // }
-
-        // Checks the left for won or lost status
-        // if(strtolower($csvArray[2][0]) == "won" || strtolower($csvArray[2][0]) == "win") {
-        //     echo '<img class="wonLeft" src="images/[W].png">';
-        // }   elseif(strtolower($csvArray[2][0]) == "lost" || strtolower($csvArray[2][0]) == "lose") {
-        //     echo '<img class="lostLeft" src="images/[L].png">';
-        // }
-
-        // Checks the right for won or lost status
-        // if(strtolower($csvArray[2][1]) == "won" || strtolower($csvArray[2][1]) == "win") {
-        //     echo '<img class="wonRight" src="images/[W].png">';
-        // }   elseif(strtolower($csvArray[2][1]) == "lost" || strtolower($csvArray[2][1]) == "lose") {
-        //     echo '<img class="lostRight" src="images/[L].png">';
-        // }
     ?>
 
+    <!-- Score numbers go from left to right -->
+    <!-- <div class="leftScoreOne"></div> -->
+
+    <center>
+        <img src="images/newSmashOverlay.png" class="overlayImage">
+    </center>
+
     <style>
+        html {
+            /* Determined from image width of the overlay */
+            width: 1157px;
+            margin: auto;
+        }
+
         body {
             background-color: transparent;
-            width: 1920px;
+            overflow: hidden;
+            color: white;
         }
 
         #logo {
@@ -65,65 +46,73 @@
             width: 10%;
 
         }
-        h1{
+
+        h1 {
             text-shadow: 2px 2px 2px black;
         }
 
+        .scoreLeft,.teamNameLeft {
+            width: 390px;
+            margin-left: 15px;
+            text-align: right;
+            position: absolute;
+
+        }
+
+        .scoreRight,.teamNameRight {
+            width: 390px;
+            text-align: left;
+            position: absolute;
+            margin-left: 745px;
+        }
+
+
         .scoreLeft {
-            position:absolute;
-            top:32px;
-            left:400px;
-            width: 50px;
+            top: 28px;
             height: 50px;
-            z-index: 1000;
+            text-align: left;
         }
 
 
-        .scoreRight  {
-            position:absolute;
-            z-index: 1000;
-            top:32px;
-            right:500px;
-            width: 50px;
+        .scoreRight {
+            top: 28px;
             height: 50px;
-        }
-           
-        .teamNameLeft  {
-            position:absolute;
-            z-index: 1000;
-            top:32px;
-            left:457.5px;
-            height: 50px;
-            color: white;
+            text-align: right;
         }
 
-        .teamNameRight  {
-            position:absolute;
-            z-index: 1000;
-            top:32px;
-            right:567.5px;
+        .teamNameLeft {
+            top: 28px;
             height: 50px;
-            color: white;
+            margin-left: 20px;
         }
-        /*left over code from win/lose overlay. Will remove in future update.
-        /* .wonLeft, .lostLeft {
+
+        .teamNameRight {
+            top: 28px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .overlay {
+            display: none;
+        }
+
+        .overlayImage {
+            display: block;
+            z-index: 999;
+        }
+
+        .leftScoreOne {
+            width: 20px;
+            height: 40px;
+            background-color: red;
+            z-index: 1000;
+            left: 700px;
+            top: 150px;
+            transform: rotate(-15deg);
+            display: block;
             position: absolute;
-            z-index: 1000;
-            left: 670px;
-            top: 125px;
         }
-        
-        .wonRight, .lostRight {
-            position: absolute;
-            z-index: 1000;
-            right: 670px;
-            top: 125px;
-        } */
-
     </style>
-    <!--1920x1080-->
-</head>
-    <body>
-        <img src="images/newSmashOverlay1920x1080.png">
-    </body>
+</body>
+
 </html>
