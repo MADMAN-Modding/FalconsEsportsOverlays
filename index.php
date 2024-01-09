@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="3">
+    <!-- <meta http-equiv="refresh" content="3"> -->
     <title>DCScoreboardOverlay</title>
+    <script src="js/index.js" type="module">main()</script>
 </head>
 
 <body>
@@ -15,15 +16,15 @@
     // Echos the json data
     $jsonData = json_decode(file_get_contents("overlay.json"), true);
 
-    $jsonDataCounter = 0;
+    // $jsonDataCounter = 0;
 
     foreach ($jsonData as $jsonDataName => $overlayEntryValue) {
-        echo "<h1 class=\"$jsonDataName\">$overlayEntryValue</h1>";
+        echo "<h1 class=\"$jsonDataName h1\">$overlayEntryValue</h1>";
 
-        if($jsonDataCounter == 2) {
-            echo "<div class=\"$jsonDataName$overlayEntryValue\"></div>";
+        // if($jsonDataCounter == 2) {
+            // echo "<div class=\"$jsonDataName$overlayEntryValue\"></div>";
             // echo "<h1 style=\"color: black;\">$jsonDataName" . "$overlayEntryValue</h1>";
-        }
+        // }
 
         // if ("$jsonDataName" == "leftScore") {
         //     echo "test";
@@ -32,7 +33,7 @@
         //     }
         // }
 
-        $jsonDataCounter++;
+        // $jsonDataCounter++;
     }
 
     echo "<center>";
@@ -40,6 +41,10 @@
     echo "</center>";
 
     ?>
+
+    <script>main()</script>
+
+    <div id="scoreLeftThree"></div>
 
     <style>
         html {
@@ -135,7 +140,7 @@
             position: absolute;
         }
 
-        .scoreLeft3 {
+        #scoreLeftThree {
             position: absolute;
             top: 150px;
             left: 680px;
