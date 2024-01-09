@@ -15,15 +15,24 @@
     // Echos the json data
     $jsonData = json_decode(file_get_contents("overlay.json"), true);
 
-    foreach ($jsonData as $jsonDataName => $overlayEntryName) {
-        echo "<h1 class=\"$jsonDataName\">$overlayEntryName</h1>";
-        echo $jsonDataName;
-        if ("$jsonDataName" == "leftScore") {
-            echo "test";
-            if ($overlayEntryName == "3") {
-                echo "<div class=\"leftScoreThree\"></div>";
-            }
+    $jsonDataCounter = 0;
+
+    foreach ($jsonData as $jsonDataName => $overlayEntryValue) {
+        echo "<h1 class=\"$jsonDataName\">$overlayEntryValue</h1>";
+
+        if($jsonDataCounter == 2) {
+            echo "<div class=\"$jsonDataName$overlayEntryValue\"></div>";
+            // echo "<h1 style=\"color: black;\">$jsonDataName" . "$overlayEntryValue</h1>";
         }
+
+        // if ("$jsonDataName" == "leftScore") {
+        //     echo "test";
+        //     if ($overlayEntryName == "3") {
+        //         echo "<div class=\"leftScoreThree\"></div>";
+        //     }
+        // }
+
+        $jsonDataCounter++;
     }
 
     echo "<center>";
@@ -33,9 +42,13 @@
     ?>
 
     <style>
+        html {
+            margin: auto;
+        }
+
         body {
             background-color: transparent;
-            overflow: hidden;
+            /* overflow: hidden; */
             color: white;
             width: 1920px;
             margin: auto;
@@ -122,7 +135,7 @@
             position: absolute;
         }
 
-        .leftScoreThree {
+        .scoreLeft3 {
             position: absolute;
             top: 150px;
             left: 680px;
