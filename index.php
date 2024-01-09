@@ -10,39 +10,42 @@
 
 <body>
     <?php
+    $test = "leftScore";
+
     // Echos the json data
     $jsonData = json_decode(file_get_contents("overlay.json"), true);
 
-    foreach ($jsonData as $jsonData => $overlayEntryName) {
-        echo "<h1 class=\"$jsonData\">$overlayEntryName</h1>";
+    foreach ($jsonData as $jsonDataName => $overlayEntryName) {
+        echo "<h1 class=\"$jsonDataName\">$overlayEntryName</h1>";
+        echo $jsonDataName;
+        if ("$jsonDataName" == "leftScore") {
+            echo "test";
+            if ($overlayEntryName == "3") {
+                echo "<div class=\"leftScoreThree\"></div>";
+            }
+        }
     }
+
+    echo "<center>";
+        echo '<img src="images/newSmashOverlay.png" class="overlayImage">';
+    echo "</center>";
 
     ?>
 
-    <!-- Score numbers go from left to right -->
-    <!-- <div class="leftScoreOne"></div> -->
-
-    <center>
-        <img src="images/newSmashOverlay.png" class="overlayImage">
-    </center>
-
     <style>
-        html {
-            /* Determined from image width of the overlay */
-            width: 1157px;
-            margin: auto;
-        }
-
         body {
             background-color: transparent;
             overflow: hidden;
             color: white;
+            width: 1920px;
+            margin: auto;
+            height: 1080px;
         }
 
         #logo {
             position: absolute;
             top: 5px;
-            left: 890px;
+            left: 2047px;
             width: 10%;
 
         }
@@ -51,15 +54,17 @@
             text-shadow: 2px 2px 2px black;
         }
 
-        .scoreLeft,.teamNameLeft {
+        .scoreLeft,
+        .teamNameLeft {
             width: 390px;
-            margin-left: 15px;
+            margin-left: 1672px;
             text-align: right;
             position: absolute;
 
         }
 
-        .scoreRight,.teamNameRight {
+        .scoreRight,
+        .teamNameRight {
             width: 390px;
             text-align: left;
             position: absolute;
@@ -71,6 +76,7 @@
             top: 28px;
             height: 50px;
             text-align: left;
+            display: none;
         }
 
 
@@ -78,18 +84,21 @@
             top: 28px;
             height: 50px;
             text-align: right;
+            display: none;
         }
 
         .teamNameLeft {
             top: 28px;
             height: 50px;
-            margin-left: 20px;
+            margin-left: 357px;
         }
 
         .teamNameRight {
             top: 28px;
             height: 50px;
-            margin-right: 10px;
+            text-align: right;
+            left: 275px;
+            /* margin-right: 1110px; */
         }
 
         .overlay {
@@ -111,6 +120,17 @@
             transform: rotate(-15deg);
             display: block;
             position: absolute;
+        }
+
+        .leftScoreThree {
+            position: absolute;
+            top: 150px;
+            left: 680px;
+            background-color: orange;
+            width: 23px;
+            height: 37px;
+            transform: skewX(31.5deg);
+
         }
     </style>
 </body>
