@@ -12,14 +12,17 @@ setInterval(function () {
                 document.getElementById("scoreLeftThree").style.backgroundColor = "transparent";
                 document.getElementById("scoreLeftTwo").style.backgroundColor = "red";
                 document.getElementById("scoreLeftOne").style.backgroundColor = "red";
+                break;
             case "1":
                 document.getElementById("scoreLeftThree").style.backgroundColor = "transparent";
                 document.getElementById("scoreLeftTwo").style.backgroundColor = "transparent";
                 document.getElementById("scoreLeftOne").style.backgroundColor = "red";
+                break;
             case "0":
                 document.getElementById("scoreLeftThree").style.backgroundColor = "transparent";
                 document.getElementById("scoreLeftTwo").style.backgroundColor = "transparent";
                 document.getElementById("scoreLeftOne").style.backgroundColor = "transparent";
+                break;
         }
         document.getElementById("teamNameLeft").innerHTML = jsonData["teamNameLeft"];
         document.getElementById("teamNameRight").innerHTML = jsonData["teamNameRight"];
