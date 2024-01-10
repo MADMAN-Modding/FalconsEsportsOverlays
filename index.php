@@ -25,6 +25,8 @@
     </center>
 
     <div id="scoreLeftThree"></div>
+    <div id="scoreLeftTwo"></div>
+    <div id="scoreLeftOne"></div>
 </body>
 
 </html>

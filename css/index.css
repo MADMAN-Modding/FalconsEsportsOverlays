@@ -76,3 +76,21 @@ h1 {
     height: 37px;
     transform: skewX(31.5deg);
 }
+#scoreLeftTwo {
+    position: absolute;
+    top: 150px;
+    left: 721px;
+    background-color: transparent;
+    width: 23px;
+    height: 37px;
+    transform: skewX(31.5deg);
+}
+#scoreLeftOne {
+    position: absolute;
+    top: 150px;
+    left: 757px;
+    background-color: transparent;
+    width: 23px;
+    height: 37px;
+    transform: skewX(31.5deg);
+}
