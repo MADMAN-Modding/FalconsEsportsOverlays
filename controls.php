@@ -9,31 +9,8 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        body {
-            margin-top: 10px;
-            max-width: 1920px;
-            margin-left: auto;
-            margin-right: auto;
-            overflow-y: scroll;
-            overflow-x: hidden;
-            background-color: darkgray;
-        }
 
-        .overlay {
-            border: none;
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            width: 300px;
-            height: 300px;
-            background-color: transparent;
-            color: transparent;
-        }
-
-        .submit {
-            margin-top: 10px;
-        }
-    </style>
+    <link href="css/controls.css" type="text/css" rel="stylesheet">
 </head>
 
 <body>
