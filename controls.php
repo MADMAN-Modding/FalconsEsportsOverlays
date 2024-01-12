@@ -11,6 +11,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <link href="css/controls.css" type="text/css" rel="stylesheet">
+    <script src="js/controls.js"></script>
+    <!-- ColorIs -->
+        <link rel="stylesheet" href="coloris.min.css"/>
+        <script src="coloris.min.js"></script>
 </head>
 
 <body>
@@ -50,7 +54,7 @@
 
 
     // Lists of all the POSTS to look for
-    $valueArray = array("teamNameLeft", "teamNameRight", "scoreLeft", "scoreRight", "overlay");
+    $valueArray = array("teamNameLeft", "teamNameRight", "scoreLeft", "scoreRight", "overlay", "teamColorRight");
 
     // Integer for where in the valueArray to look  
     $valueArrayInt = 0;
@@ -74,6 +78,7 @@
     $scoreLeft = $valueArrayOutput[2];
     $scoreRight = $valueArrayOutput[3];
     $overlay = $valueArrayOutput[4];
+    $teamColorRight = $valueArrayOutput[5];
 
     // Array for json
     $dataArray = [
@@ -81,7 +86,8 @@
         "teamNameRight" => "$teamNameRight",
         "scoreLeft" => "$scoreLeft",
         "scoreRight" => "$scoreRight",
-        "overlay" => "$overlay"
+        "overlay" => "$overlay",
+        "teamColorRight" => "$teamColorRight"
     ];
 
     // Encode the JSON data
@@ -144,10 +150,22 @@
         }
     }
 
+    // Right team color picker
+    
+    echo "<center>";
+        echo "<h2 class=\"submit\">Right Team Color</h2>";
+    echo "</center>";
+
+    echo "<center>";
+        echo "<input type=\"color\" name=\"teamColorRight\" value=\"$teamColorRight\">";
+    echo "</center>";
+
+
     // Makes the form sumbition button and closes the form
     echo "<center>";
-    echo "<button type=\"submit\" class=\"submit\">Update Values</button>";
+        echo "<button type=\"submit\" class=\"submit\">Update Values</button>";
     echo "</center>";
+
     echo "</form>";
     ?>
 

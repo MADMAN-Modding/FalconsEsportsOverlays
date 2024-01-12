@@ -1,7 +1,8 @@
 {
-    "teamNameLeft": "Divine Child High",
+    "teamNameLeft": "Divine Child High School",
     "teamNameRight": "Lake Shore High School",
-    "scoreLeft": "3",
+    "scoreLeft": "2",
     "scoreRight": "2",
-    "overlay": "SPLAT"
+    "overlay": "SSBU",
+    "teamColorRight": "#297eb3"
 }

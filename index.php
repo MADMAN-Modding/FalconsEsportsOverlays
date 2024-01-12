@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <meta http-equiv="refresh" content="3"> -->
     <title>DCScoreboardOverlay</title>
     <link href="css/index.css" type="text/css" rel="stylesheet">
     <script src="js/index.js" type="module"></script>
@@ -23,10 +22,17 @@
     <center>
         <img src="images/newSmashOverlay.png" class="overlayImage">
     </center>
-
+    <!-- Left Scores -->
     <div id="scoreLeftThree"></div>
     <div id="scoreLeftTwo"></div>
     <div id="scoreLeftOne"></div>
+
+    <?php
+    // Right Scores
+    echo "<div id=\"scoreRightThree\"></div>";
+    echo "<div id=\"scoreRightTwo\"></div>";
+    echo "<div id=\"scoreRightOne\"></div>";
+    ?>
 </body>
 
 </html>
