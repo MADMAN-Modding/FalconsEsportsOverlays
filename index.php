@@ -27,12 +27,11 @@
     <div id="scoreLeftTwo"></div>
     <div id="scoreLeftOne"></div>
 
-    <?php
-    // Right Scores
-    echo "<div id=\"scoreRightThree\"></div>";
-    echo "<div id=\"scoreRightTwo\"></div>";
-    echo "<div id=\"scoreRightOne\"></div>";
-    ?>
+
+    <!-- Right Scores -->
+    <div id="scoreRightThree"></div>
+    <div id="scoreRightTwo"></div>
+    <div id="scoreRightOne"></div>
 </body>
 
 </html>
