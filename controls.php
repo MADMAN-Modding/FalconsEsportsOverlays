@@ -12,9 +12,6 @@
 
     <link href="css/controls.css" type="text/css" rel="stylesheet">
     <script src="js/controls.js"></script>
-    <!-- ColorIs -->
-        <link rel="stylesheet" href="coloris.min.css"/>
-        <script src="coloris.min.js"></script>
 </head>
 
 <body>
@@ -113,9 +110,6 @@
     // Array of all the forms individual value's
     $formArrayValues = array($scoreLeft, $scoreRight, $teamNameLeft, $teamNameRight);
 
-    // Counter for how many times it has made a form
-    $formArrayInt = 0;
-
     // List of the names to display
     $formArrayNiceNames = array("Scores", "Teams");
 
@@ -125,45 +119,60 @@
     echo "<form method=\"post\" action=\"controls.php\">";
 
     // Foreach loop that makes the forms 
-    foreach ($formArray as $list) {
+    for ($i = 0; $i < count($formArray); $i++) {
 
-        // If the int is even it opens the center tag
-        if ($formArrayInt % 2 == 0 || $formArrayInt == 0) {
+        // If i is even it opens the center tag
+        if ($i % 2 == 0 || $i == 0) {
             echo "<center>";
-            echo "<h2 class=\"submit\">" . $formArrayNiceNames[$formArrayNiceNamesInt] . "</h2>";
+            echo "<h2 class=\"submit\">$formArrayNiceNames[$formArrayNiceNamesInt]</h2>";
         }
 
         // Makes the inputs
-        if ($formArrayInt <= 1) {
-            echo "<input type=\"number\" id=\"numberInput\" name=\"" . $formArray[$formArrayInt] . "\" value=\"" . $formArrayValues[$formArrayInt] . "\" required>";
-        } else {
-            echo "<input type=\"text\" id=\"stringInput\" name=\"" . $formArray[$formArrayInt] . "\" value=\"" . $formArrayValues[$formArrayInt] . "\">";
+        switch ($i) {
+            case 0: {
+                    echo "<h2>Left Score</h2>";
+                    for ($ii = 0; $ii <= 3; $ii++) {
+                        echo "<input type=\"radio\" id=\"radioLeft$ii\" name=\"$formArray[$i]\" value=\"$ii\" required> $ii";       
+                    }
+                    break;
+                }
+
+            case 1: {
+                    echo "<h2>Right Score</h2>";
+                    for ($ii = 0; $ii <= 3; $ii++) {
+                        echo "<input type=\"radio\" id=\"radioRight$ii\" name=\"$formArray[$i]\" value=\"$ii\" required> $ii";       
+                    }
+                    break;
+                }
+
+            default: {
+                    echo "<input type=\"text\" id=\"stringInput\" name=\"$formArray[$i]\" value=\"$formArrayValues[$i]\">";
+                    break;
+                }
         }
 
-        // Increments by one
-        $formArrayInt++;
-
-        // If the int is even it closes the center tag
-        if ($formArrayInt % 2 == 0 || $formArrayInt == 0) {
+        // If i is odd it closes the center tag
+        if ($i % 2 == 0 || $i == 0) {
+        } else {
             echo "</center>";
             $formArrayNiceNamesInt++;
         }
     }
 
     // Right team color picker
-    
+
     echo "<center>";
-        echo "<h2 class=\"submit\">Right Team Color</h2>";
+    echo "<h2 class=\"submit\">Right Team Color</h2>";
     echo "</center>";
 
     echo "<center>";
-        echo "<input type=\"color\" name=\"teamColorRight\" value=\"$teamColorRight\">";
+    echo "<input type=\"color\" name=\"teamColorRight\" value=\"$teamColorRight\">";
     echo "</center>";
 
 
     // Makes the form sumbition button and closes the form
     echo "<center>";
-        echo "<button type=\"submit\" class=\"submit\">Update Values</button>";
+    echo "<button type=\"submit\" class=\"submit\">Update Values</button>";
     echo "</center>";
 
     echo "</form>";
