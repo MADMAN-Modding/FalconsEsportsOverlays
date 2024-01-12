@@ -4,7 +4,7 @@ html {
 
 body {
     background-color: transparent;
-    /* overflow: hidden; */
+    overflow: hidden;
     color: white;
     width: 1920px;
     margin: auto;
