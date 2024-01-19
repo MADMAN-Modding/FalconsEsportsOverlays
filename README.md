@@ -65,8 +65,10 @@
 
 ![Ipconfig output image](https://github.com/MADMAN-Modding/EPWF/blob/main/README%20Stuff/ipconfig.png)
 
-<p>If you have added php to the PATH run the first command, if you chose to not add PHP to the PATH than run the second command.</p>
+<p>If you have added php to the PATH run the first command, if you chose to not add PHP to the PATH than run the second command. (You can replace the ip-address with localhost if you choose but it will only work on that machine)</p>
 
     php -S ip-address:8080
+
+    ..\path\php.exe -S ip-address:8080
 
 <p>You can now put the ip-address:8080 into the url bar of your browser and you will be able to see the website. Now you just need to add your roms my making a folder called roms and putting games in their <a href="#List-of-consoles-to-folder-name">respective folder</a>. You should be all set, enjoy playing your roms!</p>
