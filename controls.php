@@ -16,7 +16,7 @@
 
 <body>
     <form method="post">
-        <center>
+        <!-- <center>
             <div class="row">
                 <div class="col-lg-4">
                     <input type="submit" class="overlay" name="overlay" value="SSBU" style="background-image: url('images/SSBU.png');">
@@ -29,9 +29,11 @@
                 </div>
 
             </div>
-        </center>
-
+        </center> -->
         <center>
+            <input type="submit" class="overlay" name="overlay" value="SSBU" style="background-image: url('images/SSBU.png')";
+        </center>
+        <!-- <center>
             <div class="row">
                 <div class="col-lg-6">
                     <input type="submit" class="overlay" name="overlay" value="VAL" style="background-image: url('images/VAL.png');" />
@@ -40,7 +42,7 @@
                     <input type="submit" class="overlay" name="overlay" value="DC" style="background-image: url('images/DC.png');" />
                 </div>
             </div>
-        </center>
+        </center> -->
     </form>
 
     <!-- Data Checking PHP -->
