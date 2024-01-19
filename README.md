@@ -5,7 +5,6 @@
 <h2>Docker</h2>
 <h3>Get the docker <a href="https://hub.docker.com/repository/docker/madmanmodding/falconsesportsoverlay/general" target="_blank">here</a></h3>
 <h1>Clone/update with git cli</h1>
-<p>For the php part put the php.exe in C:\Users\username\php\php.exe</p>
 <h1>PHP Setup</h1>
 <h2>Windows</h2>
 <h4>PHP</h4>
@@ -44,13 +43,13 @@
 
 <p>Run the following command to clone the repository</p>
 
-    git clone https://github.com/MADMAN-Modding/EPWF.git
+    git clone https://github.com/HeinzEric/FalconsEsportsOverlays.git
 
 <p>This will clone the repository to the folder you are in.</p>
 
 <h3>Getting the code without git installed</h3>
 
-<p>Go to the <a href="https://github.com/MADMAN-Modding/EPWF">main page of the project</a>. Press the code button above and to the right of the files displayed, then press download zip. Just extract that folder to the folder you will be keeping the project.</p>
+<p>Go to the <a href="https://github.com/HeinzEric/FalconsEsportsOverlays">main page of the project</a>. Press the code button above and to the right of the files displayed, then press download zip. Just extract that folder to the folder you will be keeping the project.</p>
 
 <h3>Running the PHP server</h3>
 
