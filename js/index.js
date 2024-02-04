@@ -1,5 +1,5 @@
 setInterval(function () {
-    fetch('../overlay.json')
+    fetch('../json/overlay.json')
         .then((response) => response.json())
         .then((jsonData) => {
 
