@@ -48,19 +48,17 @@
 
     echo "<form method=\"post\" action=\"controls.php\">";
 
-    // If i is even it opens the center tag
-
     // Scores
     echo "<center>";
     echo "<h2 class=\"submit\">Scores</h2>";
 
-    // Left Score
+    // Left Score loops to make all the radio buttons
     echo "<h2>Left Score</h2>";
     for ($ii = 0; $ii <= 3; $ii++) {
         echo "<input type=\"radio\" id=\"scoreLeft$ii\" name=\"scoreLeft\" value=\"$ii\" required> $ii";
     }
 
-    // Right Score
+    // Right Score loops to make all the radio buttons
     echo "<h2>Right Score</h2>";
     for ($ii = 0; $ii <= 3; $ii++) {
         echo "<input type=\"radio\" id=\"scoreRight$ii\" name=\"scoreRight\" value=\"$ii\" required> $ii";
@@ -72,7 +70,11 @@
     echo "<center>";
     echo "<h2>Team Names</h2>";
     echo "</center>";
+
+    // Makes the input with the value stored in the JSON file
     echo "<input type=\"text\" id=\"teamNameLeft\" name=\"teamNameLeft\" value=\"$valueArray[0]\">";
+
+    // Makes the input with the value stored in the JSON file
     echo "<input type=\"text\" id=\"teamNameRight\" name=\"teamNameRight\" value=\"$valueArray[1]\">";
     echo "</center>";
 
@@ -82,6 +84,7 @@
     echo "</center>";
 
     echo "<center>";
+    // Makes the input with the value stored in the JSON file
     echo "<input type=\"color\" id=\"teamColorRight\" value=\"$valueArray[4]\">";
     echo "</center>";
     echo "</form>";
@@ -89,6 +92,7 @@
 
     <!-- AJAX Writer -->
     <script>
+        // Checks which button is checked and sets the variable respectively
         function radioButtonCheck(buttonSide, buttonNumber) {
             let button = document.getElementById("score" + buttonSide + buttonNumber);
 
@@ -105,12 +109,9 @@
             let teamNameLeft = document.getElementById("teamNameLeft").value;
             let teamNameRight = document.getElementById("teamNameRight").value;
 
+            // Took 2 hours but this gets the value across to the jsonWriter
             teamColorRightValue = document.getElementById("teamColorRight");
-
             teamColorRight = teamColorRightValue.value;
-
-            console.log(teamColorRight);
-
             teamColorRight = teamColorRight.replace("#", "!");
 
 

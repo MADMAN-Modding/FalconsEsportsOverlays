@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-
-<head>
-
-</head>
-
-<body>
-    <!-- Data Checking PHP -->
-    <?php
+<?php
 
     // Opens the json file
     $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
