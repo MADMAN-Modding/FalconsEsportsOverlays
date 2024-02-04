@@ -12,7 +12,7 @@
 <body>
     <?php
     // Echos the json data
-    $jsonData = json_decode(file_get_contents("overlay.json"), true);
+    $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
 
     foreach ($jsonData as $jsonDataName => $overlayEntryValue) {
         echo "<h1 id=\"$jsonDataName\">$overlayEntryValue</h1>";
