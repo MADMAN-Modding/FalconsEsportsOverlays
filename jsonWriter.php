@@ -1,51 +1,51 @@
 <?php
 
-    // Opens the json file
-    $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
+// Opens the json file
+$jsonData = json_decode(file_get_contents("json/overlay.json"), true);
 
-    // Values to retrieve from the JSON
-    $valueArrayNames = array("teamNameLeft", "teamNameRight", "scoreLeft", "scoreRight", "teamColorRight", "overlay");
+// Values to retrieve from the JSON
+$valueArrayNames = array("teamNameLeft", "teamNameRight", "scoreLeft", "scoreRight", "teamColorRight", "overlay");
 
-    for ($i = 0; $i < count($valueArrayNames); $i++) {
-        if (isset($_GET["$valueArrayNames[$i]"])) {
-            $valueArray[$i] = $_GET["$valueArrayNames[$i]"];
-        } else {
-            $valueArray[$i] = $jsonData[$valueArrayNames[$i]];
-        }
+for ($i = 0; $i < count($valueArrayNames); $i++) {
+    if (isset($_GET["$valueArrayNames[$i]"])) {
+        $valueArray[$i] = $_GET["$valueArrayNames[$i]"];
+    } else {
+        $valueArray[$i] = $jsonData[$valueArrayNames[$i]];
     }
+}
 
-    // Sets the values to equal the respective array value
-    $teamNameLeft = $valueArray[0];
-    $teamNameRight = $valueArray[1];
-    $scoreLeft = $valueArray[2];
-    $scoreRight = $valueArray[3];
-    
-    // String replacement because a # can't be sent using xml
-    $valueArray[4] = str_replace("!", "#", $valueArray[4]);
+// Sets the values to equal the respective array value
+$teamNameLeft = $valueArray[0];
+$teamNameRight = $valueArray[1];
+$scoreLeft = $valueArray[2];
+$scoreRight = $valueArray[3];
 
-    $teamColorRight = $valueArray[4];
-    $overlay = $valueArray[5];
+// String replacement because a # can't be sent using xml
+$valueArray[4] = str_replace("!", "#", $valueArray[4]);
+$teamColorRight = $valueArray[4];
 
-    // Array for json
-    $dataArray = [
-        "teamNameLeft" => "$teamNameLeft",
-        "teamNameRight" => "$teamNameRight",
-        "scoreLeft" => "$scoreLeft",
-        "scoreRight" => "$scoreRight",
-        "overlay" => "$overlay",
-        "teamColorRight" => "$teamColorRight"
-    ];
+$overlay = $valueArray[5];
 
-    // Encode the JSON data
-    $jsonDataEncoded = json_encode($dataArray, JSON_PRETTY_PRINT);
+// Array for json
+$dataArray = [
+    "teamNameLeft" => "$teamNameLeft",
+    "teamNameRight" => "$teamNameRight",
+    "scoreLeft" => "$scoreLeft",
+    "scoreRight" => "$scoreRight",
+    "overlay" => "$overlay",
+    "teamColorRight" => "$teamColorRight"
+];
 
-    // Open the JSON file for writing
-    $jsonOpener = fopen("json/overlay.json", "w");
+// Encode the JSON data
+$jsonDataEncoded = json_encode($dataArray, JSON_PRETTY_PRINT);
 
-    // Write the JSON data to the file
-    fwrite($jsonOpener, $jsonDataEncoded);
+// Open the JSON file for writing
+$jsonOpener = fopen("json/overlay.json", "w");
 
-    // Close the file
-    fclose($jsonOpener);
-    ?>
+// Write the JSON data to the file
+fwrite($jsonOpener, $jsonDataEncoded);
+
+// Close the file
+fclose($jsonOpener);
+?>
 </body>
