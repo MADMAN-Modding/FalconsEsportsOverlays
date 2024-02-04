@@ -87,17 +87,8 @@
     echo "</form>";
     ?>
 
-    <p id="hex"></p>
     <!-- AJAX Writer -->
-
     <script>
-        // Listens for any changes to the color and assigns the variable to the value
-        var theInput = document.getElementById("teamColorRight");
-        theInput.addEventListener("input", function() {
-            var theColor = theInput.value;
-            document.getElementById("hex").innerHTML = theColor;
-        }, false);
-
         function radioButtonCheck(buttonSide, buttonNumber) {
             let button = document.getElementById("score" + buttonSide + buttonNumber);
 
@@ -114,11 +105,15 @@
             let teamNameLeft = document.getElementById("teamNameLeft").value;
             let teamNameRight = document.getElementById("teamNameRight").value;
 
-            console.log(document.getElementById("hex").innerHTML);
+            teamColorRightValue = document.getElementById("teamColorRight");
 
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", "jsonWriter.php?teamColorRight=" + document.getElementById('hex').innerHTML, true);
-            xmlhttp.send();
+            teamColorRight = teamColorRightValue.value;
+
+            console.log(teamColorRight);
+
+            teamColorRight = teamColorRight.replace("#", "!");
+
+
             <?php
 
             // Writes radioButtonCheck functions
@@ -142,6 +137,7 @@
             AJAXFormMaker("teamNameRight");
             AJAXFormMaker("scoreLeft");
             AJAXFormMaker("scoreRight");
+            AJAXFormMaker("teamColorRight");
             ?>
         }
     </script>
