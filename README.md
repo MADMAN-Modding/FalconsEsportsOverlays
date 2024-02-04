@@ -1,5 +1,5 @@
 # FalconsEsportsOverlays
- A stream overlay for multiple games with a control page and a overlay page, both interact with a json file
+ A stream overlay for multiple games with a control page and a overlay page, both interact with a json file. Writen with PHP, JS, and AJAX
 <h1>Setup</h1>
 
 <h2>Docker</h2>
