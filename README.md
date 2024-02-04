@@ -4,6 +4,7 @@
 
 <h2>Docker</h2>
 <h3>Get the docker <a href="https://hub.docker.com/repository/docker/madmanmodding/falconsesportsoverlay/general" target="_blank">here</a></h3>
+<p>I (MADMAN-Modding) usually update the docker every release, but it will still pull from main everytime it starts</p>
 <h1>Clone/update with git cli</h1>
 <h1>PHP Setup</h1>
 <h2>Windows</h2>
