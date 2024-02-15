@@ -29,19 +29,11 @@
     $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
 
     // Values to retrieve from the JSON
-    $valueArrayNames = array("teamNameLeft", "teamNameRight", "scoreLeft", "scoreRight", "teamColorRight", "overlay");
+    $valueArrayNames = array("teamNameLeft", "teamNameRight", "scoreLeft", "scoreRight", "teamColorRight", "overlay", "week");
 
     for ($i = 0; $i < count($valueArrayNames); $i++) {
         $valueArray[$i] = $jsonData[$valueArrayNames[$i]];
     }
-
-    // Sets the values to equal the respective array value
-    $teamNameLeft = $valueArray[0];
-    $teamNameRight = $valueArray[1];
-    $scoreLeft = $valueArray[2];
-    $scoreRight = $valueArray[3];
-    $teamColorRight = $valueArray[4];
-    $overlay = $valueArray[5];
     ?>
 
     <?php
@@ -77,6 +69,8 @@
     // Makes the input with the value stored in the JSON file
     echo "<input type=\"text\" id=\"teamNameRight\" name=\"teamNameRight\" value=\"$valueArray[1]\">";
     echo "</center>";
+
+    // Week
 
     // Right team color picker
     echo "<center>";
