@@ -109,3 +109,9 @@ h1 {
     height: 37px;
     transform: skewX(-31.5deg);
 }
+
+.topWing {
+    width: 300px;
+    height: 20px;
+    background-image: linear-gradient(to bottom, rgb(216, 216, 216), gray);
+}
