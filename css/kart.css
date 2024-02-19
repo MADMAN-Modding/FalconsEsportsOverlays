@@ -37,6 +37,83 @@
     background-color: rgb(156, 156, 156);
 }
 
+#bottomLeftWingRightTrapezoid {
+    position: absolute;
+    left: 246px;
+    top: 73px;
+    width: 10px;
+    height: 25px;
+    background-color: black;
+    clip-path: polygon(0px 0px, 10px 0px, 10px 11px, 0px 25px);
+}
+
+#bottomLeftWingLeftRectangle {
+    position: absolute;
+    left: 0px;
+    top: 73px;
+    width: 246px;
+    height: 25px;
+    background-color: black;
+}
+
+/* Top Right Info */
+#topRightWingLeftTrapezoid {
+    position: absolute;
+    left: 1600px;
+    top: 0px;
+    width: 15px;
+    height: 40px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 15px 0px, 15px 40px, 0px 25px);
+}
+
+#topRightWingRightRectangle {
+    position: absolute;
+    left: 1615px;
+    top: 0px;
+    width: 345px;
+    height: 40px;
+    background-color: rgb(190, 15, 52);
+}
+
+#middleRightWingLeftTrapezoid {
+    position: absolute;
+    left: 1621px;
+    top: 40px;
+    width: 12px;
+    height: 31px;
+    background-color: rgb(156, 156, 156);
+    clip-path: polygon(0px 0px, 12px 0px, 12px 31px, 0px 19px);
+}
+
+#middleRightWingRightRectangle {
+    position: absolute;
+    left: 1633px;
+    top: 40px;
+    width: 287px;
+    height: 31px;
+    background-color: rgb(156, 156, 156);
+}
+
+#bottomRightWingLeftTrapezoid {
+    position: absolute;
+    left: 1663px;
+    top: 71px;
+    width: 10px;
+    height: 25px;
+    background-color: black;
+    clip-path: polygon(0px 0px, 10px 0px, 10px 25px, 0px 15px);
+}
+
+#bottomRightWingRightRectangle {
+    position: absolute;
+    left: 1673px;
+    top: 71px;
+    width: 247px;
+    height: 25px;
+    background-color: black;
+}
+
 /* Away Score */
 #awayScore {
     position: absolute;
@@ -167,4 +244,23 @@
     height: 37px;
     background-color: rgb(190, 15, 52);
     transform: rotate(180deg);
+}
+
+/* Team Positions */
+#teamNameLeft {
+    position: absolute;
+    left: 10px;
+    top: -17px;
+    width: 360;
+    font-size: 30px;
+    text-align: center;
+}
+
+#teamNameRight {
+    position: absolute;
+    left: 1600px;
+    top: -17px;
+    width: 361px;
+    font-size: 30px;
+    text-align: center;
 }

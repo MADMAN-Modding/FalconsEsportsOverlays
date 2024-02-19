@@ -23,7 +23,7 @@ h1 {
     text-shadow: 2px 2px 2px black;
 }
 
-#teamNameLeft {
+/* #teamNameLeft {
     width: 430px;
     margin-left: 400px;
     text-align: center;
@@ -41,7 +41,7 @@ h1 {
     height: 50px;
     text-align: right;
     left: 275px;
-}
+} */
 
 #scoreLeft,
 #scoreRight,

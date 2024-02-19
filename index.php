@@ -23,7 +23,16 @@ $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
     <div id="topLeftWingLeftRectangle"></div>
     <div id="middleLeftWingRightTrapezoid"></div>
     <div id="middleLeftWingLeftRectangle"></div>
-    <div id="bottomLeftWing"></div>
+    <div id="bottomLeftWingRightTrapezoid"></div>
+    <div id="bottomLeftWingLeftRectangle"></div>
+
+    <!-- Top Right Info -->
+    <div id="topRightWingLeftTrapezoid"></div>
+    <div id="topRightWingRightRectangle"></div>
+    <div id="middleRightWingLeftTrapezoid"></div>
+    <div id="middleRightWingRightRectangle"></div>
+    <div id="bottomRightWingLeftTrapezoid"></div>
+    <div id="bottomRightWingRightRectangle"></div>
 
     <!-- Away Score -->
     <div id="awayScore"></div>
