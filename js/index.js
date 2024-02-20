@@ -54,5 +54,6 @@ setInterval(function () {
             // Updates the Team Names
             document.getElementById("teamNameLeft").innerHTML = jsonData["teamNameLeft"];
             document.getElementById("teamNameRight").innerHTML = jsonData["teamNameRight"];
+            document.getElementById("week").innerHTML = jsonData["week"];
         })
 }, 3000)

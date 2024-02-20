@@ -14,7 +14,6 @@ $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
     <?php
     echo "<link href=\"css/" . strtolower($jsonData["overlay"]) . ".css\" type=\"text/css\" rel=\"stylesheet\">";
     ?>
-    <script src="js/index.js" type="module"></script>
 </head>
 
 <body>
@@ -66,20 +65,8 @@ $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
     }
     ?>
 
+    <script src="js/index.js" type="module"></script>
 
-
-    <!-- Left Scores -->
-    <!-- <div id="scoreLeftThree"></div>
-    <div id="scoreLeftTwo"></div>
-    <div id="scoreLeftOne"></div> -->
-
-
-    <!-- Right Scores -->
-    <!-- <div id="scoreRightThree"></div>
-    <div id="scoreRightTwo"></div>
-    <div id="scoreRightOne"></div> -->
-
-    <!-- ScoreBoard -->
 </body>
 
 </html>

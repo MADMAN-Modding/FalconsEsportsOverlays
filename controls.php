@@ -71,6 +71,10 @@
     echo "</center>";
 
     // Week
+    echo "<h2 id=\"weekText\">Week</h2>";
+    echo "<center>";
+    echo "<input type=\"text\" id=\"week\" name=\"week\" value=\"$valueArray[6]\">";
+    echo "</center>";
 
     // Right team color picker
     echo "<center>";
@@ -102,12 +106,12 @@
             // Gets values for their respective side
             let teamNameLeft = document.getElementById("teamNameLeft").value;
             let teamNameRight = document.getElementById("teamNameRight").value;
+            let week = document.getElementById("week").value;
 
             // Took 2 hours but this gets the value across to the jsonWriter
             teamColorRightValue = document.getElementById("teamColorRight");
             teamColorRight = teamColorRightValue.value;
             teamColorRight = teamColorRight.replace("#", "!");
-
 
             <?php
 
@@ -133,6 +137,7 @@
             AJAXFormMaker("scoreLeft");
             AJAXFormMaker("scoreRight");
             AJAXFormMaker("teamColorRight");
+            AJAXFormMaker("week");
             ?>
         }
     </script>
