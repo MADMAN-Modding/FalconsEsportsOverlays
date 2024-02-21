@@ -1,0 +1,368 @@
+/* Top Left Info */
+#topLeftWingRightTrapezoid {
+    position: absolute;
+    left: 345px;
+    top: 0px;
+    width: 15px;
+    height: 42px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 15px 0px, 15px 27px, 0px 42px)
+}
+
+#topLeftWingLeftRectangle {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 345px;
+    height: 42px;
+    background-color: rgb(190, 15, 52);
+}
+
+#middleLeftWingRightTrapezoid {
+    position: absolute;
+    left: 286px;
+    top: 42px;
+    width: 12px;
+    height: 31px;
+    background-color: rgb(156, 156, 156);
+    clip-path: polygon(0px 0px, 12px 0px, 12px 18px, 0px 31px);
+}
+
+#middleLeftWingLeftRectangle {
+    position: absolute;
+    left: 0px;
+    top: 42px;
+    width: 287px;
+    height: 31px;
+    background-color: rgb(156, 156, 156);
+}
+
+#bottomLeftWingRightTrapezoid {
+    position: absolute;
+    left: 246px;
+    top: 73px;
+    width: 10px;
+    height: 25px;
+    background-color: black;
+    clip-path: polygon(0px 0px, 10px 0px, 10px 11px, 0px 25px);
+}
+
+#bottomLeftWingLeftRectangle {
+    position: absolute;
+    left: 0px;
+    top: 73px;
+    width: 246px;
+    height: 25px;
+    background-color: black;
+}
+
+/* Top Right Info */
+#topRightWingLeftTrapezoid {
+    position: absolute;
+    left: 1600px;
+    top: 0px;
+    width: 15px;
+    height: 40px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 15px 0px, 15px 40px, 0px 25px);
+}
+
+#topRightWingRightRectangle {
+    position: absolute;
+    left: 1615px;
+    top: 0px;
+    width: 345px;
+    height: 40px;
+    background-color: rgb(190, 15, 52);
+}
+
+#middleRightWingLeftTrapezoid {
+    position: absolute;
+    left: 1621px;
+    top: 40px;
+    width: 12px;
+    height: 31px;
+    background-color: rgb(156, 156, 156);
+    clip-path: polygon(0px 0px, 12px 0px, 12px 31px, 0px 19px);
+}
+
+#middleRightWingRightRectangle {
+    position: absolute;
+    left: 1633px;
+    top: 40px;
+    width: 287px;
+    height: 31px;
+    background-color: rgb(156, 156, 156);
+}
+
+#bottomRightWingLeftTrapezoid {
+    position: absolute;
+    left: 1663px;
+    top: 71px;
+    width: 10px;
+    height: 25px;
+    background-color: black;
+    clip-path: polygon(0px 0px, 10px 0px, 10px 25px, 0px 15px);
+}
+
+#bottomRightWingRightRectangle {
+    position: absolute;
+    left: 1673px;
+    top: 71px;
+    width: 247px;
+    height: 25px;
+    background-color: black;
+}
+
+/* Away Score */
+#awayScore {
+    position: absolute;
+    left: 1533px;
+    top: 464px;
+    width: 347px;
+    height: 43px;
+    background-color: rgb(156, 156, 156);
+    clip-path: polygon(0px 0px, 347px 0px, 263px 43px, 85px 43px);
+}
+
+#awayScoreText {
+    position: absolute;
+    left: 1618px;
+    top: 444px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
+}
+
+#scoreRight {
+    position: absolute;
+    left: 1618px;
+    top: 404px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
+}
+
+/* Home Score */
+#homeScore {
+    position: absolute;
+    left: 60px;
+    top: 464px;
+    width: 347px;
+    height: 43px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 347px 0px, 263px 43px, 85px 43px);
+}
+
+#homeScoreText {
+    position: absolute;
+    left: 145px;
+    top: 444px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
+}
+
+#scoreLeft {
+    position: absolute;
+    left: 145px;
+    top: 404px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
+}
+
+/* Week */
+#weekNumberTrapezoid {
+    position: absolute;
+    left: 1864px;
+    top: 1051px;
+    width: 55px;
+    height: 13px;
+    background-color: black;
+    clip-path: polygon(0px 0px, 55px 0px, 42px 13px, 13px 13px)
+}
+
+#weekBackTrapezoidTop {
+    position: absolute;
+    left: 1862px;
+    top: 681px;
+    width: 58px;
+    height: 25px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(25px 0px, 58px 0px, 58px 25px, 0px 25px);
+}
+
+#weekBackRectangleBottom {
+    position: absolute;
+    left: 1862px;
+    top: 706px;
+    width: 58px;
+    height: 399px;
+    background-color: rgb(190, 15, 52);
+}
+
+#weekText {
+    position: absolute;
+    left: 1868px;
+    top: 706px;
+    font-size: 48px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 2px 2px 2px black;
+    text-align: center;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+}
+
+#week {
+    position: absolute;
+    left: 1877px;
+    top: 970px;
+    font-size: 48px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+/* Temp Images */
+#topTemp {
+    position: absolute;
+    left: 550px;
+    top: 37px;
+    width: 838px;
+    height: 470px;
+}
+
+#bottomTemp {
+    position: absolute;
+    left: 550px;
+    top: 571px;
+    width: 838px;
+    height: 470px;
+}
+
+/* Top Names */
+#topNamesLeftTrapezoid {
+    position: absolute;
+    left: 550px;
+    top: 507px;
+    width: 22px;
+    height: 37px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 22px 0px, 22px 37px, 0px 23px);
+}
+
+#topNamesRightRectangle {
+    position: absolute;
+    left: 572px;
+    top: 507px;
+    width: 268px;
+    height: 37px;
+    background-color: rgb(190, 15, 52);
+}
+
+/* Bottom Names */
+#bottomNamesRightTrapezoid {
+    position: absolute;
+    left: 1366px;
+    top: 534px;
+    width: 22px;
+    height: 37px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 22px 0px, 22px 37px, 0px 23px);
+    transform: rotate(180deg);
+}
+
+#bottomNamesLeftRectangle {
+    position: absolute;
+    left: 1098px;
+    top: 534px;
+    width: 268px;
+    height: 37px;
+    background-color: rgb(190, 15, 52);
+    transform: rotate(180deg);
+}
+
+/* Team Positions */
+#teamNameLeft {
+    position: absolute;
+    left: 10px;
+    top: -17px;
+    width: 360;
+    font-size: 30px;
+    text-align: center;
+}
+
+#teamNameRight {
+    position: absolute;
+    left: 1600px;
+    top: -17px;
+    width: 361px;
+    font-size: 30px;
+    text-align: center;
+}
+
+/* Rounds Won */
+#leftRoundsWon {
+    position: absolute;
+    top: 37px;
+    left: 524px;
+    width: 26px;
+    height: 121px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 26px 0px, 26px 121px, 0px 95px);
+}
+
+#leftRoundsWon1,
+#leftRoundsWon2 {
+    position: absolute;
+    left: 528px;
+    width: 18px;
+    height: 30px;
+    background-color: black;
+    clip-path: polygon(0px 0px, 18px 18px, 18px 30px, 0px 12px);
+}
+
+#leftRoundsWon1 {
+    top: 55px;
+}
+
+#leftRoundsWon2 {
+    top: 93px;
+}
+
+#rightRoundsWon {
+    position: absolute;
+    top: 37px;
+    left: 1388px;
+    width: 26px;
+    height: 121px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 26px 0px, 26px 95px, 0px 121px);
+}
+
+#rightRoundsWon1,
+#rightRoundsWon2 {
+    position: absolute;
+    left: 1393px;
+    width: 18px;
+    height: 30px;
+    background-color: black;
+    clip-path: polygon(18px 0px, 18px 12px, 0px 30px, 0px 18px);
+}
+
+#rightRoundsWon1 {
+    top: 55px;
+}
+
+#rightRoundsWon2 {
+    top: 93px;
+}
+
+/* Falcon Logo */
+#falconLogo {
+    position: absolute;
+    top: 682px;
+    left: 71px;
+    width: 325px;
+    height: 284px;
+}

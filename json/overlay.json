@@ -1,8 +1,11 @@
 {
     "teamNameLeft": "Divine Child High School",
     "teamNameRight": "Catholic Central",
-    "scoreLeft": "0",
-    "scoreRight": "3",
-    "overlay": "SSBU",
-    "teamColorRight": "#5c51f0"
+    "winsLeft": "2",
+    "winsRight": "1",
+    "teamColorRight": "#5c51f0",
+    "overlay": "kart",
+    "week": "1",
+    "scoreLeft": "10",
+    "scoreRight": "20"
 }
