@@ -1,0 +1,24 @@
+
+.scoreboardT{
+    width:75%;
+    height:30px;
+    position: absolute;
+    left:240px;
+    top: 40px;
+    background-color: #999999;
+    border: bottom left radius 25px; ;
+}
+.scoreboardB{
+    width:55%;
+    height:30px;
+    position: absolute;
+    left:432px;
+    top: 70px;
+    background-color: #999999;
+}
+img{
+    width:75px;
+    position:absolute;
+    top:34px;
+    left: 940px;
+}
