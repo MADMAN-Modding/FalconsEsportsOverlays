@@ -72,4 +72,4 @@
 
     ..\path\php.exe -S ip-address:8080
 
-<p>You can now put the ip-address:8080 into the url bar of your browser and you will be able to see the website. Now you just need to add your roms my making a folder called roms and putting games in their <a href="#List-of-consoles-to-folder-name">respective folder</a>. You should be all set, enjoy playing your roms!</p>
+<p>You can now put the ip-address:8080 into the url bar of your browser and you will be able to see the website.</p>
