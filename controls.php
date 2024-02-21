@@ -25,17 +25,7 @@
     <?php
 
     $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
-
-    // Values to retrieve from the JSON
-    $valueArrayNames = array("teamNameLeft", "teamNameRight", "winsLeft", "winsRight", "teamColorRight", "overlay", "week", "scoreLeft", "scoreRight");
-
-    for ($i = 0; $i < count($valueArrayNames); $i++) {
-        $valueArray[$i] = $jsonData[$valueArrayNames[$i]];
-    }
-    ?>
-
-    <?php
-
+    
     echo "<div class=\"form\">";
     echo "<form method=\"post\" action=\"controls.php\">";
 
@@ -57,27 +47,27 @@
     }
 
     echo "<h2>Left and Right Scores</h2>";
-    formMaker("number", "scoreLeft", $valueArray[7], "scoreLeft", "");
-    formMaker("number", "scoreRight", $valueArray[8], "scoreRight", "");
+    formMaker("number", "scoreLeft", $jsonData["scoreLeft"], "scoreLeft", "");
+    formMaker("number", "scoreRight", $jsonData["scoreRight"], "scoreRight", "");
 
     // Teams
     echo "<h2 style=\"text-align: center\">Team Names</h2>";
 
     // Makes the input with the value stored in the JSON file
-    echo "<input type=\"text\" id=\"teamNameLeft\" name=\"teamNameLeft\" value=\"$valueArray[0]\">";
+    formMaker("text", "teamNameLeft", $jsonData["teamNameLeft"], "teamNameLeft", "");
 
     // Makes the input with the value stored in the JSON file
-    formMaker("text", "teamNameRight", $valueArray[1], "teamNameRight", "");
+    formMaker("text", "teamNameRight", $jsonData["teamNameRight"], "teamNameRight", "");
 
     // Week
     echo "<h2 id=\"weekText\">Week</h2>";
-    formMaker("number", "week", $valueArray[6], "teamNameLeft", "");
+    formMaker("number", "week", $jsonData["week"], "teamNameLeft", "");
 
     // Right team color picker
     echo "<h2 class=\"submit\">Right Team Color</h2>";
 
     // Makes the input with the value stored in the JSON file
-    formMaker("color", "teamColorRight", $valueArray[4], "teamColorRight", "");
+    formMaker("color", "teamColorRight", $jsonData["teamColorRight"], "teamColorRight", "");
     echo "</form>";
     echo "</div>";
     ?>
