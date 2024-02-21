@@ -23,34 +23,14 @@ h1 {
     text-shadow: 2px 2px 2px black;
 }
 
-/* #teamNameLeft {
-    width: 430px;
-    margin-left: 400px;
-    text-align: center;
-    position: absolute;
-    top: 16px;
-    height: 50px;
-}
-
-#teamNameRight {
-    width: 390px;
-    text-align: left;
-    position: absolute;
-    margin-left: 745px;
-    top: 28px;
-    height: 50px;
-    text-align: right;
-    left: 275px;
-} */
-
-#scoreLeft,
-#scoreRight,
+#winsLeft,
+#winsRight,
 #overlay,
 #teamColorRight {
     display: none;
 }
 
-#scoreLeftThree {
+#winsLeftThree {
     position: absolute;
     top: 150px;
     left: 680px;
@@ -60,7 +40,7 @@ h1 {
     transform: skewX(31.5deg);
 }
 
-#scoreLeftTwo {
+#winsLeftTwo {
     position: absolute;
     top: 150px;
     left: 721px;
@@ -70,7 +50,7 @@ h1 {
     transform: skewX(31.5deg);
 }
 
-#scoreLeftOne {
+#winsLeftOne {
     position: absolute;
     top: 150px;
     left: 757px;
@@ -80,7 +60,7 @@ h1 {
     transform: skewX(31.5deg);
 }
 
-#scoreRightOne {
+#winsRightOne {
     position: absolute;
     top: 147px;
     right: 757px;
@@ -90,7 +70,7 @@ h1 {
     transform: skewX(-31.5deg);
 }
 
-#scoreRightTwo {
+#winsRightTwo {
     position: absolute;
     top: 147px;
     right: 717px;
@@ -100,7 +80,7 @@ h1 {
     transform: skewX(-31.5deg);
 }
 
-#scoreRightThree {
+#winsRightThree {
     position: absolute;
     top: 147px;
     right: 678px;

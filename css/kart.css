@@ -125,6 +125,24 @@
     clip-path: polygon(0px 0px, 347px 0px, 263px 43px, 85px 43px);
 }
 
+#awayScoreText {
+    position: absolute;
+    left: 1618px;
+    top: 444px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
+}
+
+#scoreRight {
+    position: absolute;
+    left: 1618px;
+    top: 404px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
+}
+
 /* Home Score */
 #homeScore {
     position: absolute;
@@ -134,6 +152,24 @@
     height: 43px;
     background-color: rgb(190, 15, 52);
     clip-path: polygon(0px 0px, 347px 0px, 263px 43px, 85px 43px);
+}
+
+#homeScoreText {
+    position: absolute;
+    left: 145px;
+    top: 444px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
+}
+
+#scoreLeft {
+    position: absolute;
+    left: 145px;
+    top: 404px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
 }
 
 /* Week */
@@ -263,4 +299,70 @@
     width: 361px;
     font-size: 30px;
     text-align: center;
+}
+
+/* Rounds Won */
+#leftRoundsWon {
+    position: absolute;
+    top: 37px;
+    left: 524px;
+    width: 26px;
+    height: 121px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 26px 0px, 26px 121px, 0px 95px);
+}
+
+#leftRoundsWon1,
+#leftRoundsWon2 {
+    position: absolute;
+    left: 528px;
+    width: 18px;
+    height: 30px;
+    background-color: black;
+    clip-path: polygon(0px 0px, 18px 18px, 18px 30px, 0px 12px);
+}
+
+#leftRoundsWon1 {
+    top: 55px;
+}
+
+#leftRoundsWon2 {
+    top: 93px;
+}
+
+#rightRoundsWon {
+    position: absolute;
+    top: 37px;
+    left: 1388px;
+    width: 26px;
+    height: 121px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 26px 0px, 26px 95px, 0px 121px);
+}
+
+#rightRoundsWon1,
+#rightRoundsWon2 {
+    position: absolute;
+    left: 1393px;
+    width: 18px;
+    height: 30px;
+    background-color: black;
+    clip-path: polygon(18px 0px, 18px 12px, 0px 30px, 0px 18px);
+}
+
+#rightRoundsWon1 {
+    top: 55px;
+}
+
+#rightRoundsWon2 {
+    top: 93px;
+}
+
+/* Falcon Logo */
+#falconLogo {
+    position: absolute;
+    top: 682px;
+    left: 71px;
+    width: 325px;
+    height: 284px;
 }

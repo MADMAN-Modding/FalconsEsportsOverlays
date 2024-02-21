@@ -1,9 +1,11 @@
 {
     "teamNameLeft": "Divine Child High School",
-    "teamNameRight": "Catholic Ce",
-    "scoreLeft": "3",
-    "scoreRight": "2",
-    "overlay": "kart",
+    "teamNameRight": "Catholic Central",
+    "winsLeft": "2",
+    "winsRight": "1",
     "teamColorRight": "#5c51f0",
-    "week": "2"
+    "overlay": "kart",
+    "week": "1",
+    "scoreLeft": "10",
+    "scoreRight": "20"
 }

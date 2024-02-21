@@ -4,7 +4,7 @@
 $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
 
 // Values to retrieve from the JSON
-$valueArrayNames = array("teamNameLeft", "teamNameRight", "scoreLeft", "scoreRight", "teamColorRight", "overlay", "week");
+$valueArrayNames = array("teamNameLeft", "teamNameRight", "winsLeft", "winsRight", "teamColorRight", "overlay", "week", "scoreLeft", "scoreRight");
 
 for ($i = 0; $i < count($valueArrayNames); $i++) {
     if (isset($_GET["$valueArrayNames[$i]"])) {
@@ -15,27 +15,22 @@ for ($i = 0; $i < count($valueArrayNames); $i++) {
 }
 
 // Sets the values to equal the respective array value
-$teamNameLeft = $valueArray[0];
-$teamNameRight = $valueArray[1];
-$scoreLeft = $valueArray[2];
-$scoreRight = $valueArray[3];
+
 
 // String replacement because a # can't be sent using xml
 $valueArray[4] = str_replace("!", "#", $valueArray[4]);
-$teamColorRight = $valueArray[4];
-
-$overlay = $valueArray[5];
-$week = $valueArray[6];
 
 // Array for json
 $dataArray = [
-    "teamNameLeft" => "$teamNameLeft",
-    "teamNameRight" => "$teamNameRight",
-    "scoreLeft" => "$scoreLeft",
-    "scoreRight" => "$scoreRight",
-    "overlay" => "$overlay",
-    "teamColorRight" => "$teamColorRight",
-    "week" => "$week"
+    "teamNameLeft" => "$valueArray[0]",
+    "teamNameRight" => "$valueArray[1]",
+    "winsLeft" => "$valueArray[2]",
+    "winsRight" => "$valueArray[3]",
+    "teamColorRight" => "$valueArray[4]",
+    "overlay" => "$valueArray[5]",
+    "week" => "$valueArray[6]",
+    "scoreLeft" => "$valueArray[7]",
+    "scoreRight" => "$valueArray[8]"
 ];
 
 // Encode the JSON data
