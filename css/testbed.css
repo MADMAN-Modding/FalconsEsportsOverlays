@@ -4,21 +4,29 @@
     height:30px;
     position: absolute;
     left:240px;
-    top: 40px;
-    background-color: #999999;
-    border: bottom left radius 25px; ;
+    top: 20px;
+    background: radial-gradient(ellipse at center, rgba(211,211,211,1) 51%, rgba(153,153,153,1) 88%, rgba(0,0,0,1) 97%);
+    
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    border-left: medium solid black;
+    border-right: medium solid black;
+    border-bottom: medium solid black;
 }
 .scoreboardB{
     width:55%;
     height:30px;
     position: absolute;
     left:432px;
-    top: 70px;
+    top: 53px;
     background-color: #999999;
+    border-left: medium solid black;
+    border-right: medium solid black;
+    border-bottom: medium solid black;
 }
 img{
     width:75px;
     position:absolute;
-    top:34px;
+    top:14px;
     left: 940px;
 }
