@@ -105,6 +105,9 @@
             let week = document.getElementById("week").value;
             let scoreLeft = document.getElementById("scoreLeft").value;
             let scoreRight = document.getElementById("scoreRight").value;
+            let playerNamesLeft = document.getElementById("playerNamesLeft").value;
+            let playerNamesRight = document.getElementById("playerNamesRight").value;
+            
 
             <?php
 
@@ -132,6 +135,8 @@
             AJAXFormMaker("week");
             AJAXFormMaker("scoreLeft");
             AJAXFormMaker("scoreRight");
+            AJAXFormMaker("playerNamesLeft");
+            AJAXFormMaker("playerNamesRight");
             ?>
 
         }
