@@ -71,7 +71,7 @@
     position: absolute;
     left: 1615px;
     top: 0px;
-    width: 345px;
+    width: 305px;
     height: 40px;
     background-color: rgb(190, 15, 52);
 }
@@ -312,9 +312,9 @@
 
 #teamNameRight {
     position: absolute;
-    left: 1555px;
+    left: 1610px;
     top: -17px;
-    width: 361px;
+    width: 305px;
     font-size: 30px;
     text-align: right;
 }
