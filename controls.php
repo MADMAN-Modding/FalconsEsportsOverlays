@@ -67,6 +67,11 @@
     // Right
     formMaker("text", "playerNamesRight", $jsonData["playerNamesRight"], "playerNamesRight", "");
 
+    // School Names
+    echo "<h2 style=\"text-align: center;\">School Names</h2>";
+    formMaker("text", "schoolNameLeft", $jsonData["schoolNameLeft"], "schoolNameLeft", "");
+    formMaker("text", "schoolNameRight", $jsonData["schoolNameRight"], "schoolNameRight", "");
+
     // Week
     echo "<h2 id=\"weekText\">Week</h2>";
     formMaker("number", "week", $jsonData["week"], "teamNameLeft", "");
@@ -107,6 +112,8 @@
             let scoreRight = document.getElementById("scoreRight").value;
             let playerNamesLeft = document.getElementById("playerNamesLeft").value;
             let playerNamesRight = document.getElementById("playerNamesRight").value;
+            let schoolNameLeft = document.getElementById("schoolNameLeft").value;
+            let schoolNameRight = document.getElementById("schoolNameRight").value;
             
 
             <?php
@@ -137,6 +144,8 @@
             AJAXFormMaker("scoreRight");
             AJAXFormMaker("playerNamesLeft");
             AJAXFormMaker("playerNamesRight");
+            AJAXFormMaker("schoolNameLeft");
+            AJAXFormMaker("schoolNameRight");
             ?>
 
         }
