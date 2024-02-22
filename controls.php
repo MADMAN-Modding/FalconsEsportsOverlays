@@ -51,13 +51,26 @@
     formMaker("number", "scoreRight", $jsonData["scoreRight"], "scoreRight", "");
 
     // Teams
-    echo "<h2 style=\"text-align: center\">Team Names</h2>";
+    echo "<h2 style=\"text-align: center;\">Team Names</h2>";
 
     // Makes the input with the value stored in the JSON file
     formMaker("text", "teamNameLeft", $jsonData["teamNameLeft"], "teamNameLeft", "");
 
     // Makes the input with the value stored in the JSON file
     formMaker("text", "teamNameRight", $jsonData["teamNameRight"], "teamNameRight", "");
+
+    // Player Names
+    echo "<h2 style=\"text-align: center;\">Player Names</h2>";
+    // Left
+    formMaker("text", "playerNamesLeft", $jsonData["playerNamesLeft"], "playerNamesLeft", "");
+
+    // Right
+    formMaker("text", "playerNamesRight", $jsonData["playerNamesRight"], "playerNamesRight", "");
+
+    // School Names
+    echo "<h2 style=\"text-align: center;\">School Names</h2>";
+    formMaker("text", "schoolNameLeft", $jsonData["schoolNameLeft"], "schoolNameLeft", "");
+    formMaker("text", "schoolNameRight", $jsonData["schoolNameRight"], "schoolNameRight", "");
 
     // Week
     echo "<h2 id=\"weekText\">Week</h2>";
@@ -97,6 +110,11 @@
             let week = document.getElementById("week").value;
             let scoreLeft = document.getElementById("scoreLeft").value;
             let scoreRight = document.getElementById("scoreRight").value;
+            let playerNamesLeft = document.getElementById("playerNamesLeft").value;
+            let playerNamesRight = document.getElementById("playerNamesRight").value;
+            let schoolNameLeft = document.getElementById("schoolNameLeft").value;
+            let schoolNameRight = document.getElementById("schoolNameRight").value;
+            
 
             <?php
 
@@ -124,6 +142,10 @@
             AJAXFormMaker("week");
             AJAXFormMaker("scoreLeft");
             AJAXFormMaker("scoreRight");
+            AJAXFormMaker("playerNamesLeft");
+            AJAXFormMaker("playerNamesRight");
+            AJAXFormMaker("schoolNameLeft");
+            AJAXFormMaker("schoolNameRight");
             ?>
 
         }

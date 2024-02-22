@@ -19,5 +19,7 @@ setInterval(function () {
             document.getElementById("teamNameLeft").innerHTML = jsonData["teamNameLeft"];
             document.getElementById("teamNameRight").innerHTML = jsonData["teamNameRight"];
             document.getElementById("week").innerHTML = jsonData["week"];
+            document.getElementById("playerNamesLeft").innerHTML = jsonData["playerNamesLeft"];
+            document.getElementById("playerNamesRight").innerHTML = jsonData["playerNamesRight"]
         });
 }, 3000);

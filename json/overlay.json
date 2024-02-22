@@ -1,11 +1,15 @@
 {
-    "teamNameLeft": "Divine Child High School",
-    "teamNameRight": "Catholic Central",
+    "teamNameLeft": "Ketchup",
+    "teamNameRight": "Shamrocks",
     "winsLeft": "2",
     "winsRight": "1",
     "teamColorRight": "#5c51f0",
-    "overlay": "ssbu",
+    "overlay": "kart",
     "week": "1",
     "scoreLeft": "10",
-    "scoreRight": "20"
+    "scoreRight": "20",
+    "playerNamesLeft": "Mason and Alex",
+    "playerNamesRight": "Gavin and Aiden",
+    "schoolNameLeft": "Divine Child High School",
+    "schoolNameRight": "Catholic Central"
 }

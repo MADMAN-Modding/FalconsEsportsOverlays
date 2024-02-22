@@ -33,6 +33,10 @@ $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
     <div id="bottomRightWingLeftTrapezoid"></div>
     <div id="bottomRightWingRightRectangle"></div>
 
+    <!-- Home/Away Text -->
+    <h1 id="homeText">Home</h1>
+    <h1 id="awayText">Away</h1>
+
     <!-- Away Score -->
     <div id="awayScore"></div>
     <h1 id="awayScoreText">Score</h1>
@@ -70,7 +74,6 @@ $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
 
     <img src="images/Esports-Logo.png" id="falconLogo">
 
-    
     <?php
     // Echos the json data
     foreach ($jsonData as $jsonDataName => $overlayEntryValue) {

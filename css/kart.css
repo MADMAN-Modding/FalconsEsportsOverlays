@@ -71,7 +71,7 @@
     position: absolute;
     left: 1615px;
     top: 0px;
-    width: 345px;
+    width: 305px;
     height: 40px;
     background-color: rgb(190, 15, 52);
 }
@@ -112,6 +112,24 @@
     width: 247px;
     height: 25px;
     background-color: black;
+}
+
+/* Home/Away Text */
+#homeText {
+    position: absolute;
+    left: 10px;
+    top: 16px;
+    width: 287px;
+    height: 31px;
+    text-align: left;
+}
+
+#awayText {
+    position: absolute;
+    left: 1833px;
+    top: 15px;
+    width: 287px;
+    height: 31px;
 }
 
 /* Away Score */
@@ -287,18 +305,18 @@
     position: absolute;
     left: 10px;
     top: -17px;
-    width: 360;
+    width: 360px;
     font-size: 30px;
-    text-align: center;
+    text-align: left;
 }
 
 #teamNameRight {
     position: absolute;
-    left: 1600px;
+    left: 1610px;
     top: -17px;
-    width: 361px;
+    width: 305px;
     font-size: 30px;
-    text-align: center;
+    text-align: right;
 }
 
 /* Rounds Won */
@@ -365,4 +383,42 @@
     left: 71px;
     width: 325px;
     height: 284px;
+}
+
+
+#playerNamesLeft {
+    position: absolute;
+    left: 572px;
+    top: 485px;
+    width: 268px;
+    height: 37px;
+    text-align: center;
+}
+
+#playerNamesRight {
+    position: absolute;
+    left: 1098px;
+    top: 515px;
+    width: 268px;
+    height: 37px;
+    text-align: center;
+}
+
+#schoolNameLeft {
+    position: absolute;
+    left: 10px;
+    top: 73px;
+    width: 246px;
+    height: 25px;
+    font-size: 10px;
+}
+
+#schoolNameRight {
+    position: absolute;
+    left: 1653px;
+    top: 71px;
+    width: 247px;
+    height: 25px;
+    font-size: 10px;
+    text-align: right;
 }
