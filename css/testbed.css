@@ -5,7 +5,8 @@
     position: absolute;
     left:240px;
     top: 20px;
-    background: radial-gradient(ellipse at center, rgba(211,211,211,1) 51%, rgba(153,153,153,1) 88%, rgba(0,0,0,1) 97%);
+    background: radial-gradient(
+        ellipse at center, rgba(211,211,211,1) 51%, rgba(153,153,153,1) 88%, rgba(0,0,0,1) 97%);
     
     background-size: 200% 100%;
     background-position: 0% 50%;
@@ -25,8 +26,9 @@
     border-bottom: medium solid black;
 }
 img{
-    width:75px;
+    width:200px;
+    top:-38px;
     position:absolute;
-    top:14px;
-    left: 940px;
+  
+    left: 860px;
 }
