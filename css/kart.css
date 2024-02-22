@@ -114,6 +114,24 @@
     background-color: black;
 }
 
+/* Home/Away Text */
+#homeText {
+    position: absolute;
+    left: 0px;
+    top: 16px;
+    width: 287px;
+    height: 31px;
+    text-align: left;
+}
+
+#awayText {
+    position: absolute;
+    left: 1833px;
+    top: 15px;
+    width: 287px;
+    height: 31px;
+}
+
 /* Away Score */
 #awayScore {
     position: absolute;
@@ -365,4 +383,18 @@
     left: 71px;
     width: 325px;
     height: 284px;
+}
+
+
+#playerNamesLeft {
+    position: absolute;
+    left: 572px;
+    top: 485px;
+    width: 268px;
+    height: 37px;
+    text-align: center;
+}
+
+#playerNamesRight {
+    
 }

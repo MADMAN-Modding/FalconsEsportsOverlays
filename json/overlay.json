@@ -4,8 +4,10 @@
     "winsLeft": "2",
     "winsRight": "1",
     "teamColorRight": "#5c51f0",
-    "overlay": "ssbu",
+    "overlay": "kart",
     "week": "1",
     "scoreLeft": "10",
-    "scoreRight": "20"
+    "scoreRight": "20",
+    "playerNamesLeft": "Mason & Alex",
+    "playerNamesRight": "Gavin & Aiden"
 }

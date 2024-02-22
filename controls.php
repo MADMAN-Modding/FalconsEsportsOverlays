@@ -51,13 +51,21 @@
     formMaker("number", "scoreRight", $jsonData["scoreRight"], "scoreRight", "");
 
     // Teams
-    echo "<h2 style=\"text-align: center\">Team Names</h2>";
+    echo "<h2 style=\"text-align: center;\">Team Names</h2>";
 
     // Makes the input with the value stored in the JSON file
     formMaker("text", "teamNameLeft", $jsonData["teamNameLeft"], "teamNameLeft", "");
 
     // Makes the input with the value stored in the JSON file
     formMaker("text", "teamNameRight", $jsonData["teamNameRight"], "teamNameRight", "");
+
+    // Player Names
+    echo "<h2 style=\"text-align: center;\">Player Names</h2>";
+    // Left
+    formMaker("text", "playerNamesLeft", $jsonData["playerNamesLeft"], "playerNamesLeft", "");
+
+    // Right
+    formMaker("text", "playerNamesRight", $jsonData["playerNamesRight"], "playerNamesRight", "");
 
     // Week
     echo "<h2 id=\"weekText\">Week</h2>";
