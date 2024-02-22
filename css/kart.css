@@ -396,5 +396,10 @@
 }
 
 #playerNamesRight {
-    
+    position: absolute;
+    left: 1098px;
+    top: 515px;
+    width: 268px;
+    height: 37px;
+    text-align: center;
 }
