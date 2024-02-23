@@ -1,34 +1,33 @@
 
+
 .scoreboardT{
-    width:75%;
+    width:1056px;
     height:30px;
-    position: absolute;
-    left:240px;
-    top: 20px;
-    background: radial-gradient(
-        ellipse at center, rgba(211,211,211,1) 51%, rgba(153,153,153,1) 88%, rgba(0,0,0,1) 97%);
-    
-    background-size: 200% 100%;
-    background-position: 0% 50%;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 25px;
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(153,153,153,1) 12%, rgba(222,222,222,1) 100%);
     border-left: medium solid black;
     border-right: medium solid black;
     border-bottom: medium solid black;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 .scoreboardB{
-    width:55%;
+    width:672px;
     height:30px;
-    position: absolute;
-    left:432px;
-    top: 53px;
-    background-color: #999999;
+    margin-left:auto;
+    margin-right:auto;
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(153,153,153,1) 12%, rgba(222,222,222,1) 100%);
     border-left: medium solid black;
     border-right: medium solid black;
     border-bottom: medium solid black;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 img{
     width:200px;
     top:-38px;
     position:absolute;
-  
     left: 860px;
 }
