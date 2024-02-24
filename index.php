@@ -51,10 +51,6 @@ $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
     <div id="weekNumberTrapezoid"></div>
     <div id="weekText">Week</div>
 
-    <!-- Temp Images -->
-    <img id="topTemp" src="images/KartTemp.jpg">
-    <img id="bottomTemp" src="images/KartTemp.jpg">
-
     <!--Top Names -->
     <div id="topNamesLeftTrapezoid"></div>
     <div id="topNamesRightRectangle"></div>

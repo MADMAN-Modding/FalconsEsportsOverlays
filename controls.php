@@ -25,14 +25,9 @@
     <?php
 
     $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
-    
+
     echo "<div class=\"form\">";
     echo "<form method=\"post\" action=\"controls.php\">";
-
-    function formMaker($type, $id, $value, $name, $text)
-    {
-        echo "<input type=\"$type\" id=\"$id\"value=\"$value\" name=\"$name\" required> $text";
-    }
 
     // Left win loops to make all the radio buttons
     echo "<h2>Left Wins</h2>";
@@ -67,11 +62,6 @@
     // Right
     formMaker("text", "playerNamesRight", $jsonData["playerNamesRight"], "playerNamesRight", "");
 
-    // School Names
-    echo "<h2 style=\"text-align: center;\">School Names</h2>";
-    formMaker("text", "schoolNameLeft", $jsonData["schoolNameLeft"], "schoolNameLeft", "");
-    formMaker("text", "schoolNameRight", $jsonData["schoolNameRight"], "schoolNameRight", "");
-
     // Week
     echo "<h2 id=\"weekText\">Week</h2>";
     formMaker("number", "week", $jsonData["week"], "teamNameLeft", "");
@@ -99,22 +89,8 @@
         }
 
         function jsonWrite() {
-
-            // Gets values for their respective side
-            let teamNameLeft = document.getElementById("teamNameLeft").value;
-            let teamNameRight = document.getElementById("teamNameRight").value;
-
-            // Took 2 hours but this gets the value across to the jsonWriter
-            let teamColorRight = document.getElementById("teamColorRight").value.replace("#", "!");
-
-            let week = document.getElementById("week").value;
-            let scoreLeft = document.getElementById("scoreLeft").value;
-            let scoreRight = document.getElementById("scoreRight").value;
-            let playerNamesLeft = document.getElementById("playerNamesLeft").value;
-            let playerNamesRight = document.getElementById("playerNamesRight").value;
-            let schoolNameLeft = document.getElementById("schoolNameLeft").value;
-            let schoolNameRight = document.getElementById("schoolNameRight").value;
-            
+            // // Took 2 hours but this gets the value across to the jsonWriter
+            // let teamColorRight = document.getElementById("teamColorRight").value.replace("#", "!");
 
             <?php
 
@@ -124,30 +100,36 @@
                 echo "radioButtonCheck(\"Right\", \"$i\"); ";
             }
 
+            letMaker("teamNameLeft", "");
+            letMaker("teamNameRight", "");
+            AJAXFormMaker("winsLeft");
+            AJAXFormMaker("winsRight");
+            letMaker("teamColorRight", ".replace('#', '!')");
+            letMaker("week", "");
+            letMaker("scoreLeft", "");
+            letMaker("scoreRight", "");
+            letMaker("playerNamesLeft", "");
+            letMaker("playerNamesRight", "");
+
+            function letMaker($value, $options) {
+                echo "let $value = document.getElementById('$value').value$options; ";
+
+                AJAXFormMaker("$value");
+            }
+
             function AJAXFormMaker($value)
             {
-
                 // Makes an object for the request
                 echo "var xmlhttp = new XMLHttpRequest(); ";
                 echo "xmlhttp.open(\"GET\", \"jsonWriter.php?$value=\" + $value, true); ";
                 echo "xmlhttp.send(); ";
             }
 
-            // Makes the forms for the teams
-            AJAXFormMaker("teamNameLeft");
-            AJAXFormMaker("teamNameRight");
-            AJAXFormMaker("winsLeft");
-            AJAXFormMaker("winsRight");
-            AJAXFormMaker("teamColorRight");
-            AJAXFormMaker("week");
-            AJAXFormMaker("scoreLeft");
-            AJAXFormMaker("scoreRight");
-            AJAXFormMaker("playerNamesLeft");
-            AJAXFormMaker("playerNamesRight");
-            AJAXFormMaker("schoolNameLeft");
-            AJAXFormMaker("schoolNameRight");
+            function formMaker($type, $id, $value, $name, $text)
+            {
+                echo "<input type=\"$type\" id=\"$id\" value=\"$value\" name=\"$name\" required> $text";
+            }
             ?>
-
         }
     </script>
     <p style="text-align: center;" onclick="jsonWrite()" class="submit">Submit</p>

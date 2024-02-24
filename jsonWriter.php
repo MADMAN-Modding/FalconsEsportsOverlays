@@ -4,7 +4,7 @@
 $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
 
 // Values to retrieve from the JSON
-$valueArrayNames = array("teamNameLeft", "teamNameRight", "winsLeft", "winsRight", "teamColorRight", "overlay", "week", "scoreLeft", "scoreRight", "playerNamesLeft", "playerNamesRight", "schoolNameLeft", "schoolNameRight");
+$valueArrayNames = array("teamNameLeft", "teamNameRight", "winsLeft", "winsRight", "teamColorRight", "overlay", "week", "scoreLeft", "scoreRight", "playerNamesLeft", "playerNamesRight");
 
 for ($i = 0; $i < count($valueArrayNames); $i++) {
     if (isset($_GET["$valueArrayNames[$i]"])) {
@@ -32,9 +32,7 @@ $dataArray = [
     "scoreLeft" => "$valueArray[7]",
     "scoreRight" => "$valueArray[8]",
     "playerNamesLeft" => "$valueArray[9]",
-    "playerNamesRight" => "$valueArray[10]",
-    "schoolNameLeft" => "$valueArray[11]",
-    "schoolNameRight" => "$valueArray[12]"
+    "playerNamesRight" => "$valueArray[10]"
 ];
 
 // Encode the JSON data
