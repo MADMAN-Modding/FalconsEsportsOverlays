@@ -31,3 +31,12 @@ img{
     position:absolute;
     left: 860px;
 }
+.scoretrackerL{
+    {
+        width: 50px;
+        height: 50px;
+        transform: skew(40deg);
+   
+
+    }
+}
