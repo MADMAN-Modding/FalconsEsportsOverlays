@@ -1,15 +1,13 @@
 {
-    "teamNameLeft": "Ketchup",
-    "teamNameRight": "Shamrocks",
+    "teamNameLeft": "Divine Child High School",
+    "teamNameRight": "Catholic Central",
     "winsLeft": "2",
     "winsRight": "1",
-    "teamColorRight": "#5c51f0",
+    "teamColorRight": "#425cd9",
     "overlay": "kart",
     "week": "1",
-    "scoreLeft": "10",
-    "scoreRight": "20",
-    "playerNamesLeft": "Mason and Alex",
-    "playerNamesRight": "Gavin and Aiden",
-    "schoolNameLeft": "Divine Child High School",
-    "schoolNameRight": "Catholic Central"
+    "scoreLeft": "130",
+    "scoreRight": "103",
+    "playerNamesLeft": "MADMAN-Modding, AssistedComet63",
+    "playerNamesRight": "FillerMcDuck, SillyMaster"
 }

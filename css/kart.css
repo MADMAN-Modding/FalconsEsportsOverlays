@@ -389,19 +389,21 @@
 #playerNamesLeft {
     position: absolute;
     left: 572px;
-    top: 485px;
+    top: 505px;
     width: 268px;
     height: 37px;
     text-align: center;
+    font-size: 15px;
 }
 
 #playerNamesRight {
     position: absolute;
     left: 1098px;
-    top: 515px;
+    top: 533px;
     width: 268px;
     height: 37px;
     text-align: center;
+    font-size: 15px;
 }
 
 #schoolNameLeft {
