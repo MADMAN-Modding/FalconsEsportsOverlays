@@ -13,6 +13,7 @@ $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
     <link href="css/index.css" type="text/css" rel="stylesheet">
     <?php
     echo "<link href=\"css/" . strtolower($jsonData["overlay"]) . ".css\" type=\"text/css\" rel=\"stylesheet\">";
+    echo  "<script src=\"js/" . strtolower($jsonData["overlay"]) . ".js\"></script>"
     ?>
 </head>
 
@@ -69,6 +70,17 @@ $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
     <div id="rightRoundsWon2"></div>
 
     <img src="images/Esports-Logo.png" id="falconLogo">
+    <div class="scoreboardT"></div>
+    <div class="scoreboardB"></div>
+    <div class="scoretrackerL"></div>
+    <div id="rightScore1"></div>
+    <div id="rightScore2"></div>
+    <div id="leftScore1"></div>
+    <div id="leftScore2"></div>
+    <div id="namePlateLeftSlope"></div>
+    <div id="namePlateLeft"></div>
+    <div id="namePlateRightSlope"></div>
+    <div id="namePlateRight"></div>
 
     <?php
     // Echos the json data
