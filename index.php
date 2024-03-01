@@ -68,7 +68,7 @@ $jsonData = json_decode(file_get_contents("json/overlay.json"), true);
     <div id="rightRoundsWon"></div>
     <div id="rightRoundsWon1"></div>
     <div id="rightRoundsWon2"></div>
-
+<!--Smash Specific html-->
     <img src="images/Esports-Logo.png" id="falconLogo">
     <div class="scoreboardT"></div>
     <div class="scoreboardB"></div>
