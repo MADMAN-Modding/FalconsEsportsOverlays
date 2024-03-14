@@ -42,6 +42,15 @@ setInterval(function () {
                 xhr.open('GET', 'fileHandler.php?overlay=kart');
             }
         })
+    href = window.location.href;
+    href.replace("localhost:8080", "");
+
+
+    if(href = jsonData["overlay"]) {
+        return;
+    } else {
+        window.location.href = "overlay/" + jsonData["overlay"] + ".php"
+    }
 }, 3000)
 // Send the request 
 xhr.send();
