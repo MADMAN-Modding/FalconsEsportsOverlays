@@ -20,6 +20,7 @@
     <center>
         <img src="images/SSBU.png" class="overlay" id="ssbu" onclick="overlaySender('ssbu')">
         <img src="images/Kart.png" class="overlay" id="kart" onclick="overlaySender('kart')">
+        <img src="images/RL.png" class="overlay" id="rl" onclick="overlaySender('rl')">
     </center>
     <!-- JSON Data Retriever -->
     <?php
