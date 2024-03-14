@@ -8,7 +8,6 @@ $jsonData = json_decode(file_get_contents("../json/overlay.json"), true);
     <title>Kart</title>
     <link href="../css/kart.css" rel="stylesheet" type="text/css">
     <link href="../css/index.css" rel="stylesheet" type="text/css">
-    <script src="../js/index.js"></script>
 </head>
 
 <body>
@@ -70,7 +69,7 @@ $jsonData = json_decode(file_get_contents("../json/overlay.json"), true);
     }
     ?>
 
-    <script src="js/index.js" type="module"></script>
+    <script src="../js/index.js" type="module"></script>
     <script id="js"></script>
 </body>
 

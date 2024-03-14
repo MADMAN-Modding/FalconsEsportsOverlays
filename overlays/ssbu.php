@@ -25,7 +25,7 @@ $jsonData = json_decode(file_get_contents("../json/overlay.json"), true);
     <div id="namePlateLeft"></div>
     <div id="namePlateRightSlope"></div>
     <div id="namePlateRight"></div>
-    <img src="images/Esports-Logo.png" id="falconLogo">
+    <img src="../images/Esports-Logo.png" id="falconLogo">
 
     <?php
     // Echos the json data
