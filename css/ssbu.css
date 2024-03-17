@@ -130,10 +130,3 @@ img {
     /*this should be the other teams color*/
     background-color: blueviolet;
 }
-
-#homeText,
-#awayText,
-#awayScore,
-#awayScoreText {
-    display: none;
-}

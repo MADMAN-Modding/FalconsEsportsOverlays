@@ -6,9 +6,7 @@ body {
     background-color: transparent;
     overflow: hidden;
     color: white;
-    width: 1920px;
     margin: auto;
-    height: 1080px;
 }
 
 #logo {
@@ -96,3 +94,7 @@ h1 {
     background-image: linear-gradient(to bottom, rgb(216, 216, 216), gray);
 }
 
+#overlayiFrame {
+    width: 1920px;
+    height: 1080px;
+}

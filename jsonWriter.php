@@ -29,6 +29,3 @@ $dataArray = [
 
 // Write the JSON data to the file
 fwrite(fopen("json/overlay.json", "w"), json_encode($dataArray, JSON_PRETTY_PRINT));
-
-?>
-</body>
