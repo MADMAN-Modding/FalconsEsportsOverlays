@@ -8,7 +8,6 @@ $jsonData = json_decode(file_get_contents("../json/overlay.json"), true);
     <title>SSBU</title>
     <link href="../css/ssbu.css" rel="stylesheet" type="text/css">
     <link href="../css/index.css" rel="stylesheet" type="text/css">
-    <script src="../js/index.js"></script>
 </head>
 
 <body>
@@ -33,7 +32,6 @@ $jsonData = json_decode(file_get_contents("../json/overlay.json"), true);
         echo "<h1 id=\"$jsonDataName\">$overlayEntryValue</h1>";
     }
     ?>
-    <script id="js"></script>
 </body>
 
 </html>
