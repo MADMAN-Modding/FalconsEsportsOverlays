@@ -1,0 +1,1 @@
+Make sure you are in the app directory when building the program
