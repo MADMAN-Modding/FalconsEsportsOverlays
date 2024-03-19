@@ -130,3 +130,48 @@ img {
     /*this should be the other teams color*/
     background-color: blueviolet;
 }
+
+#teamNameLeft,
+#teamNameRight {
+    position: absolute;
+    width: 431px;
+    height: 28px;
+    text-align: center;
+    top: 10px;
+    font-size: 25px;
+}
+
+#teamNameLeft {
+    left: 432px;
+}
+
+#teamNameRight {
+    right: 432px;
+}
+
+/* Hidden stuff */
+#scoreLeft,
+#scoreRight,
+#week {
+    display: none;
+}
+
+#playerNamesLeft {
+    width: 173px;
+    height: 30px;
+    position: absolute;
+    bottom: 35px;
+    left: 540px;
+    font-size: 17px;
+    text-align: center;
+}
+
+#playerNamesRight {
+    width: 173px;
+    height: 30px;
+    position: absolute;
+    bottom: 35px;
+    right: 470px;
+    font-size: 17px;
+    text-align: center;
+}
