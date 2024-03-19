@@ -32,6 +32,7 @@ $jsonData = json_decode(file_get_contents("../json/overlay.json"), true);
         echo "<h1 id=\"$jsonDataName\">$overlayEntryValue</h1>";
     }
     ?>
+
     <script src="../js/ssbu.js" type="module"></script>
 </body>
 

@@ -71,7 +71,6 @@ $jsonData = json_decode(file_get_contents("../json/overlay.json"), true);
 
     <!-- <script src="../js/index.js" type="module"></script> -->
     <script src="../js/kart.js" type="module"></script>
-    <script id="js"></script>
 </body>
 
 </html>
