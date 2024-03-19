@@ -1,7 +1,5 @@
-let fetchCompleted = true;
-
+let overlayiFrame;
 setInterval(function () {
-    if (fetchCompleted) {
         fetch('../json/overlay.json')
             .then((response) => response.json())
             .then((jsonData) => {
@@ -13,9 +11,8 @@ setInterval(function () {
                 }
 
                 // Loads the correct overlay
-                overlayiFrame.src = "overlays/" + jsonData["overlay"] + ".php";
+                overlayiFrame.src = "http://localhost:8080/overlays/" + jsonData["overlay"] + ".php";
 
                 document.title = jsonData["overlay"].charAt(0).toUpperCase() + jsonData["overlay"].slice(1)
             })
-    }
 }, 1500)
