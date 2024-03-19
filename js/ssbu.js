@@ -22,6 +22,9 @@ setInterval(function () {
             document.getElementById("playerNamesLeft").innerHTML = jsonData["playerNamesLeft"];
             document.getElementById("playerNamesRight").innerHTML = jsonData["playerNamesRight"];
             document.getElementById("scoreLeft").innerHTML = jsonData["scoreLeft"];
-            document.getElementById("scoreRight").innerHTML = jsonData["scoreRight"]
+            document.getElementById("scoreRight").innerHTML = jsonData["scoreRight"];
+
+            document.getElementById("namePlateRight").style.backgroundColor = jsonData["teamColorRight"];
+            document.getElementById("namePlateRightSlope").style.backgroundColor = jsonData["teamColorRight"];
         });
 }, 3000);
