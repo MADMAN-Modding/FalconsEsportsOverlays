@@ -1,4 +1,4 @@
-import 'package:falcons_esports_controller/app.dart';
+import 'package:falcons_esports_controller/falcons_esports_controller.dart';
 import 'package:test/test.dart';
 
 void main() {

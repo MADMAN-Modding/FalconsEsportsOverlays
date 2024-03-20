@@ -1,12 +1,12 @@
 import 'dart:io';
+import 'package:rw_git/rw_git.dart';
 
-class gitDownloader {
-  gitDownloader() {
-    Process.run('git',
-        ['clone https://github.com/HeinzEric/FalconsEsportsOverlays.git']);
+class GitDownloader {
+  repoCloner() {
+    RwGit rwGit = RwGit();
+    rwGit.clone(
+        "testing/", "https://github.com/HeinzEric/FalconsEsportsOverlays.git");
   }
-
-  download() {}
 
   update() {}
 }
