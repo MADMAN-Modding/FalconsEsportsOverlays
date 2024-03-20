@@ -7,12 +7,12 @@ setInterval(function () {
 
             // Update the left side rounds won
              for (let i = 1; i <= 2; i++) {
-                 document.getElementById(`leftRoundsWon${i}`).style.backgroundColor = winsLeft >= i ? "white" : "black";
+                 document.getElementById(`leftRoundsWon${i}`).style.backgroundColor = winsLeft >= i ? "#BE0F34" : "black";
              }
 
         // Update the right side rounds won
              for (let i = 1; i <= 2; i++) {
-             document.getElementById(`rightRoundsWon${i}`).style.backgroundColor = winsRight >= i ? "white" : "black";
+             document.getElementById(`rightRoundsWon${i}`).style.backgroundColor = winsRight >= i ? jsonData["teamColorRight"] : "black";
         }
 
             // Updates the Team Names and week
