@@ -44,27 +44,27 @@ img {
 
 }
 
-#rightScore1 {
+#rightRoundsWon1 {
     width: 35px;
     height: 20px;
     position: absolute;
     right: 675px;
     top: 62px;
-    background-color: red;
+    background-color: black;
     clip-path: polygon(50% 0, 100% 0%, 50% 100%, 0% 100%);
 }
 
-#rightScore2 {
+#rightRoundsWon2  {
     width: 35px;
     height: 20px;
     position: absolute;
     right: 650px;
     top: 62px;
-    background-color: green;
+    background-color: black;
     clip-path: polygon(50% 0, 100% 0%, 50% 100%, 0% 100%);
 }
 
-#leftScore1 {
+#leftRoundsWon1 {
     width: 35px;
     height: 20px;
     position: absolute;
@@ -72,17 +72,17 @@ img {
     top: 62px;
     left: 675px;
     top: 62px;
-    background-color: red;
+    background-color: black;
     clip-path: polygon(0 0, 50% 0, 100% 100%, 50% 100%);
 }
 
-#leftScore2 {
+#leftRoundsWon2 {
     width: 35px;
     height: 20px;
     position: absolute;
     left: 650px;
     top: 62px;
-    background-color: blue;
+    background-color: black;
     clip-path: polygon(0 0, 50% 0, 100% 100%, 50% 100%);
 }
 
@@ -93,7 +93,7 @@ img {
     bottom: 50px;
     left: 475px;
     /*this should be the other teams color*/
-    background-color: blueviolet;
+    background-color: #BE0F34;
     clip-path: polygon(100% 0, 0% 100%, 100% 100%);
 
 }
@@ -106,7 +106,7 @@ img {
     left: 540px;
     /*this should be the other teams color
     need to update school name here and */
-    background-color: blueviolet;
+    background-color: #BE0F34;
 }
 
 #namePlateRightSlope {
@@ -116,7 +116,7 @@ img {
     bottom: 50px;
     right: 645px;
     /*this should be the other teams color*/
-    background-color: blueviolet;
+    background-color: grey;
     clip-path: polygon(100% 0, 0% 100%, 100% 100%);
 
 }
@@ -128,7 +128,7 @@ img {
     bottom: 50px;
     right: 468px;
     /*this should be the other teams color*/
-    background-color: blueviolet;
+    background-color: grey;
 }
 
 #teamNameLeft,
