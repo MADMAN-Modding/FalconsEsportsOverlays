@@ -1,5 +1,5 @@
-import 'JsonReader.dart';
-import 'GitDownloader.dart';
+import 'jsonReader.dart';
+import 'gitDownloader.dart';
 
 void main() {
   var jsonReader = JsonReader();
@@ -8,6 +8,6 @@ void main() {
   // Now you can work with jsonData, which will be a Map
   print(jsonReader.fullOutput());
 
-  gitDownloader.repoCloner();
+  //gitDownloader.repoCloner();
   gitDownloader.update();
 }
