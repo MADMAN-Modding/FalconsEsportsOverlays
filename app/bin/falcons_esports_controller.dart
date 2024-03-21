@@ -1,5 +1,3 @@
-import 'package:falcons_esports_controller/falcons_esports_controller.dart'
-    as app;
 import 'JsonReader.dart';
 import 'GitDownloader.dart';
 

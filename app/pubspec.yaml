@@ -8,8 +8,8 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
+  git: ^2.2.1
   rw_git: ^1.0.3
-  simple_git: ^0.1.6
   # path: ^1.8.0
 
 dev_dependencies:
