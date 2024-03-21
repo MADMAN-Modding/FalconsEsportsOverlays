@@ -7,7 +7,7 @@ class GitDownloader {
   
   void repoCloner() {
     rwGit.clone(
-        "testing/", "https://github.com/HeinzEric/FalconsEsportsOverlays.git");
+        "testing/FalconsEsportsOverlay", "https://github.com/HeinzEric/FalconsEsportsOverlays.git");
   }
 
   void update() {
