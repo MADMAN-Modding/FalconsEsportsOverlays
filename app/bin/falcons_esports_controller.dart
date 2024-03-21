@@ -1,7 +1,7 @@
 import 'package:falcons_esports_controller/falcons_esports_controller.dart'
     as app;
-import 'jsonReader.dart';
-import 'gitDownloader.dart';
+import 'JsonReader.dart';
+import 'GitDownloader.dart';
 
 void main() {
   var jsonReader = JsonReader();
@@ -11,4 +11,5 @@ void main() {
   print(jsonReader.fullOutput());
 
   gitDownloader.repoCloner();
+  gitDownloader.update();
 }
