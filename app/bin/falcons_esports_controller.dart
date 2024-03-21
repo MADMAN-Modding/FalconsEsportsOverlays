@@ -1,5 +1,5 @@
-import 'JsonReader.dart';
-import 'GitDownloader.dart';
+import 'jsonReader.dart';
+import 'gitDownloader.dart';
 
 void main() {
   var jsonReader = JsonReader();
