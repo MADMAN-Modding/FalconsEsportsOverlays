@@ -3,7 +3,6 @@ import 'package:rw_git/rw_git.dart';
 
 class GitDownloader {
   RwGit rwGit = RwGit();
-  var dir = Directory("testing/");
 
   void repoCloner() {
     rwGit.clone(
@@ -11,7 +10,6 @@ class GitDownloader {
   }
 
   void update() {
-    // Directory.current = dir.path;
     Process.run('git', ['pull']).then((ProcessResult resutls) {
       print(resutls.stdout);
     });

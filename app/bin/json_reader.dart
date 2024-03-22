@@ -5,7 +5,7 @@ class JsonReader {
   var jsonData = {};
 
   JsonReader() {
-    var file = File('../json/overlay.json');
+    var file = File('json/overlay.json');
 
     // Read the JSON file as a string
     var jsonString = file.readAsStringSync();
