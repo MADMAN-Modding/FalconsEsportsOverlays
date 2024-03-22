@@ -160,9 +160,9 @@ img {
     width: 173px;
     height: 30px;
     position: absolute;
-    bottom: 35px;
+    bottom: 33px;
     left: 540px;
-    font-size: 17px;
+    font-size: 30px;
     text-align: center;
 }
 
@@ -170,8 +170,8 @@ img {
     width: 173px;
     height: 30px;
     position: absolute;
-    bottom: 35px;
+    bottom: 33px;
     right: 470px;
-    font-size: 17px;
+    font-size: 30px;
     text-align: center;
 }
