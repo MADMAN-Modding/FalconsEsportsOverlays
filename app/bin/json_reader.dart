@@ -3,9 +3,10 @@ import 'dart:io';
 
 class JsonReader {
   var jsonData = {};
+  var file;
 
   JsonReader() {
-    var file = File('json/overlay.json');
+    file = File('json/overlay.json');
 
     // Read the JSON file as a string
     var jsonString = file.readAsStringSync();
@@ -16,5 +17,11 @@ class JsonReader {
 
   Map fullOutput() {
     return jsonData;
+  }
+
+  void write() {
+    var fileWrite = file.openWrite();
+
+    fileWrite.write('{test}');
   }
 }
