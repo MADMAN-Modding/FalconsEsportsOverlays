@@ -6,9 +6,9 @@ void main() {
   var gitDownloader = GitDownloader();
 
   // Now you can work with jsonData, which will be a Map
-  print(jsonReader.fullOutput());
 
   gitDownloader.repoCloner();
   gitDownloader.update();
   jsonReader.write();
+  print(jsonReader.fullOutput());
 }

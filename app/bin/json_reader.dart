@@ -22,6 +22,6 @@ class JsonReader {
   void write() {
     var fileWrite = file.openWrite();
 
-    fileWrite.write('{test}');
+    fileWrite.write('{"test":"test"}');
   }
 }
