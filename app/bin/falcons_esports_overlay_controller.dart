@@ -7,6 +7,7 @@ void main() {
 
   // Now you can work with jsonData, which will be a Map
 
+  // Calls methods from their respective classes
   gitDownloader.repoCloner();
   gitDownloader.update();
   jsonReader.write();
