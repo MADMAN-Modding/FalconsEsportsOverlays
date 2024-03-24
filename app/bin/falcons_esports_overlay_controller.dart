@@ -11,5 +11,5 @@ void main() {
   gitDownloader.repoCloner();
   gitDownloader.update();
   jsonReader.write();
-  print(jsonReader.fullOutput());
+  // print(jsonReader.fullOutput());
 }
