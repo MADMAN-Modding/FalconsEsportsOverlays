@@ -1,4 +1,6 @@
 import 'package:english_words/english_words.dart';
+import 'package:falcons_esports_overlays_controller/git_downloader.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'Namer App',
+        title: 'Falcons Esports Overlay Controller',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
@@ -61,10 +63,10 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = GeneratorPage();
+        page = ConfigPage();
         break;
       case 1:
-        page = FavoritesPage();
+        page = GitPage();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -83,8 +85,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: Text('Home'),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(Icons.favorite),
-                    label: Text('Favorites'),
+                    icon: Icon(Icons.download),
+                    label: Text('Download'),
                   ),
                 ],
                 selectedIndex: selectedIndex,
@@ -108,43 +110,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class GeneratorPage extends StatelessWidget {
+class ConfigPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var pair = appState.current;
-
-    IconData icon;
-    if (appState.favorites.contains(pair)) {
-      icon = Icons.favorite;
-    } else {
-      icon = Icons.favorite_border;
-    }
-
-    return Center(
+    return const Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BigCard(pair: pair),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  appState.toggleFavorite();
-                },
-                icon: Icon(icon),
-                label: const Text('Like'),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter a search term',
               ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getNext();
-                },
-                child: const Text('Next'),
-              ),
-            ],
+            ),
           ),
         ],
       ),
@@ -152,30 +132,41 @@ class GeneratorPage extends StatelessWidget {
   }
 }
 
-class FavoritesPage extends StatelessWidget {
+class GitPage extends StatelessWidget {
+  String? path;
+
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
-    if (appState.favorites.isEmpty) {
-      return const Center(
-        child: Text('Go pick some favorites!'),
-      );
-    }
-
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text('You have '
-              '${appState.favorites.length} favorites'),
-        ),
-        for (var fav in appState.favorites)
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text(fav.asLowerCase),
+    var git = GitDownloader();
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: ElevatedButton(
+                onPressed: () async {
+                  path = await FilePicker.platform.getDirectoryPath();
+                },
+                child: Text("Repo Location")),
           ),
-      ],
+          Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    if (path != null) {
+                      git.repoCloner(path);
+                    }
+                  },
+                  child: const Text('Clone Repository'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
