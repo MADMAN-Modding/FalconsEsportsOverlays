@@ -1,7 +1,10 @@
 import 'package:english_words/english_words.dart';
-import 'package:falcons_esports_overlays_controller/git_downloader.dart';
+import 'package:falcons_esports_overlays_controller/git_handler.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -68,6 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         page = GitPage();
         break;
+      case 2:
+        page = Placeholder();
+        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -78,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             SafeArea(
               child: NavigationRail(
-                extended: constraints.maxWidth >= 600,
+                extended: constraints.maxWidth >= 900,
                 destinations: const [
                   NavigationRailDestination(
                     icon: Icon(Icons.home),
@@ -86,8 +92,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   NavigationRailDestination(
                     icon: Icon(Icons.download),
-                    label: Text('Download'),
+                    label: Text('Download & Update Overlay'),
                   ),
+                  NavigationRailDestination(
+                      icon: Icon(Icons.edit), label: Text('Overlay Data'))
                 ],
                 selectedIndex: selectedIndex,
                 onDestinationSelected: (value) {
@@ -117,14 +125,16 @@ class ConfigPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter a search term',
-              ),
+          Text(
+            'Welcome to the Falcons Esports Overlay Controller!\n',
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
             ),
+          ),
+          Text(
+            'Written in Dart with the Flutter library',
+            style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
           ),
         ],
       ),
@@ -143,12 +153,30 @@ class GitPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(16),
-            child: ElevatedButton(
-                onPressed: () async {
-                  path = await FilePicker.platform.getDirectoryPath();
-                },
-                child: Text("Repo Location")),
+            padding: const EdgeInsets.all(6),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: TextButton(
+                    child: Icon(Icons.folder),
+                    onPressed: () async {
+                      path = await FilePicker.platform.getDirectoryPath();
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  width: 400,
+                  child: TextField(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "Directory Path"),
+                  ),
+                ),
+              ],
+            ),
           ),
           Center(
             child: Row(

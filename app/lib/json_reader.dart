@@ -25,4 +25,8 @@ class JsonReader {
 
     fileWrite.write('{"test":"test"}');
   }
+
+  String read(String key) {
+    return jsonData[key];
+  }
 }

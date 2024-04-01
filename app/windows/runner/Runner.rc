@@ -95,7 +95,7 @@ BEGIN
             VALUE "InternalName", "falcons_esports_overlays_controller" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "falcons_esports_overlays_controller.exe" "\0"
-            VALUE "ProductName", "falcons_esports_overlays_controller" "\0"
+            VALUE "ProductName", "Falcons Esports Overlays Controller" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
