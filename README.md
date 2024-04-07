@@ -16,19 +16,19 @@
 
 <p>Open the system enviornment variables by typing environmental into the Windows searchbar and pressing enter, it should open the correct menu.</p>
 
-![An image of searching for enviornmental variables settings](https://github.com/MADMAN-Modding/EPWF/blob/main/README%20Stuff/environmentalVariables_Step1.png)
+![An image of searching for enviornmental variables settings](https://github.com/MADMAN-Modding/PHP-Web-EmulatorJS/blob/main/README%20Stuff/environmentalVariables_Step1.png)
 
 <p>Now click on the "Environmental Variables" button in the bottom right of the menu.</p>
 
-![Environmental variables step2](https://github.com/MADMAN-Modding/EPWF/blob/main/README%20Stuff/environmentalVariables_Step2.png)
+![Environmental variables step2](https://github.com/MADMAN-Modding/PHP-Web-EmulatorJS/blob/main/README%20Stuff/environmentalVariables_Step2.png)
 
 <p>We're almost done with this part, now select PATH and press edit</p>
 
-![An image opening the environmental variables configuration](https://github.com/MADMAN-Modding/EPWF/blob/main/README%20Stuff/environmentalVariables_Step3.png)
+![An image opening the environmental variables configuration](https://github.com/MADMAN-Modding/PHP-Web-EmulatorJS/blob/main/README%20Stuff/environmentalVariables_Step3.png)
 
 <p>Now just press new and type the path of the folder you are keeping the php files, if there are space than surround the path with quotes.</p>
 
-![A image of adding a environmental variable](https://github.com/MADMAN-Modding/EPWF/blob/main/README%20Stuff/environmentalVariables_Step4.png)
+![A image of adding a environmental variable](https://github.com/MADMAN-Modding/PHP-Web-EmulatorJS/blob/main/README%20Stuff/environmentalVariables_Step4.png)
 
 <p>Now you should be all set to continue on with setup.</p>
 
@@ -64,7 +64,7 @@
 
 <p>Look for the line that says ipv4 and copy the ip from there, if it doesn't look the example I supplied that's ok. In this test virtual machine the ip I would use is 10.0.0.120</p>
 
-![Ipconfig output image](https://github.com/MADMAN-Modding/EPWF/blob/main/README%20Stuff/ipconfig.png)
+![Ipconfig output image](https://github.com/MADMAN-Modding/PHP-Web-EmulatorJS/blob/main/README%20Stuff/ipconfig.png)
 
 <p>If you have added php to the PATH run the first command, if you chose to not add PHP to the PATH than run the second command. (You can replace the ip-address with localhost if you choose but it will only work on that machine)</p>
 
