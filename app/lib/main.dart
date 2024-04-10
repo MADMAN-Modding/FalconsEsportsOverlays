@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 // Pages
 import 'pages/git.dart';
 import 'pages/home.dart';
+import 'pages/php.dart';
 
 void main() {
   runApp(const MyApp());
@@ -75,6 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case 2:
         page = const Placeholder();
         break;
+      case 3:
+        page = const PHPPage();
+        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -113,6 +117,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       label: Text('Overlay Data'),
                       selectedIcon: Icon(
                         Icons.edit,
+                        color: Colors.white,
+                      )),
+                  NavigationRailDestination(
+                      icon: Icon(Icons.php),
+                      label: Text("PHP Server"),
+                      selectedIcon: Icon(
+                        Icons.php,
                         color: Colors.white,
                       ))
                 ],

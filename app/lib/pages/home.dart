@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Welcome to the Falcons Esports Overlay Controller!',
+            'Welcome to the Falcons Esports Overlays Controller!',
             style: TextStyle(
                 fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
           ),

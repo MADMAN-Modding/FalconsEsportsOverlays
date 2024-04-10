@@ -40,7 +40,6 @@ dependencies:
   provider: ^6.1.2
   file_picker: ^8.0.0+1
   flutter_launcher_icons: "^0.13.1"
-  windows_notification: ^1.0.0
   flutter_local_notifications: ^5.0.0+1
   flutter_popup_card: ^0.0.5
 

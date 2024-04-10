@@ -453,14 +453,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
-  windows_notification:
-    dependency: "direct main"
-    description:
-      name: windows_notification
-      sha256: "1eb6f69f0d88ddd9b97c7264440a870acca0bfd8a983b684a6d17e1695ae7b49"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   xml:
     dependency: transitive
     description:
