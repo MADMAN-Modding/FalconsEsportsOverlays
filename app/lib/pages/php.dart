@@ -18,23 +18,33 @@ class _PHPPage extends State<PHPPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  php.startServer();
-                },
-                child: const Text("Start PHP Server")),
-            ElevatedButton(
-                onPressed: () {
-                  php.stopServer();
-                },
-                child: Text("Stop PHP Server"))
-          ],
-        )
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      php.startServer();
+                    },
+                    child: const Text("Start PHP Server")),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      php.stopServer();
+                    },
+                    child: Text("Stop PHP Server")),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }
