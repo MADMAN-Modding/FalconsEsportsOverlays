@@ -1,7 +1,5 @@
 import 'package:falcons_esports_overlays_controller/php_server_handler.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_popup_card/flutter_popup_card.dart';
 
 class PHPPage extends StatefulWidget {
   const PHPPage({super.key});

@@ -11,7 +11,7 @@ class PHPServerHandler {
     if(Platform.isLinux) {
       Process.run('pkill',['php']);
     } else if(Platform.isWindows) {
-      Process.run('taskkill', ['/IM', 'php']);
+      Process.run('taskkill', ['/IM', 'php', '/F']);
     }
   }
 }

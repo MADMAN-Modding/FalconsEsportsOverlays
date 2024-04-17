@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter_popup_card/flutter_popup_card.dart';
 import 'package:rw_git/rw_git.dart';
 
 class GitDownloader {
