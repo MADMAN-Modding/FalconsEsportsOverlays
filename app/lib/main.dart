@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Pages
+import 'pages/config.dart';
 import 'pages/git.dart';
 import 'pages/home.dart';
 import 'pages/php.dart';
@@ -74,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = const GitPage();
         break;
       case 2:
-        page = const Placeholder();
+        page = const ConfigPage();
         break;
       case 3:
         page = const PHPPage();
