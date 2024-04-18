@@ -42,7 +42,6 @@ dependencies:
   flutter_launcher_icons: "^0.13.1"
   flutter_local_notifications: ^5.0.0+1
   flutter_popup_card: ^0.0.5
-  webview_flutter: ^3.0.4
 
 dev_dependencies:
   flutter_test:

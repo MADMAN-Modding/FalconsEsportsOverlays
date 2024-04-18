@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-class JsonReader {
+class JSONHandler {
   var jsonData = {};
   var file;
 
-  JsonReader() {
+  JSONHandler() {
     // Gets the json file
     file = File('json/overlay.json');
 
@@ -20,13 +20,20 @@ class JsonReader {
     return jsonData;
   }
 
-  void write() {
+  void write(String key, String data) {
     var fileWrite = file.openWrite();
 
-    fileWrite.write('{"test":"test"}');
+    fileWrite.write('{"$key":"$data"}');
   }
 
   String read(String key) {
     return jsonData[key];
   }
+
+  // String getKeys() {
+  //   for (var key in file.openRead()) {
+  //     return key;
+  //   }
+
+  // }
 }
