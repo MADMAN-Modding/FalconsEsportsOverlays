@@ -7,6 +7,7 @@ import 'pages/controls.dart';
 import 'pages/git.dart';
 import 'pages/home.dart';
 import 'pages/php.dart';
+import 'pages/config.dart';
 
 void main() {
   runApp(const MyApp());
@@ -64,21 +65,25 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
 
+  // Page selection switch statement
   @override
   Widget build(BuildContext context) {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = const HomePage();
+        page = HomePage();
         break;
       case 1:
-        page = const GitPage();
+        page = GitPage();
         break;
       case 2:
-        page = const ControlsPage();
+        page = ControlsPage();
         break;
       case 3:
-        page = const PHPPage();
+        page = PHPPage();
+        break;
+      case 4:
+        page = ConfigPage();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -126,7 +131,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       selectedIcon: Icon(
                         Icons.php,
                         color: Colors.white,
-                      ))
+                      )),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.settings),
+                    label: Text("Config"),
+                    selectedIcon: Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                  ))
                 ],
                 selectedIndex: selectedIndex,
                 onDestinationSelected: (value) {
@@ -149,60 +161,3 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class BigCard extends StatelessWidget {
-  const BigCard({
-    super.key,
-    required this.pair,
-  });
-
-  final WordPair pair;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    final style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onPrimary,
-    );
-    return Card(
-      color: theme.colorScheme.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Text(
-          "${pair.first} ${pair.second}",
-          style: style,
-        ),
-      ),
-    );
-  }
-}
-
-// Define a custom Form widget.
-class MyCustomForm extends StatefulWidget {
-  const MyCustomForm({super.key});
-
-  @override
-  State<MyCustomForm> createState() => _MyCustomFormState();
-}
-
-// Define a corresponding State class.
-// This class holds the data related to the Form.
-class _MyCustomFormState extends State<MyCustomForm> {
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
-  final myController = TextEditingController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    myController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: myController,
-    );
-  }
-}

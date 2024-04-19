@@ -2,6 +2,8 @@ app/testing/*
 json/*
 app/build/*
 
+config.json
+
 # Miscellaneous
 app/*.class
 app/*.log

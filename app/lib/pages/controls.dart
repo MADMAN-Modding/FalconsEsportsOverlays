@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:falcons_esports_overlays_controller/json_handler.dart';
+import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 
 class ControlsPage extends StatefulWidget {
   const ControlsPage({super.key});
@@ -22,8 +22,8 @@ class _ControlsPage extends State<ControlsPage> {
       children: [Row(
         children: [
           ElevatedButton(onPressed: () {
-            jsonHandler.read("overlay");
-          }, child: Text("Update Data")),
+            jsonHandler.readOverlay("overlay");
+          }, child: const Text("Update Values")),
                           SizedBox(
                   width: 400,
                   child: TextField(

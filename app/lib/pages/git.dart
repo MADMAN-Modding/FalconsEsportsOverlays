@@ -1,4 +1,5 @@
-import 'package:falcons_esports_overlays_controller/git_handler.dart';
+import 'package:falcons_esports_overlays_controller/handlers/git_handler.dart';
+import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart' as jsonHandler;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_popup_card/flutter_popup_card.dart';
@@ -11,12 +12,19 @@ class GitPage extends StatefulWidget {
 }
 
 class _GitPage extends State<GitPage> {
-  String chosenPath = "";
+
+  String chosenPath = jsonHandler.JSONHandler().readConfig('path');
 
   var directory = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+
+    String hint = "Directory Path";
+    if (chosenPath != ".") {
+      hint = chosenPath;
+    }
+
     var git = GitDownloader();
     return Center(
       child: Column(
@@ -46,18 +54,18 @@ class _GitPage extends State<GitPage> {
                   width: 400,
                   child: TextField(
                     controller: directory,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white, width: 2.0),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white, width: 2.0),
                       ),
-                      hintText: 'Directory Path',
+                      hintText: hint,
                       hintStyle: TextStyle(color: Colors.white),
                     ),
                     style: const TextStyle(color: Colors.white),
-                    onChanged: (value) => chosenPath = value,
+                    onChanged: (value) => pathUpdater(value),
                   ),
                 ),
               ],
@@ -85,7 +93,7 @@ class _GitPage extends State<GitPage> {
                             child: Padding(
                               padding: EdgeInsets.all(16.0),
                               child: Text(
-                                  'Repository clonned to $chosenPath\FalconsEsportsOverlays'),
+                                  'Repository cloned to $chosenPath\FalconsEsportsOverlays'),
                             ),
                           );
                         },
@@ -94,30 +102,14 @@ class _GitPage extends State<GitPage> {
                         useSafeArea: true,
                       );
                     } else {
-                      chosenPath = (await FilePicker.platform
+                        try {
+                        chosenPath = (await FilePicker.platform
                           .getDirectoryPath()) as String;
-
-                      directory.text = chosenPath as String;
-                      // git.repoCloner(chosenPath);
-                      // showPopupCard(
-                      //   context: context,
-                      //   builder: (context) {
-                      //     return PopupCard(
-                      //       elevation: 8,
-                      //       color: const Color.fromARGB(255, 255, 255, 255),
-                      //       shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(12.0),
-                      //       ),
-                      //       child: Padding(
-                      //         padding: EdgeInsets.all(16.0),
-                      //         child: Text('Repository clonned to $path'),
-                      //       ),
-                      //     );
-                      //   },
-                      //   offset: const Offset(-16, 70),
-                      //   alignment: Alignment.topRight,
-                      //   useSafeArea: true,
-                      // );
+ 
+                        } catch (e) {
+                          return;
+                        }
+                      directory.text = chosenPath;
                     }
                   },
                   child: const Text('Clone Repository'),
@@ -128,5 +120,9 @@ class _GitPage extends State<GitPage> {
         ],
       ),
     );
+  }
+
+  void pathUpdater(String value) {
+    chosenPath = value;
   }
 }

@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'json_handler.dart';
 
 class PHPServerHandler {
   int pid = 0;
 
+  JSONHandler jsonHandler = JSONHandler();
+
   void startServer() {
-    Process.run('php', ['-S', '127.0.0.1:8080']);
+    Process.run('php', ['-S', '127.0.0.1:8080'], workingDirectory: jsonHandler.readConfig('path'));
   }
 
   void stopServer() {
