@@ -63,10 +63,7 @@ class _ControlsPage extends State<ConfigPage> {
                   style: const TextStyle(color: Colors.white),
                   onChanged: (value) => jsonHandler.writeConfig("path", value),
                 ),
-              ),
-              ElevatedButton(onPressed: () {
-                TestingHandler.list('.');
-              }, child: Text("tests"))
+              )
             ],
           ),
         )
