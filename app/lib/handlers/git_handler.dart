@@ -29,4 +29,8 @@ class GitDownloader {
 
     return path;
   }
+
+  Future<bool> checkRepo(String path) {
+    return rwGit.isGitRepository(path);
+  }
 }
