@@ -8,7 +8,8 @@ class PHPServerHandler {
 
   void startServer() {
     Process.run('php', ['-S', '127.0.0.1:8080'],
-        workingDirectory: jsonHandler.readConfig('path'));
+        workingDirectory:
+            "${jsonHandler.readConfig('path')}/FalconsEsportsOverlays");
   }
 
   void stopServer() {

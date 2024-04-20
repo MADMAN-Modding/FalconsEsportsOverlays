@@ -17,7 +17,7 @@
             "winsLeft" => "",
             "winsRight" => "",
             "teamColorRight" => "",
-            "overlay" => "",
+            "overlay" => "kart",
             "week" => "",
             "scoreLeft" => "",
             "scoreRight" => "",
