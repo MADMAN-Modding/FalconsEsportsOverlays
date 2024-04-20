@@ -62,6 +62,13 @@ class _ControlsPage extends State<ConfigPage> {
                   style: const TextStyle(color: Colors.white),
                   onChanged: (value) => jsonHandler.writeConfig("path", value),
                 ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  "Make sure this directory cotains the folder \"FalconsEsportsOverlays\"\ndon't select the overlay's folder as the directory.",
+                  style: TextStyle(color: Colors.white),
+                ),
               )
             ],
           ),
