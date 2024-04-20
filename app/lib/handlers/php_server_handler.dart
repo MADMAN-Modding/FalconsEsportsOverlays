@@ -7,13 +7,14 @@ class PHPServerHandler {
   JSONHandler jsonHandler = JSONHandler();
 
   void startServer() {
-    Process.run('php', ['-S', '127.0.0.1:8080'], workingDirectory: jsonHandler.readConfig('path'));
+    Process.run('php', ['-S', '127.0.0.1:8080'],
+        workingDirectory: jsonHandler.readConfig('path'));
   }
 
   void stopServer() {
-    if(Platform.isLinux) {
-      Process.run('pkill',['php']);
-    } else if(Platform.isWindows) {
+    if (Platform.isLinux) {
+      Process.run('pkill', ['php']);
+    } else if (Platform.isWindows) {
       Process.run('taskkill', ['/IM', 'php', '/F']);
     }
   }

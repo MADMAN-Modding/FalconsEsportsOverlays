@@ -133,12 +133,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.white,
                       )),
                   NavigationRailDestination(
-                    icon: Icon(Icons.settings),
-                    label: Text("Config"),
-                    selectedIcon: Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                  ))
+                      icon: Icon(Icons.settings),
+                      label: Text("Config"),
+                      selectedIcon: Icon(
+                        Icons.settings,
+                        color: Colors.white,
+                      ))
                 ],
                 selectedIndex: selectedIndex,
                 onDestinationSelected: (value) {
@@ -160,4 +160,3 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 }
-

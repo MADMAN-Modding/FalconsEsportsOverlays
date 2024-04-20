@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:json_file/json_file.dart';
 
 class JSONHandler {
-  // 
+  //
   var overlayJSONData = {};
   var overlayFile;
   var overlayJSONString;
@@ -10,7 +10,7 @@ class JSONHandler {
   // Controller config variables
   var configJSON;
 
-  JSONHandler () {
+  JSONHandler() {
     // Try-catch to read config values
     try {
       configJSON = File('config.json').readAsJsonSync();
@@ -18,12 +18,9 @@ class JSONHandler {
       print("Can't find file :( $e \nmaking a new config");
       File('config.json').create(recursive: true);
 
-      File('config.json').writeAsString(
-        '''{\n  "path": "."\n}'''
-      );
+      File('config.json').writeAsString('''{\n  "path": "."\n}''');
 
       configJSON = File('config.json').readAsJsonSync();
-      
     }
   }
 
@@ -43,7 +40,7 @@ class JSONHandler {
   }
 
   void getOverlayKeys() {
-    for(var key in overlayJSONData.keys) {
+    for (var key in overlayJSONData.keys) {
       print(key);
     }
   }
