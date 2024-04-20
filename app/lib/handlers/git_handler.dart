@@ -8,12 +8,6 @@ class GitDownloader {
   void repoCloner(path) {
     path ??= FilePicker.platform.getDirectoryPath();
 
-    // Process.run('git', ['clone', 'https://github.com/MADMAN-Modding/FalconsEsportsOverlays.git', '$path/Falcons Esports Overlay']).then((ProcessResult results) {
-    //   print(results.stdout);
-    //   print(results.stderr);
-    //   print(results.pid);
-    // });
-
     rwGit.clone(
         path, 'https://github.com/MADMAN-Modding/FalconsEsportsOverlays.git');
   }
