@@ -18,7 +18,6 @@ class _ControlsPage extends State<ConfigPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -26,26 +25,26 @@ class _ControlsPage extends State<ConfigPage> {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-                SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: TextButton(
-                    child: const Icon(
-                      Icons.folder,
-                      color: Colors.white,
-                    ),
-                    onPressed: () async {
-                      try {
+              SizedBox(
+                height: 50,
+                width: 50,
+                child: TextButton(
+                  child: const Icon(
+                    Icons.folder,
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    try {
                       chosenPath =
                           (await FilePicker.platform.getDirectoryPath())!;
                       directory.text = chosenPath;
                       jsonHandler.writeConfig('path', chosenPath);
-                      } catch (e) {
-                       return; 
-                      }
-                    },
-                  ),
+                    } catch (e) {
+                      return;
+                    }
+                  },
                 ),
+              ),
               SizedBox(
                 width: 400,
                 child: TextField(

@@ -14,8 +14,8 @@ class GitDownloader {
     //   print(results.pid);
     // });
 
-    rwGit.clone(path, 'https://github.com/MADMAN-Modding/FalconsEsportsOverlays.git');
-
+    rwGit.clone(
+        path, 'https://github.com/MADMAN-Modding/FalconsEsportsOverlays.git');
   }
 
   void update() {

@@ -1,5 +1,6 @@
 import 'package:falcons_esports_overlays_controller/handlers/git_handler.dart';
-import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart' as jsonHandler;
+import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart'
+    as jsonHandler;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_popup_card/flutter_popup_card.dart';
@@ -13,14 +14,12 @@ class GitPage extends StatefulWidget {
 }
 
 class _GitPage extends State<GitPage> {
-
   String chosenPath = jsonHandler.JSONHandler().readConfig('path');
 
   var directory = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     String hint = "Directory Path";
     if (chosenPath != ".") {
       hint = chosenPath;
@@ -105,13 +104,12 @@ class _GitPage extends State<GitPage> {
                           useSafeArea: true,
                         );
                       } else {
-                          try {
+                        try {
                           chosenPath = (await FilePicker.platform
-                            .getDirectoryPath()) as String;
-                   
-                          } catch (e) {
-                            return;
-                          }
+                              .getDirectoryPath()) as String;
+                        } catch (e) {
+                          return;
+                        }
                         directory.text = chosenPath;
                       }
                     },
@@ -120,32 +118,34 @@ class _GitPage extends State<GitPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(2.0),
-                  child: ElevatedButton(onPressed: () async {
-                    bool pulled = false;
-                    while(!pulled) {
-                    try {
-                      if(await git.checkRepo(chosenPath)) {
-                        git.update();
-                        pulled = true;
-                      } else {
-                        try {
-                          chosenPath = (await FilePicker.platform
-                            .getDirectoryPath()) as String;
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        bool pulled = false;
+                        while (!pulled) {
+                          try {
+                            if (await git.checkRepo(chosenPath)) {
+                              git.update();
+                              pulled = true;
+                            } else {
+                              try {
+                                chosenPath = (await FilePicker.platform
+                                    .getDirectoryPath()) as String;
+                              } catch (e) {
+                                return;
+                              }
+                              directory.text = chosenPath;
+                            }
                           } catch (e) {
-                            return;
+                            try {
+                              chosenPath = (await FilePicker.platform
+                                  .getDirectoryPath()) as String;
+                            } catch (e) {
+                              return;
+                            }
                           }
-                        directory.text = chosenPath;
-                    }     
-                    } catch (e) {
-                      try {
-                          chosenPath = (await FilePicker.platform
-                            .getDirectoryPath()) as String;
-                          } catch (e) {
-                            return;
-                          }
-                    }
-                    }
-                  }, child: const Text('Update Repository')),
+                        }
+                      },
+                      child: const Text('Update Repository')),
                 )
               ],
             ),
