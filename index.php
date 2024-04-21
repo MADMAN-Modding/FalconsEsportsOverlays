@@ -12,7 +12,7 @@
 <?php 
     if(!file_exists('json/overlay.json')) {
         fwrite(fopen('json/overlay.json', 'w'), json_encode([
-            '"teamNameLeft" => "DC Falcons Red",
+            "teamNameLeft" => "DC Falcons Red",
             "teamNameRight" => "That other team",
             "winsLeft" => "0",
             "winsRight" => "0",
@@ -22,7 +22,7 @@
             "scoreLeft" => "0",
             "scoreRight" => "0",
             "playerNamesLeft" => "MADMAN-Modding",
-            "playerNamesRight" => "go to the controls.php page or set the values in the app"'
+            "playerNamesRight" => "go to the controls.php page or set the values in the app"
         ], JSON_PRETTY_PRINT));
     }
     ?>
