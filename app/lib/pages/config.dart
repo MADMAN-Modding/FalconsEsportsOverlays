@@ -1,8 +1,8 @@
-import 'package:falcons_esports_overlays_controller/handlers/testing_handler.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 
+// Sets up the stateful widget stuff, wahoo
 class ConfigPage extends StatefulWidget {
   const ConfigPage({super.key});
 
@@ -10,17 +10,21 @@ class ConfigPage extends StatefulWidget {
   State<StatefulWidget> createState() => _ControlsPage();
 }
 
+// Class for the actual page
 class _ControlsPage extends State<ConfigPage> {
   String chosenPath = "";
 
+// Creates objects for the jsonHandler and for changing the text
   var directory = TextEditingController();
-  var jsonHandler = JSONHandler();
+  JSONHandler jsonHandler = JSONHandler();
 
   @override
   Widget build(BuildContext context) {
+    directory.text = jsonHandler.readConfig('path');
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        // Padding for all the elements
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -28,6 +32,7 @@ class _ControlsPage extends State<ConfigPage> {
               SizedBox(
                 height: 50,
                 width: 50,
+                // A button with the folder icon that opens up a file-picker in order to chose the appropriate directory
                 child: TextButton(
                   child: const Icon(
                     Icons.folder,
@@ -37,7 +42,8 @@ class _ControlsPage extends State<ConfigPage> {
                     try {
                       chosenPath =
                           (await FilePicker.platform.getDirectoryPath())!;
-                      directory.text = chosenPath;
+                      directory.text =
+                          chosenPath; // Sets the text equal to the path
                       jsonHandler.writeConfig('path', chosenPath);
                     } catch (e) {
                       return;
@@ -45,15 +51,18 @@ class _ControlsPage extends State<ConfigPage> {
                   },
                 ),
               ),
+
+              // Sets the size of the textfield and also does some stuff with the controller
               SizedBox(
                 width: 400,
                 child: TextField(
                   controller: directory,
                   decoration: const InputDecoration(
-                    focusedBorder: OutlineInputBorder(
+                    border: UnderlineInputBorder(),
+                    focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white, width: 2.0),
                     ),
-                    enabledBorder: OutlineInputBorder(
+                    enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white, width: 2.0),
                     ),
                     hintText: 'Directory Path',

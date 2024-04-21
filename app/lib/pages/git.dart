@@ -4,6 +4,7 @@ import 'package:falcons_esports_overlays_controller/handlers/git_handler.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart'
     as jsonHandler;
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_popup_card/flutter_popup_card.dart';
 
@@ -22,11 +23,11 @@ class _GitPage extends State<GitPage> {
     String chosenPath = jsonHandler.JSONHandler().readConfig('path');
 
     String hint = "Directory Path";
-    if (chosenPath != ".") {
-      hint = chosenPath;
-    }
 
     var git = GitDownloader();
+
+    directory.text = jsonHandler.JSONHandler().readConfig("path");
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -56,14 +57,14 @@ class _GitPage extends State<GitPage> {
                   child: TextField(
                     controller: directory,
                     decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white, width: 2.0),
                       ),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white, width: 2.0),
                       ),
                       hintText: hint,
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: const TextStyle(color: Colors.white),
                     ),
                     style: const TextStyle(color: Colors.white),
                     onChanged: (value) => chosenPath = value,
@@ -82,7 +83,9 @@ class _GitPage extends State<GitPage> {
                     onPressed: () async {
                       // ignore: unnecessary_null_comparison
                       if (chosenPath != "") {
-                        print(chosenPath);
+                        if (kDebugMode) {
+                          print(chosenPath);
+                        }
                         git.repoCloner(chosenPath);
                         showPopupCard(
                           context: context,
@@ -94,7 +97,7 @@ class _GitPage extends State<GitPage> {
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.all(16.0),
+                                padding: const EdgeInsets.all(16.0),
                                 child: Text(
                                     'Repository cloned to $chosenPath\FalconsEsportsOverlays'),
                               ),

@@ -23,10 +23,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Falcons Esports Overlay Controller',
         theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromRGBO(190, 15, 52, 1)),
-        ),
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color.fromRGBO(190, 15, 52, 1)),
+            textSelectionTheme: TextSelectionThemeData(
+                cursorColor: Colors.white,
+                selectionColor: Color.fromARGB(125, 255, 255, 255))),
         home: const MyHomePage(),
       ),
     );
@@ -71,19 +73,19 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = HomePage();
+        page = const HomePage();
         break;
       case 1:
-        page = GitPage();
+        page = const GitPage();
         break;
       case 2:
-        page = ControlsPage();
+        page = const ControlsPage();
         break;
       case 3:
-        page = PHPPage();
+        page = const PHPPage();
         break;
       case 4:
-        page = ConfigPage();
+        page = const ConfigPage();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -100,7 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 extended: constraints.maxWidth >= 1005,
                 destinations: const [
                   NavigationRailDestination(
-                    indicatorColor: Colors.amber,
                     icon: Icon(
                       Icons.home,
                     ),
@@ -150,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
               child: Container(
-                color: Theme.of(context).colorScheme.primary,
+                color: Color.fromARGB(255, 193, 15, 52),
                 child: page,
               ),
             ),
