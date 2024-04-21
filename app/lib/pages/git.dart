@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:falcons_esports_overlays_controller/handlers/git_handler.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart'
     as jsonHandler;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_popup_card/flutter_popup_card.dart';
-import 'package:rw_git/rw_git.dart';
 
 class GitPage extends StatefulWidget {
   const GitPage({super.key});
@@ -14,12 +15,12 @@ class GitPage extends StatefulWidget {
 }
 
 class _GitPage extends State<GitPage> {
-  String chosenPath = jsonHandler.JSONHandler().readConfig('path');
-
   var directory = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    String chosenPath = jsonHandler.JSONHandler().readConfig('path');
+
     String hint = "Directory Path";
     if (chosenPath != ".") {
       hint = chosenPath;
@@ -65,7 +66,7 @@ class _GitPage extends State<GitPage> {
                       hintStyle: TextStyle(color: Colors.white),
                     ),
                     style: const TextStyle(color: Colors.white),
-                    onChanged: (value) => pathUpdater(value),
+                    onChanged: (value) => chosenPath = value,
                   ),
                 ),
               ],
@@ -153,9 +154,5 @@ class _GitPage extends State<GitPage> {
         ],
       ),
     );
-  }
-
-  void pathUpdater(String value) {
-    chosenPath = value;
   }
 }

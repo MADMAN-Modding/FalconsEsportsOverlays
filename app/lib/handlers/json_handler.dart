@@ -16,11 +16,12 @@ class JSONHandler {
       configJSON = File('config.json').readAsJsonSync();
     } catch (e) {
       print("Can't find file :( $e \nmaking a new config");
-      File('config.json').create(recursive: true);
+      File('config.json').create(recursive: true).whenComplete(() =>
+          File('config.json')
+              .writeAsString('''{\n  "path": "."\n}''').whenComplete(
+                  () => configJSON = File('config.json').readAsJsonSync()));
 
-      File('config.json').writeAsString('''{\n  "path": "."\n}''');
-
-      configJSON = File('config.json').readAsJsonSync();
+      print("Config Generated");
     }
   }
 
@@ -47,7 +48,11 @@ class JSONHandler {
 
   // Config methods
   String readConfig(String key) {
-    return configJSON[key];
+    try {
+      return configJSON[key];
+    } catch (e) {
+      return ".";
+    }
   }
 
   void writeConfig(String key, String data) {
