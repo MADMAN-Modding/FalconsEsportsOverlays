@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(
                 seedColor: const Color.fromRGBO(190, 15, 52, 1)),
-            textSelectionTheme: TextSelectionThemeData(
+            textSelectionTheme: const TextSelectionThemeData(
                 cursorColor: Colors.white,
                 selectionColor: Color.fromARGB(125, 255, 255, 255))),
         home: const MyHomePage(),
@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
               child: Container(
-                color: Color.fromARGB(255, 193, 15, 52),
+                color: const Color.fromARGB(255, 193, 15, 52),
                 child: page,
               ),
             ),

@@ -37,7 +37,7 @@ class _PHPPage extends State<PHPPage> {
                     onPressed: () {
                       php.stopServer();
                     },
-                    child: Text("Stop PHP Server")),
+                    child: const Text("Stop PHP Server")),
               )
             ],
           )
