@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:falcons_esports_overlays_controller/handlers/git_handler.dart';
-import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart'
-    as jsonHandler;
+import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,15 +15,18 @@ class GitPage extends StatefulWidget {
 class _GitPage extends State<GitPage> {
   var directory = TextEditingController();
 
+  JSONHandler jsonHandler = JSONHandler();
+
+  late String chosenPath;
+
   @override
   Widget build(BuildContext context) {
-    String chosenPath = jsonHandler.JSONHandler().readConfig('path');
-
     String hint = "Directory Path";
 
     var git = GitDownloader();
+    String chosenPath = jsonHandler.readConfig('path');
 
-    directory.text = jsonHandler.JSONHandler().readConfig("path");
+    directory.text = jsonHandler.readConfig("path");
 
     return Center(
       child: Column(
@@ -67,7 +67,7 @@ class _GitPage extends State<GitPage> {
                       hintStyle: const TextStyle(color: Colors.white),
                     ),
                     style: const TextStyle(color: Colors.white),
-                    onChanged: (value) => chosenPath = value,
+                    onChanged: (value) => updateValue(value),
                   ),
                 ),
               ],
@@ -99,7 +99,7 @@ class _GitPage extends State<GitPage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
-                                    'Repository cloned to $chosenPath\FalconsEsportsOverlays'),
+                                    'Repository cloned to $chosenPath/FalconsEsportsOverlays'),
                               ),
                             );
                           },
@@ -157,5 +157,10 @@ class _GitPage extends State<GitPage> {
         ],
       ),
     );
+  }
+
+  void updateValue(String value) {
+    chosenPath = value;
+    jsonHandler.writeConfig("path", value);
   }
 }

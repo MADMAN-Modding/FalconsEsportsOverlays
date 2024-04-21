@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rw_git/rw_git.dart';
 
 class GitDownloader {
@@ -13,8 +14,11 @@ class GitDownloader {
   }
 
   void update() {
-    Process.run('git', ['pull']).then((ProcessResult resutls) {
-      print(resutls.stdout);
+    Process.run('git', ['pull']).then((ProcessResult results) {
+      if (kDebugMode) {
+        print(results.stdout);
+        print(results.stderr);
+      }
     });
   }
 
@@ -25,6 +29,6 @@ class GitDownloader {
   }
 
   Future<bool> checkRepo(String path) {
-    return rwGit.isGitRepository(path);
+    return rwGit.isGitRepository("$path/FalconsEsportsOverlays");
   }
 }

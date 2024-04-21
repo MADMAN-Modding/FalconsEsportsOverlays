@@ -1,11 +1,10 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:json_file/json_file.dart';
 
 class JSONHandler {
   //
-  var overlayJSONData = {};
-  var overlayFile;
-  var overlayJSONString;
+  var overlayJSON;
 
   // Controller config variables
   var configJSON;
@@ -15,34 +14,37 @@ class JSONHandler {
     try {
       configJSON = File('config.json').readAsJsonSync();
     } catch (e) {
-      print("Can't find file :( $e \nmaking a new config");
+      if (kDebugMode) {
+        print("Can't find file :( $e \nmaking a new config");
+      }
       File('config.json').create(recursive: true).whenComplete(() =>
           File('config.json')
-              .writeAsString('''{\n  "path": "."\n}''').whenComplete(
+              .writeAsString('''{\n  "path": "."\n  }''').whenComplete(
                   () => configJSON = File('config.json').readAsJsonSync()));
 
-      print("Config Generated");
+      if (kDebugMode) {
+        print("Config Generated");
+      }
     }
   }
 
   // Overlay methods
-  Map fullOutputOverlay() {
-    return overlayJSONData;
-  }
 
   void writeOverlay(String key, String data) {
-    var fileWrite = overlayFile.openWrite();
+    var fileWrite = overlayJSON.openWrite();
 
     fileWrite.write('{"$key": "$data"}');
   }
 
   String readOverlay(String key) {
-    return overlayJSONData[key];
+    return overlayJSON[key];
   }
 
   void getOverlayKeys() {
-    for (var key in overlayJSONData.keys) {
-      print(key);
+    for (var key in overlayJSON.keys) {
+      if (kDebugMode) {
+        print(key);
+      }
     }
   }
 
