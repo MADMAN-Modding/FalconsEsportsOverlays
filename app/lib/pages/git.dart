@@ -23,7 +23,7 @@ class _GitPage extends State<GitPage> {
   Widget build(BuildContext context) {
     String hint = "Directory Path";
 
-    var git = GitDownloader();
+    var git = GitHandler();
     String chosenPath = jsonHandler.readConfig('path');
 
     directory.text = jsonHandler.readConfig("path");
@@ -32,6 +32,12 @@ class _GitPage extends State<GitPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          const Row(
+            children: [
+              Text(
+                  "Make sure the directory is empty if you're clonning the repository")
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.all(6),
             child: Row(
@@ -57,10 +63,10 @@ class _GitPage extends State<GitPage> {
                   child: TextField(
                     controller: directory,
                     decoration: InputDecoration(
-                      focusedBorder: const OutlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white, width: 2.0),
                       ),
-                      enabledBorder: const OutlineInputBorder(
+                      enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white, width: 2.0),
                       ),
                       hintText: hint,
@@ -81,7 +87,6 @@ class _GitPage extends State<GitPage> {
                   padding: const EdgeInsets.all(2.0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      // ignore: unnecessary_null_comparison
                       if (chosenPath != "") {
                         if (kDebugMode) {
                           print(chosenPath);
@@ -98,8 +103,7 @@ class _GitPage extends State<GitPage> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
-                                child: Text(
-                                    'Repository cloned to $chosenPath/FalconsEsportsOverlays'),
+                                child: Text('Repository cloned to $chosenPath'),
                               ),
                             );
                           },
@@ -128,7 +132,7 @@ class _GitPage extends State<GitPage> {
                         while (!pulled) {
                           try {
                             if (await git.checkRepo(chosenPath)) {
-                              git.update();
+                              git.update(chosenPath);
                               pulled = true;
                             } else {
                               try {
