@@ -3,18 +3,23 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rw_git/rw_git.dart';
 
-class GitDownloader {
+class GitHandler {
   RwGit rwGit = RwGit();
 
   void repoCloner(path) {
-    path ??= FilePicker.platform.getDirectoryPath();
+    // path ??= FilePicker.platform.getDirectoryPath();
 
-    rwGit.clone(
-        path, 'https://github.com/MADMAN-Modding/FalconsEsportsOverlays.git');
+    Process.run('git', [
+      'clone',
+      'https://github.com/MADMAN-Modding/FalconsEsportsOverlays.git',
+      "$path"
+    ]);
   }
 
-  void update() {
-    Process.run('git', ['pull']).then((ProcessResult results) {
+  void update(String path) {
+    Process.run('git', ['pull'],
+            workingDirectory: "$path/FalconsEsportsOverlays")
+        .then((ProcessResult results) {
       if (kDebugMode) {
         print(results.stdout);
         print(results.stderr);
@@ -29,6 +34,6 @@ class GitDownloader {
   }
 
   Future<bool> checkRepo(String path) {
-    return rwGit.isGitRepository("$path/FalconsEsportsOverlays");
+    return rwGit.isGitRepository(path);
   }
 }

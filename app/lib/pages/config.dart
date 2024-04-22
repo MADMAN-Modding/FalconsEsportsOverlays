@@ -75,7 +75,7 @@ class _ControlsPage extends State<ConfigPage> {
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
-                  "Make sure this directory contains the folder \"FalconsEsportsOverlays\"\ndon't select the overlay's folder as the directory.",
+                  "This is the directory that contains all the code",
                   style: TextStyle(color: Colors.white),
                 ),
               )

@@ -1,5 +1,7 @@
 import 'package:falcons_esports_overlays_controller/handlers/php_server_handler.dart';
 import 'package:flutter/material.dart';
+import '../handlers/git_handler.dart';
+import '../handlers/json_handler.dart';
 
 class PHPPage extends StatefulWidget {
   const PHPPage({super.key});
@@ -11,6 +13,8 @@ class PHPPage extends StatefulWidget {
 class _PHPPage extends State<PHPPage> {
   String chosenPath = "";
   PHPServerHandler php = PHPServerHandler();
+  GitHandler gitHandler = GitHandler();
+  JSONHandler jsonHandler = JSONHandler();
 
   var directory = TextEditingController();
 
@@ -26,8 +30,15 @@ class _PHPPage extends State<PHPPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                    onPressed: () {
-                      php.startServer();
+                    onPressed: () async {
+                      if (await gitHandler
+                          .checkRepo(jsonHandler.readConfig("path"))) {
+                        php.startServer("");
+                      } else if (await gitHandler.checkRepo(
+                          "${jsonHandler.readConfig("path")}/FalconsEsportsOverlays")) {
+                        php.startServer("FalconsEsportsOverlays");
+                      }
+                      ;
                     },
                     child: const Text("Start PHP Server")),
               ),
