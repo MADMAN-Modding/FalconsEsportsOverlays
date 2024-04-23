@@ -24,7 +24,7 @@ class _GitPage extends State<GitPage> {
     String hint = "Directory Path";
 
     var git = GitHandler();
-    String chosenPath = jsonHandler.readConfig('path');
+    this.chosenPath = jsonHandler.readConfig('path');
 
     directory.text = jsonHandler.readConfig("path");
 
@@ -55,9 +55,11 @@ class _GitPage extends State<GitPage> {
                       color: Colors.white,
                     ),
                     onPressed: () async {
-                      chosenPath =
-                          (await FilePicker.platform.getDirectoryPath())!;
-                      directory.text = chosenPath;
+                      try {
+                        chosenPath =
+                            (await FilePicker.platform.getDirectoryPath())!;
+                        directory.text = chosenPath;
+                      } catch (e) {}
                     },
                   ),
                 ),
@@ -169,5 +171,8 @@ class _GitPage extends State<GitPage> {
   void updateValue(String value) {
     chosenPath = value;
     jsonHandler.writeConfig("path", value);
+    if (kDebugMode) {
+      print(chosenPath);
+    }
   }
 }

@@ -29,11 +29,12 @@ class JSONHandler {
   }
 
   // Overlay methods
-
   void writeOverlay(String key, String data) {
     var fileWrite = overlayJSON.openWrite();
 
-    fileWrite.write('{"$key": "$data"}');
+    overlayJSON[key] = data;
+
+    fileWrite.write('''{\n  "$key": "$data"\n }''');
   }
 
   String readOverlay(String key) {
