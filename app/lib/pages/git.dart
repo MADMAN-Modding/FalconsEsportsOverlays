@@ -35,7 +35,7 @@ class _GitPage extends State<GitPage> {
           const Row(
             children: [
               Text(
-                  "Make sure the directory is empty if you're clonning the repository")
+                  "Make sure the directory is empty if you're cloning the repository")
             ],
           ),
           Padding(
