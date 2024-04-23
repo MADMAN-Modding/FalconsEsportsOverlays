@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rw_git/rw_git.dart';
 
@@ -27,11 +26,11 @@ class GitHandler {
     });
   }
 
-  Future<String?> getPath() async {
-    String? path = await FilePicker.platform.getDirectoryPath();
+  // Future<String?> getPath() async {
+  //   String? path = await FilePicker.platform.getDirectoryPath();
 
-    return path;
-  }
+  //   return path;
+  // }
 
   Future<bool> checkRepo(String path) {
     return rwGit.isGitRepository(path);
