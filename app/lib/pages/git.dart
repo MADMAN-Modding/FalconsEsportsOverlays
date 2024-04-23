@@ -33,9 +33,12 @@ class _GitPage extends State<GitPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                  "Make sure the directory is empty if you're cloning the repository")
+                "Make sure the directory is empty if you're cloning the repository.",
+                style: TextStyle(color: Colors.white),
+              )
             ],
           ),
           Padding(
