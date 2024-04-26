@@ -16,8 +16,7 @@ class GitHandler {
   }
 
   void update(String path) {
-    Process.run('git', ['pull'],
-            workingDirectory: "$path/FalconsEsportsOverlays")
+    Process.run('git', ['pull'], workingDirectory: path)
         .then((ProcessResult results) {
       if (kDebugMode) {
         print(results.stdout);
