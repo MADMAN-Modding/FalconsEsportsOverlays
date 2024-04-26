@@ -21,29 +21,42 @@ class _ControlsPage extends State<ControlsPage> {
       children: [
         Row(
           children: [
-            ElevatedButton(
-                onPressed: () {
-                  jsonHandler.readOverlay("overlay");
-                },
-                child: const Text("Update Values")),
-            SizedBox(
-              width: 400,
-              child: TextField(
-                controller: directory,
-                decoration: const InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white, width: 2.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white, width: 2.0),
-                  ),
-                  hintText: 'Directory Path',
-                  hintStyle: TextStyle(color: Colors.white),
-                ),
-                style: const TextStyle(color: Colors.white),
-                onChanged: (value) => chosenPath = value,
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Left Wins',
+                style: TextStyle(color: Colors.white),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: ElevatedButton(
+                  onPressed: () {
+                    jsonHandler.writeOverlay('winsLeft', '0');
+                  },
+                  child: Text("0")),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: ElevatedButton(
+                  onPressed: () {
+                    jsonHandler.writeOverlay('winsLeft', '1');
+                  },
+                  child: Text('1')),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: ElevatedButton(
+                  onPressed: () {
+                    jsonHandler.writeOverlay('winsLeft', '2');
+                  },
+                  child: Text('2')),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  jsonHandler.writeOverlay('winsLeft', '3');
+                },
+                child: Text('3'))
           ],
         )
       ],
