@@ -60,7 +60,12 @@ class JSONHandler {
   }
 
   String readOverlay(String key) {
-    return overlayJSON[key];
+    try {
+      return overlayJSON[key];
+    } catch (e) {
+      print(e);
+      return "$e";
+    }
   }
 
   void getOverlayKeys() {
