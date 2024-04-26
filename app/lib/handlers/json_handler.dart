@@ -26,15 +26,37 @@ class JSONHandler {
         print("Config Generated");
       }
     }
+
+    try {
+      overlayJSON =
+          File('${readConfig('path')}/json/overlay.json').readAsJsonSync();
+    } catch (e) {
+      print(e);
+    }
   }
 
   // Overlay methods
   void writeOverlay(String key, String data) {
-    var fileWrite = overlayJSON.openWrite();
-
-    overlayJSON[key] = data;
-
-    fileWrite.write('''{\n  "$key": "$data"\n }''');
+    try {
+      overlayJSON[key] = data;
+      File('${readConfig('path')}/json/overlay.json').writeAsStringSync('''
+{
+  "teamNameLeft": "${overlayJSON['teamNameLeft']}",
+  "teamNameRight": "${overlayJSON['teamNameRight']}",
+  "winsLeft": "${overlayJSON['winsLeft']}",
+  "winsRight": "${overlayJSON['winsRight']}",
+  "teamColorRight": "${overlayJSON['teamColorRight']}",
+  "overlay": "${overlayJSON['overlay']}",
+  "week": "${overlayJSON['week']}",
+  "scoreLeft": "${overlayJSON['scoreLeft']}",
+  "scoreRight": "${overlayJSON['scoreRight']}",
+  "playerNamesLeft": "${overlayJSON['playerNamesLeft']}",
+  "playerNamesRight": "${overlayJSON['playerNamesRight']}"
+}
+''');
+    } catch (e) {
+      print(e);
+    }
   }
 
   String readOverlay(String key) {
@@ -59,10 +81,6 @@ class JSONHandler {
   }
 
   void writeConfig(String key, String data) {
-    // var fileWrite = configJSON.openWrite();
-
-    File('config.json').writeAsStringSync('''{\n "$key": "$data"}''');
-
-    // fileWrite.write('{"$key": "$data"}');
+    File('config.json').writeAsStringSync('''{\n "$key": "$data"\n}''');
   }
 }
