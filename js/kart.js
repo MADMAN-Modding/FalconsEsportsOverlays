@@ -24,4 +24,5 @@ setInterval(function () {
             document.getElementById("scoreLeft").innerHTML = jsonData["scoreLeft"];
             document.getElementById("scoreRight").innerHTML = jsonData["scoreRight"]
         });
+    document.getElementById("week").style.left = +document.getElementById("week").innerHTML > 9 ? "1863px" : "1877px"
 }, 500);
