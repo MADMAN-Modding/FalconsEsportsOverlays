@@ -17,10 +17,13 @@ class JSONHandler {
       if (kDebugMode) {
         print("Can't find file :( $e \nmaking a new config");
       }
-      File('config.json').create(recursive: true).whenComplete(() =>
-          File('config.json')
-              .writeAsString('''{\n  "path": "."\n  }''').whenComplete(
-                  () => configJSON = File('config.json').readAsJsonSync()));
+      File('config.json')
+          .create(recursive: true)
+          .whenComplete(() => File('config.json').writeAsString('''
+{
+  "path": "."
+}
+''').whenComplete(() => configJSON = File('config.json').readAsJsonSync()));
 
       if (kDebugMode) {
         print("Config Generated");
@@ -41,21 +44,23 @@ class JSONHandler {
       overlayJSON[key] = data;
       File('${readConfig('path')}/json/overlay.json').writeAsStringSync('''
 {
-  "teamNameLeft": "${overlayJSON['teamNameLeft']}",
-  "teamNameRight": "${overlayJSON['teamNameRight']}",
-  "winsLeft": "${overlayJSON['winsLeft']}",
-  "winsRight": "${overlayJSON['winsRight']}",
-  "teamColorRight": "${overlayJSON['teamColorRight']}",
-  "overlay": "${overlayJSON['overlay']}",
-  "week": "${overlayJSON['week']}",
-  "scoreLeft": "${overlayJSON['scoreLeft']}",
-  "scoreRight": "${overlayJSON['scoreRight']}",
-  "playerNamesLeft": "${overlayJSON['playerNamesLeft']}",
-  "playerNamesRight": "${overlayJSON['playerNamesRight']}"
+    "teamNameLeft": "${overlayJSON['teamNameLeft']}",
+    "teamNameRight": "${overlayJSON['teamNameRight']}",
+    "winsLeft": "${overlayJSON['winsLeft']}",
+    "winsRight": "${overlayJSON['winsRight']}",
+    "teamColorRight": "${overlayJSON['teamColorRight']}",
+    "overlay": "${overlayJSON['overlay']}",
+    "week": "${overlayJSON['week']}",
+    "scoreLeft": "${overlayJSON['scoreLeft']}",
+    "scoreRight": "${overlayJSON['scoreRight']}",
+    "playerNamesLeft": "${overlayJSON['playerNamesLeft']}",
+    "playerNamesRight": "${overlayJSON['playerNamesRight']}"
 }
 ''');
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -63,7 +68,9 @@ class JSONHandler {
     try {
       return overlayJSON[key];
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
       return "$e";
     }
   }
@@ -86,6 +93,10 @@ class JSONHandler {
   }
 
   void writeConfig(String key, String data) {
-    File('config.json').writeAsStringSync('''{\n "$key": "$data"\n}''');
+    File('config.json').writeAsStringSync('''
+{
+    "$key": "$data"
+}
+  ''');
   }
 }
