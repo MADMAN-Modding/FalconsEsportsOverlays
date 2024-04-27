@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:flutter/widgets.dart';
@@ -32,9 +34,57 @@ class _ControlsPage extends State<ControlsPage> {
     leftTeamName.text = jsonHandler.readOverlay('teamNameLeft');
     rightTeamName.text = jsonHandler.readOverlay('teamNameRight');
     week.text = jsonHandler.readOverlay('week');
+    teamColorRight.text = jsonHandler.readOverlay('teamColorRight');
     return Column(
       children: [
-        const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+              ),
+              onPressed: () {
+                jsonHandler.writeOverlay("overlay", "ssbu");
+              },
+              child: Image.asset(
+                'images/SSBU.png',
+                width: 200,
+                height: 200,
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+              ),
+              onPressed: () {
+                jsonHandler.writeOverlay("overlay", "kart");
+              },
+              child: Image.asset(
+                'images/Kart.png',
+                width: 200,
+                height: 200,
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+              ),
+              onPressed: () {
+                jsonHandler.writeOverlay("overlay", "rocketLeague");
+              },
+              child: Image.asset(
+                'images/RL.png',
+                width: 200,
+                height: 200,
+              ),
+            )
+          ],
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           // Left Team Wins
           Padding(
             padding: EdgeInsets.all(16.0),
@@ -46,37 +96,37 @@ class _ControlsPage extends State<ControlsPage> {
         ]),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Padding(
-            padding: const EdgeInsets.only(right: 4),
+            padding: EdgeInsets.only(right: 4),
             child: ElevatedButton(
                 onPressed: () {
                   jsonHandler.writeOverlay('winsLeft', '0');
                 },
-                child: const Text("0")),
+                child: Text("0")),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 4),
+            padding: EdgeInsets.only(right: 4),
             child: ElevatedButton(
                 onPressed: () {
                   jsonHandler.writeOverlay('winsLeft', '1');
                 },
-                child: const Text('1')),
+                child: Text('1')),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 4),
+            padding: EdgeInsets.only(right: 4),
             child: ElevatedButton(
                 onPressed: () {
                   jsonHandler.writeOverlay('winsLeft', '2');
                 },
-                child: const Text('2')),
+                child: Text('2')),
           ),
           ElevatedButton(
               onPressed: () {
                 jsonHandler.writeOverlay('winsLeft', '3');
               },
-              child: const Text('3')),
+              child: Text('3')),
         ]),
         // Right Team Wins
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
@@ -92,37 +142,37 @@ class _ControlsPage extends State<ControlsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 4),
+              padding: EdgeInsets.only(right: 4),
               child: ElevatedButton(
                   onPressed: () {
                     jsonHandler.writeOverlay('winsRight', '0');
                   },
-                  child: const Text('0')),
+                  child: Text('0')),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 4),
+              padding: EdgeInsets.only(right: 4),
               child: ElevatedButton(
                   onPressed: () {
                     jsonHandler.writeOverlay('winsRight', '1');
                   },
-                  child: const Text("1")),
+                  child: Text("1")),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 4),
+              padding: EdgeInsets.only(right: 4),
               child: ElevatedButton(
                   onPressed: () {
                     jsonHandler.writeOverlay('winsRight', '2');
                   },
-                  child: const Text('2')),
+                  child: Text('2')),
             ),
             ElevatedButton(
                 onPressed: () {
                   jsonHandler.writeOverlay('winsRight', '3');
                 },
-                child: const Text('3')),
+                child: Text('3')),
           ],
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -143,7 +193,7 @@ class _ControlsPage extends State<ControlsPage> {
               width: 35,
               child: TextField(
                 controller: leftScore,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: UnderlineInputBorder(),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white, width: 2.0),
@@ -154,7 +204,7 @@ class _ControlsPage extends State<ControlsPage> {
                   hintText: 'Left Score',
                   hintStyle: TextStyle(color: Colors.white),
                 ),
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white),
                 onChanged: (value) =>
                     jsonHandler.writeOverlay('scoreLeft', value),
                 textAlign: TextAlign.center,
@@ -162,13 +212,13 @@ class _ControlsPage extends State<ControlsPage> {
             ),
             // Right Score
             Padding(
-              padding: const EdgeInsets.only(left: 8),
+              padding: EdgeInsets.only(left: 8),
               child: SizedBox(
                 height: 50,
                 width: 35,
                 child: TextField(
                   controller: rightScore,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: UnderlineInputBorder(),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white, width: 2.0),
@@ -179,7 +229,7 @@ class _ControlsPage extends State<ControlsPage> {
                     hintText: 'Right Score',
                     hintStyle: TextStyle(color: Colors.white),
                   ),
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                   onChanged: (value) =>
                       jsonHandler.writeOverlay('scoreRight', value),
                   textAlign: TextAlign.center,
@@ -188,7 +238,7 @@ class _ControlsPage extends State<ControlsPage> {
             )
           ],
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(top: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -208,7 +258,7 @@ class _ControlsPage extends State<ControlsPage> {
               height: 50,
               child: TextField(
                 controller: leftTeamName,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: UnderlineInputBorder(),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white, width: 2.0),
@@ -219,20 +269,20 @@ class _ControlsPage extends State<ControlsPage> {
                   hintText: 'Left Team Name',
                   hintStyle: TextStyle(color: Colors.white),
                 ),
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
                 onChanged: (value) =>
                     jsonHandler.writeOverlay('teamNameLeft', value),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 8),
+              padding: EdgeInsets.only(left: 8),
               child: SizedBox(
                 width: 200,
                 height: 50,
                 child: TextField(
                   controller: rightTeamName,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: UnderlineInputBorder(),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white, width: 2.0),
@@ -243,7 +293,7 @@ class _ControlsPage extends State<ControlsPage> {
                     hintText: 'Right Team Name',
                     hintStyle: TextStyle(color: Colors.white),
                   ),
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                   textAlign: TextAlign.center,
                   onChanged: (value) =>
                       jsonHandler.writeOverlay('teamNameRight', value),
@@ -252,7 +302,7 @@ class _ControlsPage extends State<ControlsPage> {
             ),
           ],
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(top: 19.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -272,7 +322,7 @@ class _ControlsPage extends State<ControlsPage> {
               height: 50,
               child: TextField(
                 controller: week,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: UnderlineInputBorder(),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white, width: 2.0),
@@ -283,14 +333,14 @@ class _ControlsPage extends State<ControlsPage> {
                   hintText: 'Week',
                   hintStyle: TextStyle(color: Colors.white),
                 ),
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
                 onChanged: (value) => jsonHandler.writeOverlay('week', value),
               ),
             )
           ],
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(top: 19.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -309,16 +359,38 @@ class _ControlsPage extends State<ControlsPage> {
               pickerColor: HexColor(jsonHandler.readOverlay('teamColorRight')),
               onColorChanged: (Color color) {
                 jsonHandler.writeOverlay('teamColorRight',
-                    "$color".replaceAll("Color(0xff", "").replaceAll(")", ""));
+                    "#$color".replaceAll("Color(0xff", "").replaceAll(")", ""));
+                teamColorRight.text =
+                    "#$color".replaceAll("Color(0xff", "").replaceAll(")", "");
               },
               enableAlpha: false,
               colorPickerWidth: 100,
-              labelTypes: const [],
-              hexInputBar: true,
-              hexInputController: teamColorRight,
-            )
+              labelTypes: [],
+            ),
+            SizedBox(
+              width: 80,
+              height: 50,
+              child: TextField(
+                controller: teamColorRight,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 2.0),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 2.0),
+                  ),
+                  hintText: 'Team Color Right',
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+                onChanged: (value) =>
+                    jsonHandler.writeOverlay('teamColorRight', value),
+              ),
+            ),
           ],
-        )
+        ),
       ],
     );
   }
