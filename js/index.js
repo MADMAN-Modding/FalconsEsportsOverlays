@@ -15,4 +15,4 @@ setInterval(function () {
 
                 document.title = jsonData["overlay"].charAt(0).toUpperCase() + jsonData["overlay"].slice(1)
             })
-}, 1500)
+}, 500)
