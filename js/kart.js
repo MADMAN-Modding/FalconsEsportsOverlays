@@ -24,4 +24,4 @@ setInterval(function () {
             document.getElementById("scoreLeft").innerHTML = jsonData["scoreLeft"];
             document.getElementById("scoreRight").innerHTML = jsonData["scoreRight"]
         });
-}, 3000);
+}, 500);
