@@ -23,12 +23,13 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Falcons Esports Overlay Controller',
         theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(
-                seedColor: const Color.fromRGBO(190, 15, 52, 1)),
-            textSelectionTheme: const TextSelectionThemeData(
-                cursorColor: Colors.white,
-                selectionColor: Color.fromARGB(125, 255, 255, 255))),
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromRGBO(190, 15, 52, 1)),
+          textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: Colors.white,
+              selectionColor: Color.fromARGB(125, 255, 255, 255)),
+        ),
         home: const MyHomePage(),
       ),
     );

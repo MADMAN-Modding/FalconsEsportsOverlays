@@ -59,6 +59,7 @@ class _GitPage extends State<GitPage> {
                         chosenPath =
                             (await FilePicker.platform.getDirectoryPath())!;
                         directory.text = chosenPath;
+                        updateValue(chosenPath);
                       } catch (e) {}
                     },
                   ),
@@ -120,6 +121,7 @@ class _GitPage extends State<GitPage> {
                         try {
                           chosenPath = (await FilePicker.platform
                               .getDirectoryPath()) as String;
+                          updateValue(chosenPath);
                         } catch (e) {
                           return;
                         }
@@ -143,6 +145,7 @@ class _GitPage extends State<GitPage> {
                               try {
                                 chosenPath = (await FilePicker.platform
                                     .getDirectoryPath()) as String;
+                                updateValue(chosenPath);
                               } catch (e) {
                                 return;
                               }
