@@ -18,10 +18,12 @@ class _ControlsPage extends State<ControlsPage> {
 
   TextEditingController leftScore = TextEditingController();
   TextEditingController rightScore = TextEditingController();
-  TextEditingController leftTeamName = TextEditingController();
-  TextEditingController rightTeamName = TextEditingController();
+  TextEditingController teamNameLeft = TextEditingController();
+  TextEditingController teamNameRight = TextEditingController();
   TextEditingController week = TextEditingController();
   TextEditingController teamColorRight = TextEditingController();
+  TextEditingController playerNamesRight = TextEditingController();
+  TextEditingController playerNamesLeft = TextEditingController();
   JSONHandler jsonHandler = JSONHandler();
 
 // create some values
@@ -31,10 +33,12 @@ class _ControlsPage extends State<ControlsPage> {
     // Value initializers
     leftScore.text = jsonHandler.readOverlay('scoreLeft');
     rightScore.text = jsonHandler.readOverlay('scoreRight');
-    leftTeamName.text = jsonHandler.readOverlay('teamNameLeft');
-    rightTeamName.text = jsonHandler.readOverlay('teamNameRight');
+    teamNameLeft.text = jsonHandler.readOverlay('teamNameLeft');
+    teamNameRight.text = jsonHandler.readOverlay('teamNameRight');
     week.text = jsonHandler.readOverlay('week');
     teamColorRight.text = jsonHandler.readOverlay('teamColorRight');
+    playerNamesLeft.text = jsonHandler.readOverlay('playerNamesLeft');
+    playerNamesRight.text = jsonHandler.readOverlay('playerNamesRight');
     return Column(
       children: [
         Row(
@@ -257,7 +261,7 @@ class _ControlsPage extends State<ControlsPage> {
               width: 200,
               height: 50,
               child: TextField(
-                controller: leftTeamName,
+                controller: teamNameLeft,
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(),
                   focusedBorder: UnderlineInputBorder(
@@ -281,7 +285,7 @@ class _ControlsPage extends State<ControlsPage> {
                 width: 200,
                 height: 50,
                 child: TextField(
-                  controller: rightTeamName,
+                  controller: teamNameRight,
                   decoration: InputDecoration(
                     border: UnderlineInputBorder(),
                     focusedBorder: UnderlineInputBorder(
@@ -297,6 +301,108 @@ class _ControlsPage extends State<ControlsPage> {
                   textAlign: TextAlign.center,
                   onChanged: (value) =>
                       jsonHandler.writeOverlay('teamNameRight', value),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 19.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Week",
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 20,
+              height: 50,
+              child: TextField(
+                controller: week,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 2.0),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 2.0),
+                  ),
+                  hintText: 'Week',
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+                onChanged: (value) => jsonHandler.writeOverlay('week', value),
+              ),
+            )
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Player Names",
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 200,
+              height: 50,
+              child: TextField(
+                controller: playerNamesLeft,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 2.0),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 2.0),
+                  ),
+                  hintText: 'Player Names Left',
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+                onChanged: (value) =>
+                    jsonHandler.writeOverlay('playerNamesLeft', value),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 8),
+              child: SizedBox(
+                width: 200,
+                height: 50,
+                child: TextField(
+                  controller: playerNamesRight,
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 2.0),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 2.0),
+                    ),
+                    hintText: 'Right Player Names',
+                    hintStyle: TextStyle(color: Colors.white),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                  onChanged: (value) =>
+                      jsonHandler.writeOverlay('playerNamesRight', value),
                 ),
               ),
             ),
