@@ -26,8 +26,9 @@ class _ControlsPage extends State<ControlsPage> {
   TextEditingController playerNamesLeft = TextEditingController();
   JSONHandler jsonHandler = JSONHandler();
 
-// create some values
+  Color rightTeamColor = Colors.white;
 
+  // create some values
   @override
   Widget build(BuildContext context) {
     // Value initializers
@@ -39,6 +40,12 @@ class _ControlsPage extends State<ControlsPage> {
     teamColorRight.text = jsonHandler.readOverlay('teamColorRight');
     playerNamesLeft.text = jsonHandler.readOverlay('playerNamesLeft');
     playerNamesRight.text = jsonHandler.readOverlay('playerNamesRight');
+
+    try {
+      rightTeamColor = HexColor(jsonHandler.readOverlay('teamColorRight'));
+    } catch (e) {
+      rightTeamColor = Colors.white;
+    }
     return Column(
       children: [
         Row(
@@ -54,8 +61,8 @@ class _ControlsPage extends State<ControlsPage> {
               },
               child: Image.asset(
                 'images/SSBU.png',
-                width: 200,
-                height: 200,
+                width: 100,
+                height: 100,
               ),
             ),
             ElevatedButton(
@@ -68,8 +75,8 @@ class _ControlsPage extends State<ControlsPage> {
               },
               child: Image.asset(
                 'images/Kart.png',
-                width: 200,
-                height: 200,
+                width: 100,
+                height: 100,
               ),
             ),
             ElevatedButton(
@@ -82,8 +89,8 @@ class _ControlsPage extends State<ControlsPage> {
               },
               child: Image.asset(
                 'images/RL.png',
-                width: 200,
-                height: 200,
+                width: 100,
+                height: 100,
               ),
             )
           ],
@@ -462,7 +469,7 @@ class _ControlsPage extends State<ControlsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ColorPicker(
-              pickerColor: HexColor(jsonHandler.readOverlay('teamColorRight')),
+              pickerColor: rightTeamColor,
               onColorChanged: (Color color) {
                 jsonHandler.writeOverlay('teamColorRight',
                     "#$color".replaceAll("Color(0xff", "").replaceAll(")", ""));

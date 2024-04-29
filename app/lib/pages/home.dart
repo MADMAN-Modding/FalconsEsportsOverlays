@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 8, top: 2),
                 child: SelectableText(
-                  "0. Make sure PHP and git is added to the PATH, you can test this with php -v and git -v in a command line \n1. Go to config to set your settings\n2. Go to Download & Update to get the overlay\n3. Go to PHP Server to start the server\n4. Finally now you can control the overlay from the Overlay Data Page.\n5. Make sure to add the overlay as a browser in OBS\nThe URL is http://localhost:8080 and the dimensions are 1920x1080",
+                  "0. Make sure PHP and git is added to the PATH, the php executable can also be set in Config,\nyou can test this with php -v and git -v in a command line \n1. Go to config to set your settings\n2. Go to Download & Update to get the overlay\n3. Go to PHP Server to start the server\n4. Finally now you can control the overlay from the Overlay Data Page\n5. Make sure to add the overlay as a browser in OBS\nThe URL is http://localhost:8080 and the dimensions are 1920x1080",
                   style: TextStyle(color: Colors.white),
                 ),
               )

@@ -26,7 +26,8 @@ class JSONHandler {
           .whenComplete(() => File('$executableDirectory/config.json')
               .writeAsString('''
 {
-  "path": "."
+    "path": ".",
+    "phpPath": "php"
 }
 ''').whenComplete(() => configJSON = File(
                       '$executableDirectory/config.json')
@@ -78,7 +79,7 @@ class JSONHandler {
       if (kDebugMode) {
         print(e);
       }
-      return "$e";
+      return "Add overlay to the config";
     }
   }
 
@@ -100,10 +101,13 @@ class JSONHandler {
   }
 
   void writeConfig(String key, String data) {
+    configJSON[key] = data;
+
     File('$executableDirectory/config.json').writeAsStringSync('''
 {
-    "$key": "$data"
+    "path": "${configJSON["path"]}",
+    "phpPath": "${configJSON["phpPath"]}"
 }
-  ''');
+''');
   }
 }
