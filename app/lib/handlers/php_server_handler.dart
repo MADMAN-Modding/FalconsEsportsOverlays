@@ -7,8 +7,7 @@ class PHPServerHandler {
   JSONHandler jsonHandler = JSONHandler();
 
   void startServer(String pathModifier) {
-    Process.run(
-        '${jsonHandler.readConfig('phpPath')}/php', ['-S', '127.0.0.1:8080'],
+    Process.run(jsonHandler.readConfig('phpPath'), ['-S', '127.0.0.1:8080'],
         workingDirectory: "${jsonHandler.readConfig('path')}/$pathModifier");
   }
 
