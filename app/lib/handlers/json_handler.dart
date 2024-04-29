@@ -9,21 +9,28 @@ class JSONHandler {
   // Controller config variables
   var configJSON;
 
+  String executableDirectory = File(Platform.resolvedExecutable).parent.path;
+
   JSONHandler() {
     // Try-catch to read config values
+
+    print(executableDirectory);
     try {
-      configJSON = File('config.json').readAsJsonSync();
+      configJSON = File('$executableDirectory/config.json').readAsJsonSync();
     } catch (e) {
       if (kDebugMode) {
         print("Can't find file :( $e \nmaking a new config");
       }
-      File('config.json')
+      File('$executableDirectory/config.json')
           .create(recursive: true)
-          .whenComplete(() => File('config.json').writeAsString('''
+          .whenComplete(() => File('$executableDirectory/config.json')
+              .writeAsString('''
 {
   "path": "."
 }
-''').whenComplete(() => configJSON = File('config.json').readAsJsonSync()));
+''').whenComplete(() => configJSON = File(
+                      '$executableDirectory/config.json')
+                  .readAsJsonSync()));
 
       if (kDebugMode) {
         print("Config Generated");
@@ -93,7 +100,7 @@ class JSONHandler {
   }
 
   void writeConfig(String key, String data) {
-    File('config.json').writeAsStringSync('''
+    File('$executableDirectory/config.json').writeAsStringSync('''
 {
     "$key": "$data"
 }
