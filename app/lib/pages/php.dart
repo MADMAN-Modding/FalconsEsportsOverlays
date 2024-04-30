@@ -1,3 +1,4 @@
+import 'package:falcons_esports_overlays_controller/constants.dart';
 import 'package:falcons_esports_overlays_controller/handlers/php_server_handler.dart';
 import 'package:flutter/material.dart';
 import '../handlers/git_handler.dart';
@@ -35,7 +36,7 @@ class _PHPPage extends State<PHPPage> {
                           .checkRepo(jsonHandler.readConfig("path"))) {
                         php.startServer("");
                       } else if (await gitHandler.checkRepo(
-                          "${jsonHandler.readConfig("path")}/FalconsEsportsOverlays")) {
+                          "${jsonHandler.readConfig("path")}${Constants.slashType}FalconsEsportsOverlays")) {
                         php.startServer("FalconsEsportsOverlays");
                       }
                       ;
