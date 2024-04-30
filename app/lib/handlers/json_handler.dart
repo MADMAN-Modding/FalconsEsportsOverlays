@@ -105,8 +105,8 @@ class JSONHandler {
 
     File('$executableDirectory/config.json').writeAsStringSync('''
 {
-    "path": "${configJSON["path"]}",
-    "phpPath": "${configJSON["phpPath"]}"
+    "path": "${configJSON["path"].toString().replaceAll(r'\', r"\\")}",
+    "phpPath": "${configJSON["phpPath"].toString().replaceAll(r'\*', "\\")}"
 }
 ''');
   }
