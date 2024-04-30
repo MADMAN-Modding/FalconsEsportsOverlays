@@ -47,8 +47,8 @@ class _ControlsPage extends State<ConfigPage> {
                     try {
                       codePath =
                           (await FilePicker.platform.getDirectoryPath())!;
-                      directory.text =
-                          codePath; // Sets the text equal to the path
+                      directory.text = codePath.toString().replaceAll(
+                          r'\', r"\\"); // Sets the text equal to the path
                       jsonHandler.writeConfig('path', codePath);
                     } catch (e) {
                       return;
@@ -105,11 +105,15 @@ class _ControlsPage extends State<ConfigPage> {
                     try {
                       FilePickerResult? phpPath =
                           (await FilePicker.platform.pickFiles())!;
-                      phpDirectory.text =
-                          "${phpPath.files.single.path}"; // Sets the text equal to the path
+                      phpDirectory.text = phpPath.files.single.path
+                          .toString()
+                          .replaceAll(
+                              r'\', r"\\"); // Sets the text equal to the path
                       jsonHandler.writeConfig(
                           'phpPath', "${phpPath.files.single.path}");
-                    } catch (e) {}
+                    } catch (e) {
+                      print(e);
+                    }
                   },
                 ),
               ),
