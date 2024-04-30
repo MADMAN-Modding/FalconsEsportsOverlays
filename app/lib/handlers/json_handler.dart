@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:falcons_esports_overlays_controller/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_file/json_file.dart';
 
@@ -16,21 +17,23 @@ class JSONHandler {
 
     print(executableDirectory);
     try {
-      configJSON = File('$executableDirectory/config.json').readAsJsonSync();
+      configJSON = File('$executableDirectory${Constants.slashType}config.json')
+          .readAsJsonSync();
     } catch (e) {
       if (kDebugMode) {
         print("Can't find file :( $e \nmaking a new config");
       }
-      File('$executableDirectory/config.json')
+      File('$executableDirectory${Constants.slashType}config.json')
           .create(recursive: true)
-          .whenComplete(() => File('$executableDirectory/config.json')
+          .whenComplete(() => File(
+                  '$executableDirectory${Constants.slashType}config.json')
               .writeAsString('''
 {
     "path": ".",
     "phpPath": "php"
 }
 ''').whenComplete(() => configJSON = File(
-                      '$executableDirectory/config.json')
+                      '$executableDirectory${Constants.slashType}config.json')
                   .readAsJsonSync()));
 
       if (kDebugMode) {
@@ -39,8 +42,9 @@ class JSONHandler {
     }
 
     try {
-      overlayJSON =
-          File('${readConfig('path')}/json/overlay.json').readAsJsonSync();
+      overlayJSON = File(
+              '${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
+          .readAsJsonSync();
     } catch (e) {
       print(e);
     }
@@ -50,7 +54,8 @@ class JSONHandler {
   void writeOverlay(String key, String data) {
     try {
       overlayJSON[key] = data;
-      File('${readConfig('path')}/json/overlay.json').writeAsStringSync('''
+      File('${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
+          .writeAsStringSync('''
 {
     "teamNameLeft": "${overlayJSON['teamNameLeft']}",
     "teamNameRight": "${overlayJSON['teamNameRight']}",
@@ -74,7 +79,7 @@ class JSONHandler {
 
   String readOverlay(String key) {
     try {
-      return overlayJSON[key];
+      return overlayJSON[key].toString().replaceAll(r"\", r"\\");
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -94,7 +99,7 @@ class JSONHandler {
   // Config methods
   String readConfig(String key) {
     try {
-      return configJSON[key];
+      return configJSON[key].toString().replaceAll(r"\", r"\\");
     } catch (e) {
       return ".";
     }
@@ -103,7 +108,8 @@ class JSONHandler {
   void writeConfig(String key, String data) {
     configJSON[key] = data;
 
-    File('$executableDirectory/config.json').writeAsStringSync('''
+    File('$executableDirectory${Constants.slashType}config.json')
+        .writeAsStringSync('''
 {
     "path": "${configJSON["path"].toString().replaceAll(r'\', r"\\")}",
     "phpPath": "${configJSON["phpPath"].toString().replaceAll(r'\*', "\\")}"

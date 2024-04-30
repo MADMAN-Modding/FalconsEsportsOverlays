@@ -58,7 +58,7 @@ class _GitPage extends State<GitPage> {
                       try {
                         chosenPath =
                             (await FilePicker.platform.getDirectoryPath())!;
-                        directory.text = chosenPath;
+                        directory.text = chosenPath.replaceAll(r"\", r"\\");
                         updateValue(chosenPath);
                       } catch (e) {}
                     },
