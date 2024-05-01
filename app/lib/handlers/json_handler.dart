@@ -108,11 +108,20 @@ class JSONHandler {
   void writeConfig(String key, String data) {
     configJSON[key] = data;
 
+    configJSON["path"] = configJSON["path"]
+        .toString()
+        .replaceAll(r'\\', r'\')
+        .replaceAll(r'\', r'\\');
+    configJSON["phpPath"] = configJSON["phpPath"]
+        .toString()
+        .replaceAll(r'\\', r'\')
+        .replaceAll(r'\', r'\\');
+
     File('$executableDirectory${Constants.slashType}config.json')
         .writeAsStringSync('''
 {
-    "path": "${configJSON["path"].toString().replaceAll(r'\', r"\\")}",
-    "phpPath": "${configJSON["phpPath"].toString().replaceAll(r'\*', "\\")}"
+    "path": "${configJSON["path"]}",
+    "phpPath": "${configJSON["phpPath"]}"
 }
 ''');
   }
