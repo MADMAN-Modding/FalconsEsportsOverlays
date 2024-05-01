@@ -105,7 +105,10 @@ class _ControlsPage extends State<ConfigPage> {
                       FilePickerResult? phpPath =
                           (await FilePicker.platform.pickFiles())!;
                       phpDirectory.text = phpPath.files.single.path
-                          .toString(); // Sets the text equal to the path
+                          .toString()
+                          .replaceAll(r"\\", r"\")
+                          .replaceAll(
+                              r"\", r"\\"); // Sets the text equal to the path
                       jsonHandler.writeConfig(
                           'phpPath', "${phpPath.files.single.path}");
                     } catch (e) {
