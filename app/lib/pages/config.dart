@@ -24,7 +24,6 @@ class _ControlsPage extends State<ConfigPage> {
   Widget build(BuildContext context) {
     directory.text = jsonHandler.readConfig('path');
     phpDirectory.text = jsonHandler.readConfig('phpPath');
-    gitDirectory.text = jsonHandler.readConfig('gitPath');
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -47,8 +46,8 @@ class _ControlsPage extends State<ConfigPage> {
                     try {
                       codePath =
                           (await FilePicker.platform.getDirectoryPath())!;
-                      directory.text = codePath.toString().replaceAll(
-                          r'\', r"\\"); // Sets the text equal to the path
+                      directory.text =
+                          codePath; // Sets the text equal to the path
                       jsonHandler.writeConfig('path', codePath);
                     } catch (e) {
                       return;
@@ -106,9 +105,7 @@ class _ControlsPage extends State<ConfigPage> {
                       FilePickerResult? phpPath =
                           (await FilePicker.platform.pickFiles())!;
                       phpDirectory.text = phpPath.files.single.path
-                          .toString()
-                          .replaceAll(
-                              r'\', r"\\"); // Sets the text equal to the path
+                          .toString(); // Sets the text equal to the path
                       jsonHandler.writeConfig(
                           'phpPath', "${phpPath.files.single.path}");
                     } catch (e) {
