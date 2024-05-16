@@ -17,12 +17,14 @@
             "winsLeft" => "0",
             "winsRight" => "0",
             "teamColorRight" => "#FFFFFF",
+            "teamColorLeft" => "#BE0F32",
             "overlay" => "kart",
             "week" => "0",
             "scoreLeft" => "0",
             "scoreRight" => "0",
             "playerNamesLeft" => "MADMAN-Modding",
-            "playerNamesRight" => "go to the controls.php page or set the values in the app"
+            "playerNamesRight" => "go to the controls.php page or set the values in the app",
+
         ], JSON_PRETTY_PRINT));
     }
     ?>

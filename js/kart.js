@@ -2,6 +2,7 @@ setInterval(function () {
     fetch('../json/overlay.json')
         .then((response) => response.json())
         .then((jsonData) => {
+            // Gets the value of jsonData as an int
             const winsLeft = +jsonData["winsLeft"];
             const winsRight = +jsonData["winsRight"];
 
