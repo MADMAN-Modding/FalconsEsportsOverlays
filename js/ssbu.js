@@ -2,18 +2,18 @@ setInterval(function () {
     fetch('../json/overlay.json')
         .then((response) => response.json())
         .then((jsonData) => {
-             const winsLeft = +jsonData["winsLeft"];
+            const winsLeft = +jsonData["winsLeft"];
             const winsRight = +jsonData["winsRight"];
 
             // Update the left side rounds won
-             for (let i = 1; i <= 2; i++) {
-                 document.getElementById(`leftRoundsWon${i}`).style.backgroundColor = winsLeft >= i ? "#BE0F34" : "black";
-             }
+            for (let i = 1; i <= 2; i++) {
+                document.getElementById(`leftRoundsWon${i}`).style.backgroundColor = winsLeft >= i ? "#BE0F34" : "black";
+            }
 
-        // Update the right side rounds won
-             for (let i = 1; i <= 2; i++) {
-             document.getElementById(`rightRoundsWon${i}`).style.backgroundColor = winsRight >= i ? jsonData["teamColorRight"] : "black";
-        }
+            // Update the right side rounds won
+            for (let i = 1; i <= 2; i++) {
+                document.getElementById(`rightRoundsWon${i}`).style.backgroundColor = winsRight >= i ? jsonData["teamColorRight"] : "black";
+            }
 
             // Updates the Team Names and week
             document.getElementById("teamNameLeft").innerHTML = jsonData["teamNameLeft"];
@@ -24,6 +24,11 @@ setInterval(function () {
             document.getElementById("scoreLeft").innerHTML = jsonData["scoreLeft"];
             document.getElementById("scoreRight").innerHTML = jsonData["scoreRight"];
 
+            // Team Color Changing for left and right
+            // Left
+            document.getElementById("namePlateLeft").style.backgroundColor = jsonData["teamColorLeft"];
+            document.getElementById("namePlateLeftSlope").style.backgroundColor = jsonData["teamColorLeft"];
+            // Right
             document.getElementById("namePlateRight").style.backgroundColor = jsonData["teamColorRight"];
             document.getElementById("namePlateRightSlope").style.backgroundColor = jsonData["teamColorRight"];
         });
