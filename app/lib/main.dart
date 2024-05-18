@@ -8,6 +8,7 @@ import 'pages/git.dart';
 import 'pages/home.dart';
 import 'pages/php.dart';
 import 'pages/config.dart';
+import 'pages/newControls.dart';
 
 void main() {
   runApp(const MyApp());
@@ -80,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = const GitPage();
         break;
       case 2:
-        page = const ControlsPage();
+        page = const NewControlsPage();
         break;
       case 3:
         page = const PHPPage();
