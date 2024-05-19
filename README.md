@@ -2,6 +2,8 @@
  A stream overlay for multiple games with a control page and a overlay page, both interact with a json file. This is also controlled by an app written in Dart.
 <h1>Setup</h1>
 
+<h1>AS OF VERSION 2.1.0 THE OVERLAY MUST BE LAUNCHED IN A WEB BROWSER ONCE BEFORE TRYING TO EDIT IT</h1>
+
 <h2>Using the App</h2>
 <p>Go to the latest release on the releases tab, download the zip file for your respective OS, unzip the file, make sure that you keep everything in that folder together, git must be setup and php needs to be downloaded somewhere, the homepage of the app will explain the rest.</p>
 
