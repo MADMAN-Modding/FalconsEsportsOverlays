@@ -61,6 +61,7 @@ class JSONHandler {
     "teamNameRight": "${overlayJSON['teamNameRight']}",
     "winsLeft": "${overlayJSON['winsLeft']}",
     "winsRight": "${overlayJSON['winsRight']}",
+    "teamColorLeft": "${overlayJSON['teamColorLeft']}",
     "teamColorRight": "${overlayJSON['teamColorRight']}",
     "overlay": "${overlayJSON['overlay']}",
     "week": "${overlayJSON['week']}",
