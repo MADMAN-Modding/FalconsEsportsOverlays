@@ -18,13 +18,14 @@ $dataArray = [
     "teamNameRight" => "$valueArray[1]",
     "winsLeft" => "$valueArray[2]",
     "winsRight" => "$valueArray[3]",
-    "teamColorRight" => "$valueArray[4]",
-    "overlay" => "$valueArray[5]",
-    "week" => "$valueArray[6]",
-    "scoreLeft" => "$valueArray[7]",
-    "scoreRight" => "$valueArray[8]",
-    "playerNamesLeft" => "$valueArray[9]",
-    "playerNamesRight" => "$valueArray[10]"
+    "teamColorLeft" => "$valueArray[4]",
+    "teamColorRight" => "$valueArray[5]",
+    "overlay" => "$valueArray[6]",
+    "week" => "$valueArray[7]",
+    "scoreLeft" => "$valueArray[8]",
+    "scoreRight" => "$valueArray[9]",
+    "playerNamesLeft" => "$valueArray[10]",
+    "playerNamesRight" => "$valueArray[11]"
 ];
 
 // Write the JSON data to the file
