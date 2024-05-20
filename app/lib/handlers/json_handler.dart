@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:json_file/json_file.dart';
 
 class JSONHandler {
-  //
+  // Overlay file initializer
   var overlayJSON;
 
   // Controller config variables
@@ -14,8 +14,6 @@ class JSONHandler {
 
   JSONHandler() {
     // Try-catch to read config values
-
-    print(executableDirectory);
     try {
       configJSON = File('$executableDirectory${Constants.slashType}config.json')
           .readAsJsonSync();
@@ -46,7 +44,11 @@ class JSONHandler {
               '${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
           .readAsJsonSync();
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
+
+      makeOverlay();
     }
   }
 
@@ -76,25 +78,9 @@ class JSONHandler {
         print(e);
       }
       try {
-      if (readConfig('path') != ".") {
-       File('${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
-          .writeAsStringSync('''
-{
-    "teamNameLeft": "DC Falcons Red",
-    "teamNameRight": "That other team",
-    "winsLeft": "0",
-    "winsRight": "0",
-    "teamColorLeft": "#BE0F32",
-    "teamColorRight": "#FFFFFF",
-    "overlay": "kart",
-    "week": "0",
-    "scoreLeft": "0",
-    "scoreRight": "0",
-    "playerNamesLeft": "MADMAN-Modding",
-    "playerNamesRight": "Another player"
-}
-''');
-      }
+        if (readConfig('path') != ".") {
+          makeOverlay();
+        }
       } catch (e) {
         if (kDebugMode) {
           print(e);
@@ -110,7 +96,16 @@ class JSONHandler {
       if (kDebugMode) {
         print(e);
       }
-      return "Add overlay to the config";
+
+      makeOverlay();
+
+      sleep(const Duration(seconds: 5));
+
+      try {
+        return overlayJSON[key].toString().replaceAll(r"\", r"\\");
+      } catch (e) {
+        return "Add overlay to the config";
+      }
     }
   }
 
@@ -150,5 +145,36 @@ class JSONHandler {
     "phpPath": "${configJSON["phpPath"]}"
 }
 ''');
+  }
+
+  Future<void> makeOverlay() async {
+    // Prevents overwriting
+    if (!await File(
+            "${readConfig("path")}${Constants.slashType}json${Constants.slashType}overlay.json")
+        .exists()) {
+      File('${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
+          .writeAsStringSync('''
+{
+    "teamNameLeft": "DC Falcons Red",
+    "teamNameRight": "That other team",
+    "winsLeft": "0",
+    "winsRight": "0",
+    "teamColorLeft": "#BE0F32",
+    "teamColorRight": "#FFFFFF",
+    "overlay": "kart",
+    "week": "0",
+    "scoreLeft": "0",
+    "scoreRight": "0",
+    "playerNamesLeft": "MADMAN-Modding",
+    "playerNamesRight": "Another player"
+}
+''');
+
+      overlayJSON = File(
+              '${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
+          .readAsJsonSync();
+    } else {
+      print("help");
+    }
   }
 }
