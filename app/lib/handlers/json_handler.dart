@@ -75,6 +75,25 @@ class JSONHandler {
       if (kDebugMode) {
         print(e);
       }
+      try {
+      if (readConfig('path') != ".") {
+        writeOverlay("teamNameLeft", "DC Falcons Red");
+        writeOverlay("teamNameRight", "That other team");
+        writeOverlay("winsLeft", "0");
+        writeOverlay("winsRight", "0");
+        writeOverlay("teamColorLeft", "#BE0F32");
+        writeOverlay("teamColorRight", "#FFFFFF");
+        writeOverlay("overlay", "kart");
+        writeOverlay("scoreLeft", "0");
+        writeOverlay("scoreRight", "0");
+        writeOverlay("playerNamesLeft", "MADMAN-Modding");
+        writeOverlay("playerNamesRight", "Input Name");
+      }
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
     }
   }
 
