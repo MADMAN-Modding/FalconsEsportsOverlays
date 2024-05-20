@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -28,6 +30,7 @@ class _ControlsPageState extends State<ControlsPage> {
   @override
   void initState() {
     super.initState();
+
     // Initialize controller values
     scoreLeft.text = jsonHandler.readOverlay('scoreLeft');
     scoreRight.text = jsonHandler.readOverlay('scoreRight');
