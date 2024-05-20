@@ -77,17 +77,23 @@ class JSONHandler {
       }
       try {
       if (readConfig('path') != ".") {
-        writeOverlay("teamNameLeft", "DC Falcons Red");
-        writeOverlay("teamNameRight", "That other team");
-        writeOverlay("winsLeft", "0");
-        writeOverlay("winsRight", "0");
-        writeOverlay("teamColorLeft", "#BE0F32");
-        writeOverlay("teamColorRight", "#FFFFFF");
-        writeOverlay("overlay", "kart");
-        writeOverlay("scoreLeft", "0");
-        writeOverlay("scoreRight", "0");
-        writeOverlay("playerNamesLeft", "MADMAN-Modding");
-        writeOverlay("playerNamesRight", "Input Name");
+       File('${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
+          .writeAsStringSync('''
+{
+    "teamNameLeft": "DC Falcons Red",
+    "teamNameRight": "That other team",
+    "winsLeft": "0",
+    "winsRight": "0",
+    "teamColorLeft": "#BE0F32",
+    "teamColorRight": "#FFFFFF",
+    "overlay": "kart",
+    "week": "0",
+    "scoreLeft": "0",
+    "scoreRight": "0",
+    "playerNamesLeft": "MADMAN-Modding",
+    "playerNamesRight": "Another player"
+}
+''');
       }
       } catch (e) {
         if (kDebugMode) {
