@@ -1,15 +1,15 @@
 # FalconsEsportsOverlays
- A stream overlay for multiple games with a control page and a overlay page, both interact with a json file. This is also controlled by an app written in Dart.
+ A stream overlay for multiple games with a control page and a overlay page, both interact with a json file. This is also controlled by an app written in Dart (I recommend using that).
 <h1>Setup</h1>
 
-<h1>AS OF VERSION 2.1.0 THE OVERLAY MUST BE LAUNCHED IN A WEB BROWSER ONCE BEFORE TRYING TO EDIT IT</h1>
+<h1>Fixed in Version 2.1.1 AS OF VERSION 2.1.0 THE OVERLAY MUST BE LAUNCHED IN A WEB BROWSER ONCE BEFORE TRYING TO EDIT IT</h1>
 
 <h2>Using the App</h2>
 <p>Go to the latest release on the releases tab, download the zip file for your respective OS, unzip the file, make sure that you keep everything in that folder together, git must be setup and php needs to be downloaded somewhere, the homepage of the app will explain the rest.</p>
 
 <h2>Docker</h2>
 <h3>Get the docker <a href="https://hub.docker.com/repository/docker/madmanmodding/falconsesportsoverlay/general" target="_blank">here</a></h3>
-<p>I (MADMAN-Modding) usually update the docker every release, but it will still pull from main everytime it starts</p>
+<p>I (MADMAN-Modding) usually update the docker every release, but it will still pull from main everytime it starts. There is no currently no support for the docker from the dart app. It is planned to be added.</p>
 <h1>Clone/update with git cli</h1>
 <h4>Git (optional but recommended)</h4>
 
