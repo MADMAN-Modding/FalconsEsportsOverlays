@@ -24,6 +24,7 @@ h1 {
 #winsLeft,
 #winsRight,
 #overlay,
+#teamColorLeft,
 #teamColorRight {
     display: none;
 }
