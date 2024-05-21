@@ -67,6 +67,10 @@
     echo "<h2 id=\"weekText\">Week</h2>";
     formMaker("number", "week", $jsonData["week"], "teamNameLeft", "");
 
+    // Left team color picker
+    echo "<h2 class=\"submit\">Left Team Color</h2>";
+    formMaker("color", "teamColorRight", $jsonData["teamColorLeft"], "teamColorLeft", "");
+
     // Right team color picker
     echo "<h2 class=\"submit\">Right Team Color</h2>";
 
@@ -105,6 +109,7 @@
             letMaker("teamNameRight", "");
             AJAXFormMaker("winsLeft");
             AJAXFormMaker("winsRight");
+            letMaker("teamColorLeft", ".replace('#', '!'");
             letMaker("teamColorRight", ".replace('#', '!')");
             letMaker("week", "");
             letMaker("scoreLeft", "");
