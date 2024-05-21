@@ -97,14 +97,18 @@ class JSONHandler {
         print(e);
       }
 
-      makeOverlay();
-
-      sleep(const Duration(seconds: 5));
+      if (readConfig("path") != ".") {
+        makeOverlay();
+      }
 
       try {
         return overlayJSON[key].toString().replaceAll(r"\", r"\\");
       } catch (e) {
-        return "Add overlay to the config";
+        try {
+          return overlayJSON[key].toString().replaceAll(r"\", r"\\");
+        } catch (e) {
+          return "Add overlay to the config";
+        }
       }
     }
   }
@@ -149,9 +153,8 @@ class JSONHandler {
 
   Future<void> makeOverlay() async {
     // Prevents overwriting
-    if (!await File(
-            "${readConfig("path")}${Constants.slashType}json${Constants.slashType}overlay.json")
-        .exists()) {
+
+    try {
       File('${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
           .writeAsStringSync('''
 {
@@ -173,8 +176,6 @@ class JSONHandler {
       overlayJSON = File(
               '${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
           .readAsJsonSync();
-    } else {
-      print("help");
-    }
+    } catch (e) {}
   }
 }
