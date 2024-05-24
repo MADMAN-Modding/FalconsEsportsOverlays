@@ -1,18 +1,40 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_popup_card/flutter_popup_card.dart';
 import 'package:rw_git/rw_git.dart';
 
 class GitHandler {
   RwGit rwGit = RwGit();
 
-  void repoCloner(path) {
+  Future<Future> repoCloner(path, BuildContext context) async {
     // path ??= FilePicker.platform.getDirectoryPath();
 
-    Process.run('git', [
+    await Process.run('git', [
       'clone',
       'https://github.com/MADMAN-Modding/FalconsEsportsOverlays.git',
       "$path"
     ]);
+
+    return showPopupCard(
+      context: context,
+      builder: (context) {
+        return PopupCard(
+          elevation: 8,
+          color: const Color.fromARGB(255, 255, 255, 255),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('Repository cloned to $path'),
+          ),
+        );
+      },
+      offset: const Offset(-16, 70),
+      alignment: Alignment.topRight,
+      useSafeArea: true,
+    );
   }
 
   void update(String path) {
