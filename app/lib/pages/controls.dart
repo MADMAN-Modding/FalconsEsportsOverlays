@@ -22,8 +22,8 @@ class _ControlsPageState extends State<ControlsPage> {
   final TextEditingController playerNamesLeft = TextEditingController();
   final JSONHandler jsonHandler = JSONHandler();
 
-  Color leftTeamColor = const Color.fromRGBO(190, 15, 50, 1);
-  Color rightTeamColor = Colors.white;
+  Color teamColorLeftDefault = const Color.fromRGBO(190, 15, 50, 1);
+  Color teamColorRightDefault = Colors.white;
 
   @override
   void initState() {
@@ -41,8 +41,9 @@ class _ControlsPageState extends State<ControlsPage> {
     playerNamesRight.text = jsonHandler.readOverlay('playerNamesRight');
 
     try {
-      leftTeamColor = HexColor(jsonHandler.readOverlay("teamColorLeft"));
-      rightTeamColor = HexColor(jsonHandler.readOverlay("teamColorRight"));
+      teamColorLeftDefault = HexColor(jsonHandler.readOverlay("teamColorLeft"));
+      teamColorRightDefault =
+          HexColor(jsonHandler.readOverlay("teamColorRight"));
     } catch (e) {}
   }
 
@@ -67,24 +68,24 @@ class _ControlsPageState extends State<ControlsPage> {
             children: [
               buildTeamColumn(
                 teamSide: "Left",
-                controllers: [scoreLeft, playerNamesLeft],
-                jsonKeys: ["scoreLeft", "playerNamesLeft"],
-                widths: [40, 260],
-                heights: [40, 40],
-                labels: ["Score", "Player Names"],
+                controllers: [scoreLeft, playerNamesLeft, teamNameLeft],
+                jsonKeys: ["scoreLeft", "playerNamesLeft", "teamNameLeft"],
+                widths: [40, 260, 260],
+                heights: [40, 40, 40],
+                labels: ["Score", "Player Names", "Team Name"],
                 colorController: teamColorLeft,
-                sideColor: leftTeamColor,
+                sideColor: teamColorLeftDefault,
               ),
               buildMiddleColumn(),
               buildTeamColumn(
                 teamSide: "Right",
-                controllers: [scoreRight, playerNamesRight],
-                jsonKeys: ["scoreRight", "playerNamesRight"],
-                widths: [40, 260],
-                heights: [40, 40],
-                labels: ["Score", "Player Names"],
+                controllers: [scoreRight, playerNamesRight, teamNameRight],
+                jsonKeys: ["scoreRight", "playerNamesRight", "teamNameRight"],
+                widths: [40, 260, 260],
+                heights: [40, 40, 40],
+                labels: ["Score", "Player Names", "Team Name"],
                 colorController: teamColorRight,
-                sideColor: rightTeamColor,
+                sideColor: teamColorRightDefault,
               )
             ],
           )
@@ -184,7 +185,6 @@ class _ControlsPageState extends State<ControlsPage> {
       required TextEditingController colorController,
       required Color sideColor}) {
     List<Widget> winButtons = [];
-
     for (int i = 0; i < 4; i++) {
       winButtons
           .add(scoreButton(text: "$i", jsonKey: "wins$teamSide", value: i));
@@ -217,6 +217,12 @@ class _ControlsPageState extends State<ControlsPage> {
           ],
         ),
         const SizedBox(height: 10),
+        Text(
+          "$teamSide Wins",
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),
+        ),
+        const SizedBox(height: 10),
         Row(children: winButtons),
         Column(children: textEditors),
         const SizedBox(height: 15),
@@ -239,15 +245,12 @@ class _ControlsPageState extends State<ControlsPage> {
               colorPickerWidth: 100,
               labelTypes: [],
             ),
-            SizedBox(
+            textEditor(
+                jsonKey: "teamColor$teamSide",
                 width: 80,
-                height: 100,
-                child: textEditor(
-                    jsonKey: "teamColor$teamSide",
-                    width: 80,
-                    height: 50,
-                    controller: colorController,
-                    label: "")),
+                height: 50,
+                controller: colorController,
+                label: ""),
           ],
         )
       ],
@@ -258,6 +261,64 @@ class _ControlsPageState extends State<ControlsPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Row(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  try {
+                    // All temp values will be set to the left value at first
+                    String tempWins = jsonHandler.readOverlay("winsLeft");
+                    String tempScore = scoreLeft.text;
+                    String tempPlayerNames = playerNamesLeft.text;
+                    String tempTeamName = teamNameLeft.text;
+                    String tempTeamColor = teamColorLeft.text;
+
+                    // Set the left side equal to the right
+                    jsonHandler.writeOverlay(
+                        "winsLeft", jsonHandler.readOverlay("winsRight"));
+                    scoreLeft.text = scoreRight.text;
+                    playerNamesLeft.text = playerNamesRight.text;
+                    teamNameLeft.text = teamNameRight.text;
+                    teamColorLeft.text = teamColorRight.text;
+
+                    // Set the right equal to the temp values
+                    jsonHandler.writeOverlay("winsRight", tempWins);
+                    scoreRight.text = tempScore;
+                    playerNamesRight.text = tempPlayerNames;
+                    teamNameRight.text = tempTeamName;
+                    teamColorRight.text = tempTeamColor;
+
+                    // Write the new data to the json file
+                    List<TextEditingController> controllers = [
+                      scoreLeft,
+                      playerNamesLeft,
+                      teamNameLeft,
+                      teamColorLeft,
+                      scoreRight,
+                      playerNamesRight,
+                      teamNameRight,
+                      teamColorRight
+                    ];
+
+                    List<String> keys = [
+                      "scoreLeft",
+                      "playerNamesLeft",
+                      "teamNameLeft",
+                      "teamColorLeft",
+                      "scoreRight",
+                      "playerNamesRight",
+                      "teamNameRight",
+                      "teamColorRight"
+                    ];
+
+                    for (int i = 0; i < controllers.length; i++) {
+                      jsonHandler.writeOverlay(keys[i], controllers[i].text);
+                    }
+                  } catch (e) {}
+                },
+                child: const Icon(Icons.swap_horiz_sharp))
+          ],
+        ),
         Row(
           children: [
             textEditor(
