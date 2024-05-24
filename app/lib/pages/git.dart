@@ -36,7 +36,10 @@ class _GitPage extends State<GitPage> {
             children: [
               Text(
                 "Make sure the directory is empty if you're cloning the repository.",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold),
               )
             ],
           ),
