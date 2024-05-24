@@ -3,7 +3,6 @@ import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_popup_card/flutter_popup_card.dart';
 
 class GitPage extends StatefulWidget {
   const GitPage({super.key});
@@ -97,26 +96,7 @@ class _GitPage extends State<GitPage> {
                         if (kDebugMode) {
                           print(chosenPath);
                         }
-                        git.repoCloner(chosenPath);
-                        showPopupCard(
-                          context: context,
-                          builder: (context) {
-                            return PopupCard(
-                              elevation: 8,
-                              color: const Color.fromARGB(255, 255, 255, 255),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Text('Repository cloned to $chosenPath'),
-                              ),
-                            );
-                          },
-                          offset: const Offset(-16, 70),
-                          alignment: Alignment.topRight,
-                          useSafeArea: true,
-                        );
+                        git.repoCloner(chosenPath, context);
                       } else {
                         try {
                           chosenPath = (await FilePicker.platform
