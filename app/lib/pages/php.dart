@@ -39,7 +39,6 @@ class _PHPPage extends State<PHPPage> {
                           "${jsonHandler.readConfig("path")}${Constants.slashType}FalconsEsportsOverlays")) {
                         php.startServer("FalconsEsportsOverlays");
                       }
-                      ;
                     },
                     child: const Text("Start PHP Server")),
               ),
