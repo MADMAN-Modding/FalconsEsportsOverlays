@@ -176,6 +176,8 @@ class JSONHandler {
       overlayJSON = File(
               '${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
           .readAsJsonSync();
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -44,7 +45,9 @@ class _ControlsPageState extends State<ControlsPage> {
       teamColorLeftDefault = HexColor(jsonHandler.readOverlay("teamColorLeft"));
       teamColorRightDefault =
           HexColor(jsonHandler.readOverlay("teamColorRight"));
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override
@@ -243,7 +246,7 @@ class _ControlsPageState extends State<ControlsPage> {
               },
               enableAlpha: false,
               colorPickerWidth: 100,
-              labelTypes: [],
+              labelTypes: const [],
             ),
             textEditor(
                 jsonKey: "teamColor$teamSide",
@@ -314,7 +317,11 @@ class _ControlsPageState extends State<ControlsPage> {
                     for (int i = 0; i < controllers.length; i++) {
                       jsonHandler.writeOverlay(keys[i], controllers[i].text);
                     }
-                  } catch (e) {}
+                  } catch (e) {
+                    if (kDebugMode) {
+                      print(e);
+                    }
+                  }
                 },
                 child: const Icon(Icons.swap_horiz_sharp))
           ],
