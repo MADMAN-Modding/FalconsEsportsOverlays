@@ -1,8 +1,6 @@
 # FalconsEsportsOverlays
- A stream overlay for multiple games with a control page and a overlay page, both interact with a json file. This is also controlled by an app written in Dart (I recommend using that).
+This is a streaming overlay for esports teams, this has nice gui app written in dart, that you can find in the releases page. There is also a web controlled version but that is only for releases 2.1.4 and below.
 <h1>Setup</h1>
-
-<h1>Fixed in Version 2.1.1 AS OF VERSION 2.1.0 THE OVERLAY MUST BE LAUNCHED IN A WEB BROWSER ONCE BEFORE TRYING TO EDIT IT</h1>
 
 <h2>Using the App</h2>
 <p>Go to the latest release on the releases tab, download the zip file for your respective OS, unzip the file, make sure that you keep everything in that folder together, git must be setup and php needs to be downloaded somewhere, the homepage of the app will explain the rest.</p>
