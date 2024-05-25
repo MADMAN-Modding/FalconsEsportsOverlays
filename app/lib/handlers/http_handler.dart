@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_popup_card/flutter_popup_card.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
@@ -8,14 +7,15 @@ import 'json_handler.dart';
 JSONHandler jsonHandler = JSONHandler();
 
 class HTTPHandler {
-  var handler = createStaticHandler("/home/mad/Desktop/Overlay/",
-      defaultDocument: 'index.html');
-
   late var server;
 
   Future<void> startServer(BuildContext context) async {
     try {
-      var server = await shelf_io.serve(handler, 'localhost', 8080);
+      this.server = await shelf_io.serve(
+          createStaticHandler(jsonHandler.readConfig("path"),
+              defaultDocument: 'index.html'),
+          'localhost',
+          8080);
       this.server = server;
       popUpMaker("Server started", context);
     } catch (e) {

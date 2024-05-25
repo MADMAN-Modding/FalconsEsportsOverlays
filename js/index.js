@@ -10,6 +10,8 @@ setInterval(function () {
                     return;
                 }
 
+                
+
                 // Loads the correct overlay
                 overlayiFrame.src = "http://localhost:8080/overlays/" + jsonData["overlay"] + ".php";
 

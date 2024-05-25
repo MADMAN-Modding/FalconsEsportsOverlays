@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:english_words/english_words.dart';
 import 'package:falcons_esports_overlays_controller/handlers/http_handler.dart';
 import 'package:falcons_esports_overlays_controller/pages/http.dart';
@@ -10,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'pages/controls.dart';
 import 'pages/git.dart';
 import 'pages/home.dart';
-import 'pages/php.dart';
 import 'pages/config.dart';
 
 void main() {
