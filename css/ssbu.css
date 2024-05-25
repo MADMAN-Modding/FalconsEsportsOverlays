@@ -158,20 +158,21 @@ img {
 
 #playerNamesLeft {
     width: 173px;
-    height: 30px;
+    height: 33px;
     position: absolute;
     bottom: 33px;
     left: 540px;
-    font-size: 30px;
+    font-size: 15px;
     text-align: center;
 }
 
 #playerNamesRight {
     width: 173px;
-    height: 30px;
+    height: 33px;
     position: absolute;
     bottom: 33px;
     right: 470px;
-    font-size: 30px;
+    font-size: 15px;
     text-align: center;
 }
+
