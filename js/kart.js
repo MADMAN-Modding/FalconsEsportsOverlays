@@ -1,7 +1,12 @@
-setInterval(function () {
-    fetch('../json/overlay.json')
+fetch('../json/overlay.json')
         .then((response) => response.json())
         .then((jsonData) => {
+
+        let map = new Map(Object.entries(JSON.parse(jsonData)));
+
+        console.log(map["winsLeft"]);
+
+        setInterval(function () {
             // Gets the value of jsonData as an int
             const winsLeft = +jsonData["winsLeft"];
             const winsRight = +jsonData["winsRight"];
