@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:english_words/english_words.dart';
+import 'package:falcons_esports_overlays_controller/handlers/http_handler.dart';
+import 'package:falcons_esports_overlays_controller/pages/http.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -83,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = const ControlsPage();
         break;
       case 3:
-        page = const PHPPage();
+        page = const HTTPPage();
         break;
       case 4:
         page = const ConfigPage();
@@ -129,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       )),
                   NavigationRailDestination(
                       icon: Icon(Icons.http),
-                      label: Text("PHP Server"),
+                      label: Text("Web Server"),
                       selectedIcon: Icon(
                         Icons.cell_tower,
                         color: Colors.white,
@@ -160,5 +164,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     });
+  }
+}
+
+class HTTPServerObjectStorage {
+  HTTPHandler http = HTTPHandler();
+
+  void setServer(HTTPHandler http) {
+    this.http = http;
+  }
+
+  HTTPHandler getServer() {
+    return http;
   }
 }
