@@ -1,3 +1,4 @@
+import 'package:falcons_esports_overlays_controller/handlers/notification_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_popup_card/flutter_popup_card.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
@@ -11,17 +12,15 @@ class HTTPHandler {
 
   Future<void> startServer(BuildContext context, path) async {
     try {
-      print(path);
-
       // Start the server with the updated path
       this.server = await shelf_io.serve(
           createStaticHandler(path, defaultDocument: 'index.html'),
           'localhost',
           8080);
-
-      popUpMaker("Server started", context);
+      NotificationHandler.notification(context, "Server started");
     } catch (e) {
-      popUpMaker("Server failed to start or is already running", context);
+      NotificationHandler.notification(
+          context, "Server failed to start or is already running");
     }
   }
 
@@ -29,31 +28,10 @@ class HTTPHandler {
     try {
       server.close();
       server = null;
-      popUpMaker("Server stopped", context);
+      NotificationHandler.notification(context, "Server stopped succesfully");
     } catch (e) {
-      popUpMaker("Failed to stop Server, did you start it?", context);
+      NotificationHandler.notification(
+          context, "Failed to stop Server, did you start it?");
     }
-  }
-
-  Future popUpMaker(String text, BuildContext context) {
-    return showPopupCard(
-      context: context,
-      builder: (context) {
-        return PopupCard(
-          elevation: 8,
-          color: const Color.fromARGB(255, 255, 255, 255),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(text),
-          ),
-        );
-      },
-      offset: const Offset(-16, 70),
-      alignment: Alignment.topRight,
-      useSafeArea: true,
-    );
   }
 }
