@@ -47,12 +47,6 @@ class GitHandler {
     });
   }
 
-  // Future<String?> getPath() async {
-  //   String? path = await FilePicker.platform.getDirectoryPath();
-
-  //   return path;
-  // }
-
   Future<bool> checkRepo(String path) {
     return rwGit.isGitRepository(path);
   }
