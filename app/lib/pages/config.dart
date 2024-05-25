@@ -81,72 +81,10 @@ class _ControlsPage extends State<ConfigPage> {
                 padding: EdgeInsets.all(8.0),
                 child: Text(
                   "This is the directory that contains all the code",
-                  style: TextStyle(color: Colors.white),
-                ),
-              )
-            ],
-          ),
-        ),
-        // PHP Directory
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              SizedBox(
-                height: 50,
-                width: 50,
-                // A button with the folder icon that opens up a file-picker in order to chose the appropriate file
-                child: TextButton(
-                  child: const Icon(
-                    Icons.folder,
-                    color: Colors.white,
-                  ),
-                  onPressed: () async {
-                    try {
-                      FilePickerResult? phpPath =
-                          (await FilePicker.platform.pickFiles())!;
-                      phpDirectory.text = phpPath.files.single.path
-                          .toString()
-                          .replaceAll(r"\\", r"\")
-                          .replaceAll(
-                              r"\", r"\\"); // Sets the text equal to the path
-                      jsonHandler.writeConfig(
-                          'phpPath', "${phpPath.files.single.path}");
-                    } catch (e) {
-                      if (kDebugMode) {
-                        print(e);
-                      }
-                    }
-                  },
-                ),
-              ),
-
-              // Sets the size of the textfield and also does some stuff with the controller
-              SizedBox(
-                width: 400,
-                child: TextField(
-                  controller: phpDirectory,
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    ),
-                    hintText: 'PHP Path',
-                    hintStyle: TextStyle(color: Colors.white),
-                  ),
-                  style: const TextStyle(color: Colors.white),
-                  onChanged: (value) =>
-                      jsonHandler.writeConfig("phpPath", value),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  "The Location of php if it's not already in your PATH",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17),
                 ),
               )
             ],
