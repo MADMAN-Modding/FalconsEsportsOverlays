@@ -124,7 +124,7 @@ class _GitPage extends State<GitPage> {
                         while (!pulled) {
                           try {
                             if (await git.checkRepo(chosenPath)) {
-                              git.update(chosenPath);
+                              git.update(chosenPath, context);
                               pulled = true;
                             } else {
                               try {
