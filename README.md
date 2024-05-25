@@ -1,19 +1,16 @@
 # FalconsEsportsOverlays
-This is a streaming overlay for esports teams, this has nice gui app written in dart, that you can find in the releases page. There is also a web controlled version but that is only for releases 2.1.4 and below.
+This is a streaming overlay for esports teams with a nice gui app written in dart, you can it find in the <a href="https://github.com/MADMAN-Modding/FalconsEsportsOverlays/releases/latest" target="_blank">releases</a> page. There is also a web controlled version but that is only for releases 2.1.4 and below. Everything marked legacy has been replaced by the app.
 <h1>Setup</h1>
 
-<h2>Using the App</h2>
+<h2>Using the App (Highly recommended)</h2>
 <p>Go to the latest release on the releases tab, download the zip file for your respective OS, unzip the file, make sure that you keep everything in that folder together, git must be setup and php needs to be downloaded somewhere, the homepage of the app will explain the rest.</p>
 
-<h2>Docker</h2>
-<h3>Get the docker <a href="https://hub.docker.com/repository/docker/madmanmodding/falconsesportsoverlay/general" target="_blank">here</a></h3>
-<p>I (MADMAN-Modding) usually update the docker every release, but it will still pull from main everytime it starts. There is no currently no support for the docker from the dart app. It is planned to be added.</p>
 <h1>Clone/update with git cli</h1>
 <h4>Git (optional but recommended)</h4>
 
 <p>Installing git makes it easier to update the clonned code when the project it updated. Download git from <a href="https://git-scm.com/download/win">here</a>. Get the version for your machine, most likely it will be 64-bit. Run the .exe and just go through the menus, the default options will be fine for this. Or if you're on Linux just install in with your package manager ex:(sudo pacman -Sy git or sudo apt install git)</p>
 
-<h3>Cloning the Repository (optional only if you don't use the app)</h3>
+<h3>Cloning the Repository</h3>
 
 <p>Open up Powershell and cd to where you will be storing the project.</p>
 
@@ -21,11 +18,15 @@ This is a streaming overlay for esports teams, this has nice gui app written in 
 
 <p>Run the following command to clone the repository</p>
 
-    git clone https://github.com/HeinzEric/FalconsEsportsOverlays.git
+    git clone https://github.com/MADMAN-Modding/FalconsEsportsOverlays.git
 
 <p>This will clone the repository to the folder you are in.</p>
 
-<h1>PHP Setup</h1>
+<h2>Docker (Legacy)</h2>
+<h3>Get the docker <a href="https://hub.docker.com/repository/docker/madmanmodding/falconsesportsoverlay/general" target="_blank">here</a></h3>
+<p>I (MADMAN-Modding) usually update the docker every release, but it will still pull from main everytime it starts. There is no currently no support for the docker from the dart app. It is planned to be added.</p>
+
+<h1>PHP Setup (Legacy)</h1>
 <h2>Windows</h2>
 <h4>PHP</h4>
 
