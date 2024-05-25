@@ -9,14 +9,16 @@ JSONHandler jsonHandler = JSONHandler();
 class HTTPHandler {
   late var server;
 
-  Future<void> startServer(BuildContext context) async {
+  Future<void> startServer(BuildContext context, path) async {
     try {
+      print(path);
+
+      // Start the server with the updated path
       this.server = await shelf_io.serve(
-          createStaticHandler(jsonHandler.readConfig("path"),
-              defaultDocument: 'index.html'),
+          createStaticHandler(path, defaultDocument: 'index.html'),
           'localhost',
           8080);
-      this.server = server;
+
       popUpMaker("Server started", context);
     } catch (e) {
       popUpMaker("Server failed to start or is already running", context);
@@ -26,6 +28,7 @@ class HTTPHandler {
   void stopServer(BuildContext context) {
     try {
       server.close();
+      server = null;
       popUpMaker("Server stopped", context);
     } catch (e) {
       popUpMaker("Failed to stop Server, did you start it?", context);
