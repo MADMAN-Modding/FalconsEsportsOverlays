@@ -2,9 +2,9 @@ fetch('../json/overlay.json')
         .then((response) => response.json())
         .then((jsonData) => {
 
-        let map = new Map(Object.entries(JSON.parse(jsonData)));
-
-        console.log(map["winsLeft"]);
+        for (const key in jsonData) {
+            outputJSON(key, jsonData[key]);
+        }
 
         setInterval(function () {
             // Gets the value of jsonData as an int
