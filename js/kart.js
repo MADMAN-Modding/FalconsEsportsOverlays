@@ -1,12 +1,8 @@
-fetch('../json/overlay.json')
+setInterval(function () {
+    fetch('../json/overlay.json')
         .then((response) => response.json())
         .then((jsonData) => {
 
-        for (const key in jsonData) {
-            outputJSON(key, jsonData[key]);
-        }
-
-        setInterval(function () {
             // Gets the value of jsonData as an int
             const winsLeft = +jsonData["winsLeft"];
             const winsRight = +jsonData["winsRight"];
@@ -29,6 +25,7 @@ fetch('../json/overlay.json')
             document.getElementById("playerNamesRight").innerHTML = jsonData["playerNamesRight"];
             document.getElementById("scoreLeft").innerHTML = jsonData["scoreLeft"];
             document.getElementById("scoreRight").innerHTML = jsonData["scoreRight"]
+
+            document.getElementById("week").style.left = +document.getElementById("week").innerHTML > 9 ? "1863px" : "1877px"
         });
-    document.getElementById("week").style.left = +document.getElementById("week").innerHTML > 9 ? "1863px" : "1877px"
 }, 500);

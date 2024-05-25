@@ -1,17 +1,13 @@
-fetch('../json/overlay.json')
+setInterval(function () {
+    fetch('../json/overlay.json')
         .then((response) => response.json())
         .then((jsonData) => {
-            for (const key in jsonData) {
-                outputJSON(key, jsonData[key]);
-            }
-            
-            setInterval(function () {
                 const winsLeft = +jsonData["winsLeft"];
                 const winsRight = +jsonData["winsRight"];
                 
                 // Update the left side rounds won
                 for (let i = 1; i <= 2; i++) {
-                    document.getElementById(`leftRoundsWon${i}`).style.backgroundColor = winsLeft >= i ? "#BE0F34" : "black";
+                    document.getElementById(`leftRoundsWon${i}`).style.backgroundColor = winsLeft >= i ? jsonData["teamColorLeft"] : "black";
                 }
 
                 // Update the right side rounds won
