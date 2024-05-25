@@ -123,7 +123,7 @@ class _ControlsPageState extends State<ControlsPage> {
   }) {
     return Column(
       children: [
-        const SizedBox(height: 15),
+        const SizedBox(height: 5),
         Row(
           children: [
             Text(

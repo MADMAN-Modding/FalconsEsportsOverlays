@@ -129,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.white,
                       )),
                   NavigationRailDestination(
-                      icon: Icon(Icons.http),
+                      icon: Icon(Icons.cell_tower),
                       label: Text("Web Server"),
                       selectedIcon: Icon(
                         Icons.cell_tower,
