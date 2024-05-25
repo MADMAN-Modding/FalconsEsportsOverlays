@@ -29,7 +29,8 @@ class _HTTPPage extends State<HTTPPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                     onPressed: () async {
-                      constants.Constants.httpHandler.startServer(context);
+                      constants.Constants.httpHandler
+                          .startServer(context, jsonHandler.readConfig("path"));
                     },
                     child: const Text("Start Web Server")),
               ),
