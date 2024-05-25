@@ -10,10 +10,8 @@ setInterval(function () {
                     return;
                 }
 
-                
-
                 // Loads the correct overlay
-                overlayiFrame.src = "http://localhost:8080/overlays/" + jsonData["overlay"] + ".php";
+                overlayiFrame.src = "http://localhost:8080/overlays/" + jsonData["overlay"] + ".html";
 
                 document.title = jsonData["overlay"].charAt(0).toUpperCase() + jsonData["overlay"].slice(1)
             })
