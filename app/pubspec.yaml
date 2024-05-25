@@ -45,6 +45,9 @@ dependencies:
   json_file: ^0.1.0
   flutter_colorpicker: ^1.0.3
   hexcolor: ^3.0.1
+  shelf: ^1.0.0
+  shelf_static: ^1.1.2
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:

@@ -128,10 +128,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.white,
                       )),
                   NavigationRailDestination(
-                      icon: Icon(Icons.php),
+                      icon: Icon(Icons.http),
                       label: Text("PHP Server"),
                       selectedIcon: Icon(
-                        Icons.php,
+                        Icons.cell_tower,
                         color: Colors.white,
                       )),
                   NavigationRailDestination(
