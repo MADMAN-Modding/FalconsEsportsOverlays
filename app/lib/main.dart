@@ -100,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SafeArea(
               child: NavigationRail(
                 backgroundColor: Colors.white,
-                indicatorColor: Theme.of(context).colorScheme.primary,
+                indicatorColor: const Color.fromRGBO(190, 15, 52, 1),
                 extended: constraints.maxWidth >= 1005,
                 destinations: const [
                   NavigationRailDestination(
@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
               child: Container(
-                color: const Color.fromARGB(255, 193, 15, 52),
+                color: const Color.fromARGB(255, 190, 15, 52),
                 child: page,
               ),
             ),

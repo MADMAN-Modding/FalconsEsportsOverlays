@@ -1,6 +1,5 @@
 import 'package:falcons_esports_overlays_controller/handlers/notification_handler.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_popup_card/flutter_popup_card.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart';
 import 'json_handler.dart';
