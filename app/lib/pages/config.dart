@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
 
 // Sets up the stateful widget stuff, wahoo
 class ConfigPage extends StatefulWidget {
@@ -44,8 +47,22 @@ class _ControlsPage extends State<ConfigPage> {
                   ),
                   onPressed: () async {
                     try {
-                      codePath =
-                          (await FilePicker.platform.getDirectoryPath())!;
+                      if (Platform.isWindows) {
+                        codePath =
+                            (await FilePicker.platform.getDirectoryPath())!;
+                      } else {
+                        // This is here until the bug on linux is fixed
+                        codePath = (await FilesystemPicker.open(
+                            context: context,
+                            theme: FilesystemPickerTheme(
+                                topBar: FilesystemPickerTopBarThemeData(
+                                    backgroundColor: Colors.grey),
+                                backgroundColor: Colors.grey),
+                            rootDirectory: Directory("/home"),
+                            contextActions: [
+                              FilesystemPickerNewFolderContextAction()
+                            ]))!;
+                      }
                       directory.text =
                           codePath; // Sets the text equal to the path
                       jsonHandler.writeConfig('path', codePath);
