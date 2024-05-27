@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:falcons_esports_overlays_controller/handlers/git_handler.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -58,10 +61,22 @@ class _GitPage extends State<GitPage> {
                     ),
                     onPressed: () async {
                       try {
-                        chosenPath =
-                            (await FilePicker.platform.getDirectoryPath())!;
-                        directory.text = chosenPath.replaceAll(r"\", r"\\");
-                        updateValue(chosenPath);
+                        if (Platform.isWindows) {
+                          chosenPath =
+                              (await FilePicker.platform.getDirectoryPath())!;
+                        } else {
+                          // This is here until the bug on linux is fixed
+                          chosenPath = (await FilesystemPicker.open(
+                              context: context,
+                              theme: FilesystemPickerTheme(
+                                  topBar: FilesystemPickerTopBarThemeData(
+                                      backgroundColor: Colors.grey),
+                                  backgroundColor: Colors.grey),
+                              rootDirectory: Directory("/home"),
+                              contextActions: [
+                                FilesystemPickerNewFolderContextAction()
+                              ]))!;
+                        }
                       } catch (e) {
                         return;
                       }
