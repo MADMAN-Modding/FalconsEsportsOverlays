@@ -28,4 +28,4 @@ setInterval(function () {
 
             document.getElementById("week").style.left = +document.getElementById("week").innerHTML > 9 ? "1863px" : "1877px"
         });
-}, 500);
+}, 650);
