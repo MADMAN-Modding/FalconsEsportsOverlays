@@ -72,7 +72,6 @@ class _ControlsPageState extends State<ControlsPage> {
               buildTeamColumn(
                 teamSide: "Left",
                 controllers: [scoreLeft, playerNamesLeft, teamNameLeft],
-                jsonKeys: ["scoreLeft", "playerNamesLeft", "teamNameLeft"],
                 widths: [40, 260, 260],
                 heights: [40, 40, 40],
                 labels: ["Score", "Player Names", "Team Name"],
@@ -83,7 +82,6 @@ class _ControlsPageState extends State<ControlsPage> {
               buildTeamColumn(
                 teamSide: "Right",
                 controllers: [scoreRight, playerNamesRight, teamNameRight],
-                jsonKeys: ["scoreRight", "playerNamesRight", "teamNameRight"],
                 widths: [40, 260, 260],
                 heights: [40, 40, 40],
                 labels: ["Score", "Player Names", "Team Name"],
@@ -115,7 +113,6 @@ class _ControlsPageState extends State<ControlsPage> {
   }
 
   Widget textEditor({
-    required String jsonKey,
     required double width,
     required double height,
     required TextEditingController controller,
@@ -153,7 +150,6 @@ class _ControlsPageState extends State<ControlsPage> {
                     )),
                 style: const TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
-                onChanged: (value) => jsonHandler.writeOverlay(jsonKey, value),
               ),
             )
           ],
@@ -181,7 +177,6 @@ class _ControlsPageState extends State<ControlsPage> {
   Widget buildTeamColumn(
       {required String teamSide,
       required List<TextEditingController> controllers,
-      required List<String> jsonKeys,
       required List<double> widths,
       required List<double> heights,
       required List<String> labels,
@@ -197,7 +192,6 @@ class _ControlsPageState extends State<ControlsPage> {
     for (int i = 0; i < controllers.length; i++) {
       textEditors.add(
         textEditor(
-          jsonKey: jsonKeys[i],
           width: widths[i],
           height: heights[i],
           controller: controllers[i],
@@ -249,11 +243,7 @@ class _ControlsPageState extends State<ControlsPage> {
               labelTypes: const [],
             ),
             textEditor(
-                jsonKey: "teamColor$teamSide",
-                width: 80,
-                height: 50,
-                controller: colorController,
-                label: ""),
+                width: 80, height: 50, controller: colorController, label: ""),
           ],
         )
       ],
@@ -264,6 +254,47 @@ class _ControlsPageState extends State<ControlsPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        const Row(
+          children: [
+            Text("Update Overlay",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15)),
+          ],
+        ),
+        const SizedBox(height: 5),
+        Row(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  jsonHandler.writeOverlay("scoreLeft", scoreLeft.text);
+                  jsonHandler.writeOverlay("scoreRight", scoreRight.text);
+                  jsonHandler.writeOverlay("teamNameLeft", teamNameLeft.text);
+                  jsonHandler.writeOverlay("teamNameRight", teamNameRight.text);
+                  jsonHandler.writeOverlay("teamColorLeft", teamColorLeft.text);
+                  jsonHandler.writeOverlay(
+                      "teamColorRight", teamColorRight.text);
+                  jsonHandler.writeOverlay("week", week.text);
+                  jsonHandler.writeOverlay(
+                      "playerNamesLeft", playerNamesLeft.text);
+                  jsonHandler.writeOverlay(
+                      "playerNamesRight", playerNamesRight.text);
+                },
+                child: const Icon(Icons.system_update_alt)),
+          ],
+        ),
+        const SizedBox(height: 15),
+        const Row(
+          children: [
+            Text("Swap Values",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15))
+          ],
+        ),
+        const SizedBox(height: 5),
         Row(
           children: [
             ElevatedButton(
@@ -328,12 +359,7 @@ class _ControlsPageState extends State<ControlsPage> {
         ),
         Row(
           children: [
-            textEditor(
-                jsonKey: 'week',
-                width: 20,
-                height: 40,
-                controller: week,
-                label: "Week")
+            textEditor(width: 20, height: 40, controller: week, label: "Week")
           ],
         ),
       ],

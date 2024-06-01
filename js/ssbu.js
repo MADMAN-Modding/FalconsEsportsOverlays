@@ -32,4 +32,4 @@ setInterval(function () {
                 document.getElementById("namePlateRight").style.backgroundColor = jsonData["teamColorRight"];
                 document.getElementById("namePlateRightSlope").style.backgroundColor = jsonData["teamColorRight"];
         });
-}, 500);
+}, 100);
