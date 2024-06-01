@@ -10,6 +10,8 @@ class JSONHandler {
   // Controller config variables
   var configJSON;
 
+  bool isWriting = false;
+
   String executableDirectory = File(Platform.resolvedExecutable).parent.path;
 
   JSONHandler() {
@@ -55,9 +57,11 @@ class JSONHandler {
   // Overlay methods
   void writeOverlay(String key, String data) {
     try {
-      overlayJSON[key] = data;
-      File('${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
-          .writeAsStringSync('''
+      if (!isWriting) {
+        isWriting = true;
+        overlayJSON[key] = data;
+        File('${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
+            .writeAsStringSync('''
 {
     "teamNameLeft": "${overlayJSON['teamNameLeft']}",
     "teamNameRight": "${overlayJSON['teamNameRight']}",
@@ -73,6 +77,9 @@ class JSONHandler {
     "playerNamesRight": "${overlayJSON['playerNamesRight']}"
 }
 ''');
+      }
+
+      isWriting = false;
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -180,4 +187,6 @@ class JSONHandler {
       return;
     }
   }
+
+  Future<void> updateOverlay() async {}
 }
