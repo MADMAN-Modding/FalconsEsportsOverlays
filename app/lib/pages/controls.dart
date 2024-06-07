@@ -234,9 +234,9 @@ class _ControlsPageState extends State<ControlsPage> {
               pickerColor: sideColor,
               onColorChanged: (Color color) {
                 jsonHandler.writeOverlay("teamColor$teamSide",
-                    "#$color".replaceAll("Color(0xff", "").replaceAll(")", ""));
+                    "#${color.toHexString().replaceAll("FF", "")}");
                 colorController.text =
-                    "#$color".replaceAll("Color(0xff", "").replaceAll(")", "");
+                    "#${color.toHexString().replaceAll("FF", "")}";
               },
               enableAlpha: false,
               colorPickerWidth: 100,
