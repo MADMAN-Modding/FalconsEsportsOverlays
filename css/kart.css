@@ -37,25 +37,6 @@
     background-color: rgb(156, 156, 156);
 }
 
-#bottomLeftWingRightTrapezoid {
-    position: absolute;
-    left: 246px;
-    top: 73px;
-    width: 10px;
-    height: 25px;
-    background-color: black;
-    clip-path: polygon(0px 0px, 10px 0px, 10px 11px, 0px 25px);
-}
-
-#bottomLeftWingLeftRectangle {
-    position: absolute;
-    left: 0px;
-    top: 73px;
-    width: 246px;
-    height: 25px;
-    background-color: black;
-}
-
 /* Top Right Info */
 #topRightWingLeftTrapezoid {
     position: absolute;
@@ -93,25 +74,6 @@
     width: 287px;
     height: 31px;
     background-color: rgb(156, 156, 156);
-}
-
-#bottomRightWingLeftTrapezoid {
-    position: absolute;
-    left: 1663px;
-    top: 71px;
-    width: 10px;
-    height: 25px;
-    background-color: black;
-    clip-path: polygon(0px 0px, 10px 0px, 10px 25px, 0px 15px);
-}
-
-#bottomRightWingRightRectangle {
-    position: absolute;
-    left: 1673px;
-    top: 71px;
-    width: 247px;
-    height: 25px;
-    background-color: black;
 }
 
 /* Home/Away Text */
