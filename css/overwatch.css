@@ -1,0 +1,61 @@
+@charset "utf-8";
+	#winBar
+{
+	background : #FFFFFF;
+	background : rgba(255, 255, 255, 1);
+	position : absolute ;
+	left : 487px;
+	top : 125px;
+	width : 302px;
+	height : 71px;
+}
+#Name_Bar
+{
+	background : #FFFFFF;
+	background : rgba(255, 255, 255, 1);
+	position : absolute ;
+	left : 0px;
+	top : 122px;
+	width : 788px;
+	height : 74px;
+}
+#Win_3
+{
+	background : #000000;
+	background : rgba(0, 0, 0, 1);
+	position : absolute ;
+	left : 599px;
+	top : 128px;
+	width : 180px;
+	height : 42px;
+}
+#Win_1
+{
+	background : #000000;
+	background : rgba(0, 0, 0, 1);
+	position : absolute ;
+	left : 491px;
+	top : 171px;
+	width : 106px;
+	height : 24px;
+}
+#Win_2
+{
+	background : #000000;
+	background : rgba(0, 0, 0, 1);
+	position : absolute ;
+	left : 567px;
+	top : 155px;
+	width : 126px;
+	height : 39px;
+}
+#Example
+{
+	background-image : url(Example.png);
+	background-repeat : no-repeat;
+	position : absolute ;
+	left : 0px;
+	top : 6px;
+	width : 1920px;
+	height : 1066px;
+}
