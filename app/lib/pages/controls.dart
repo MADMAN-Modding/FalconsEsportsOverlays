@@ -62,6 +62,7 @@ class _ControlsPageState extends State<ControlsPage> {
             children: [
               buildOverlayButton('ssbu', 'images/SSBU.png'),
               buildOverlayButton('kart', 'images/Kart.png'),
+              buildOverlayButton('overwatch', 'images/Overwatch.png'),
               buildOverlayButton('rocketLeague', 'images/RL.png'),
             ],
           ),
