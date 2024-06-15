@@ -76,10 +76,9 @@ class _GitPage extends State<GitPage> {
                               contextActions: [
                                 FilesystemPickerNewFolderContextAction()
                               ]))!;
-
-                          directory.text = chosenPath.replaceAll(r"\", r"\\");
-                          updateValue(chosenPath);
                         }
+                        directory.text = chosenPath.replaceAll(r"\", r"\\");
+                        updateValue(chosenPath);
                       } catch (e) {
                         return;
                       }

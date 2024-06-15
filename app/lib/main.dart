@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: NavigationRail(
                 backgroundColor: Colors.white,
                 indicatorColor: const Color.fromRGBO(190, 15, 52, 1),
-                extended: constraints.maxWidth >= 1005,
+                extended: constraints.maxWidth >= 1255,
                 destinations: const [
                   NavigationRailDestination(
                     icon: Icon(
