@@ -1,0 +1,19 @@
+#teamNameLeftBackground {
+    position: absolute;
+    left: 0px;
+    top: 124.0244px;
+    width: 790.4537px;
+    height: 72px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 790.4537px 0px, 484.29px 72px, 0px 72px);
+}
+
+#leftRoundsBack {
+    position: absolute;
+    left: 487.5614px;
+    top: 125.6427px;
+    width: 302.8923px;
+    height: 71.1752px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 71.1752px, 302.8923px 0px, 79.4586px 71.1752px, 0px 71.1752px);
+}
