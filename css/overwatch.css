@@ -17,3 +17,23 @@
     background-color: rgb(190, 15, 52);
     clip-path: polygon(0px 71.1752px, 302.8923px 0px, 79.4586px 71.1752px, 0px 71.1752px);
 }
+
+#leftRoundsWon1 {
+    position: absolute;
+    left: 491.9807px;
+    top: 171.6982px;
+    width: 106.2343px;
+    height: 24.5643px;
+    background-color: black;
+    clip-path: polygon(0px 24.5643px, 106.2343px 0px, 74.6493px 24.5643px, 0px 24.5643px);
+}
+
+#leftRoundsWon2 {
+    position: absolute;
+    left: 567.5639px;
+    top: 155.5028px;
+    width: 126.4347px;
+    height: 39.2569px;
+    background-color: black;
+    clip-path: polygon(0px 39.2569px, 32.2461px 6.6684px, 126.4347px 39.2569px, 0px 39.2569px);
+}
