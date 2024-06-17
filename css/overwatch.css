@@ -25,7 +25,7 @@
     width: 106.2343px;
     height: 24.5643px;
     background-color: black;
-    clip-path: polygon(0px 24.5643px, 106.2343px 0px, 74.6493px 24.5643px, 0px 24.5643px);
+    clip-path: polygon(0px 24.5643px, 106.2343px 0px, 74.6493px 22.8618px);
 }
 
 #leftRoundsWon2 {
@@ -35,5 +35,25 @@
     width: 126.4347px;
     height: 39.2569px;
     background-color: black;
-    clip-path: polygon(0px 39.2569px, 32.2461px 6.6684px, 126.4347px 39.2569px, 0px 39.2569px);
+    clip-path: polygon(0px 39.2569px, 32.2461px 16.8574px, 126.4347px 0px);
+}
+
+#leftRoundsWon3 {
+    position: absolute;
+    left: 599.8082px;
+    top: 128.4719px;
+    width: 175.4499px;
+    height: 42.8483px;
+    background-color: black;
+    clip-path: polygon(0px 42.8483px, 175.4499px 1.5px, 96.4418px 26.1381px);
+}
+
+#week {
+    position: absolute;
+    left: 0px;
+    top: 196px;
+    width: 262.6585px;
+    height: 27.5768px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 262.6585px 0px, 0px 27.5768px);
 }
