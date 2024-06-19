@@ -57,3 +57,53 @@
     background-color: rgb(190, 15, 52);
     clip-path: polygon(0px 0px, 262.6585px 0px, 0px 27.5768px);
 }
+
+#teamNameRightBackground {
+    position: absolute;
+    left: 1129.5463px;
+    top: 124.0244px;
+    width: 790.4537px;
+    height: 72px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 790.4537px 0px, 790.4537px 72px, 306.1637px 72px);
+}
+
+#rightRoundsBack {
+    position: absolute;
+    left: 1129.5463px;
+    top: 125.6427px;
+    width: 302.8923px;
+    height: 71.1752px;
+    background-color: rgb(190, 15, 52);
+    clip-path: polygon(0px 0px, 302.8923px 71.1752px, 223.4337px 69.9573px);
+}
+
+#rightRoundsWon1 {
+    position: absolute;
+    left: 1321.785px;
+    top: 171.6982px;
+    width: 106.2343px;
+    height: 24.5643px;
+    background-color: black;
+    clip-path: polygon(0px 0px, 106.2343px 24.5643px, 31.585px 22.8618px);
+}
+
+#rightRoundsWon2 {
+    position: absolute;
+    left: 1226.0014px;
+    top: 155.5028px;
+    width: 126.4347px;
+    height: 39.2569px;
+    background-color: black;
+    clip-path: polygon(0px 0px, 93.9986px 18.36px, 126.4347px 39.2569px);
+}
+
+#rightRoundsWon3 {
+    position : absolute ;
+    left: 1139px;
+    top: 128px;
+    width: 180px;
+    height: 42px;
+    background-color: black;
+    clip-path: polygon(0px 0px, 180px 42px, 84px 26.61px);
+}
