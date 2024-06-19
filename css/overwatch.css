@@ -1,3 +1,11 @@
+/* Hidden content */
+#playerNamesLeft,
+#playerNamesRight,
+#scoreLeft,
+#scoreRight {
+    display: none;
+}
+
 #teamNameLeftBackground {
     position: absolute;
     left: 0px;
@@ -48,14 +56,14 @@
     clip-path: polygon(0px 42.8483px, 175.4499px 1.5px, 96.4418px 26.1381px);
 }
 
-#week {
+#weekBackground {
     position: absolute;
     left: 0px;
     top: 196px;
-    width: 262.6585px;
+    width: 226px;
     height: 27.5768px;
     background-color: rgb(190, 15, 52);
-    clip-path: polygon(0px 0px, 262.6585px 0px, 0px 27.5768px);
+    clip-path: polygon(0px 0px, 226px 0px, 0px 27.5768px);
 }
 
 #teamNameRightBackground {
@@ -106,4 +114,36 @@
     height: 42px;
     background-color: black;
     clip-path: polygon(0px 0px, 180px 42px, 84px 26.61px);
+}
+
+#teamNameLeft {
+    position: absolute;
+    left: 0px;
+    top: 120px;
+    width: 484px;
+    text-align: center;
+}
+
+#teamNameRight {
+    position: absolute;
+    left: 1435.71px;
+    top: 120px;
+    width: 484px;
+    text-align: center;
+}
+
+#weekText {
+    position: absolute;
+    left: 4px;
+    top: 176px;
+    font-size: 24px;
+    rotate: -7deg; /* I love using trig for this */
+}
+
+#week {
+    position: absolute;
+    left: 72px;
+    top: 171px;
+    font-size: 24px;
+    rotate: -7deg; /* I love using trig for this */
 }

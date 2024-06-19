@@ -21,13 +21,19 @@ setInterval(function () {
             let teamColorLeft = jsonData["teamColorLeft"];
             changeBackgroundColor("teamNameLeftBackground", teamColorLeft);
             changeBackgroundColor("leftRoundsBack", teamColorLeft);
-            changeBackgroundColor("week", teamColorLeft);
+            changeBackgroundColor("weekBackground", teamColorLeft);
 
             // Set the away team respective colors
             let teamColorRight = jsonData["teamColorRight"];
 
             changeBackgroundColor("teamNameRightBackground", teamColorRight);
             changeBackgroundColor("rightRoundsBack", teamColorRight);
+
+            // Update Text values
+            document.getElementById("teamNameLeft").innerHTML = jsonData["teamNameLeft"];
+            document.getElementById("teamNameRight").innerHTML = jsonData["teamNameRight"];
+            document.getElementById("week").innerHTML = jsonData["week"];
+
         });
 }, 100);
 
