@@ -26,6 +26,8 @@ setInterval(function () {
             // Set the away team respective colors
             let teamColorRight = jsonData["teamColorRight"];
 
+            changeBackgroundColor("teamNameRightBackground", teamColorRight);
+            changeBackgroundColor("rightRoundsBack", teamColorRight);
         });
 }, 100);
 
