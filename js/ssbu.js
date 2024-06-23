@@ -1,5 +1,7 @@
+let i = 0;
+
 setInterval(function () {
-    fetch('../json/overlay.json')
+    fetch('../json/overlay.json?' + i)
         .then((response) => response.json())
         .then((jsonData) => {
                 const winsLeft = +jsonData["winsLeft"];
@@ -32,4 +34,5 @@ setInterval(function () {
                 document.getElementById("namePlateRight").style.backgroundColor = jsonData["teamColorRight"];
                 document.getElementById("namePlateRightSlope").style.backgroundColor = jsonData["teamColorRight"];
         });
+        i++;
 }, 100);

@@ -1,6 +1,7 @@
 let overlayiFrame;
+let i = 0;
 setInterval(function () {
-        fetch('../json/overlay.json')
+        fetch('../json/overlay.json?' + i)
             .then((response) => response.json())
             .then((jsonData) => {
                 overlayiFrame = document.getElementById('overlayiFrame');
@@ -15,4 +16,5 @@ setInterval(function () {
 
                 document.title = jsonData["overlay"].charAt(0).toUpperCase() + jsonData["overlay"].slice(1)
             })
+        i++;
 }, 200)

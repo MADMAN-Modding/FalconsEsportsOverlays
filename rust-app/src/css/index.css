@@ -3,6 +3,10 @@
   text-align: left;
 }
 
+html {
+  padding: 0;
+  margin: 0;
+}
 
 /* Tauri generated stuff */
 .logo.vanilla:hover {
@@ -14,7 +18,7 @@
   line-height: 24px;
   font-weight: 400;
 
-  color: rgb(190, 15, 45);
+  color: white;
   background-color: #f6f6f6;
 
   font-synthesis: none;
@@ -26,7 +30,6 @@
 
 .container {
   margin: 0;
-  padding-top: 5vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -101,7 +104,7 @@ button {
 @media (prefers-color-scheme: dark) {
   :root {
     color: #f6f6f6;
-    background-color:rgb(190, 15, 45);
+    /* background-color:rgb(190, 15, 45); */
   }
 
   a:hover {
