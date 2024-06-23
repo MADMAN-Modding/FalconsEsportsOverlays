@@ -1,5 +1,7 @@
+let i = 0;
+
 setInterval(function () {
-    fetch('../json/overlay.json')
+   fetch('../json/overlay.json?' + i)
         .then((response) => response.json())
         .then((jsonData) => {
 
@@ -35,6 +37,7 @@ setInterval(function () {
             document.getElementById("week").innerHTML = jsonData["week"];
 
         });
+        i++;
 }, 100);
 
 
