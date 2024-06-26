@@ -34,5 +34,5 @@ setInterval(function () {
                 document.getElementById("namePlateRight").style.backgroundColor = jsonData["teamColorRight"];
                 document.getElementById("namePlateRightSlope").style.backgroundColor = jsonData["teamColorRight"];
         });
-        i++;
+    i = Math.floor(Math.random() * 1000);
 }, 100);
