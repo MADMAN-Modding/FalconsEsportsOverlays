@@ -1,3 +1,4 @@
+import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
@@ -16,7 +17,7 @@ class ConfigPage extends StatefulWidget {
 // Class for the actual page
 class _ControlsPage extends State<ConfigPage> {
   String codePath = "";
-  FilePickerResult? imagePath;
+  String imagePath = "";
 
 // Creates objects for the jsonHandler and for changing the text
   TextEditingController directory = TextEditingController();
@@ -58,6 +59,8 @@ class _ControlsPage extends State<ConfigPage> {
                     // If the returned path is blank then it won't take the value
                     codePath = newCodePath == "" ? codePath : newCodePath;
 
+                    print(codePath);
+
                     directory.text =
                         codePath.toString(); // Sets the text equal to the path
                     jsonHandler.writeConfig('path', codePath.toString());
@@ -86,7 +89,41 @@ class _ControlsPage extends State<ConfigPage> {
             ],
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              SizedBox(
+                height: 50,
+                width: 50,
+                child: TextButton(
+                  child: const Icon(
+                    Icons.image,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => () async {
+                    String newImagePath =
+                        (await FolderPicker.folderPicker(context));
+
+                    // If the returned path is blank then it won't take the value
+                    imagePath = newImagePath == "" ? codePath : newImagePath;
+
+                    directory.text =
+                        codePath.toString(); // Sets the text equal to the path
+                    jsonHandler.writeConfig('path', codePath.toString());
+                  },
+                ),
+              ),
+              DefaultText.text(
+                  "Set the image you would like to use for the overlay icon. "),
+            ],
+          ),
+        )
       ],
     );
+  }
+
+  void stringValueSetter(String value) {
+    codePath = value;
   }
 }

@@ -11,6 +11,7 @@ class FolderPicker {
         var text = (await (FilePicker.platform.getDirectoryPath()))!;
         return text;
       } else {
+        print("test");
         // This is here until the bug on linux is fixed
         return (await FilesystemPicker.open(
             context: context,

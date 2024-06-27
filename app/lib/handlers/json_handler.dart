@@ -29,7 +29,8 @@ class JSONHandler {
                   '$executableDirectory${Constants.slashType}config.json')
               .writeAsString('''
 {
-    "path": "."
+    "path": ".",
+    "imagePath": "."
 }
 ''').whenComplete(() => configJSON = File(
                       '$executableDirectory${Constants.slashType}config.json')
@@ -151,7 +152,8 @@ class JSONHandler {
     File('$executableDirectory${Constants.slashType}config.json')
         .writeAsStringSync('''
 {
-    "path": "${configJSON["path"]}"
+    "path": "${configJSON["path"]}",
+    "imagePath": "${configJSON["imagePath"]}"s
 }
 ''');
   }
