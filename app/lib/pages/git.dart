@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:falcons_esports_overlays_controller/handlers/git_handler.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../commands/folder_picker.dart';
 
 class GitPage extends StatefulWidget {
   const GitPage({super.key});
@@ -60,28 +58,12 @@ class _GitPage extends State<GitPage> {
                       color: Colors.white,
                     ),
                     onPressed: () async {
-                      try {
-                        if (Platform.isWindows) {
-                          chosenPath =
-                              (await FilePicker.platform.getDirectoryPath())!;
-                        } else {
-                          // This is here until the bug on linux is fixed
-                          chosenPath = (await FilesystemPicker.open(
-                              context: context,
-                              theme: FilesystemPickerTheme(
-                                  topBar: FilesystemPickerTopBarThemeData(
-                                      backgroundColor: Colors.grey),
-                                  backgroundColor: Colors.grey),
-                              rootDirectory: Directory("/home"),
-                              contextActions: [
-                                FilesystemPickerNewFolderContextAction()
-                              ]))!;
-                        }
-                        directory.text = chosenPath.replaceAll(r"\", r"\\");
-                        updateValue(chosenPath);
-                      } catch (e) {
-                        return;
-                      }
+                      String newChosenPath =
+                          (await FolderPicker.folderPicker(context));
+                      chosenPath =
+                          newChosenPath == "" ? chosenPath : newChosenPath;
+                      directory.text = chosenPath.replaceAll(r"\", r"\\");
+                      updateValue(chosenPath);
                     },
                   ),
                 ),

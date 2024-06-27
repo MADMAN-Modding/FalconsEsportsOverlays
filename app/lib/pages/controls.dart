@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../handlers/json_handler.dart';
-import '../common_widgets/text_editor.dart' as text_editor;
+import '../common_widgets/text_editor.dart';
 
 class ControlsPage extends StatefulWidget {
   const ControlsPage({super.key});
@@ -147,7 +147,7 @@ class _ControlsPageState extends State<ControlsPage> {
 
     for (int i = 0; i < controllers.length; i++) {
       textEditors.add(
-        text_editor.TextEditor().textEditor(
+        TextEditor.textEditor(
           width: widths[i],
           height: heights[i],
           controller: controllers[i],
@@ -198,7 +198,7 @@ class _ControlsPageState extends State<ControlsPage> {
               colorPickerWidth: 100,
               labelTypes: const [],
             ),
-            text_editor.TextEditor().textEditor(
+            TextEditor.textEditor(
                 width: 80, height: 50, controller: colorController, label: ""),
           ],
         )
@@ -315,7 +315,7 @@ class _ControlsPageState extends State<ControlsPage> {
         ),
         Row(
           children: [
-            text_editor.TextEditor().textEditor(
+            TextEditor.textEditor(
                 width: 20, height: 40, controller: week, label: "Week")
           ],
         ),

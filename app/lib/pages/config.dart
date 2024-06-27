@@ -2,8 +2,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:image_picker/image_picker.dart';
-import '../commands/folder_picker.dart' as folder_picker;
-import '../common_widgets/text_editor.dart' as text_editor;
+import '../commands/folder_picker.dart';
+import '../common_widgets/text_editor.dart';
 
 // Sets up the stateful widget stuff, wahoo
 class ConfigPage extends StatefulWidget {
@@ -52,8 +52,8 @@ class _ControlsPage extends State<ConfigPage> {
                     color: Colors.white,
                   ),
                   onPressed: () async {
-                    String newCodePath = (await folder_picker.FolderPicker()
-                        .folderPicker(context));
+                    String newCodePath =
+                        (await FolderPicker.folderPicker(context));
 
                     // If the returned path is blank then it won't take the value
                     codePath = newCodePath == "" ? codePath : newCodePath;
@@ -66,7 +66,7 @@ class _ControlsPage extends State<ConfigPage> {
               ),
 
               // Sets the size of the textfield and also does some stuff with the controller
-              text_editor.TextEditor().textEditor(
+              TextEditor.textEditor(
                   width: 400, height: 40, controller: directory, label: ""),
               const Padding(
                 padding: EdgeInsets.all(8.0),
