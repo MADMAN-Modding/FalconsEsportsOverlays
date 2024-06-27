@@ -151,8 +151,7 @@ class JSONHandler {
     File('$executableDirectory${Constants.slashType}config.json')
         .writeAsStringSync('''
 {
-    "path": "${configJSON["path"]}",
-    "phpPath": "${configJSON["phpPath"]}"
+    "path": "${configJSON["path"]}"
 }
 ''');
   }

@@ -71,7 +71,8 @@ class _ControlsPage extends State<ConfigPage> {
                   height: 40,
                   controller: directory,
                   label: "",
-                  boxHeight: 0),
+                  boxHeight: 0,
+                  onChange: true),
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(

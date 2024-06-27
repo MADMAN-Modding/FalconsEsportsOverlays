@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../handlers/json_handler.dart';
 
 class TextEditor {
   static Widget textEditor(
@@ -6,7 +7,10 @@ class TextEditor {
       required double height,
       required TextEditingController controller,
       required String label,
-      required double boxHeight}) {
+      required double boxHeight,
+      bool onChange = false}) {
+    JSONHandler jsonHandler = JSONHandler();
+
     Widget widget = Column(
       children: [
         SizedBox(height: boxHeight),
@@ -17,18 +21,22 @@ class TextEditor {
               width: width,
               height: height,
               child: TextField(
-                controller: controller,
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    )),
-                style: const TextStyle(color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
+                  controller: controller,
+                  decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white, width: 2.0),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white, width: 2.0),
+                      )),
+                  style: const TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                  // Maybe I'll add a key option, but for now it isn't needed
+
+                  onChanged: (value) => {
+                        if (onChange) {jsonHandler.writeConfig("path", value)}
+                      }),
             )
           ],
         ),
