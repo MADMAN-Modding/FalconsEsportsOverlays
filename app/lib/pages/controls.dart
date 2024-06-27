@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../handlers/json_handler.dart';
+import '../common_widgets/text_editor.dart' as text_editor;
 
 class ControlsPage extends StatefulWidget {
   const ControlsPage({super.key});
@@ -113,52 +114,6 @@ class _ControlsPageState extends State<ControlsPage> {
     );
   }
 
-  Widget textEditor({
-    required double width,
-    required double height,
-    required TextEditingController controller,
-    required String label,
-  }) {
-    return Column(
-      children: [
-        const SizedBox(height: 5),
-        Row(
-          children: [
-            Text(
-              label,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17),
-            )
-          ],
-        ),
-        const SizedBox(height: 5),
-        Row(
-          children: [
-            SizedBox(
-              width: width,
-              height: height,
-              child: TextField(
-                controller: controller,
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    )),
-                style: const TextStyle(color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-            )
-          ],
-        ),
-      ],
-    );
-  }
-
   Widget scoreButton(
       {required String text, required String jsonKey, required int value}) {
     return Row(
@@ -192,7 +147,7 @@ class _ControlsPageState extends State<ControlsPage> {
 
     for (int i = 0; i < controllers.length; i++) {
       textEditors.add(
-        textEditor(
+        text_editor.TextEditor().textEditor(
           width: widths[i],
           height: heights[i],
           controller: controllers[i],
@@ -235,15 +190,15 @@ class _ControlsPageState extends State<ControlsPage> {
               pickerColor: sideColor,
               onColorChanged: (Color color) {
                 jsonHandler.writeOverlay("teamColor$teamSide",
-                    "#${color.toHexString().replaceAll("FF", "")}");
+                    "#${color.toHexString().replaceFirst("FF", "")}");
                 colorController.text =
-                    "#${color.toHexString().replaceAll("FF", "")}";
+                    "#${color.toHexString().replaceFirst("FF", "")}";
               },
               enableAlpha: false,
               colorPickerWidth: 100,
               labelTypes: const [],
             ),
-            textEditor(
+            text_editor.TextEditor().textEditor(
                 width: 80, height: 50, controller: colorController, label: ""),
           ],
         )
@@ -360,7 +315,8 @@ class _ControlsPageState extends State<ControlsPage> {
         ),
         Row(
           children: [
-            textEditor(width: 20, height: 40, controller: week, label: "Week")
+            text_editor.TextEditor().textEditor(
+                width: 20, height: 40, controller: week, label: "Week")
           ],
         ),
       ],
