@@ -5,12 +5,11 @@ class TextEditor {
     required double width,
     required double height,
     required TextEditingController controller,
-    required String? label,
+    required String label,
   }) {
     Widget widget = Column(
       children: [
-        const SizedBox(height: 5),
-        if (label!.isNotEmpty) ...[labelMaker(label)],
+        if (label != "") ...[labelMaker(label)],
         Row(
           children: [
             SizedBox(

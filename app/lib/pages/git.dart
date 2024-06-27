@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../commands/folder_picker.dart';
+import '../common_widgets/text_editor.dart';
 
 class GitPage extends StatefulWidget {
   const GitPage({super.key});
@@ -21,8 +22,6 @@ class _GitPage extends State<GitPage> {
 
   @override
   Widget build(BuildContext context) {
-    String hint = "Directory Path";
-
     var git = GitHandler();
     chosenPath = jsonHandler.readConfig('path');
 
@@ -67,24 +66,8 @@ class _GitPage extends State<GitPage> {
                     },
                   ),
                 ),
-                SizedBox(
-                  width: 400,
-                  child: TextField(
-                    controller: directory,
-                    decoration: InputDecoration(
-                      focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 2.0),
-                      ),
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 2.0),
-                      ),
-                      hintText: hint,
-                      hintStyle: const TextStyle(color: Colors.white),
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                    onChanged: (value) => updateValue(value),
-                  ),
-                ),
+                TextEditor.textEditor(
+                    width: 400, height: 40, controller: directory, label: ""),
               ],
             ),
           ),

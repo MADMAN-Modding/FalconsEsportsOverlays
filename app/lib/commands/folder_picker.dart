@@ -17,7 +17,7 @@ class FolderPicker {
             theme: FilesystemPickerTheme(
                 topBar: FilesystemPickerTopBarThemeData(
                     backgroundColor: Colors.grey),
-                backgroundColor: Colors.grey),
+                backgroundColor: const Color.fromARGB(255, 110, 107, 107)),
             rootDirectory: Directory("/home"),
             contextActions: [FilesystemPickerNewFolderContextAction()]))!;
       }
