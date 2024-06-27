@@ -1,9 +1,9 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
-import 'package:filesystem_picker/filesystem_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import '../commands/folder_picker.dart' as folder_picker;
+import '../common_widgets/text_editor.dart' as text_editor;
 
 // Sets up the stateful widget stuff, wahoo
 class ConfigPage extends StatefulWidget {
@@ -16,6 +16,7 @@ class ConfigPage extends StatefulWidget {
 // Class for the actual page
 class _ControlsPage extends State<ConfigPage> {
   String codePath = "";
+  FilePickerResult? imagePath;
 
 // Creates objects for the jsonHandler and for changing the text
   TextEditingController directory = TextEditingController();
@@ -23,10 +24,14 @@ class _ControlsPage extends State<ConfigPage> {
   TextEditingController gitDirectory = TextEditingController();
   JSONHandler jsonHandler = JSONHandler();
 
+// ImagePicker library object
+  ImagePicker picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
     directory.text = jsonHandler.readConfig('path');
     phpDirectory.text = jsonHandler.readConfig('phpPath');
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -36,6 +41,7 @@ class _ControlsPage extends State<ConfigPage> {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
+              // Makes a box for the input
               SizedBox(
                 height: 50,
                 width: 50,
@@ -46,53 +52,22 @@ class _ControlsPage extends State<ConfigPage> {
                     color: Colors.white,
                   ),
                   onPressed: () async {
-                    try {
-                      if (Platform.isWindows) {
-                        codePath =
-                            (await FilePicker.platform.getDirectoryPath())!;
-                      } else {
-                        // This is here until the bug on linux is fixed
-                        codePath = (await FilesystemPicker.open(
-                            context: context,
-                            theme: FilesystemPickerTheme(
-                                topBar: FilesystemPickerTopBarThemeData(
-                                    backgroundColor: Colors.grey),
-                                backgroundColor: Colors.grey),
-                            rootDirectory: Directory("/home"),
-                            contextActions: [
-                              FilesystemPickerNewFolderContextAction()
-                            ]))!;
-                      }
-                      directory.text =
-                          codePath; // Sets the text equal to the path
-                      jsonHandler.writeConfig('path', codePath);
-                    } catch (e) {
-                      return;
-                    }
+                    String newCodePath = (await folder_picker.FolderPicker()
+                        .folderPicker(context));
+
+                    // If the returned path is blank then it won't take the value
+                    codePath = newCodePath == "" ? codePath : newCodePath;
+
+                    directory.text =
+                        codePath.toString(); // Sets the text equal to the path
+                    jsonHandler.writeConfig('path', codePath.toString());
                   },
                 ),
               ),
 
               // Sets the size of the textfield and also does some stuff with the controller
-              SizedBox(
-                width: 400,
-                child: TextField(
-                  controller: directory,
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    ),
-                    hintText: 'Directory Path',
-                    hintStyle: TextStyle(color: Colors.white),
-                  ),
-                  style: const TextStyle(color: Colors.white),
-                  onChanged: (value) => jsonHandler.writeConfig("path", value),
-                ),
-              ),
+              text_editor.TextEditor().textEditor(
+                  width: 400, height: 40, controller: directory, label: ""),
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
@@ -102,7 +77,7 @@ class _ControlsPage extends State<ConfigPage> {
                       fontWeight: FontWeight.bold,
                       fontSize: 17),
                 ),
-              )
+              ),
             ],
           ),
         ),
