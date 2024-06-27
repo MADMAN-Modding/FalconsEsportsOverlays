@@ -29,8 +29,7 @@ class JSONHandler {
                   '$executableDirectory${Constants.slashType}config.json')
               .writeAsString('''
 {
-    "path": ".",
-    "phpPath": "php"
+    "path": "."
 }
 ''').whenComplete(() => configJSON = File(
                       '$executableDirectory${Constants.slashType}config.json')
