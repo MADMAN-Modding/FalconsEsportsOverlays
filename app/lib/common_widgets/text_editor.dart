@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TextEditor {
-  Widget textEditor({
+  static Widget textEditor({
     required double width,
     required double height,
     required TextEditingController controller,
@@ -38,7 +38,7 @@ class TextEditor {
     return widget;
   }
 
-  Widget labelMaker(String label) {
+  static Widget labelMaker(String label) {
     return Row(
       children: [
         Text(

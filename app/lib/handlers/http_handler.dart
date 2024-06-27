@@ -12,7 +12,7 @@ class HTTPHandler {
   Future<void> startServer(BuildContext context, path) async {
     try {
       // Start the server with the updated path
-      this.server = await shelf_io.serve(
+      server = await shelf_io.serve(
           createStaticHandler(path, defaultDocument: 'index.html'),
           'localhost',
           8080);
@@ -27,7 +27,7 @@ class HTTPHandler {
     try {
       server.close();
       server = null;
-      NotificationHandler.notification(context, "Server stopped succesfully");
+      NotificationHandler.notification(context, "Server stopped successfully");
     } catch (e) {
       NotificationHandler.notification(
           context, "Failed to stop Server, did you start it?");

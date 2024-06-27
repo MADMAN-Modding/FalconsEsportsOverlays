@@ -5,7 +5,7 @@ import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 
 class FolderPicker {
-  Future<String> folderPicker(BuildContext context) async {
+  static Future<String> folderPicker(BuildContext context) async {
     try {
       if (Platform.isWindows) {
         var text = (await (FilePicker.platform.getDirectoryPath()))!;
