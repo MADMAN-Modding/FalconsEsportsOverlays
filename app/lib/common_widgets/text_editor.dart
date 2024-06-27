@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class TextEditor {
-  static Widget textEditor({
-    required double width,
-    required double height,
-    required TextEditingController controller,
-    required String label,
-  }) {
+  static Widget textEditor(
+      {required double width,
+      required double height,
+      required TextEditingController controller,
+      required String label,
+      required double boxHeight}) {
     Widget widget = Column(
       children: [
+        SizedBox(height: boxHeight),
         if (label != "") ...[labelMaker(label)],
         Row(
           children: [

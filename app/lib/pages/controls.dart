@@ -148,11 +148,11 @@ class _ControlsPageState extends State<ControlsPage> {
     for (int i = 0; i < controllers.length; i++) {
       textEditors.add(
         TextEditor.textEditor(
-          width: widths[i],
-          height: heights[i],
-          controller: controllers[i],
-          label: labels[i],
-        ),
+            width: widths[i],
+            height: heights[i],
+            controller: controllers[i],
+            label: labels[i],
+            boxHeight: 5),
       );
     }
     return Column(
@@ -199,7 +199,11 @@ class _ControlsPageState extends State<ControlsPage> {
               labelTypes: const [],
             ),
             TextEditor.textEditor(
-                width: 80, height: 50, controller: colorController, label: ""),
+                width: 80,
+                height: 50,
+                controller: colorController,
+                label: "",
+                boxHeight: 5),
           ],
         )
       ],
@@ -316,7 +320,11 @@ class _ControlsPageState extends State<ControlsPage> {
         Row(
           children: [
             TextEditor.textEditor(
-                width: 20, height: 40, controller: week, label: "Week")
+                width: 20,
+                height: 40,
+                controller: week,
+                label: "Week",
+                boxHeight: 5)
           ],
         ),
       ],

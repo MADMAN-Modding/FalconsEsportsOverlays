@@ -67,7 +67,11 @@ class _GitPage extends State<GitPage> {
                   ),
                 ),
                 TextEditor.textEditor(
-                    width: 400, height: 40, controller: directory, label: ""),
+                    width: 400,
+                    height: 40,
+                    controller: directory,
+                    label: "",
+                    boxHeight: 0),
               ],
             ),
           ),
