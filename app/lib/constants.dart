@@ -6,4 +6,8 @@ class Constants {
   static String slashType = Platform.isWindows ? "\\" : "/";
 
   static HTTPHandler httpHandler = HTTPHandler();
+
+  static String codePath = "";
+
+  static String imagePath = "";
 }
