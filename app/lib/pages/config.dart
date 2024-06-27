@@ -67,7 +67,11 @@ class _ControlsPage extends State<ConfigPage> {
 
               // Sets the size of the textfield and also does some stuff with the controller
               TextEditor.textEditor(
-                  width: 400, height: 40, controller: directory, label: ""),
+                  width: 400,
+                  height: 40,
+                  controller: directory,
+                  label: "",
+                  boxHeight: 0),
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
