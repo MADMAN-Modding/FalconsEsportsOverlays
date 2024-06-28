@@ -7,7 +7,7 @@ class Constants {
 
   static HTTPHandler httpHandler = HTTPHandler();
 
-  static String codePath = "";
+  static String codePath = jsonHandler.readConfig("path");
 
-  static String imagePath = "";
+  static String imagePath = jsonHandler.configJSON("imagePath");
 }
