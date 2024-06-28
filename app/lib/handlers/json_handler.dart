@@ -153,7 +153,7 @@ class JSONHandler {
         .writeAsStringSync('''
 {
     "path": "${configJSON["path"]}",
-    "imagePath": "${configJSON["imagePath"]}"s
+    "imagePath": "${configJSON["imagePath"]}"
 }
 ''');
   }

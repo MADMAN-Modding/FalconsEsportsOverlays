@@ -1,5 +1,4 @@
 import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:image_picker/image_picker.dart';
@@ -101,7 +100,7 @@ class _ControlsPage extends State<ConfigPage> {
                     Icons.image,
                     color: Colors.white,
                   ),
-                  onPressed: () => () async {
+                  onPressed: () async {
                     String newImagePath =
                         (await FolderPicker.folderPicker(context));
 
