@@ -9,5 +9,5 @@ class Constants {
 
   static String codePath = jsonHandler.readConfig("path");
 
-  static String imagePath = jsonHandler.configJSON("imagePath");
+  static String imagePath = jsonHandler.readConfig("imagePath");
 }

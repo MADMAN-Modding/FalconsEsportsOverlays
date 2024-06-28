@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
+import 'package:falcons_esports_overlays_controller/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,8 +18,8 @@ class ConfigPage extends StatefulWidget {
 
 // Class for the actual page
 class _ControlsPage extends State<ConfigPage> {
-  String codePath = "";
-  String imagePath = "";
+  String codePath = Constants.codePath;
+  String imagePath = Constants.imagePath;
 
 // Creates objects for the jsonHandler and for changing the text
   TextEditingController directory = TextEditingController();
@@ -30,7 +33,15 @@ class _ControlsPage extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     directory.text = jsonHandler.readConfig('path');
-    phpDirectory.text = jsonHandler.readConfig('phpPath');
+    File logo = File(
+        "https://github.com/MADMAN-Modding/FalconsEsportsOverlays/blob/main/images/Esports-Logo.png");
+
+    try {
+      logo = File(
+          "$codePath${Constants.slashType}images${Constants.slashType}Esports-Logo.png");
+    } catch (e) {}
+
+    print(logo.path);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -57,8 +68,6 @@ class _ControlsPage extends State<ConfigPage> {
 
                     // If the returned path is blank then it won't take the value
                     codePath = newCodePath == "" ? codePath : newCodePath;
-
-                    print(codePath);
 
                     directory.text =
                         codePath.toString(); // Sets the text equal to the path
@@ -105,17 +114,30 @@ class _ControlsPage extends State<ConfigPage> {
                         (await FolderPicker.folderPicker(context));
 
                     // If the returned path is blank then it won't take the value
-                    imagePath = newImagePath == "" ? codePath : newImagePath;
+                    if (newImagePath != "") {
+                      imagePath = newImagePath;
+                      try {
+                        File(imagePath)
+                            .writeAsBytesSync(logo.readAsBytesSync());
+                      } catch (e) {}
+                    }
 
                     directory.text =
                         codePath.toString(); // Sets the text equal to the path
-                    jsonHandler.writeConfig('path', codePath.toString());
+                    jsonHandler.writeConfig('imagePath', imagePath.toString());
                   },
                 ),
               ),
               DefaultText.text(
                   "Set the image you would like to use for the overlay icon. "),
             ],
+          ),
+        ),
+        // Displays the logo
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [Image.file(logo)],
           ),
         )
       ],

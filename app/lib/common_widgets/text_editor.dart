@@ -10,7 +10,8 @@ class TextEditor {
       required TextEditingController controller,
       required String label,
       required double boxHeight,
-      bool onChange = false}) {
+      bool onChange = false,
+      String key = "path"}) {
     JSONHandler jsonHandler = JSONHandler();
 
     Widget widget = Column(
@@ -35,7 +36,6 @@ class TextEditor {
                   style: const TextStyle(color: Colors.white),
                   textAlign: TextAlign.center,
                   // Maybe I'll add a key option, but for now it isn't needed
-
                   onChanged: (value) => {
                         if (onChange) {jsonHandler.writeConfig("path", value)},
                         constants.Constants.codePath = value
