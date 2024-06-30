@@ -1,7 +1,9 @@
 import 'package:english_words/english_words.dart';
+import 'package:falcons_esports_overlays_controller/constants.dart';
 import 'package:falcons_esports_overlays_controller/handlers/http_handler.dart';
 import 'package:falcons_esports_overlays_controller/pages/http.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 // Pages
@@ -11,22 +13,25 @@ import 'pages/home.dart';
 import 'pages/config.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  HexColor appTheme = HexColor("bf0f35");
 
   @override
   Widget build(BuildContext context) {
+    try {
+      appTheme = Constants.appTheme;
+    } catch (e) {}
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
         title: 'Falcons Esports Overlay Controller',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromRGBO(190, 15, 52, 1)),
+          colorScheme: ColorScheme.fromSeed(seedColor: appTheme),
           textSelectionTheme: const TextSelectionThemeData(
               cursorColor: Colors.white,
               selectionColor: Color.fromARGB(125, 255, 255, 255)),
@@ -100,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SafeArea(
               child: NavigationRail(
                 backgroundColor: Colors.white,
-                indicatorColor: const Color.fromRGBO(190, 15, 52, 1),
+                indicatorColor: Constants.appTheme,
                 extended: constraints.maxWidth >= 1255,
                 destinations: const [
                   NavigationRailDestination(
@@ -153,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
               child: Container(
-                color: const Color.fromARGB(255, 190, 15, 52),
+                color: Constants.appTheme,
                 child: page,
               ),
             ),

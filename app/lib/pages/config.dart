@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:falcons_esports_overlays_controller/common_widgets/color_selector.dart';
 import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
 import 'package:falcons_esports_overlays_controller/constants.dart';
 import 'package:flutter/foundation.dart';
@@ -153,6 +154,12 @@ class _ControlsPage extends State<ConfigPage> {
                 width: 400,
               )
             ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [ColorSelector.colorPicker(color: Constants.appTheme)],
           ),
         )
       ],
