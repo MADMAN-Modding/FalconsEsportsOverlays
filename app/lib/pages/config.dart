@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
 import 'package:falcons_esports_overlays_controller/constants.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,15 +34,18 @@ class _ControlsPage extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     directory.text = jsonHandler.readConfig('path');
-    File logo = File(
-        "https://github.com/MADMAN-Modding/FalconsEsportsOverlays/blob/main/images/Esports-Logo.png");
+    codePath = directory.text;
+    FileImage logo = FileImage(File(""));
 
-    try {
-      logo = File(
-          "$codePath${Constants.slashType}images${Constants.slashType}Esports-Logo.png");
-    } catch (e) {}
-
-    print(logo.path);
+    if (File(
+            "$codePath${Constants.slashType}images${Constants.slashType}Esports-Logo.png")
+        .existsSync()) {
+      logo = FileImage(File(
+          "$codePath${Constants.slashType}images${Constants.slashType}Esports-Logo.png"));
+    }
+    if (kDebugMode) {
+      print(logo.file.path);
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -117,14 +121,20 @@ class _ControlsPage extends State<ConfigPage> {
                     if (newImagePath != "") {
                       imagePath = newImagePath;
                       try {
-                        File(imagePath)
-                            .writeAsBytesSync(logo.readAsBytesSync());
-                      } catch (e) {}
+                        // Writes the old logo with the supplied path, this has both items as FileImages
+                        logo.file.writeAsBytesSync(
+                            FileImage(File(imagePath)).file.readAsBytesSync());
+                      } catch (e) {
+                        if (kDebugMode) {
+                          print(e);
+                        }
+                      }
                     }
 
                     directory.text =
                         codePath.toString(); // Sets the text equal to the path
-                    jsonHandler.writeConfig('imagePath', imagePath.toString());
+
+                    logo.evict();
                   },
                 ),
               ),
@@ -137,7 +147,7 @@ class _ControlsPage extends State<ConfigPage> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            children: [Image.file(logo)],
+            children: [Image.file(logo.file)],
           ),
         )
       ],
