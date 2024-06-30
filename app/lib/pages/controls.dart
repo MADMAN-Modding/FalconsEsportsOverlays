@@ -1,3 +1,4 @@
+import 'package:falcons_esports_overlays_controller/common_widgets/color_selector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -186,18 +187,11 @@ class _ControlsPageState extends State<ControlsPage> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 20)),
-            ColorPicker(
-              pickerColor: sideColor,
-              onColorChanged: (Color color) {
-                jsonHandler.writeOverlay("teamColor$teamSide",
-                    "#${color.toHexString().replaceFirst("FF", "")}");
-                colorController.text =
-                    "#${color.toHexString().replaceFirst("FF", "")}";
-              },
-              enableAlpha: false,
-              colorPickerWidth: 100,
-              labelTypes: const [],
-            ),
+            ColorSelector.colorPicker(
+                color: sideColor,
+                colorController: colorController,
+                key: "teamColor$teamSide",
+                config: false),
             TextEditor.textEditor(
                 width: 80,
                 height: 50,

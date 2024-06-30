@@ -4,17 +4,24 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../handlers/json_handler.dart';
 
 class ColorSelector {
-  static Widget colorPicker({
-    required Color color,
-    required TextEditingController colorController,
-  }) {
+  static Widget colorPicker(
+      {required Color color,
+      required TextEditingController colorController,
+      String key = "appTheme",
+      bool config = true}) {
     JSONHandler jsonHandler = JSONHandler();
 
     return ColorPicker(
       pickerColor: color,
       onColorChanged: (Color color) {
-        jsonHandler.writeConfig(
-            "appTheme", "#${color.toHexString().replaceFirst("FF", "")}");
+        if (config) {
+          jsonHandler.writeConfig(
+              key, "#${color.toHexString().replaceFirst("FF", "")}");
+        } else {
+          jsonHandler.writeOverlay(
+              key, "#${color.toHexString().replaceFirst("FF", "")}");
+        }
+
         colorController.text = "#${color.toHexString().replaceFirst("FF", "")}";
       },
       enableAlpha: false,
