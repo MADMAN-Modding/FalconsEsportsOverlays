@@ -37,7 +37,8 @@ class _ControlsPage extends State<ConfigPage> {
   Widget build(BuildContext context) {
     directory.text = Constants.codePath;
     codePath = directory.text;
-    appTheme.text = Constants.appTheme.toHexString().replaceFirst("FF", "");
+    appTheme.text =
+        "#${Constants.appTheme.toHexString().replaceFirst("FF", "")}";
     FileImage logo = FileImage(File(""));
 
     if (File(
@@ -161,7 +162,10 @@ class _ControlsPage extends State<ConfigPage> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            children: [DefaultText.text("App Theme")],
+            children: [
+              DefaultText.text(
+                  "App Theme (Restart required for color changes to apply)")
+            ],
           ),
         ),
         Padding(
@@ -175,7 +179,9 @@ class _ControlsPage extends State<ConfigPage> {
                   height: 40,
                   controller: appTheme,
                   label: "",
-                  boxHeight: 40)
+                  boxHeight: 40,
+                  onChange: true,
+                  key: "appTheme")
             ],
           ),
         )
