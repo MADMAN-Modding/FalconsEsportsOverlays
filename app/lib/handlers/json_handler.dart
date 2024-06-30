@@ -29,8 +29,7 @@ class JSONHandler {
                   '$executableDirectory${Constants.slashType}config.json')
               .writeAsString('''
 {
-    "path": ".",
-    "imagePath": "."
+    "path": "."
 }
 ''').whenComplete(() => configJSON = File(
                       '$executableDirectory${Constants.slashType}config.json')
@@ -144,16 +143,11 @@ class JSONHandler {
         .toString()
         .replaceAll(r'\\', r'\')
         .replaceAll(r'\', r'\\');
-    configJSON["phpPath"] = configJSON["phpPath"]
-        .toString()
-        .replaceAll(r'\\', r'\')
-        .replaceAll(r'\', r'\\');
 
     File('$executableDirectory${Constants.slashType}config.json')
         .writeAsStringSync('''
 {
-    "path": "${configJSON["path"]}",
-    "imagePath": "${configJSON["imagePath"]}"
+    "path": "${configJSON["path"]}"
 }
 ''');
   }
