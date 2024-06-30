@@ -25,7 +25,7 @@ class _ControlsPage extends State<ConfigPage> {
 
 // Creates objects for the jsonHandler and for changing the text
   TextEditingController directory = TextEditingController();
-  TextEditingController phpDirectory = TextEditingController();
+  TextEditingController appTheme = TextEditingController();
   TextEditingController gitDirectory = TextEditingController();
   JSONHandler jsonHandler = JSONHandler();
 
@@ -34,8 +34,9 @@ class _ControlsPage extends State<ConfigPage> {
 
   @override
   Widget build(BuildContext context) {
-    directory.text = jsonHandler.readConfig('path');
+    directory.text = Constants.codePath;
     codePath = directory.text;
+    appTheme.text = Constants.appTheme.toString();
     FileImage logo = FileImage(File(""));
 
     if (File(
@@ -159,7 +160,22 @@ class _ControlsPage extends State<ConfigPage> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            children: [ColorSelector.colorPicker(color: Constants.appTheme)],
+            children: [DefaultText.text("App Theme")],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              ColorSelector.colorPicker(
+                  color: Constants.appTheme, colorController: appTheme),
+              TextEditor.textEditor(
+                  width: 200,
+                  height: 40,
+                  controller: appTheme,
+                  label: "",
+                  boxHeight: 40)
+            ],
           ),
         )
       ],

@@ -12,7 +12,7 @@ class Constants {
 
   static String imagePath = "$codePath${slashType}Esports-Logo.png";
 
-  static HexColor appTheme = HexColor("012345");
+  // static HexColor appTheme = HexColor("012345");
 
-  // static HexColor appTheme = HexColor(jsonHandler.readConfig("appTheme"));
+  static HexColor appTheme = HexColor(jsonHandler.readConfig("appTheme"));
 }
