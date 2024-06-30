@@ -1,3 +1,4 @@
+import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
 import 'package:falcons_esports_overlays_controller/handlers/git_handler.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:file_picker/file_picker.dart';
@@ -31,16 +32,11 @@ class _GitPage extends State<GitPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Make sure the directory is empty if you're cloning the repository.",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold),
-              )
+              DefaultText.text(
+                  "Make sure the directory is empty if you're cloning the repository."),
             ],
           ),
           Padding(
@@ -115,8 +111,8 @@ class _GitPage extends State<GitPage> {
                               pulled = true;
                             } else {
                               try {
-                                chosenPath = (await FilePicker.platform
-                                    .getDirectoryPath()) as String;
+                                chosenPath =
+                                    (await FolderPicker.folderPicker(context));
                                 updateValue(chosenPath);
                               } catch (e) {
                                 return;
@@ -125,8 +121,8 @@ class _GitPage extends State<GitPage> {
                             }
                           } catch (e) {
                             try {
-                              chosenPath = (await FilePicker.platform
-                                  .getDirectoryPath()) as String;
+                              chosenPath =
+                                  (await FolderPicker.folderPicker(context));
                             } catch (e) {
                               return;
                             }
