@@ -6,6 +6,7 @@ import 'package:falcons_esports_overlays_controller/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:image_picker/image_picker.dart';
 import '../commands/folder_picker.dart';
 import '../common_widgets/text_editor.dart';
@@ -36,7 +37,7 @@ class _ControlsPage extends State<ConfigPage> {
   Widget build(BuildContext context) {
     directory.text = Constants.codePath;
     codePath = directory.text;
-    appTheme.text = Constants.appTheme.toString();
+    appTheme.text = Constants.appTheme.toHexString().replaceFirst("FF", "");
     FileImage logo = FileImage(File(""));
 
     if (File(
