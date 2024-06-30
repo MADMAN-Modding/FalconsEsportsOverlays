@@ -29,7 +29,8 @@ class JSONHandler {
                   '$executableDirectory${Constants.slashType}config.json')
               .writeAsString('''
 {
-    "path": "."
+    "path": ".",
+    "appTheme": "bf0f35"
 }
 ''').whenComplete(() => configJSON = File(
                       '$executableDirectory${Constants.slashType}config.json')
@@ -144,10 +145,16 @@ class JSONHandler {
         .replaceAll(r'\\', r'\')
         .replaceAll(r'\', r'\\');
 
+    configJSON["appTheme"] = configJSON["appTheme"]
+        .toString()
+        .replaceAll(r'\\', r'\')
+        .replaceAll(r'\', r'\\');
+
     File('$executableDirectory${Constants.slashType}config.json')
         .writeAsStringSync('''
 {
-    "path": "${configJSON["path"]}"
+    "path": "${configJSON["path"]}",
+    "appTheme: "${configJSON["path"]}"
 }
 ''');
   }
