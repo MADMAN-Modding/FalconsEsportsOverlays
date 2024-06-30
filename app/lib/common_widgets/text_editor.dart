@@ -37,7 +37,7 @@ class TextEditor {
                   textAlign: TextAlign.center,
                   // Maybe I'll add a key option, but for now it isn't needed
                   onChanged: (value) => {
-                        if (onChange) {jsonHandler.writeConfig("path", value)},
+                        if (onChange) {jsonHandler.writeConfig(key, value)},
                         constants.Constants.codePath = value
                       }),
             )
