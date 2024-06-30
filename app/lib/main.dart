@@ -3,7 +3,6 @@ import 'package:falcons_esports_overlays_controller/constants.dart';
 import 'package:falcons_esports_overlays_controller/handlers/http_handler.dart';
 import 'package:falcons_esports_overlays_controller/pages/http.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 // Pages
@@ -13,25 +12,21 @@ import 'pages/home.dart';
 import 'pages/config.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-  HexColor appTheme = HexColor("bf0f35");
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    try {
-      appTheme = Constants.appTheme;
-    } catch (e) {}
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
         title: 'Falcons Esports Overlay Controller',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: appTheme),
+          colorScheme: ColorScheme.fromSeed(seedColor: Constants.appTheme),
           textSelectionTheme: const TextSelectionThemeData(
               cursorColor: Colors.white,
               selectionColor: Color.fromARGB(125, 255, 255, 255)),

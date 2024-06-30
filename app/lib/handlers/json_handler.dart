@@ -133,6 +133,9 @@ class JSONHandler {
     try {
       return configJSON[key].toString().replaceAll(r"\", r"\\");
     } catch (e) {
+      if (key == "appTheme") {
+        return "bf0f35";
+      }
       return ".";
     }
   }
@@ -154,7 +157,7 @@ class JSONHandler {
         .writeAsStringSync('''
 {
     "path": "${configJSON["path"]}",
-    "appTheme: "${configJSON["path"]}"
+    "appTheme": "${configJSON["appTheme"]}"
 }
 ''');
   }
