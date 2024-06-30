@@ -54,7 +54,7 @@ setInterval(function () {
             changeBackgroundColor("awayScore", teamColorRight);
         });
 
-    i = Math.floor(Math.random() * 1000);
+    i = Math.floor(Math.random() * 1000000);
 }, 100);
 
 

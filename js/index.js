@@ -16,5 +16,5 @@ setInterval(function () {
 
                 document.title = jsonData["overlay"].charAt(0).toUpperCase() + jsonData["overlay"].slice(1)
             })
-    i = Math.floor(Math.random() * 1000);
+    i = Math.floor(Math.random() * 1000000);
 }, 200)
