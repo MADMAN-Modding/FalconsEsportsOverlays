@@ -15,8 +15,7 @@ class ColorSelector {
       onColorChanged: (Color color) {
         jsonHandler.writeConfig(
             "appTheme", "#${color.toHexString().replaceFirst("FF", "")}");
-        // colorController.text =
-        //     "#${color.toHexString().replaceFirst("FF", "")}";
+        colorController.text = "#${color.toHexString().replaceFirst("FF", "")}";
       },
       enableAlpha: false,
       colorPickerWidth: 100,
