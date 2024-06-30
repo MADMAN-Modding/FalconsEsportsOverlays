@@ -147,7 +147,12 @@ class _ControlsPage extends State<ConfigPage> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            children: [Image.file(logo.file)],
+            children: [
+              Image.file(
+                logo.file,
+                width: 400,
+              )
+            ],
           ),
         )
       ],
