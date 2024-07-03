@@ -1,6 +1,4 @@
-import 'package:english_words/english_words.dart';
 import 'package:falcons_esports_overlays_controller/constants.dart';
-import 'package:falcons_esports_overlays_controller/handlers/http_handler.dart';
 import 'package:falcons_esports_overlays_controller/pages/http.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +21,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
+        // This may shock you, but it sets the title of the app
         title: 'Falcons Esports Overlay Controller',
         theme: ThemeData(
           useMaterial3: true,
@@ -37,27 +36,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-
-  void getNext() {
-    current = WordPair.random();
-    notifyListeners();
-  }
-
-  var favorites = <WordPair>[];
-
-  void toggleFavorite() {
-    if (favorites.contains(current)) {
-      favorites.remove(current);
-    } else {
-      favorites.add(current);
-    }
-    notifyListeners();
-  }
-}
-
-var favorites = <WordPair>[];
+class MyAppState extends ChangeNotifier {}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -93,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         throw UnimplementedError('no widget for $selectedIndex');
     }
 
+    // Makes the side panel stuff
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
         body: Row(
@@ -101,8 +81,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: NavigationRail(
                 backgroundColor: Colors.white,
                 indicatorColor: Constants.appTheme,
+                // Tells the app when to minimize the side bar
                 extended: constraints.maxWidth >= 1255,
                 destinations: const [
+                  // Makes icons for everything that change color based on if they are selected
                   NavigationRailDestination(
                     icon: Icon(
                       Icons.home,
@@ -161,17 +143,5 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     });
-  }
-}
-
-class HTTPServerObjectStorage {
-  HTTPHandler http = HTTPHandler();
-
-  void setServer(HTTPHandler http) {
-    this.http = http;
-  }
-
-  HTTPHandler getServer() {
-    return http;
   }
 }

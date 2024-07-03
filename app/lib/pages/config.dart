@@ -46,9 +46,6 @@ class _ControlsPage extends State<ConfigPage> {
       logo = FileImage(File(
           "$codePath${Constants.slashType}images${Constants.slashType}Esports-Logo.png"));
     }
-    if (kDebugMode) {
-      print(logo.file.path);
-    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -86,7 +83,7 @@ class _ControlsPage extends State<ConfigPage> {
 
               // Sets the size of the textfield and also does some stuff with the controller
               TextEditor.textEditor(
-                  width: 400,
+                  width: 550,
                   height: 40,
                   controller: directory,
                   label: "",

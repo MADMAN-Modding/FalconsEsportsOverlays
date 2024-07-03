@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../handlers/git_handler.dart';
 import '../handlers/json_handler.dart';
-import '../constants.dart' as constants;
+import '../constants.dart';
 
 class HTTPPage extends StatefulWidget {
   const HTTPPage({super.key});
@@ -11,9 +10,7 @@ class HTTPPage extends StatefulWidget {
 }
 
 class _HTTPPage extends State<HTTPPage> {
-  String chosenPath = "";
-  GitHandler gitHandler = GitHandler();
-  JSONHandler jsonHandler = JSONHandler();
+  String chosenPath = Constants.codePath;
 
   var directory = TextEditingController();
   @override
@@ -28,9 +25,10 @@ class _HTTPPage extends State<HTTPPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
+                    // Asynchronously starts the http server
                     onPressed: () async {
-                      constants.Constants.httpHandler
-                          .startServer(context, jsonHandler.readConfig("path"));
+                      Constants.httpHandler.startServer(
+                          context, JSONHandler().readConfig("path"));
                     },
                     child: const Text("Start Web Server")),
               ),
@@ -38,7 +36,8 @@ class _HTTPPage extends State<HTTPPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                     onPressed: () {
-                      constants.Constants.httpHandler.stopServer(context);
+                      // Stops the server
+                      Constants.httpHandler.stopServer(context);
                     },
                     child: const Text("Stop Web Server")),
               )

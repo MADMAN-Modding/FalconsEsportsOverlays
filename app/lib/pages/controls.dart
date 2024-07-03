@@ -1,4 +1,5 @@
 import 'package:falcons_esports_overlays_controller/common_widgets/color_selector.dart';
+import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -193,22 +194,19 @@ class _ControlsPageState extends State<ControlsPage> {
         const SizedBox(height: 15),
         Column(
           children: [
-            const Text("Team Color",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20)),
+            // Makes the color selectors
+            DefaultText.text("Team Color"),
             ColorSelector.colorPicker(
                 color: sideColor,
                 colorController: colorController,
-                key: "teamColor$teamSide",
-                config: false),
+                config: false,
+                key: "teamColor$teamSide"),
             TextEditor.textEditor(
                 width: 80,
                 height: 50,
                 controller: colorController,
                 label: "",
-                boxHeight: 5),
+                boxHeight: 0),
           ],
         )
       ],
