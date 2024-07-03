@@ -11,6 +11,7 @@ class HomePage extends StatelessWidget {
     constants.Constants.imagePath =
         constants.Constants.jsonHandler.readConfig("imagePath");
 
+    // Not many comments needed, just a lot of text
     return const Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

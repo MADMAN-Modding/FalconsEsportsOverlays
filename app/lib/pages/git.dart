@@ -1,4 +1,5 @@
 import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
+import 'package:falcons_esports_overlays_controller/constants.dart';
 import 'package:falcons_esports_overlays_controller/handlers/git_handler.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:file_picker/file_picker.dart';
@@ -15,18 +16,17 @@ class GitPage extends StatefulWidget {
 }
 
 class _GitPage extends State<GitPage> {
-  var directory = TextEditingController();
-
-  JSONHandler jsonHandler = JSONHandler();
+  TextEditingController directory = TextEditingController();
 
   late String chosenPath;
 
   @override
   Widget build(BuildContext context) {
-    var git = GitHandler();
-    chosenPath = jsonHandler.readConfig('path');
+    // Sets the chosen values
+    chosenPath = Constants.codePath;
 
-    directory.text = jsonHandler.readConfig("path");
+    // Sets the value of the text controller
+    directory.text = chosenPath;
 
     return Center(
       child: Column(
@@ -35,15 +35,18 @@ class _GitPage extends State<GitPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Nice little warning for the user
               DefaultText.text(
                   "Make sure the directory is empty if you're cloning the repository."),
             ],
           ),
           Padding(
+            // Adds some padding
             padding: const EdgeInsets.all(6),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // This box holds the folder icon
                 SizedBox(
                   height: 50,
                   width: 50,
@@ -55,6 +58,7 @@ class _GitPage extends State<GitPage> {
                     onPressed: () async {
                       String newChosenPath =
                           (await FolderPicker.folderPicker(context));
+                      // If the new path is equal to "" then it won't update the value of the current path
                       chosenPath =
                           newChosenPath == "" ? chosenPath : newChosenPath;
                       directory.text = chosenPath.replaceAll(r"\", r"\\");
@@ -62,8 +66,9 @@ class _GitPage extends State<GitPage> {
                     },
                   ),
                 ),
+                // Text editor for manually adding the path
                 TextEditor.textEditor(
-                    width: 400,
+                    width: 700,
                     height: 40,
                     controller: directory,
                     label: "",
@@ -72,6 +77,7 @@ class _GitPage extends State<GitPage> {
               ],
             ),
           ),
+          // Buttons for cloning and updating the repository
           Center(
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -80,11 +86,12 @@ class _GitPage extends State<GitPage> {
                   padding: const EdgeInsets.all(2.0),
                   child: ElevatedButton(
                     onPressed: () async {
+                      // If the chosen path is set, then clone the repo
                       if (chosenPath != "") {
                         if (kDebugMode) {
                           print(chosenPath);
                         }
-                        git.repoCloner(chosenPath, context);
+                        GitHandler().repoCloner(chosenPath, context);
                       } else {
                         try {
                           chosenPath = (await FilePicker.platform
@@ -104,21 +111,27 @@ class _GitPage extends State<GitPage> {
                   child: ElevatedButton(
                       onPressed: () async {
                         bool pulled = false;
+                        // This check might be considered annoying but if you want to pull my code, you better do it in a repository :)
                         while (!pulled) {
                           try {
-                            if (await git.checkRepo(chosenPath)) {
-                              git.update(chosenPath, context);
+                            // If it's a repo, pull the code
+                            if (await GitHandler().checkRepo(chosenPath)) {
+                              GitHandler().update(chosenPath, context);
                               pulled = true;
                             } else {
+                              // If it isn't try to get a new path that is a repo
                               try {
                                 chosenPath =
                                     (await FolderPicker.folderPicker(context));
                                 updateValue(chosenPath);
                               } catch (e) {
+                                // If it fails, run the loop again
                                 return;
                               }
+                              // When it finally works update the path
                               directory.text = chosenPath;
                             }
+                            // If it fails update the path again
                           } catch (e) {
                             try {
                               chosenPath =
@@ -139,9 +152,10 @@ class _GitPage extends State<GitPage> {
     );
   }
 
+  // Updates the value of the config
   void updateValue(String value) {
     chosenPath = value;
-    jsonHandler.writeConfig("path", value);
+    JSONHandler().writeConfig("path", value);
     if (kDebugMode) {
       print(chosenPath);
     }
