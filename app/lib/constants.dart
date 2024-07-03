@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:falcons_esports_overlays_controller/handlers/http_handler.dart';
+import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class Constants {
+  static JSONHandler jsonHandler = JSONHandler();
+
   static String slashType = Platform.isWindows ? "\\" : "/";
 
   static HTTPHandler httpHandler = HTTPHandler();

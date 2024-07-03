@@ -3,6 +3,7 @@ import 'package:flutter_popup_card/flutter_popup_card.dart';
 
 class NotificationHandler {
   static Future notification(BuildContext context, String text) {
+    // Makes a popup card with the input text in a locked position
     return showPopupCard(
       context: context,
       builder: (context) {

@@ -2,13 +2,12 @@ import 'package:falcons_esports_overlays_controller/handlers/notification_handle
 import 'package:flutter/material.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart';
-import 'json_handler.dart';
-
-JSONHandler jsonHandler = JSONHandler();
 
 class HTTPHandler {
+  // Makes the server variable as a var
   late var server;
 
+// Tries to bind an http server to port 8080, if it fails it will tell the user
   Future<void> startServer(BuildContext context, path) async {
     try {
       // Start the server with the updated path
@@ -23,6 +22,7 @@ class HTTPHandler {
     }
   }
 
+// This stops the server and tells the user if it failed or not
   void stopServer(BuildContext context) {
     try {
       server.close();

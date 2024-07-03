@@ -1,4 +1,3 @@
-import 'package:falcons_esports_overlays_controller/handlers/http_handler.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart' as constants;
 
@@ -7,8 +6,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    constants.Constants.codePath = jsonHandler.readConfig("path");
-    constants.Constants.imagePath = jsonHandler.readConfig("imagePath");
+    constants.Constants.codePath =
+        constants.Constants.jsonHandler.readConfig("path");
+    constants.Constants.imagePath =
+        constants.Constants.jsonHandler.readConfig("imagePath");
 
     return const Center(
       child: Column(
