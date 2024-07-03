@@ -1,7 +1,6 @@
 import 'package:falcons_esports_overlays_controller/common_widgets/color_selector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../handlers/json_handler.dart';
 import '../common_widgets/text_editor.dart';
@@ -14,6 +13,7 @@ class ControlsPage extends StatefulWidget {
 }
 
 class _ControlsPageState extends State<ControlsPage> {
+  // Lots of textEditingControllers
   final TextEditingController scoreLeft = TextEditingController();
   final TextEditingController scoreRight = TextEditingController();
   final TextEditingController teamNameLeft = TextEditingController();
@@ -25,6 +25,7 @@ class _ControlsPageState extends State<ControlsPage> {
   final TextEditingController playerNamesLeft = TextEditingController();
   final JSONHandler jsonHandler = JSONHandler();
 
+// Default color valyes
   Color teamColorLeftDefault = const Color.fromRGBO(190, 15, 50, 1);
   Color teamColorRightDefault = Colors.white;
 
@@ -43,6 +44,7 @@ class _ControlsPageState extends State<ControlsPage> {
     playerNamesLeft.text = jsonHandler.readOverlay('playerNamesLeft');
     playerNamesRight.text = jsonHandler.readOverlay('playerNamesRight');
 
+    // Tries to get the color values
     try {
       teamColorLeftDefault = HexColor(jsonHandler.readOverlay("teamColorLeft"));
       teamColorRightDefault =
@@ -54,6 +56,7 @@ class _ControlsPageState extends State<ControlsPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Makes a box that holds everything
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: Column(
@@ -68,8 +71,11 @@ class _ControlsPageState extends State<ControlsPage> {
               buildOverlayButton('rocketLeague', 'images/RL.png'),
             ],
           ),
+          // Spacer
           const SizedBox(height: 20),
+          // Row that holds everything
           Row(
+            // Makes all the columns
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               buildTeamColumn(
@@ -140,12 +146,15 @@ class _ControlsPageState extends State<ControlsPage> {
       required TextEditingController colorController,
       required Color sideColor}) {
     List<Widget> winButtons = [];
+    // For every about of wins your team can have, this will make a button for that
     for (int i = 0; i < 4; i++) {
       winButtons
           .add(scoreButton(text: "$i", jsonKey: "wins$teamSide", value: i));
     }
+    // All the textEditors to be used
     List<Widget> textEditors = [];
 
+// Foreach controller adds a text editor
     for (int i = 0; i < controllers.length; i++) {
       textEditors.add(
         TextEditor.textEditor(
@@ -156,6 +165,8 @@ class _ControlsPageState extends State<ControlsPage> {
             boxHeight: 5),
       );
     }
+
+    // Returns a column with all the needed info for a team
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -220,6 +231,7 @@ class _ControlsPageState extends State<ControlsPage> {
         const SizedBox(height: 5),
         Row(
           children: [
+            // Update all the values
             ElevatedButton(
                 onPressed: () {
                   jsonHandler.writeOverlay("scoreLeft", scoreLeft.text);

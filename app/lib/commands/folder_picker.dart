@@ -4,15 +4,20 @@ import 'package:file_picker/file_picker.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 
+// This is meant for only picking folders
 class FolderPicker {
   static Future<String> folderPicker(BuildContext context) async {
+    // If the user doesn't respond then it returns ""
     try {
+      // If its windows it a nice and easy file pickers
       if (Platform.isWindows) {
         var text = (await (FilePicker.platform.getDirectoryPath()))!;
         return text;
+        // If its Unix, its not as easy :(
       } else {
         // This is here until the bug on linux is fixed
         return (await FilesystemPicker.open(
+            // Page content
             context: context,
             theme: FilesystemPickerTheme(
                 topBar: FilesystemPickerTopBarThemeData(
@@ -21,8 +26,9 @@ class FolderPicker {
             rootDirectory: Directory("/home"),
             contextActions: [FilesystemPickerNewFolderContextAction()]))!;
       }
-      // ignore: empty_catches
-    } catch (e) {
+    }
+    // If the user gives us nothing
+    catch (e) {
       return "";
     }
   }

@@ -4,26 +4,32 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../handlers/json_handler.dart';
 
 class ColorSelector {
+  // static function for making color pickers
   static Widget colorPicker(
+      // Values to be passed in cause dart is cool with how i handles those
+      // :sunglasses: (pretend that worked)
       {required Color color,
       required TextEditingController colorController,
       String key = "appTheme",
       bool config = true}) {
-    JSONHandler jsonHandler = JSONHandler();
-
     return ColorPicker(
       pickerColor: color,
       onColorChanged: (Color color) {
+        // Determines which json to write to
         if (config) {
-          jsonHandler.writeConfig(
-              key, "#${color.toHexString().replaceFirst("FF", "")}");
+          JSONHandler().writeConfig(
+              // Removes the opacity values cause css doesn't like them
+              key,
+              "#${color.toHexString().replaceFirst("FF", "")}");
         } else {
-          jsonHandler.writeOverlay(
+          JSONHandler().writeOverlay(
               key, "#${color.toHexString().replaceFirst("FF", "")}");
         }
 
+        // Sets the value of the supplied text controller
         colorController.text = "#${color.toHexString().replaceFirst("FF", "")}";
       },
+      // Makes is so there isn't as many options to pick from
       enableAlpha: false,
       colorPickerWidth: 100,
       labelTypes: const [],

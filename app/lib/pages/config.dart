@@ -28,7 +28,6 @@ class _ControlsPage extends State<ConfigPage> {
   TextEditingController directory = TextEditingController();
   TextEditingController appTheme = TextEditingController();
   TextEditingController gitDirectory = TextEditingController();
-  JSONHandler jsonHandler = JSONHandler();
 
 // ImagePicker library object
   ImagePicker picker = ImagePicker();
@@ -77,9 +76,10 @@ class _ControlsPage extends State<ConfigPage> {
                     // If the returned path is blank then it won't take the value
                     codePath = newCodePath == "" ? codePath : newCodePath;
 
+                    // Sets the value of the directory text editing controller
                     directory.text =
                         codePath.toString(); // Sets the text equal to the path
-                    jsonHandler.writeConfig('path', codePath.toString());
+                    JSONHandler().writeConfig('path', codePath.toString());
                   },
                 ),
               ),
@@ -105,6 +105,7 @@ class _ControlsPage extends State<ConfigPage> {
             ],
           ),
         ),
+        // Makes the image button and the text
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -168,6 +169,7 @@ class _ControlsPage extends State<ConfigPage> {
             ],
           ),
         ),
+        // Makes a color picker that is used for the apps theme
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(

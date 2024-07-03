@@ -12,6 +12,7 @@ class JSONHandler {
 
   bool isWriting = false;
 
+  // Gets the executable directory
   String executableDirectory = File(Platform.resolvedExecutable).parent.path;
 
   JSONHandler() {
@@ -25,6 +26,7 @@ class JSONHandler {
       }
       File('$executableDirectory${Constants.slashType}config.json')
           .create(recursive: true)
+          // This initializes the config stuff
           .whenComplete(() => File(
                   '$executableDirectory${Constants.slashType}config.json')
               .writeAsString('''
@@ -33,14 +35,15 @@ class JSONHandler {
     "appTheme": "bf0f35"
 }
 ''').whenComplete(() => configJSON = File(
+                      // Reads the json when its done being generated
                       '$executableDirectory${Constants.slashType}config.json')
                   .readAsJsonSync()));
-
       if (kDebugMode) {
         print("Config Generated");
       }
     }
 
+// This is the same as the config but for the overlay
     try {
       overlayJSON = File(
               '${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
@@ -57,6 +60,7 @@ class JSONHandler {
   // Overlay methods
   void writeOverlay(String key, String data) {
     try {
+      // Makes sure the overlay isn't being written to
       if (!isWriting) {
         isWriting = true;
         overlayJSON[key] = data;
@@ -78,9 +82,10 @@ class JSONHandler {
 }
 ''');
       }
-
+      // Tries to prevent the overlay being written to twice, idk if it really made improvements
       isWriting = false;
     } catch (e) {
+      // Basically if it fails to write to the overlay and it didn't already exist it will try to make one if the directory is set
       if (kDebugMode) {
         print(e);
       }
@@ -96,6 +101,7 @@ class JSONHandler {
     }
   }
 
+  // Returns a key's value from the overlay json
   String readOverlay(String key) {
     try {
       return overlayJSON[key].toString().replaceAll(r"\", r"\\");
@@ -104,6 +110,7 @@ class JSONHandler {
         print(e);
       }
 
+      // Another check to make the overlay
       if (readConfig("path") != ".") {
         makeOverlay();
       }
@@ -120,6 +127,7 @@ class JSONHandler {
     }
   }
 
+// A method never used to print all the overlay keys
   void getOverlayKeys() {
     for (var key in overlayJSON.keys) {
       if (kDebugMode) {
@@ -140,9 +148,12 @@ class JSONHandler {
     }
   }
 
+// Writes the config
   void writeConfig(String key, String data) {
+    // Replaces the supplied key with the supplied value
     configJSON[key] = data;
 
+    // Writes all the values to the config
     configJSON["path"] = configJSON["path"]
         .toString()
         .replaceAll(r'\\', r'\')
@@ -162,10 +173,12 @@ class JSONHandler {
 ''');
   }
 
+// Makes teh overlay, wahoo
   Future<void> makeOverlay() async {
     // Prevents overwriting
 
     try {
+      // Initializes values
       File('${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
           .writeAsStringSync('''
 {
@@ -184,6 +197,7 @@ class JSONHandler {
 }
 ''');
 
+      // Loads the overlay
       overlayJSON = File(
               '${readConfig('path')}${Constants.slashType}json${Constants.slashType}overlay.json')
           .readAsJsonSync();
