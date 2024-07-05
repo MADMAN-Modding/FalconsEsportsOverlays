@@ -3,7 +3,7 @@ This is a streaming overlay for esports teams with a nice gui app written in dar
 <h1>Setup</h1>
 
 <h2>Using the App (Highly recommended)</h2>
-<p>Go to the latest release on the releases tab, download the zip file for your respective OS, unzip the file, make sure that you keep everything in that folder together, git must be setup and php needs to be downloaded somewhere, the homepage of the app will explain the rest.</p>
+<p>Go to the latest release on the releases tab, download the zip file for your respective OS, unzip the file, make sure that you keep everything in that folder together, git must be installed in order to download the actual overlays, the homepage of the app will explain the rest.</p>
 
 <h1>Clone/update with git cli</h1>
 <h4>Git (optional but recommended)</h4>
