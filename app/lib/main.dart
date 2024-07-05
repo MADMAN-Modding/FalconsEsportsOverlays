@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:falcons_esports_overlays_controller/constants.dart';
 import 'package:falcons_esports_overlays_controller/pages/http.dart';
 import 'package:flutter/material.dart';
@@ -76,44 +78,43 @@ class _MyHomePageState extends State<MyHomePage> {
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
         body: Row(
-          children: [
-            SafeArea(
-              child: NavigationRail(
-                selectedIconTheme: const IconThemeData(color: Colors.white),
-                backgroundColor: Colors.white,
-                indicatorColor: Constants.appTheme,
-                // Tells the app when to minimize the side bar
-                extended: constraints.maxWidth >= 1255,
-                destinations: const [
-                  // Makes icons for everything that change color based on if they are selected
-                  NavigationRailDestination(
-                    icon: Icon(Icons.home),
-                    label: Text('Home'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.download),
-                    label: Text('Overlay Files'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.edit),
-                    label: Text('Overlay Data'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.cell_tower),
-                    label: Text("Web Server"),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.settings),
-                    label: Text("Config"),
-                  )
-                ],
-                selectedIndex: selectedIndex,
-                onDestinationSelected: (value) {
-                  setState(() {
-                    selectedIndex = value;
-                  });
-                },
-              ),
+          children: <Widget>[
+            NavigationRail(
+              labelType: NavigationRailLabelType.all,
+              selectedIndex: selectedIndex,
+              onDestinationSelected: (value) {
+                setState(() {
+                  selectedIndex = value;
+                });
+              },
+              selectedIconTheme: const IconThemeData(color: Colors.white),
+              backgroundColor: Colors.white,
+              indicatorColor: Constants.appTheme,
+              // Tells the app when to minimize the side bar
+              extended: false,
+              destinations: const [
+                // Makes icons for everything that change color based on if they are selected
+                NavigationRailDestination(
+                  icon: Icon(Icons.home),
+                  label: Text('Home'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.download),
+                  label: Text('Overlay Files'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.edit),
+                  label: Text('Overlay Data'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.cell_tower),
+                  label: Text("Web Server"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.settings),
+                  label: Text("Config"),
+                )
+              ],
             ),
             Expanded(
               child: Container(
