@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:falcons_esports_overlays_controller/common_widgets/color_selector.dart';
 import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
 import 'package:falcons_esports_overlays_controller/constants.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -47,14 +46,31 @@ class _ControlsPage extends State<ConfigPage> {
           "$codePath${Constants.slashType}images${Constants.slashType}Esports-Logo.png"));
     }
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        // Padding for all the elements
-        // Code Directory
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
+    return SizedBox(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          // Code Directory
+
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 13),
+                child: Text(
+                  "This is the directory that contains all the code",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17),
+                ),
+              ),
+            ],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
               // Makes a box for the input
               SizedBox(
@@ -89,102 +105,109 @@ class _ControlsPage extends State<ConfigPage> {
                   label: "",
                   boxHeight: 0,
                   onChange: true),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  "This is the directory that contains all the code",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17),
-                ),
-              ),
             ],
           ),
-        ),
-        // Makes the image button and the text
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
+          // Makes the image button and the text
+          Row(
             children: [
-              SizedBox(
-                height: 50,
-                width: 50,
-                child: TextButton(
-                  child: const Icon(
-                    Icons.image,
-                    color: Colors.white,
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: TextButton(
+                          child: const Icon(
+                            Icons.image,
+                            color: Colors.white,
+                          ),
+                          onPressed: () async {
+                            String newImagePath =
+                                (await FolderPicker.folderPicker(context));
+
+                            // If the returned path is blank then it won't take the value
+                            if (newImagePath != "") {
+                              imagePath = newImagePath;
+                              try {
+                                // Writes the old logo with the supplied path, this has both items as FileImages
+                                logo.file.writeAsBytesSync(
+                                    FileImage(File(imagePath))
+                                        .file
+                                        .readAsBytesSync());
+                              } catch (e) {}
+                            }
+                            // Sets the text equal to the path
+                            directory.text = codePath.toString();
+
+                            // Clears the cache
+                            logo.evict();
+                          },
+                        ),
+                      ),
+                      DefaultText.text(
+                          "Set the image you would like to use for the overlay icon. "),
+                    ],
                   ),
-                  onPressed: () async {
-                    String newImagePath =
-                        (await FolderPicker.folderPicker(context));
-
-                    // If the returned path is blank then it won't take the value
-                    if (newImagePath != "") {
-                      imagePath = newImagePath;
-                      try {
-                        // Writes the old logo with the supplied path, this has both items as FileImages
-                        logo.file.writeAsBytesSync(
-                            FileImage(File(imagePath)).file.readAsBytesSync());
-                      } catch (e) {
-                        if (kDebugMode) {
-                          print(e);
-                        }
-                      }
-                    }
-
-                    directory.text =
-                        codePath.toString(); // Sets the text equal to the path
-
-                    logo.evict();
-                  },
-                ),
+                  // Displays the logo
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Image.file(
+                          logo.file,
+                          width: 400,
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        DefaultText.text(
+                            "App Theme (Restart required for color changes to apply)")
+                      ],
+                    ),
+                  ),
+                  // Makes a color picker that is used for the apps theme
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        ColorSelector.colorPicker(
+                            color: Constants.appTheme,
+                            colorController: appTheme),
+                        TextEditor.textEditor(
+                            width: 200,
+                            height: 40,
+                            controller: appTheme,
+                            label: "",
+                            boxHeight: 40,
+                            onChange: true,
+                            key: "appTheme")
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              DefaultText.text(
-                  "Set the image you would like to use for the overlay icon. "),
-            ],
-          ),
-        ),
-        // Displays the logo
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Image.file(
-                logo.file,
-                width: 400,
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Column(
+                        children: [
+                          DefaultText.text("Choose your school sports!")
+                        ],
+                      )
+                    ],
+                  )
+                ],
               )
             ],
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              DefaultText.text(
-                  "App Theme (Restart required for color changes to apply)")
-            ],
-          ),
-        ),
-        // Makes a color picker that is used for the apps theme
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              ColorSelector.colorPicker(
-                  color: Constants.appTheme, colorController: appTheme),
-              TextEditor.textEditor(
-                  width: 200,
-                  height: 40,
-                  controller: appTheme,
-                  label: "",
-                  boxHeight: 40,
-                  onChange: true,
-                  key: "appTheme")
-            ],
-          ),
-        )
-      ],
+        ],
+      ),
     );
   }
 
