@@ -45,7 +45,6 @@ class _ControlsPage extends State<ConfigPage> {
       logo = FileImage(File(
           "$codePath${Constants.slashType}images${Constants.slashType}Esports-Logo.png"));
     }
-
     return SizedBox(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
