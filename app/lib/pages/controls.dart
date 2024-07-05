@@ -67,19 +67,19 @@ class _ControlsPageState extends State<ControlsPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              if (jsonHandler.readConfig("ssbuChecked") == "true") ...[
+              if (jsonHandler.readConfig("ssbuChecked")) ...[
                 buildOverlayButton('ssbu', 'images/SSBU.png'),
               ],
-              if (jsonHandler.readConfig("kartChecked") == "true") ...[
+              if (jsonHandler.readConfig("kartChecked")) ...[
                 buildOverlayButton('kart', 'images/Kart.png'),
               ],
-              if (jsonHandler.readConfig("owChecked") == "true") ...[
+              if (jsonHandler.readConfig("owChecked")) ...[
                 buildOverlayButton('overwatch', 'images/Overwatch.png'),
               ],
-              if (jsonHandler.readConfig("rlChecked") == "true") ...[
+              if (jsonHandler.readConfig("rlChecked")) ...[
                 buildOverlayButton('rocketLeague', 'images/RL.png')
               ],
-              if (jsonHandler.readConfig("splatChecked") == "true") ...[
+              if (jsonHandler.readConfig("splatChecked")) ...[
                 buildOverlayButton('splat', 'images/SPLAT.png'),
               ]
             ],
@@ -88,17 +88,17 @@ class _ControlsPageState extends State<ControlsPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              if (jsonHandler.readConfig("valChecked") == "true")
+              if (jsonHandler.readConfig("valChecked"))
                 buildOverlayButton('val', 'images/VAL.png'),
-              if (jsonHandler.readConfig("hearthChecked") == "true")
+              if (jsonHandler.readConfig("hearthChecked"))
                 buildOverlayButton('hearth', 'images/Hearth.png'),
-              if (jsonHandler.readConfig("lolChecked") == "true")
+              if (jsonHandler.readConfig("lolChecked"))
                 buildOverlayButton('lol', 'images/LOL.png'),
-              if (jsonHandler.readConfig("chessChecked") == "true")
+              if (jsonHandler.readConfig("chessChecked"))
                 buildOverlayButton('chess', 'images/Chess.png'),
-              if (jsonHandler.readConfig("maddenChecked") == "true")
+              if (jsonHandler.readConfig("maddenChecked"))
                 buildOverlayButton('madden', 'images/Madden.png'),
-              if (jsonHandler.readConfig("nba2KChecked") == "true")
+              if (jsonHandler.readConfig("nba2KChecked"))
                 buildOverlayButton('nba2k', 'images/NBA2K.png')
             ],
           ),
