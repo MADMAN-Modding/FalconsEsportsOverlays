@@ -196,7 +196,7 @@ class JSONHandler {
     "lolChecked": ${configJSON["lolChecked"]},
     "chessChecked": ${configJSON["chessChecked"]},
     "maddenChecked": ${configJSON["maddenChecked"]},
-    "nba2kChecked": ${configJSON["nba2KChecked"]}
+    "nba2KChecked": ${configJSON["nba2KChecked"]}
 }
 ''');
   }

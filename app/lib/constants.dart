@@ -17,26 +17,4 @@ class Constants {
   static String imagePath = "$codePath${slashType}Esports-Logo.png";
 
   static HexColor appTheme = HexColor(jsonHandler.readConfig("appTheme"));
-
-  static bool ssbuChecked = jsonHandler.readConfig("ssbuChecked");
-
-  static bool kartChecked = jsonHandler.readConfig("kartChecked");
-
-  static bool owChecked = jsonHandler.readConfig("owChecked");
-
-  static bool rlChecked = jsonHandler.readConfig("rlChecked");
-
-  static bool splatChecked = jsonHandler.readConfig("splatChecked");
-
-  static bool valChecked = jsonHandler.readConfig("valChecked");
-
-  static bool hearthChecked = jsonHandler.readConfig("hearthChecked");
-
-  static bool lolChecked = jsonHandler.readConfig("lolChecked");
-
-  static bool chessChecked = jsonHandler.readConfig("chessChecked");
-
-  static bool nba2KChecked = jsonHandler.readConfig("nba2KChecked");
-
-  static bool maddenChecked = jsonHandler.readConfig("maddenChecked");
 }

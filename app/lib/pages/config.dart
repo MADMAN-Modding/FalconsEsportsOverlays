@@ -198,19 +198,18 @@ class _ControlsPage extends State<ConfigPage> {
                       Column(
                         children: [
                           DefaultText.text("Choose your school sports!"),
-                          Row(
-                            children: [
-                              Checkbox(
-                                  value: Constants.ssbuChecked,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      Constants.ssbuChecked = value!;
-                                      JSONHandler().writeConfig("ssbuChecked",
-                                          value ? "true" : "false");
-                                    });
-                                  })
-                            ],
-                          )
+                          checkBoxMaker(
+                              "Super Smash Bros. Ultimate", "ssbuChecked"),
+                          checkBoxMaker("Mario Kart", "kartChecked"),
+                          checkBoxMaker("Overwatch", "owChecked"),
+                          checkBoxMaker("Rocket League", "rlChecked"),
+                          checkBoxMaker("Splatoon", "splatChecked"),
+                          checkBoxMaker("Valorant", "valChecked"),
+                          checkBoxMaker("Hearth Stone", "hearthChecked"),
+                          checkBoxMaker("League of Legends", "lolChecked"),
+                          checkBoxMaker("Chess Checked", "chessChecked"),
+                          checkBoxMaker("Madden", "maddenChecked"),
+                          checkBoxMaker("NBA 2K", "nba2KChecked")
                         ],
                       )
                     ],
@@ -226,5 +225,23 @@ class _ControlsPage extends State<ConfigPage> {
 
   void stringValueSetter(String value) {
     codePath = value;
+  }
+
+  Widget checkBoxMaker(String text, String key) {
+    return Row(
+      children: [
+        DefaultText.text(text),
+        Checkbox(
+          activeColor: const Color.fromARGB(125, 255, 255, 255),
+          value: JSONHandler().readConfig(key),
+          onChanged: (bool? checked) {
+            setState(() {
+              checked = checked!;
+              JSONHandler().writeConfig(key, checked);
+            });
+          },
+        )
+      ],
+    );
   }
 }
