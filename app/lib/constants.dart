@@ -8,7 +8,7 @@ import 'package:hexcolor/hexcolor.dart';
 class Constants {
   static JSONHandler jsonHandler = JSONHandler();
 
-  static String slashType = Platform.isWindows ? "\\" : "/";
+  static String slashType = Platform.isWindows ? r'\\' + r'\\' : "/";
 
   static HTTPHandler httpHandler = HTTPHandler();
 
