@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 
 class FilePick {
   // Async function
-  static Future<String> folderPicker(BuildContext context) async {
+  static Future<String> filePicker(BuildContext context) async {
     // Tries to get a response from the user for the path they want
     // If they don't respond it will return ""
     try {
       // Since there's a bug on Linux that makes the file picker not work on linux this runs a separate one for Linux
       if (Platform.isWindows) {
-        FilePickerResult? result = await FilePicker.platform.pickFiles();
-        return result.toString();
+        FilePickerResult? result = await FilePicker.platform
+            .pickFiles(type: FileType.image, allowMultiple: false);
+        return result!.paths.toString().replaceAll("[", "").replaceAll("]", "");
       } else {
         // This is here until the bug on linux is fixed
         return (await FilesystemPicker.open(

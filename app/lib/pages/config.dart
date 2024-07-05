@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:falcons_esports_overlays_controller/commands/file_pick.dart';
 import 'package:falcons_esports_overlays_controller/common_widgets/color_selector.dart';
 import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
 import 'package:falcons_esports_overlays_controller/constants.dart';
@@ -123,18 +124,21 @@ class _ControlsPage extends State<ConfigPage> {
                           ),
                           onPressed: () async {
                             String newImagePath =
-                                (await FolderPicker.folderPicker(context));
+                                (await FilePick.filePicker(context));
 
+                            print("\n$newImagePath\t\n");
                             // If the returned path is blank then it won't take the value
                             if (newImagePath != "") {
                               imagePath = newImagePath;
                               try {
                                 // Writes the old logo with the supplied path, this has both items as FileImages
-                                logo.file.writeAsBytesSync(
-                                    FileImage(File(imagePath))
-                                        .file
-                                        .readAsBytesSync());
-                              } catch (e) {}
+                                logo.file.writeAsBytesSync(FileImage(
+                                        File(imagePath.replaceAll(r"\", r"\\")))
+                                    .file
+                                    .readAsBytesSync());
+                              } catch (e) {
+                                print(e);
+                              }
                             }
                             // Sets the text equal to the path
                             directory.text = codePath.toString();
