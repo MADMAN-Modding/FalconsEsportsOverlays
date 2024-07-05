@@ -136,9 +136,7 @@ class _ControlsPage extends State<ConfigPage> {
                                         File(imagePath.replaceAll(r"\", r"\\")))
                                     .file
                                     .readAsBytesSync());
-                              } catch (e) {
-                                print(e);
-                              }
+                              } catch (e) {}
                             }
                             // Sets the text equal to the path
                             directory.text = codePath.toString();
