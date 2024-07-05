@@ -28,8 +28,6 @@ class _GitPage extends State<GitPage> {
     // Sets the value of the text controller
     directory.text = chosenPath;
 
-    print(Constants.slashType);
-
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

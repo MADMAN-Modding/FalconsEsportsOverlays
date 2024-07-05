@@ -126,7 +126,6 @@ class _ControlsPage extends State<ConfigPage> {
                             String newImagePath =
                                 (await FilePick.filePicker(context));
 
-                            print("\n$newImagePath\t\n");
                             // If the returned path is blank then it won't take the value
                             if (newImagePath != "") {
                               imagePath = newImagePath;
