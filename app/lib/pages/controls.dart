@@ -72,6 +72,12 @@ class _ControlsPageState extends State<ControlsPage> {
               buildOverlayButton('overwatch', 'images/Overwatch.png'),
               buildOverlayButton('rocketLeague', 'images/RL.png'),
               buildOverlayButton('splat', 'images/SPLAT.png'),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
               buildOverlayButton('val', 'images/VAL.png'),
               buildOverlayButton('hearth', 'images/Hearth.png'),
               buildOverlayButton('lol', 'images/LOL.png'),
@@ -124,8 +130,8 @@ class _ControlsPageState extends State<ControlsPage> {
       },
       child: Image.asset(
         imagePath,
-        width: 70,
-        height: 70,
+        width: 90,
+        height: 90,
       ),
     );
   }
