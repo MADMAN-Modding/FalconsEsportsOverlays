@@ -207,7 +207,7 @@ class _ControlsPage extends State<ConfigPage> {
                           checkBoxMaker("Valorant", "valChecked"),
                           checkBoxMaker("Hearth Stone", "hearthChecked"),
                           checkBoxMaker("League of Legends", "lolChecked"),
-                          checkBoxMaker("Chess Checked", "chessChecked"),
+                          checkBoxMaker("Chess", "chessChecked"),
                           checkBoxMaker("Madden", "maddenChecked"),
                           checkBoxMaker("NBA 2K", "nba2KChecked")
                         ],
