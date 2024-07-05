@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:falcons_esports_overlays_controller/constants.dart';
 import 'package:falcons_esports_overlays_controller/pages/http.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,7 @@
 # FalconsEsportsOverlays
+
 This is a streaming overlay for esports teams with a nice gui app written in dart, you can it find in the <a href="https://github.com/MADMAN-Modding/FalconsEsportsOverlays/releases/latest" target="_blank">releases</a> page. There is also a web controlled version but that is only for releases 2.1.4 and below. Everything marked legacy has been replaced by the app.
+
 <h1>Setup</h1>
 
 <h2>Using the App (Highly recommended)</h2>
@@ -8,23 +10,14 @@ This is a streaming overlay for esports teams with a nice gui app written in dar
 <h1>Clone/update with git cli</h1>
 <h4>Git (optional but recommended)</h4>
 
-<p>Installing git makes it easier to update the clonned code when the project it updated. Download git from <a href="https://git-scm.com/download/win">here</a>. Get the version for your machine, most likely it will be 64-bit. Run the .exe and just go through the menus, the default options will be fine for this. Or if you're on Linux just install in with your package manager ex:(sudo pacman -Sy git or sudo apt install git)</p>
+<p>Installing git makes it easier to update the cloned code when the project it updated. Download git from <a href="https://git-scm.com/download/win">here</a>. Get the version for your machine, most likely it will be 64-bit. Run the .exe and just go through the menus, the default options will be fine for this. Or if you're on Linux just install in with your package manager ex:(sudo yay -Sy git or sudo apt install git)</p>
 
 <h3>Cloning the Repository</h3>
 
-<p>Open up Powershell and cd to where you will be storing the project.</p>
-
-    cd "C:\Path\to\your\data"
-
-<p>Run the following command to clone the repository</p>
-
-    git clone https://github.com/MADMAN-Modding/FalconsEsportsOverlays.git
-
-<p>This will clone the repository to the folder you are in.</p>
-
-<h2>Docker (Legacy)</h2>
+<p>Go to the Overlay Files page on the controller to download the files</p>
+<h1>Docker (Legacy)</h1>
 <h3>Get the docker <a href="https://hub.docker.com/repository/docker/madmanmodding/falconsesportsoverlay/general" target="_blank">here</a></h3>
-<p>I (MADMAN-Modding) usually update the docker every release, but it will still pull from main everytime it starts. There is no currently no support for the docker from the dart app. It is planned to be added.</p>
+<p>I (MADMAN-Modding) usually update the docker every release, but it will still pull from main every time it starts. There is no currently no support for the docker from the dart app.</p>
 
 <h1>PHP Setup (Legacy)</h1>
 <h2>Windows</h2>
@@ -34,9 +27,9 @@ This is a streaming overlay for esports teams with a nice gui app written in dar
 
 <h3>Adding PHP to the PATH (optional but recommended)</h3>
 
-<p>Open the system enviornment variables by typing environmental into the Windows searchbar and pressing enter, it should open the correct menu.</p>
+<p>Open the system environment variables by typing environmental into the Windows search bar and pressing enter, it should open the correct menu.</p>
 
-![An image of searching for enviornmental variables settings](https://github.com/MADMAN-Modding/PHP-Web-EmulatorJS/blob/main/README%20Stuff/environmentalVariables_Step1.png)
+![An image of searching for environmental variables settings](https://github.com/MADMAN-Modding/PHP-Web-EmulatorJS/blob/main/README%20Stuff/environmentalVariables_Step1.png)
 
 <p>Now click on the "Environmental Variables" button in the bottom right of the menu.</p>
 
