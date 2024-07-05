@@ -79,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             SafeArea(
               child: NavigationRail(
+                selectedIconTheme: const IconThemeData(color: Colors.white),
                 backgroundColor: Colors.white,
                 indicatorColor: Constants.appTheme,
                 // Tells the app when to minimize the side bar
@@ -86,44 +87,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 destinations: const [
                   // Makes icons for everything that change color based on if they are selected
                   NavigationRailDestination(
-                    icon: Icon(
-                      Icons.home,
-                    ),
-                    selectedIcon: Icon(
-                      Icons.home,
-                      color: Colors.white,
-                    ),
+                    icon: Icon(Icons.home),
                     label: Text('Home'),
                   ),
                   NavigationRailDestination(
                     icon: Icon(Icons.download),
-                    label: Text('Download & Update Overlay'),
-                    selectedIcon: Icon(
-                      Icons.download,
-                      color: Colors.white,
-                    ),
+                    label: Text('Overlay Files'),
                   ),
                   NavigationRailDestination(
-                      icon: Icon(Icons.edit),
-                      label: Text('Overlay Data'),
-                      selectedIcon: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                      )),
+                    icon: Icon(Icons.edit),
+                    label: Text('Overlay Data'),
+                  ),
                   NavigationRailDestination(
-                      icon: Icon(Icons.cell_tower),
-                      label: Text("Web Server"),
-                      selectedIcon: Icon(
-                        Icons.cell_tower,
-                        color: Colors.white,
-                      )),
+                    icon: Icon(Icons.cell_tower),
+                    label: Text("Web Server"),
+                  ),
                   NavigationRailDestination(
-                      icon: Icon(Icons.settings),
-                      label: Text("Config"),
-                      selectedIcon: Icon(
-                        Icons.settings,
-                        color: Colors.white,
-                      ))
+                    icon: Icon(Icons.settings),
+                    label: Text("Config"),
+                  )
                 ],
                 selectedIndex: selectedIndex,
                 onDestinationSelected: (value) {
