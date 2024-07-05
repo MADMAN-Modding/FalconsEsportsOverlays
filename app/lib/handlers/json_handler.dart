@@ -32,7 +32,18 @@ class JSONHandler {
               .writeAsString('''
 {
     "path": ".",
-    "appTheme": "bf0f35"
+    "appTheme": "bf0f35",
+    "ssbuChecked": true,
+    "kartChecked": true,
+    "owChecked": true,
+    "rlChecked": true,
+    "splatChecked": true,
+    "valChecked": true,
+    "hearthChecked": true,
+    "lolChecked": true,
+    "chessChecked": true,
+    "maddenChecked": true,
+    "nba2KChecked": true
 }
 ''').whenComplete(() => configJSON = File(
                       // Reads the json when its done being generated
@@ -137,19 +148,25 @@ class JSONHandler {
   }
 
   // Config methods
-  String readConfig(String key) {
+  readConfig(String key) {
     try {
+      if (key.toLowerCase().contains("checked")) {
+        return configJSON[key];
+      }
       return configJSON[key].toString().replaceAll(r"\", r"\\");
     } catch (e) {
       if (key == "appTheme") {
         return "bf0f35";
+      } else if (key.toLowerCase().contains("path")) {
+        return ".";
+      } else if (key.toLowerCase().contains("checked")) {
+        return true;
       }
-      return ".";
     }
   }
 
 // Writes the config
-  void writeConfig(String key, String data) {
+  void writeConfig(String key, var data) {
     // Replaces the supplied key with the supplied value
     configJSON[key] = data;
 
@@ -168,7 +185,18 @@ class JSONHandler {
         .writeAsStringSync('''
 {
     "path": "${configJSON["path"]}",
-    "appTheme": "${configJSON["appTheme"]}"
+    "appTheme": "${configJSON["appTheme"]}",
+    "ssbuChecked": ${configJSON["ssbuChecked"]},
+    "kartChecked": ${configJSON["kartChecked"]},
+    "owChecked": ${configJSON["owChecked"]},
+    "rlChecked": ${configJSON["rlChecked"]},
+    "splatChecked": ${configJSON["splatChecked"]},
+    "valChecked": ${configJSON["valChecked"]},
+    "hearthChecked": ${configJSON["hearthChecked"]},
+    "lolChecked": ${configJSON["lolChecked"]},
+    "chessChecked": ${configJSON["chessChecked"]},
+    "maddenChecked": ${configJSON["maddenChecked"]},
+    "nba2kChecked": ${configJSON["nba2KChecked"]}
 }
 ''');
   }

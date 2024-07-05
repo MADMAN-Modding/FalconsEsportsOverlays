@@ -67,23 +67,39 @@ class _ControlsPageState extends State<ControlsPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              buildOverlayButton('ssbu', 'images/SSBU.png'),
-              buildOverlayButton('kart', 'images/Kart.png'),
-              buildOverlayButton('overwatch', 'images/Overwatch.png'),
-              buildOverlayButton('rocketLeague', 'images/RL.png'),
-              buildOverlayButton('splat', 'images/SPLAT.png'),
+              if (jsonHandler.readConfig("ssbuChecked") == "true") ...[
+                buildOverlayButton('ssbu', 'images/SSBU.png'),
+              ],
+              if (jsonHandler.readConfig("kartChecked") == "true") ...[
+                buildOverlayButton('kart', 'images/Kart.png'),
+              ],
+              if (jsonHandler.readConfig("owChecked") == "true") ...[
+                buildOverlayButton('overwatch', 'images/Overwatch.png'),
+              ],
+              if (jsonHandler.readConfig("rlChecked") == "true") ...[
+                buildOverlayButton('rocketLeague', 'images/RL.png')
+              ],
+              if (jsonHandler.readConfig("splatChecked") == "true") ...[
+                buildOverlayButton('splat', 'images/SPLAT.png'),
+              ]
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              buildOverlayButton('val', 'images/VAL.png'),
-              buildOverlayButton('hearth', 'images/Hearth.png'),
-              buildOverlayButton('lol', 'images/LOL.png'),
-              buildOverlayButton('chess', 'images/Chess.png'),
-              buildOverlayButton('nba2k', 'images/NBA2K.png'),
-              buildOverlayButton('madden', 'images/Madden.png')
+              if (jsonHandler.readConfig("valChecked") == "true")
+                buildOverlayButton('val', 'images/VAL.png'),
+              if (jsonHandler.readConfig("hearthChecked") == "true")
+                buildOverlayButton('hearth', 'images/Hearth.png'),
+              if (jsonHandler.readConfig("lolChecked") == "true")
+                buildOverlayButton('lol', 'images/LOL.png'),
+              if (jsonHandler.readConfig("chessChecked") == "true")
+                buildOverlayButton('chess', 'images/Chess.png'),
+              if (jsonHandler.readConfig("maddenChecked") == "true")
+                buildOverlayButton('madden', 'images/Madden.png'),
+              if (jsonHandler.readConfig("nba2KChecked") == "true")
+                buildOverlayButton('nba2k', 'images/NBA2K.png')
             ],
           ),
           // Spacer
@@ -130,8 +146,8 @@ class _ControlsPageState extends State<ControlsPage> {
       },
       child: Image.asset(
         imagePath,
-        width: 90,
-        height: 90,
+        width: 80,
+        height: 80,
       ),
     );
   }

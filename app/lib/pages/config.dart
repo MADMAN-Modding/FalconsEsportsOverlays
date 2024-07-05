@@ -197,7 +197,20 @@ class _ControlsPage extends State<ConfigPage> {
                     children: [
                       Column(
                         children: [
-                          DefaultText.text("Choose your school sports!")
+                          DefaultText.text("Choose your school sports!"),
+                          Row(
+                            children: [
+                              Checkbox(
+                                  value: Constants.ssbuChecked,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      Constants.ssbuChecked = value!;
+                                      JSONHandler().writeConfig("ssbuChecked",
+                                          value ? "true" : "false");
+                                    });
+                                  })
+                            ],
+                          )
                         ],
                       )
                     ],
