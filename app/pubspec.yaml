@@ -79,6 +79,11 @@ flutter:
     - images/Overwatch.png
     - images/SSBU.png
     - images/VAL.png
+    - images/Hearth.png
+    - images/LOL.png
+    - images/Chess.png
+    - images/Madden.png
+    - images/NBA2K.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -26,7 +26,7 @@ class _ControlsPageState extends State<ControlsPage> {
   final TextEditingController playerNamesLeft = TextEditingController();
   final JSONHandler jsonHandler = JSONHandler();
 
-// Default color valyes
+// Default color values
   Color teamColorLeftDefault = const Color.fromRGBO(190, 15, 50, 1);
   Color teamColorRightDefault = Colors.white;
 
@@ -65,11 +65,19 @@ class _ControlsPageState extends State<ControlsPage> {
           // Overlay Switchers
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
               buildOverlayButton('ssbu', 'images/SSBU.png'),
               buildOverlayButton('kart', 'images/Kart.png'),
               buildOverlayButton('overwatch', 'images/Overwatch.png'),
               buildOverlayButton('rocketLeague', 'images/RL.png'),
+              buildOverlayButton('splat', 'images/SPLAT.png'),
+              buildOverlayButton('val', 'images/VAL.png'),
+              buildOverlayButton('hearth', 'images/Hearth.png'),
+              buildOverlayButton('lol', 'images/LOL.png'),
+              buildOverlayButton('chess', 'images/Chess.png'),
+              buildOverlayButton('nba2k', 'images/NBA2K.png'),
+              buildOverlayButton('madden', 'images/Madden.png')
             ],
           ),
           // Spacer
@@ -116,8 +124,8 @@ class _ControlsPageState extends State<ControlsPage> {
       },
       child: Image.asset(
         imagePath,
-        width: 100,
-        height: 100,
+        width: 70,
+        height: 70,
       ),
     );
   }
