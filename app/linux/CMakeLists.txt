@@ -7,7 +7,7 @@ project(runner LANGUAGES CXX)
 set(BINARY_NAME "falcons_esports_overlays_controller")
 # The unique GTK application identifier for this application. See:
 # https://wiki.gnome.org/HowDoI/ChooseApplicationID
-set(APPLICATION_ID "madman_modding.falcons_esports_overlays_controller")
+set(APPLICATION_ID "com.madman_modding.falcons_esports_overlays_controller")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
