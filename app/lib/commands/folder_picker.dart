@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 // This is meant for only picking folders
 class FolderPicker {
@@ -23,7 +24,9 @@ class FolderPicker {
                 topBar: FilesystemPickerTopBarThemeData(
                     backgroundColor: Colors.grey),
                 backgroundColor: const Color.fromARGB(255, 110, 107, 107)),
-            rootDirectory: Directory("/home"),
+            rootDirectory: Directory(Platform.isAndroid
+                ? getApplicationDocumentsDirectory().toString()
+                : "/home"),
             contextActions: [FilesystemPickerNewFolderContextAction()]))!;
       }
     }

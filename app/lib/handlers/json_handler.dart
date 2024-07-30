@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:falcons_esports_overlays_controller/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_file/json_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 class JSONHandler {
   // Overlay file initializer
@@ -13,9 +14,21 @@ class JSONHandler {
   bool isWriting = false;
 
   // Gets the executable directory
-  String executableDirectory = File(Platform.resolvedExecutable).parent.path;
+  late String executableDirectory;
 
   JSONHandler() {
+    jsonHandlerInit();
+  }
+
+  jsonHandlerInit() async {
+    if (Platform.isAndroid) {
+      final dir = await getApplicationDocumentsDirectory();
+
+      Constants.executableDir = dir.path;
+    } else {
+      executableDirectory = File(Platform.resolvedExecutable).parent.path;
+    }
+
     // Try-catch to read config values
     try {
       configJSON = File('$executableDirectory${Constants.slashType}config.json')

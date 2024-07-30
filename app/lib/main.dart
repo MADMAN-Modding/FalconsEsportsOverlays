@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:falcons_esports_overlays_controller/constants.dart';
+import 'package:falcons_esports_overlays_controller/pages/android_download.dart';
 import 'package:falcons_esports_overlays_controller/pages/http.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
         page = const HomePage();
         break;
       case 1:
-        page = const GitPage();
+        page =
+            Platform.isAndroid ? const AndroidDownloadPage() : const GitPage();
         break;
       case 2:
         page = const ControlsPage();
