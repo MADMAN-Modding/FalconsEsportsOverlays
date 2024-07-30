@@ -6,8 +6,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    constants.Constants.jsonHandler.jsonHandlerInit();
-
     constants.Constants.codePath =
         constants.Constants.jsonHandler.readConfig("path");
     constants.Constants.imagePath =
