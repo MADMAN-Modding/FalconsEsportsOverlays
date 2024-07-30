@@ -16,7 +16,7 @@ This is a streaming overlay for esports teams with a nice gui app written in dar
 
 <p>Go to the Overlay Files page on the controller to download the files</p>
 <h1>Docker (Legacy)</h1>
-<h3>Get the docker <a href="https://hub.docker.com/repository/docker/madman_modding/falconsesportsoverlay/general" target="_blank">here</a></h3>
+<h3>Get the docker <a href="https://hub.docker.com/repository/docker/com.madman_modding/falconsesportsoverlay/general" target="_blank">here</a></h3>
 <p>I (MADMAN-Modding) usually update the docker every release, but it will still pull from main every time it starts. There is no currently no support for the docker from the dart app.</p>
 
 <h1>PHP Setup (Legacy)</h1>
