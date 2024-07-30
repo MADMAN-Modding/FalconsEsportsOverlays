@@ -49,6 +49,8 @@ dependencies:
   shared_preferences: ^2.2.3
   filesystem_picker: ^4.1.0
   image_picker: ^1.1.2
+  path_provider: ^2.0.2
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:

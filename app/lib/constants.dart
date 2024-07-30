@@ -12,6 +12,8 @@ class Constants {
 
   static HTTPHandler httpHandler = HTTPHandler();
 
+  static String executableDir = File(Platform.resolvedExecutable).parent.path;
+
   static String codePath = jsonHandler.readConfig("path");
 
   static String imagePath = "$codePath${slashType}Esports-Logo.png";

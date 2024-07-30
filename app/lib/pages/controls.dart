@@ -3,8 +3,8 @@ import 'package:falcons_esports_overlays_controller/common_widgets/default_text.
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../handlers/json_handler.dart';
 import '../common_widgets/text_editor.dart';
+import '../constants.dart' as constants;
 
 class ControlsPage extends StatefulWidget {
   const ControlsPage({super.key});
@@ -24,7 +24,6 @@ class _ControlsPageState extends State<ControlsPage> {
   final TextEditingController teamColorLeft = TextEditingController();
   final TextEditingController playerNamesRight = TextEditingController();
   final TextEditingController playerNamesLeft = TextEditingController();
-  final JSONHandler jsonHandler = JSONHandler();
 
 // Default color values
   Color teamColorLeftDefault = const Color.fromRGBO(190, 15, 50, 1);
@@ -34,22 +33,31 @@ class _ControlsPageState extends State<ControlsPage> {
   void initState() {
     super.initState();
 
+    constants.Constants.jsonHandler.jsonHandlerInit();
+
     // Initialize controller values
-    scoreLeft.text = jsonHandler.readOverlay('scoreLeft');
-    scoreRight.text = jsonHandler.readOverlay('scoreRight');
-    teamNameLeft.text = jsonHandler.readOverlay('teamNameLeft');
-    teamNameRight.text = jsonHandler.readOverlay('teamNameRight');
-    week.text = jsonHandler.readOverlay('week');
-    teamColorLeft.text = jsonHandler.readOverlay('teamColorLeft');
-    teamColorRight.text = jsonHandler.readOverlay('teamColorRight');
-    playerNamesLeft.text = jsonHandler.readOverlay('playerNamesLeft');
-    playerNamesRight.text = jsonHandler.readOverlay('playerNamesRight');
+    scoreLeft.text = constants.Constants.jsonHandler.readOverlay('scoreLeft');
+    scoreRight.text = constants.Constants.jsonHandler.readOverlay('scoreRight');
+    teamNameLeft.text =
+        constants.Constants.jsonHandler.readOverlay('teamNameLeft');
+    teamNameRight.text =
+        constants.Constants.jsonHandler.readOverlay('teamNameRight');
+    week.text = constants.Constants.jsonHandler.readOverlay('week');
+    teamColorLeft.text =
+        constants.Constants.jsonHandler.readOverlay('teamColorLeft');
+    teamColorRight.text =
+        constants.Constants.jsonHandler.readOverlay('teamColorRight');
+    playerNamesLeft.text =
+        constants.Constants.jsonHandler.readOverlay('playerNamesLeft');
+    playerNamesRight.text =
+        constants.Constants.jsonHandler.readOverlay('playerNamesRight');
 
     // Tries to get the color values
     try {
-      teamColorLeftDefault = HexColor(jsonHandler.readOverlay("teamColorLeft"));
-      teamColorRightDefault =
-          HexColor(jsonHandler.readOverlay("teamColorRight"));
+      teamColorLeftDefault = HexColor(
+          constants.Constants.jsonHandler.readOverlay("teamColorLeft"));
+      teamColorRightDefault = HexColor(
+          constants.Constants.jsonHandler.readOverlay("teamColorRight"));
     } catch (e) {
       return;
     }
@@ -67,15 +75,15 @@ class _ControlsPageState extends State<ControlsPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              if (jsonHandler.readConfig("ssbuChecked"))
+              if (constants.Constants.jsonHandler.readConfig("ssbuChecked"))
                 buildOverlayButton('ssbu', 'images/SSBU.png'),
-              if (jsonHandler.readConfig("kartChecked"))
+              if (constants.Constants.jsonHandler.readConfig("kartChecked"))
                 buildOverlayButton('kart', 'images/Kart.png'),
-              if (jsonHandler.readConfig("owChecked"))
+              if (constants.Constants.jsonHandler.readConfig("owChecked"))
                 buildOverlayButton('overwatch', 'images/Overwatch.png'),
-              if (jsonHandler.readConfig("rlChecked"))
+              if (constants.Constants.jsonHandler.readConfig("rlChecked"))
                 buildOverlayButton('rocketLeague', 'images/RL.png'),
-              if (jsonHandler.readConfig("splatChecked"))
+              if (constants.Constants.jsonHandler.readConfig("splatChecked"))
                 buildOverlayButton('splat', 'images/SPLAT.png'),
             ],
           ),
@@ -83,17 +91,17 @@ class _ControlsPageState extends State<ControlsPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              if (jsonHandler.readConfig("valChecked"))
+              if (constants.Constants.jsonHandler.readConfig("valChecked"))
                 buildOverlayButton('val', 'images/VAL.png'),
-              if (jsonHandler.readConfig("hearthChecked"))
+              if (constants.Constants.jsonHandler.readConfig("hearthChecked"))
                 buildOverlayButton('hearth', 'images/Hearth.png'),
-              if (jsonHandler.readConfig("lolChecked"))
+              if (constants.Constants.jsonHandler.readConfig("lolChecked"))
                 buildOverlayButton('lol', 'images/LOL.png'),
-              if (jsonHandler.readConfig("chessChecked"))
+              if (constants.Constants.jsonHandler.readConfig("chessChecked"))
                 buildOverlayButton('chess', 'images/Chess.png'),
-              if (jsonHandler.readConfig("maddenChecked"))
+              if (constants.Constants.jsonHandler.readConfig("maddenChecked"))
                 buildOverlayButton('madden', 'images/Madden.png'),
-              if (jsonHandler.readConfig("nba2KChecked"))
+              if (constants.Constants.jsonHandler.readConfig("nba2KChecked"))
                 buildOverlayButton('nba2K', 'images/NBA2K.png')
             ],
           ),
@@ -137,7 +145,7 @@ class _ControlsPageState extends State<ControlsPage> {
         shadowColor: Colors.transparent,
       ),
       onPressed: () {
-        jsonHandler.writeOverlay("overlay", overlay);
+        constants.Constants.jsonHandler.writeOverlay("overlay", overlay);
       },
       child: Image.asset(
         imagePath,
@@ -155,7 +163,7 @@ class _ControlsPageState extends State<ControlsPage> {
             padding: const EdgeInsets.only(right: 4),
             child: ElevatedButton(
               onPressed: () {
-                jsonHandler.writeOverlay(jsonKey, "$value");
+                constants.Constants.jsonHandler.writeOverlay(jsonKey, "$value");
               },
               child: Text(text),
             ))
@@ -257,18 +265,24 @@ class _ControlsPageState extends State<ControlsPage> {
             // Update all the values
             ElevatedButton(
                 onPressed: () {
-                  jsonHandler.writeOverlay("scoreLeft", scoreLeft.text);
-                  jsonHandler.writeOverlay("scoreRight", scoreRight.text);
-                  jsonHandler.writeOverlay("teamNameLeft", teamNameLeft.text);
-                  jsonHandler.writeOverlay("teamNameRight", teamNameRight.text);
-                  jsonHandler.writeOverlay("teamColorLeft", teamColorLeft.text);
-                  jsonHandler.writeOverlay(
-                      "teamColorRight", teamColorRight.text);
-                  jsonHandler.writeOverlay("week", week.text);
-                  jsonHandler.writeOverlay(
-                      "playerNamesLeft", playerNamesLeft.text);
-                  jsonHandler.writeOverlay(
-                      "playerNamesRight", playerNamesRight.text);
+                  constants.Constants.jsonHandler
+                      .writeOverlay("scoreLeft", scoreLeft.text);
+                  constants.Constants.jsonHandler
+                      .writeOverlay("scoreRight", scoreRight.text);
+                  constants.Constants.jsonHandler
+                      .writeOverlay("teamNameLeft", teamNameLeft.text);
+                  constants.Constants.jsonHandler
+                      .writeOverlay("teamNameRight", teamNameRight.text);
+                  constants.Constants.jsonHandler
+                      .writeOverlay("teamColorLeft", teamColorLeft.text);
+                  constants.Constants.jsonHandler
+                      .writeOverlay("teamColorRight", teamColorRight.text);
+                  constants.Constants.jsonHandler
+                      .writeOverlay("week", week.text);
+                  constants.Constants.jsonHandler
+                      .writeOverlay("playerNamesLeft", playerNamesLeft.text);
+                  constants.Constants.jsonHandler
+                      .writeOverlay("playerNamesRight", playerNamesRight.text);
                 },
                 child: const Icon(Icons.system_update_alt)),
           ],
@@ -290,22 +304,26 @@ class _ControlsPageState extends State<ControlsPage> {
                 onPressed: () {
                   try {
                     // All temp values will be set to the left value at first
-                    String tempWins = jsonHandler.readOverlay("winsLeft");
+                    String tempWins =
+                        constants.Constants.jsonHandler.readOverlay("winsLeft");
                     String tempScore = scoreLeft.text;
                     String tempPlayerNames = playerNamesLeft.text;
                     String tempTeamName = teamNameLeft.text;
                     String tempTeamColor = teamColorLeft.text;
 
                     // Set the left side equal to the right
-                    jsonHandler.writeOverlay(
-                        "winsLeft", jsonHandler.readOverlay("winsRight"));
+                    constants.Constants.jsonHandler.writeOverlay(
+                        "winsLeft",
+                        constants.Constants.jsonHandler
+                            .readOverlay("winsRight"));
                     scoreLeft.text = scoreRight.text;
                     playerNamesLeft.text = playerNamesRight.text;
                     teamNameLeft.text = teamNameRight.text;
                     teamColorLeft.text = teamColorRight.text;
 
                     // Set the right equal to the temp values
-                    jsonHandler.writeOverlay("winsRight", tempWins);
+                    constants.Constants.jsonHandler
+                        .writeOverlay("winsRight", tempWins);
                     scoreRight.text = tempScore;
                     playerNamesRight.text = tempPlayerNames;
                     teamNameRight.text = tempTeamName;
@@ -335,7 +353,8 @@ class _ControlsPageState extends State<ControlsPage> {
                     ];
 
                     for (int i = 0; i < controllers.length; i++) {
-                      jsonHandler.writeOverlay(keys[i], controllers[i].text);
+                      constants.Constants.jsonHandler
+                          .writeOverlay(keys[i], controllers[i].text);
                     }
                   } catch (e) {
                     if (kDebugMode) {
