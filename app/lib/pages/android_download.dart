@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
 import 'package:falcons_esports_overlays_controller/handlers/download_handler.dart';
@@ -42,22 +40,6 @@ class _AndroidDownloadPage extends State<AndroidDownloadPage> {
                           context, "Overlays Downloaded");
                     },
                     child: const Text('Download Overlays'),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final dir = Directory(chosenPath);
-                      final List<FileSystemEntity> entities =
-                          await dir.list().toList();
-
-                      entities.forEach(print);
-
-                      NotificationHandler.notification(
-                          context, "Debug Pressed");
-                    },
-                    child: const Text('Debug Button'),
                   ),
                 ),
               ],

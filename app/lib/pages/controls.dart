@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:falcons_esports_overlays_controller/common_widgets/color_selector.dart';
 import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
 import 'package:flutter/foundation.dart';
@@ -28,6 +30,8 @@ class _ControlsPageState extends State<ControlsPage> {
 // Default color values
   Color teamColorLeftDefault = const Color.fromRGBO(190, 15, 50, 1);
   Color teamColorRightDefault = Colors.white;
+
+  double multiplier = Platform.isAndroid ? 0.8 : 1;
 
   @override
   void initState() {
@@ -106,7 +110,7 @@ class _ControlsPageState extends State<ControlsPage> {
             ],
           ),
           // Spacer
-          const SizedBox(height: 20),
+          SizedBox(height: 20 * multiplier),
           // Row that holds everything
           Row(
             // Makes all the columns
@@ -149,8 +153,8 @@ class _ControlsPageState extends State<ControlsPage> {
       },
       child: Image.asset(
         imagePath,
-        width: 80,
-        height: 80,
+        width: 80 * multiplier,
+        height: 80 * multiplier,
       ),
     );
   }
@@ -160,7 +164,7 @@ class _ControlsPageState extends State<ControlsPage> {
     return Row(
       children: [
         Padding(
-            padding: const EdgeInsets.only(right: 4),
+            padding: EdgeInsets.only(right: 4 * multiplier),
             child: ElevatedButton(
               onPressed: () {
                 constants.Constants.jsonHandler.writeOverlay(jsonKey, "$value");
@@ -181,7 +185,7 @@ class _ControlsPageState extends State<ControlsPage> {
       required Color sideColor}) {
     List<Widget> winButtons = [];
     // For every about of wins your team can have, this will make a button for that
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 6; i++) {
       winButtons
           .add(scoreButton(text: "$i", jsonKey: "wins$teamSide", value: i));
     }
@@ -196,7 +200,7 @@ class _ControlsPageState extends State<ControlsPage> {
             height: heights[i],
             controller: controllers[i],
             label: labels[i],
-            boxHeight: 5),
+            boxHeight: 5 * multiplier),
       );
     }
 
@@ -208,23 +212,23 @@ class _ControlsPageState extends State<ControlsPage> {
           children: [
             Text(
               "$teamSide Team",
-              style: const TextStyle(
+              style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 20),
+                  fontSize: 20 * multiplier),
             ),
           ],
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10 * multiplier),
         Text(
           "$teamSide Wins",
           style: const TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10 * multiplier),
         Row(children: winButtons),
         Column(children: textEditors),
-        const SizedBox(height: 15),
+        SizedBox(height: 15 * multiplier),
         Column(
           children: [
             // Makes the color selectors
