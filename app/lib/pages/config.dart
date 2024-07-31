@@ -41,10 +41,10 @@ class _ControlsPage extends State<ConfigPage> {
     FileImage logo = FileImage(File(""));
 
     if (File(
-            "$codePath${Constants.slashType}images${Constants.slashType}Esports-Logo.png")
+            "$codePath${Constants.slashType}${Constants.jsonHandler.androidFolder}images${Constants.slashType}Esports-Logo.png")
         .existsSync()) {
       logo = FileImage(File(
-          "$codePath${Constants.slashType}images${Constants.slashType}Esports-Logo.png"));
+          "$codePath${Constants.slashType}${Constants.jsonHandler.androidFolder}images${Constants.slashType}Esports-Logo.png"));
     }
     return SizedBox(
       child: Column(

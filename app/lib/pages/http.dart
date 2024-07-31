@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../handlers/json_handler.dart';
-import '../constants.dart';
+import '../constants.dart' as constants;
 
 class HTTPPage extends StatefulWidget {
   const HTTPPage({super.key});
@@ -10,7 +10,7 @@ class HTTPPage extends StatefulWidget {
 }
 
 class _HTTPPage extends State<HTTPPage> {
-  String chosenPath = Constants.codePath;
+  String chosenPath = constants.Constants.codePath;
 
   var directory = TextEditingController();
   @override
@@ -27,8 +27,7 @@ class _HTTPPage extends State<HTTPPage> {
                 child: ElevatedButton(
                     // Asynchronously starts the http server
                     onPressed: () async {
-                      Constants.httpHandler.startServer(
-                          context, JSONHandler().readConfig("path"));
+                      constants.Constants.httpHandler.startServer(context);
                     },
                     child: const Text("Start Web Server")),
               ),
@@ -37,7 +36,7 @@ class _HTTPPage extends State<HTTPPage> {
                 child: ElevatedButton(
                     onPressed: () {
                       // Stops the server
-                      Constants.httpHandler.stopServer(context);
+                      constants.Constants.httpHandler.stopServer(context);
                     },
                     child: const Text("Stop Web Server")),
               )
