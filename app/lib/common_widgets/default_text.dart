@@ -1,11 +1,11 @@
-import 'dart:io';
-
+import 'package:falcons_esports_overlays_controller/constants.dart'
+    as constants;
 import 'package:flutter/material.dart';
 
 // All this does is return the default text options, wahoo
 class DefaultText {
   static Widget text(String input) {
-    double multiplier = Platform.isAndroid ? 0.8 : 1;
+    double multiplier = constants.Constants.multiplier;
 
     return Text(
       input,

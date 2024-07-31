@@ -31,7 +31,7 @@ class _ControlsPageState extends State<ControlsPage> {
   Color teamColorLeftDefault = const Color.fromRGBO(190, 15, 50, 1);
   Color teamColorRightDefault = Colors.white;
 
-  double multiplier = Platform.isAndroid ? 0.8 : 1;
+  double multiplier = constants.Constants.multiplier;
 
   @override
   void initState() {
@@ -110,7 +110,7 @@ class _ControlsPageState extends State<ControlsPage> {
             ],
           ),
           // Spacer
-          SizedBox(height: 20 * multiplier),
+          if (!Platform.isAndroid) const SizedBox(height: 20),
           // Row that holds everything
           Row(
             // Makes all the columns
@@ -169,6 +169,11 @@ class _ControlsPageState extends State<ControlsPage> {
               onPressed: () {
                 constants.Constants.jsonHandler.writeOverlay(jsonKey, "$value");
               },
+              style: ButtonStyle(
+                minimumSize: WidgetStatePropertyAll(
+                  Size(40 * multiplier, 30 * multiplier),
+                ),
+              ),
               child: Text(text),
             ))
       ],
@@ -183,12 +188,19 @@ class _ControlsPageState extends State<ControlsPage> {
       required List<String> labels,
       required TextEditingController colorController,
       required Color sideColor}) {
-    List<Widget> winButtons = [];
+    List<Widget> winButtonsTop = [];
+    List<Widget> winButtonsBottom = [];
     // For every about of wins your team can have, this will make a button for that
-    for (int i = 0; i < 6; i++) {
-      winButtons
+    for (int i = 0; i < 3; i++) {
+      winButtonsTop
           .add(scoreButton(text: "$i", jsonKey: "wins$teamSide", value: i));
     }
+
+    for (int i = 3; i < 6; i++) {
+      winButtonsBottom
+          .add(scoreButton(text: "$i", jsonKey: "wins$teamSide", value: i));
+    }
+
     // All the textEditors to be used
     List<Widget> textEditors = [];
 
@@ -226,9 +238,15 @@ class _ControlsPageState extends State<ControlsPage> {
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),
         ),
         SizedBox(height: 10 * multiplier),
-        Row(children: winButtons),
+        Row(children: winButtonsTop),
+        if (!Platform.isAndroid) ...[
+          const SizedBox(
+            height: 10,
+          )
+        ],
+        Row(children: winButtonsBottom),
         Column(children: textEditors),
-        SizedBox(height: 15 * multiplier),
+        if (!Platform.isAndroid) const SizedBox(height: 15),
         Column(
           children: [
             // Makes the color selectors
@@ -254,13 +272,13 @@ class _ControlsPageState extends State<ControlsPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Row(
+        Row(
           children: [
             Text("Update Overlay",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 15)),
+                    fontSize: 15 * multiplier)),
           ],
         ),
         const SizedBox(height: 5),
@@ -268,37 +286,45 @@ class _ControlsPageState extends State<ControlsPage> {
           children: [
             // Update all the values
             ElevatedButton(
-                onPressed: () {
-                  constants.Constants.jsonHandler
-                      .writeOverlay("scoreLeft", scoreLeft.text);
-                  constants.Constants.jsonHandler
-                      .writeOverlay("scoreRight", scoreRight.text);
-                  constants.Constants.jsonHandler
-                      .writeOverlay("teamNameLeft", teamNameLeft.text);
-                  constants.Constants.jsonHandler
-                      .writeOverlay("teamNameRight", teamNameRight.text);
-                  constants.Constants.jsonHandler
-                      .writeOverlay("teamColorLeft", teamColorLeft.text);
-                  constants.Constants.jsonHandler
-                      .writeOverlay("teamColorRight", teamColorRight.text);
-                  constants.Constants.jsonHandler
-                      .writeOverlay("week", week.text);
-                  constants.Constants.jsonHandler
-                      .writeOverlay("playerNamesLeft", playerNamesLeft.text);
-                  constants.Constants.jsonHandler
-                      .writeOverlay("playerNamesRight", playerNamesRight.text);
-                },
-                child: const Icon(Icons.system_update_alt)),
+              onPressed: () {
+                constants.Constants.jsonHandler
+                    .writeOverlay("scoreLeft", scoreLeft.text);
+                constants.Constants.jsonHandler
+                    .writeOverlay("scoreRight", scoreRight.text);
+                constants.Constants.jsonHandler
+                    .writeOverlay("teamNameLeft", teamNameLeft.text);
+                constants.Constants.jsonHandler
+                    .writeOverlay("teamNameRight", teamNameRight.text);
+                constants.Constants.jsonHandler
+                    .writeOverlay("teamColorLeft", teamColorLeft.text);
+                constants.Constants.jsonHandler
+                    .writeOverlay("teamColorRight", teamColorRight.text);
+                constants.Constants.jsonHandler.writeOverlay("week", week.text);
+                constants.Constants.jsonHandler
+                    .writeOverlay("playerNamesLeft", playerNamesLeft.text);
+                constants.Constants.jsonHandler
+                    .writeOverlay("playerNamesRight", playerNamesRight.text);
+              },
+              style: ButtonStyle(
+                minimumSize: WidgetStatePropertyAll(
+                  Size(60 * multiplier, 40 * multiplier),
+                ),
+                // maximumSize: WidgetStatePropertyAll(
+                //   Size(100 * multiplier, 60 * multiplier),
+                // ),
+              ),
+              child: const Icon(Icons.system_update_alt),
+            ),
           ],
         ),
-        const SizedBox(height: 15),
-        const Row(
+        if (!Platform.isAndroid) const SizedBox(height: 15),
+        Row(
           children: [
             Text("Swap Values",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 15))
+                    fontSize: 15 * multiplier))
           ],
         ),
         const SizedBox(height: 5),
@@ -366,6 +392,14 @@ class _ControlsPageState extends State<ControlsPage> {
                     }
                   }
                 },
+                style: ButtonStyle(
+                  minimumSize: WidgetStatePropertyAll(
+                    Size(80 * multiplier, 40 * multiplier),
+                  ),
+                  maximumSize: WidgetStatePropertyAll(
+                    Size(120 * multiplier, 60 * multiplier),
+                  ),
+                ),
                 child: const Icon(Icons.swap_horiz_sharp))
           ],
         ),

@@ -16,7 +16,7 @@ class TextEditor {
       required double boxHeight,
       bool onChange = false,
       String key = "path"}) {
-    double multiplier = Platform.isAndroid ? 0.8 : 1;
+    double multiplier = constants.Constants.multiplier;
 
     Widget widget = Column(
       children: [
@@ -28,24 +28,26 @@ class TextEditor {
             // Sized box with supplied values
             SizedBox(
               width: width * multiplier,
-              height: height * multiplier,
+              height: height * (Platform.isAndroid ? 0.78 : 1),
               // Text field for entering values
               child: TextField(
                   controller: controller,
                   // Default decoration used throughout the whole program
-                  decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
+                  decoration: InputDecoration(
+                      border: const UnderlineInputBorder(),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 2.0),
+                        borderSide: BorderSide(
+                            color: Colors.white, width: 2.0 * multiplier),
                       ),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 2.0),
+                        borderSide: BorderSide(
+                            color: Colors.white, width: 2.0 * multiplier),
                       )),
                   // Text style that's the same across the whole page, wahoo
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 17),
+                      fontSize: 17 * multiplier),
                   textAlign: TextAlign.center,
                   // Writes the config with the correct value
                   onChanged: (value) => {
