@@ -4,14 +4,22 @@ import 'package:falcons_esports_overlays_controller/handlers/notification_handle
 import 'package:flutter/material.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart';
+import 'package:falcons_esports_overlays_controller/constants.dart'
+    as constants;
 
 class HTTPHandler {
   // Makes the server variable as a var
   late var server;
 
 // Tries to bind an http server to port 8080, if it fails it will tell the user
-  Future<void> startServer(BuildContext context, path) async {
+  Future<void> startServer(BuildContext context) async {
+    String path = constants.Constants.codePath;
+
+    print(path);
+
     path += Platform.isAndroid ? "/FalconsEsportsOverlays" : "";
+
+    print(path);
 
     try {
       // Start the server with the updated path
@@ -23,6 +31,7 @@ class HTTPHandler {
     } catch (e) {
       NotificationHandler.notification(
           context, "Server failed to start or is already running");
+      print(e);
     }
   }
 
