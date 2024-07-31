@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
+import 'package:hexcolor/hexcolor.dart';
 
 class ColorSelector {
   // static function for making color pickers
@@ -19,6 +20,8 @@ class ColorSelector {
       onColorChanged: (Color color) {
         // Determines which json to write to
         if (config) {
+          constants.Constants.appTheme =
+              HexColor("#${color.toHexString().replaceFirst("FF", "")}");
           constants.Constants.jsonHandler.writeConfig(
               // Removes the opacity values cause css doesn't like them
               key,

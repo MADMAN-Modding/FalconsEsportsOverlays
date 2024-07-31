@@ -1,9 +1,11 @@
 import 'dart:io';
 
-import 'package:falcons_esports_overlays_controller/constants.dart';
+import 'package:falcons_esports_overlays_controller/constants.dart'
+    as constants;
 import 'package:falcons_esports_overlays_controller/pages/android_download.dart';
 import 'package:falcons_esports_overlays_controller/pages/http.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 // Pages
@@ -28,7 +30,9 @@ class MyApp extends StatelessWidget {
         title: 'Falcons Esports Overlay Controller',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Constants.appTheme),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: HexColor(
+                  constants.Constants.jsonHandler.readConfig("appTheme"))),
           textSelectionTheme: const TextSelectionThemeData(
               cursorColor: Colors.white,
               selectionColor: Color.fromARGB(125, 255, 255, 255)),
@@ -91,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               selectedIconTheme: const IconThemeData(color: Colors.white),
               backgroundColor: Colors.white,
-              indicatorColor: Constants.appTheme,
+              indicatorColor: constants.Constants.appTheme,
               // Tells the app when to minimize the side bar
               extended: false,
               destinations: const [
@@ -120,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
               child: Container(
-                color: Constants.appTheme,
+                color: constants.Constants.appTheme,
                 child: page,
               ),
             ),

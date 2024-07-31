@@ -54,7 +54,7 @@ class JSONHandler {
                 .writeAsString('''
 {
     "path": "$path",
-    "appTheme": "bf0f35",
+    "appTheme": "#bf0f35",
     "ssbuChecked": true,
     "kartChecked": true,
     "owChecked": true,
@@ -179,12 +179,13 @@ class JSONHandler {
       return configJSON[key].toString().replaceAll(r"\", r"\\");
     } catch (e) {
       if (key == "appTheme") {
-        return "bf0f35";
+        return "#BF0F35";
       } else if (key.toLowerCase().contains("path")) {
         return ".";
       } else if (key.toLowerCase().contains("checked")) {
         return true;
       }
+      print(e);
     }
   }
 
