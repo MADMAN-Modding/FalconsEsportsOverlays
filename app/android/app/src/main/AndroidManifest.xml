@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.madman_modding.falcons_esports_overlays_controller">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -6,6 +6,8 @@
         android:label="Falcons Esports Overlays Controller"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

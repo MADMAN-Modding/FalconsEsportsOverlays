@@ -1,4 +1,4 @@
-package com.madman_modding.app
+package com.madman_modding.falcons_esports_overlays_controller
 
 import io.flutter.embedding.android.FlutterActivity
 
