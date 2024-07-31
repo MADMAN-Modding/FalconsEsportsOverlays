@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
 import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
@@ -14,6 +16,8 @@ class TextEditor {
       required double boxHeight,
       bool onChange = false,
       String key = "path"}) {
+    double multiplier = Platform.isAndroid ? 0.8 : 1;
+
     Widget widget = Column(
       children: [
         SizedBox(height: boxHeight),
@@ -23,8 +27,8 @@ class TextEditor {
           children: [
             // Sized box with supplied values
             SizedBox(
-              width: width,
-              height: height,
+              width: width * multiplier,
+              height: height * multiplier,
               // Text field for entering values
               child: TextField(
                   controller: controller,
