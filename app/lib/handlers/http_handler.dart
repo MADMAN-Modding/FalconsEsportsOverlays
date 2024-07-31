@@ -15,11 +15,7 @@ class HTTPHandler {
   Future<void> startServer(BuildContext context) async {
     String path = constants.Constants.codePath;
 
-    print(path);
-
     path += Platform.isAndroid ? "/FalconsEsportsOverlays" : "";
-
-    print(path);
 
     try {
       // Start the server with the updated path
@@ -31,7 +27,6 @@ class HTTPHandler {
     } catch (e) {
       NotificationHandler.notification(
           context, "Server failed to start or is already running");
-      print(e);
     }
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../handlers/json_handler.dart';
 import '../constants.dart' as constants;
 
 class HTTPPage extends StatefulWidget {
