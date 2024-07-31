@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="falcons_esports_overlays_controller"
+        android:label="Falcons Esports Overlays Controller"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
