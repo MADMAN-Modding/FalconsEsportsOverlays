@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 class FilePick {
   // Async function
   static Future<String> filePicker(BuildContext context) async {
+    String directory = Platform.isAndroid ? "/storage/emulated/0" : "/home";
+
     // Tries to get a response from the user for the path they want
     // If they don't respond it will return ""
     try {
@@ -24,7 +26,7 @@ class FilePick {
                 topBar: FilesystemPickerTopBarThemeData(
                     backgroundColor: Colors.grey),
                 backgroundColor: const Color.fromARGB(255, 110, 107, 107)),
-            rootDirectory: Directory("/home"),
+            rootDirectory: Directory(directory),
             contextActions: [FilesystemPickerNewFolderContextAction()]))!;
       }
       // If the user doesn't pick a directory, return ""
