@@ -18,6 +18,8 @@ class JSONHandler {
   // Gets the executable directory
   String executableDirectory = constants.Constants.executableDir;
 
+  String androidFolder = "";
+
   JSONHandler() {
     jsonHandlerInit();
   }
@@ -29,6 +31,8 @@ class JSONHandler {
       constants.Constants.executableDir = dir.path;
 
       executableDirectory = constants.Constants.executableDir;
+
+      androidFolder = "/FalconsEsportsOverlays";
     }
 
     // Try-catch to read config values
@@ -41,6 +45,7 @@ class JSONHandler {
         print("Can't find file :( $e \nmaking a new config");
       }
       if (!Platform.isAndroid || await Permission.storage.request().isGranted) {
+        String path = Platform.isAndroid ? executableDirectory : ".";
         File('$executableDirectory${constants.Constants.slashType}config.json')
             .create(recursive: true)
             // This initializes the config stuff
@@ -48,7 +53,7 @@ class JSONHandler {
                     '$executableDirectory${constants.Constants.slashType}config.json')
                 .writeAsString('''
 {
-    "path": ${Platform.isAndroid ? '$executableDirectory/FalconsEsportsOverlays-main' : "."},
+    "path": "$path",
     "appTheme": "bf0f35",
     "ssbuChecked": true,
     "kartChecked": true,
@@ -75,7 +80,7 @@ class JSONHandler {
 // This is the same as the config but for the overlay
     try {
       overlayJSON = File(
-              '${readConfig('path')}${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+              '${readConfig('path')}$androidFolder${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
           .readAsJsonSync();
     } catch (e) {
       if (kDebugMode) {
@@ -93,7 +98,7 @@ class JSONHandler {
       if (!isWriting) {
         isWriting = true;
         overlayJSON[key] = data;
-        File('${readConfig('path')}${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+        File('${readConfig('path')}$androidFolder${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
             .writeAsStringSync('''
 {
     "teamNameLeft": "${overlayJSON['teamNameLeft']}",
@@ -225,7 +230,7 @@ class JSONHandler {
 
     try {
       // Initializes values
-      File('${readConfig('path')}${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+      File('${readConfig('path')}$androidFolder${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
           .writeAsStringSync('''
 {
     "teamNameLeft": "DC Falcons Red",
@@ -245,7 +250,7 @@ class JSONHandler {
 
       // Loads the overlay
       overlayJSON = File(
-              '${readConfig('path')}${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+              '${readConfig('path')}$androidFolder${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
           .readAsJsonSync();
     } catch (e) {
       return;

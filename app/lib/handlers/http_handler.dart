@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:falcons_esports_overlays_controller/handlers/notification_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
@@ -9,11 +11,13 @@ class HTTPHandler {
 
 // Tries to bind an http server to port 8080, if it fails it will tell the user
   Future<void> startServer(BuildContext context, path) async {
+    path += Platform.isAndroid ? "/FalconsEsportsOverlays" : "";
+
     try {
       // Start the server with the updated path
       server = await shelf_io.serve(
           createStaticHandler(path, defaultDocument: 'index.html'),
-          'localhost',
+          '0.0.0.0',
           8080);
       NotificationHandler.notification(context, "Server started");
     } catch (e) {

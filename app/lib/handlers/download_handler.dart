@@ -14,6 +14,20 @@ class DownloadHandler {
       });
 
       extractor(path);
+
+      File("$path/overlay.zip").deleteSync();
+
+      try {
+        Directory("$path/FalconsEsportsOverlays").deleteSync(recursive: true);
+      } catch (e) {}
+
+      Directory("$path/FalconsEsportsOverlays-main")
+          .renameSync("$path/FalconsEsportsOverlays");
+
+      try {
+        Directory("$path/FalconsEsportsOverlays-main")
+            .deleteSync(recursive: true);
+      } catch (e) {}
     }
   }
 
