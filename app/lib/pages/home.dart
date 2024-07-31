@@ -9,10 +9,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Not many comments needed, just a lot of text
     const String pcInstructions =
-        "0. Make sure git is added to the PATH, you can test this with git -v in a command line \n1. Go to config to set your settings\n2. Go to Download & Update to get the overlay\n3. Go to Web Server to start the server\n4. Finally now you can control the overlay from the Overlay Data Page\n5. Make sure to add the overlay as a browser in OBS\n\t\t\t\t\tThe URL is http://localhost:8080 and the dimensions are 1920x1080\n6. You can change the falcon image by going to the controls page and pressing the image button\n7. You can change the enabled sports in the config page";
+        "0. Make sure git is added to the PATH, you can test this with git -v in a command line \n1. Go to Config to set your settings\n2. Go to Overlay Files to get the overlays\n3. Go to Web Server to start the server\n4. Finally now you can control the overlay from Overlay Data\n5. Make sure to add the overlay as a browser in OBS\n\t\t\t\t\tThe URL is http://localhost:8080 and the dimensions are 1920x1080\n6. You can change the falcon image by going to the controls page and pressing the image button\n7. You can change the enabled sports in the config page";
 
     String androidInstructions =
-        "1. Go to Overlay Files to get the overlay\n2. Go to Config to set your settings\n3. Go to Web Server to start the server\n4. Finally now you can control the overlay from Overlay Data\n5. Make sure to add the overlay as a browser in OBS and the dimensions are 1920x1080\n\t\t\t\t\tThe URL is http://<your_ip>:8080 Your IP can be found in your network settings\n6. You can change the falcon image by going to the controls page and pressing the image button\n7. You can change the enabled sports in the config page";
+        "1. Go to Overlay Files to get the overlays\n2. Go to Config to set your settings\n3. Go to Web Server to start the server\n4. Finally now you can control the overlay from Overlay Data\n5. Make sure to add the overlay as a browser in OBS and the dimensions are 1920x1080\n\t\t\t\t\tThe URL is http://<your_ip>:8080 Your IP can be found in your network settings\n6. You can change the falcon image by going to the controls page and pressing the image button\n7. You can change the enabled sports in the config page";
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
