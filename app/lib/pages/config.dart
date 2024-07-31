@@ -7,7 +7,7 @@ import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
 import 'package:flutter/material.dart';
 import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import '../commands/folder_picker.dart';
 import '../common_widgets/text_editor.dart';
@@ -26,8 +26,6 @@ class _ControlsPage extends State<ConfigPage> {
   String imagePath = constants.Constants.imagePath;
 
 // Creates objects for the jsonHandler and for changing the text
-  TextEditingController directory = TextEditingController();
-  TextEditingController appTheme = TextEditingController();
   TextEditingController gitDirectory = TextEditingController();
 
 // ImagePicker library object
@@ -35,10 +33,13 @@ class _ControlsPage extends State<ConfigPage> {
 
   @override
   Widget build(BuildContext context) {
-    directory.text = constants.Constants.codePath;
+    TextEditingController directory = TextEditingController();
+    TextEditingController appTheme = TextEditingController();
+
+    directory.text = constants.Constants.jsonHandler.configJSON["path"];
     codePath = directory.text;
     appTheme.text =
-        "#${constants.Constants.appTheme.toHexString().replaceFirst("FF", "")}";
+        "${constants.Constants.jsonHandler.configJSON["appTheme"].replaceFirst("FF", "")}";
 
     FileImage logo;
 
@@ -168,7 +169,7 @@ class _ControlsPage extends State<ConfigPage> {
                     child: Row(
                       children: [
                         DefaultText.text(
-                            "App Theme (Restart required for color changes to apply)")
+                            "App Theme (Change page for color changes to apply)")
                       ],
                     ),
                   ),
@@ -178,7 +179,8 @@ class _ControlsPage extends State<ConfigPage> {
                     child: Row(
                       children: [
                         ColorSelector.colorPicker(
-                            color: constants.Constants.appTheme,
+                            color: HexColor(constants
+                                .Constants.jsonHandler.configJSON["appTheme"]),
                             colorController: appTheme),
                         TextEditor.textEditor(
                             width: 200 * constants.Constants.multiplier,

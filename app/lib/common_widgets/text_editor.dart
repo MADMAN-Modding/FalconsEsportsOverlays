@@ -4,6 +4,7 @@ import 'package:falcons_esports_overlays_controller/common_widgets/default_text.
 import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import '../handlers/json_handler.dart';
 
 class TextEditor {
@@ -54,7 +55,9 @@ class TextEditor {
                         if (onChange)
                           {
                             JSONHandler().writeConfig(key, value),
-                            constants.Constants.codePath = value
+                            constants.Constants.codePath = value,
+                            if (key == "appTheme")
+                              {HexColor("#${value.replaceFirst("FF", "")}")}
                           },
                       }),
             )
