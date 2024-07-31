@@ -121,7 +121,7 @@ class JSONHandler {
     } catch (e) {
       // Basically if it fails to write to the overlay and it didn't already exist it will try to make one if the directory is set
       if (kDebugMode) {
-        print(e);
+        print("$e errored here");
       }
       try {
         if (readConfig('path') != ".") {

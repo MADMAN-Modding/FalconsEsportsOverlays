@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import '../handlers/json_handler.dart';
 import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
 
@@ -20,12 +19,12 @@ class ColorSelector {
       onColorChanged: (Color color) {
         // Determines which json to write to
         if (config) {
-          JSONHandler().writeConfig(
+          constants.Constants.jsonHandler.writeConfig(
               // Removes the opacity values cause css doesn't like them
               key,
               "#${color.toHexString().replaceFirst("FF", "")}");
         } else {
-          JSONHandler().writeOverlay(
+          constants.Constants.jsonHandler.writeOverlay(
               key, "#${color.toHexString().replaceFirst("FF", "")}");
         }
 
