@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import '../constants.dart' as constants;
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    constants.Constants.codePath =
-        constants.Constants.jsonHandler.readConfig("path");
-    constants.Constants.imagePath =
-        constants.Constants.jsonHandler.readConfig("imagePath");
-
     // Not many comments needed, just a lot of text
     return const Center(
       child: Column(
