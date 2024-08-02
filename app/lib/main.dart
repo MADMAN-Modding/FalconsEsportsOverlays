@@ -95,7 +95,8 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               selectedIconTheme: const IconThemeData(color: Colors.white),
               backgroundColor: Colors.white,
-              indicatorColor: constants.Constants.appTheme,
+              indicatorColor: HexColor(
+                  constants.Constants.jsonHandler.readConfig("appTheme")),
               // Tells the app when to minimize the side bar
               extended: false,
               destinations: const [
@@ -124,7 +125,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
               child: Container(
-                color: constants.Constants.appTheme,
+                color: HexColor(
+                    constants.Constants.jsonHandler.readConfig("appTheme")),
                 child: page,
               ),
             ),
