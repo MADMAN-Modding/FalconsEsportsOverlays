@@ -55,6 +55,7 @@ class _ControlsPage extends State<ConfigPage> {
 
     return SizedBox(
       height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: SingleChildScrollView(
