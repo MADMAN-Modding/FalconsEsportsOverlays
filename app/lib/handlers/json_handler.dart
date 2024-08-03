@@ -185,7 +185,6 @@ class JSONHandler {
       } else if (key.toLowerCase().contains("checked")) {
         return true;
       }
-      print(e);
     }
   }
 
