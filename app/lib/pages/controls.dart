@@ -76,6 +76,7 @@ class _ControlsPageState extends State<ControlsPage> {
 
     return SizedBox(
       height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: SingleChildScrollView(
@@ -360,72 +361,74 @@ class _ControlsPageState extends State<ControlsPage> {
   }
 
   Widget appPage() {
-    return Column(
-      children: [
-        // Overlay Switchers
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            if (constants.Constants.jsonHandler.readConfig("ssbuChecked"))
-              buildOverlayButton('ssbu', 'images/SSBU.png'),
-            if (constants.Constants.jsonHandler.readConfig("kartChecked"))
-              buildOverlayButton('kart', 'images/Kart.png'),
-            if (constants.Constants.jsonHandler.readConfig("owChecked"))
-              buildOverlayButton('overwatch', 'images/Overwatch.png'),
-            if (constants.Constants.jsonHandler.readConfig("rlChecked"))
-              buildOverlayButton('rocketLeague', 'images/RL.png'),
-            if (constants.Constants.jsonHandler.readConfig("splatChecked"))
-              buildOverlayButton('splat', 'images/SPLAT.png'),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            if (constants.Constants.jsonHandler.readConfig("valChecked"))
-              buildOverlayButton('val', 'images/VAL.png'),
-            if (constants.Constants.jsonHandler.readConfig("hearthChecked"))
-              buildOverlayButton('hearth', 'images/Hearth.png'),
-            if (constants.Constants.jsonHandler.readConfig("lolChecked"))
-              buildOverlayButton('lol', 'images/LOL.png'),
-            if (constants.Constants.jsonHandler.readConfig("chessChecked"))
-              buildOverlayButton('chess', 'images/Chess.png'),
-            if (constants.Constants.jsonHandler.readConfig("maddenChecked"))
-              buildOverlayButton('madden', 'images/Madden.png'),
-            if (constants.Constants.jsonHandler.readConfig("nba2KChecked"))
-              buildOverlayButton('nba2K', 'images/NBA2K.png')
-          ],
-        ),
-        // Spacer
-        if (!Platform.isAndroid) const SizedBox(height: 20),
-        // Row that holds everything
-        Row(
-          // Makes all the columns
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            buildTeamColumn(
-              teamSide: "Left",
-              controllers: [scoreLeft, playerNamesLeft, teamNameLeft],
-              widths: [40, 260, 260],
-              heights: [40, 40, 40],
-              labels: ["Score", "Player Names", "Team Name"],
-              colorController: teamColorLeft,
-              sideColor: teamColorLeftDefault,
-            ),
-            buildMiddleColumn(),
-            buildTeamColumn(
-              teamSide: "Right",
-              controllers: [scoreRight, playerNamesRight, teamNameRight],
-              widths: [40, 260, 260],
-              heights: [40, 40, 40],
-              labels: ["Score", "Player Names", "Team Name"],
-              colorController: teamColorRight,
-              sideColor: teamColorRightDefault,
-            )
-          ],
-        )
-      ],
+    return Center(
+      child: Column(
+        children: [
+          // Overlay Switchers
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              if (constants.Constants.jsonHandler.readConfig("ssbuChecked"))
+                buildOverlayButton('ssbu', 'images/SSBU.png'),
+              if (constants.Constants.jsonHandler.readConfig("kartChecked"))
+                buildOverlayButton('kart', 'images/Kart.png'),
+              if (constants.Constants.jsonHandler.readConfig("owChecked"))
+                buildOverlayButton('overwatch', 'images/Overwatch.png'),
+              if (constants.Constants.jsonHandler.readConfig("rlChecked"))
+                buildOverlayButton('rocketLeague', 'images/RL.png'),
+              if (constants.Constants.jsonHandler.readConfig("splatChecked"))
+                buildOverlayButton('splat', 'images/SPLAT.png'),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              if (constants.Constants.jsonHandler.readConfig("valChecked"))
+                buildOverlayButton('val', 'images/VAL.png'),
+              if (constants.Constants.jsonHandler.readConfig("hearthChecked"))
+                buildOverlayButton('hearth', 'images/Hearth.png'),
+              if (constants.Constants.jsonHandler.readConfig("lolChecked"))
+                buildOverlayButton('lol', 'images/LOL.png'),
+              if (constants.Constants.jsonHandler.readConfig("chessChecked"))
+                buildOverlayButton('chess', 'images/Chess.png'),
+              if (constants.Constants.jsonHandler.readConfig("maddenChecked"))
+                buildOverlayButton('madden', 'images/Madden.png'),
+              if (constants.Constants.jsonHandler.readConfig("nba2KChecked"))
+                buildOverlayButton('nba2K', 'images/NBA2K.png')
+            ],
+          ),
+          // Spacer
+          if (!Platform.isAndroid) const SizedBox(height: 20),
+          // Row that holds everything
+          Row(
+            // Makes all the columns
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              buildTeamColumn(
+                teamSide: "Left",
+                controllers: [scoreLeft, playerNamesLeft, teamNameLeft],
+                widths: [40, 260, 260],
+                heights: [40, 40, 40],
+                labels: ["Score", "Player Names", "Team Name"],
+                colorController: teamColorLeft,
+                sideColor: teamColorLeftDefault,
+              ),
+              buildMiddleColumn(),
+              buildTeamColumn(
+                teamSide: "Right",
+                controllers: [scoreRight, playerNamesRight, teamNameRight],
+                widths: [40, 260, 260],
+                heights: [40, 40, 40],
+                labels: ["Score", "Player Names", "Team Name"],
+                colorController: teamColorRight,
+                sideColor: teamColorRightDefault,
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }
