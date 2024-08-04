@@ -8,11 +8,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Not many comments needed, just a lot of text
-    const String pcInstructions =
-        "0. Make sure git is added to the PATH, you can test this with git -v in a command line \n1. Go to Config to set your settings\n2. Go to Overlay Files to get the overlays\n3. Go to Web Server to start the server\n4. Finally now you can control the overlay from Overlay Data\n5. Make sure to add the overlay as a browser in OBS\n\t\t\t\t\tThe URL is http://localhost:8080 and the dimensions are 1920x1080\n6. You can change the falcon image by going to the controls page and pressing the image button\n7. You can change the enabled sports in the config page";
+    String ipText = Platform.isAndroid ? "<your_ip>" : "localhost";
 
-    String androidInstructions =
-        "1. Go to Overlay Files to get the overlays\n2. Go to Config to set your settings\n3. Go to Web Server to start the server\n4. Finally now you can control the overlay from Overlay Data\n5. Make sure to add the overlay as a browser in OBS and the dimensions are 1920x1080\n\t\t\t\t\tThe URL is http://<your_ip>:8080 Your IP can be found in your network settings\n6. You can change the falcon image by going to the controls page and pressing the image button\n7. You can change the enabled sports in the config page";
+    String instructions =
+        "1. Go to the Overlay Files page to get the overlays\n2. Go to the Config page to set your settings\n3. Go to the Web Server Page to start the website\n4. To change the overlay information you can control it from the Overlay Data page\n5. Make sure to add the overlay as a browser in OBS\n\t\t\t\t\tThe URL is http://$ipText:8080 and the dimensions are 1920x1080\n6. You can change the falcon logo by going to the Config page and pressing the image button\n7. The enabled sports can be changed on the Config page";
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -68,9 +67,7 @@ class HomePage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 8, top: 2),
                       child: SelectableText(
-                        (Platform.isAndroid
-                            ? androidInstructions
-                            : pcInstructions),
+                        instructions,
                         style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

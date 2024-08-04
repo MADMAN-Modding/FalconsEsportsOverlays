@@ -13,7 +13,7 @@ class HTTPHandler {
 
 // Tries to bind an http server to port 8080, if it fails it will tell the user
   Future<void> startServer(BuildContext context) async {
-    String path = constants.Constants.codePath;
+    String path = constants.Constants.overlayDirectory;
 
     path += Platform.isAndroid ? "/FalconsEsportsOverlays" : "";
 

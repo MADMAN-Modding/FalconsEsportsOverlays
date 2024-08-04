@@ -12,11 +12,13 @@ class Constants {
 
   static HTTPHandler httpHandler = HTTPHandler();
 
-  static String executableDir = File(Platform.resolvedExecutable).parent.path;
+  static String executableDirectory =
+      File(Platform.resolvedExecutable).parent.path;
 
-  static String codePath = jsonHandler.readConfig("path");
+  static String overlayDirectory =
+      "$executableDirectory${slashType}FalconsEsportsOverlays";
 
-  static String imagePath = "$codePath${slashType}Esports-Logo.png";
+  static String imagePath = "$overlayDirectory${slashType}Esports-Logo.png";
 
   static HexColor appTheme = HexColor(jsonHandler.readConfig("appTheme"));
 

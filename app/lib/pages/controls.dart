@@ -27,6 +27,8 @@ class _ControlsPageState extends State<ControlsPage> {
   final TextEditingController playerNamesRight = TextEditingController();
   final TextEditingController playerNamesLeft = TextEditingController();
 
+  var boolMap;
+
 // Default color values
   Color teamColorLeftDefault = const Color.fromRGBO(190, 15, 50, 1);
   Color teamColorRightDefault = Colors.white;
@@ -38,6 +40,8 @@ class _ControlsPageState extends State<ControlsPage> {
     super.initState();
 
     constants.Constants.jsonHandler.jsonHandlerInit();
+
+    boolMap = constants.Constants.jsonHandler.configJSON;
 
     // Initialize controller values
     scoreLeft.text = constants.Constants.jsonHandler.readOverlay('scoreLeft');
@@ -87,13 +91,16 @@ class _ControlsPageState extends State<ControlsPage> {
 
   Widget buildOverlayButton(String overlay, String imagePath) {
     return ElevatedButton(
+      onPressed: () => setState(() =>
+          constants.Constants.jsonHandler.writeOverlay("overlay", overlay)),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-      ),
-      onPressed: () {
-        constants.Constants.jsonHandler.writeOverlay("overlay", overlay);
-      },
+          backgroundColor: constants
+                      .Constants.jsonHandler.overlayJSON["overlay"] ==
+                  overlay
+              ? ColorScheme.fromSeed(seedColor: constants.Constants.appTheme)
+                  .inversePrimary
+              : Colors.transparent,
+          shadowColor: Colors.transparent),
       child: Image.asset(
         imagePath,
         width: 80 * multiplier,

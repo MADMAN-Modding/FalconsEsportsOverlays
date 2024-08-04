@@ -9,7 +9,7 @@ class HTTPPage extends StatefulWidget {
 }
 
 class _HTTPPage extends State<HTTPPage> {
-  String chosenPath = constants.Constants.codePath;
+  String chosenPath = constants.Constants.overlayDirectory;
 
   var directory = TextEditingController();
   @override
