@@ -55,7 +55,7 @@ class TextEditor {
                         if (onChange)
                           {
                             JSONHandler().writeConfig(key, value),
-                            constants.Constants.codePath = value,
+                            constants.Constants.overlayDirectory = value,
                             if (key == "appTheme")
                               {HexColor("#${value.replaceFirst("FF", "")}")}
                           },

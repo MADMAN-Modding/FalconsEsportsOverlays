@@ -6,15 +6,15 @@ import 'package:falcons_esports_overlays_controller/handlers/notification_handle
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class AndroidDownloadPage extends StatefulWidget {
-  const AndroidDownloadPage({super.key});
+class DownloadPage extends StatefulWidget {
+  const DownloadPage({super.key});
 
   @override
-  State<StatefulWidget> createState() => _AndroidDownloadPage();
+  State<StatefulWidget> createState() => _DownloadPage();
 }
 
-class _AndroidDownloadPage extends State<AndroidDownloadPage> {
-  String chosenPath = constants.Constants.executableDir;
+class _DownloadPage extends State<DownloadPage> {
+  String chosenPath = constants.Constants.executableDirectory;
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +29,12 @@ class _AndroidDownloadPage extends State<AndroidDownloadPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(2.0),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      NotificationHandler.notification(
-                          context, "Starting Download...");
-
-                      await DownloadHandler.download(chosenPath);
-
-                      NotificationHandler.notification(
-                          context, "Overlays Downloaded");
-                    },
-                    child: const Text('Download Overlays'),
-                  ),
+                  child: buttonAction("Download"),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: buttonAction("Update"),
+                )
               ],
             ),
           ),
@@ -57,5 +50,18 @@ class _AndroidDownloadPage extends State<AndroidDownloadPage> {
     if (kDebugMode) {
       print(chosenPath);
     }
+  }
+
+  Widget buttonAction(String action) {
+    return ElevatedButton(
+      onPressed: () async {
+        NotificationHandler.notification(context, "Starting $action...");
+
+        await DownloadHandler.download(chosenPath);
+
+        NotificationHandler.notification(context, "Overlays ${action}ed");
+      },
+      child: Text("$action Overlays"),
+    );
   }
 }

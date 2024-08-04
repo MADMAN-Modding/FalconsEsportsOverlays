@@ -6,10 +6,8 @@ import 'package:falcons_esports_overlays_controller/common_widgets/default_text.
 import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
 import 'package:flutter/material.dart';
-import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import '../commands/folder_picker.dart';
 import '../common_widgets/text_editor.dart';
 
 // Sets up the stateful widget stuff, wahoo
@@ -22,7 +20,7 @@ class ConfigPage extends StatefulWidget {
 
 // Class for the actual page
 class _ControlsPage extends State<ConfigPage> {
-  String codePath = constants.Constants.codePath;
+  String codePath = constants.Constants.overlayDirectory;
   String imagePath = constants.Constants.imagePath;
 
 // Creates objects for the jsonHandler and for changing the text
@@ -45,7 +43,7 @@ class _ControlsPage extends State<ConfigPage> {
 
     try {
       logo = FileImage(File(
-          "$codePath${constants.Constants.jsonHandler.androidFolder}${constants.Constants.slashType}images${constants.Constants.slashType}Esports-Logo.png"));
+          "${constants.Constants.overlayDirectory}${constants.Constants.slashType}images${constants.Constants.slashType}Esports-Logo.png"));
     } catch (e) {
       logo = FileImage(File("path"));
     }
@@ -107,45 +105,6 @@ class _ControlsPage extends State<ConfigPage> {
                       fontSize: 17),
                 ),
               ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              // Makes a box for the input
-              SizedBox(
-                height: 50,
-                width: 50,
-                // A button with the folder icon that opens up a file-picker in order to chose the appropriate directory
-                child: TextButton(
-                  child: const Icon(
-                    Icons.folder,
-                    color: Colors.white,
-                  ),
-                  onPressed: () async {
-                    String newCodePath =
-                        (await FolderPicker.folderPicker(context));
-
-                    // If the returned path is blank then it won't take the value
-                    codePath = newCodePath == "" ? codePath : newCodePath;
-
-                    // Sets the value of the directory text editing controller
-                    directory.text =
-                        codePath.toString(); // Sets the text equal to the path
-                    JSONHandler().writeConfig('path', codePath.toString());
-                  },
-                ),
-              ),
-
-              // Sets the size of the textfield and also does some stuff with the controller
-              TextEditor.textEditor(
-                  width: 550,
-                  height: 40,
-                  controller: directory,
-                  label: "",
-                  boxHeight: 0,
-                  onChange: true),
             ],
           ),
         ],
