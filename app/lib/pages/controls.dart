@@ -29,6 +29,8 @@ class _ControlsPageState extends State<ControlsPage> {
 
   var boolMap;
 
+  bool showOverlays = true;
+
 // Default color values
   Color teamColorLeftDefault = const Color.fromRGBO(190, 15, 50, 1);
   Color teamColorRightDefault = Colors.white;
@@ -94,8 +96,8 @@ class _ControlsPageState extends State<ControlsPage> {
       onPressed: () => setState(() =>
           constants.Constants.jsonHandler.writeOverlay("overlay", overlay)),
       style: ElevatedButton.styleFrom(
-          backgroundColor: constants
-                      .Constants.jsonHandler.overlayJSON["overlay"] ==
+          backgroundColor: constants.Constants.jsonHandler
+                      .readOverlay("overlay") ==
                   overlay
               ? ColorScheme.fromSeed(seedColor: constants.Constants.appTheme)
                   .inversePrimary
@@ -376,34 +378,45 @@ class _ControlsPageState extends State<ControlsPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              if (constants.Constants.jsonHandler.readConfig("ssbuChecked"))
-                buildOverlayButton('ssbu', 'images/SSBU.png'),
-              if (constants.Constants.jsonHandler.readConfig("kartChecked"))
-                buildOverlayButton('kart', 'images/Kart.png'),
-              if (constants.Constants.jsonHandler.readConfig("owChecked"))
-                buildOverlayButton('overwatch', 'images/Overwatch.png'),
-              if (constants.Constants.jsonHandler.readConfig("rlChecked"))
-                buildOverlayButton('rocketLeague', 'images/RL.png'),
-              if (constants.Constants.jsonHandler.readConfig("splatChecked"))
-                buildOverlayButton('splat', 'images/SPLAT.png'),
+              FloatingActionButton.small(
+                  child: const Icon(Icons.hide_image_outlined),
+                  onPressed: () {
+                    setState(() {
+                      showOverlays = !showOverlays;
+                    });
+                  }),
+              if (showOverlays) ...[
+                if (constants.Constants.jsonHandler.readConfig("ssbuChecked"))
+                  buildOverlayButton('ssbu', 'images/SSBU.png'),
+                if (constants.Constants.jsonHandler.readConfig("kartChecked"))
+                  buildOverlayButton('kart', 'images/Kart.png'),
+                if (constants.Constants.jsonHandler.readConfig("owChecked"))
+                  buildOverlayButton('overwatch', 'images/Overwatch.png'),
+                if (constants.Constants.jsonHandler.readConfig("rlChecked"))
+                  buildOverlayButton('rocketLeague', 'images/RL.png'),
+                if (constants.Constants.jsonHandler.readConfig("splatChecked"))
+                  buildOverlayButton('splat', 'images/SPLAT.png'),
+              ],
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              if (constants.Constants.jsonHandler.readConfig("valChecked"))
-                buildOverlayButton('val', 'images/VAL.png'),
-              if (constants.Constants.jsonHandler.readConfig("hearthChecked"))
-                buildOverlayButton('hearth', 'images/Hearth.png'),
-              if (constants.Constants.jsonHandler.readConfig("lolChecked"))
-                buildOverlayButton('lol', 'images/LOL.png'),
-              if (constants.Constants.jsonHandler.readConfig("chessChecked"))
-                buildOverlayButton('chess', 'images/Chess.png'),
-              if (constants.Constants.jsonHandler.readConfig("maddenChecked"))
-                buildOverlayButton('madden', 'images/Madden.png'),
-              if (constants.Constants.jsonHandler.readConfig("nba2KChecked"))
-                buildOverlayButton('nba2K', 'images/NBA2K.png')
+              if (showOverlays) ...[
+                if (constants.Constants.jsonHandler.readConfig("valChecked"))
+                  buildOverlayButton('val', 'images/VAL.png'),
+                if (constants.Constants.jsonHandler.readConfig("hearthChecked"))
+                  buildOverlayButton('hearth', 'images/Hearth.png'),
+                if (constants.Constants.jsonHandler.readConfig("lolChecked"))
+                  buildOverlayButton('lol', 'images/LOL.png'),
+                if (constants.Constants.jsonHandler.readConfig("chessChecked"))
+                  buildOverlayButton('chess', 'images/Chess.png'),
+                if (constants.Constants.jsonHandler.readConfig("maddenChecked"))
+                  buildOverlayButton('madden', 'images/Madden.png'),
+                if (constants.Constants.jsonHandler.readConfig("nba2KChecked"))
+                  buildOverlayButton('nba2K', 'images/NBA2K.png')
+              ],
             ],
           ),
           // Spacer

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
@@ -97,22 +98,7 @@ class JSONHandler {
         isWriting = true;
         overlayJSON[key] = data;
         File('$overlayDirectory${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
-            .writeAsStringSync('''
-{
-    "teamNameLeft": "${overlayJSON['teamNameLeft']}",
-    "teamNameRight": "${overlayJSON['teamNameRight']}",
-    "winsLeft": "${overlayJSON['winsLeft']}",
-    "winsRight": "${overlayJSON['winsRight']}",
-    "teamColorLeft": "${overlayJSON['teamColorLeft']}",
-    "teamColorRight": "${overlayJSON['teamColorRight']}",
-    "overlay": "${overlayJSON['overlay']}",
-    "week": "${overlayJSON['week']}",
-    "scoreLeft": "${overlayJSON['scoreLeft']}",
-    "scoreRight": "${overlayJSON['scoreRight']}",
-    "playerNamesLeft": "${overlayJSON['playerNamesLeft']}",
-    "playerNamesRight": "${overlayJSON['playerNamesRight']}"
-}
-''');
+            .writeAsStringSync(jsonEncode(overlayJSON));
       }
       // Tries to prevent the overlay being written to twice, idk if it really made improvements
       isWriting = false;
@@ -203,23 +189,7 @@ class JSONHandler {
         .replaceAll(r'\', r'\\');
 
     File('$executableDirectory${constants.Constants.slashType}config.json')
-        .writeAsStringSync('''
-{
-    "path": "${configJSON["path"]}",
-    "appTheme": "${configJSON["appTheme"]}",
-    "ssbuChecked": ${configJSON["ssbuChecked"]},
-    "kartChecked": ${configJSON["kartChecked"]},
-    "owChecked": ${configJSON["owChecked"]},
-    "rlChecked": ${configJSON["rlChecked"]},
-    "splatChecked": ${configJSON["splatChecked"]},
-    "valChecked": ${configJSON["valChecked"]},
-    "hearthChecked": ${configJSON["hearthChecked"]},
-    "lolChecked": ${configJSON["lolChecked"]},
-    "chessChecked": ${configJSON["chessChecked"]},
-    "maddenChecked": ${configJSON["maddenChecked"]},
-    "nba2KChecked": ${configJSON["nba2KChecked"]}
-}
-''');
+        .writeAsStringSync(jsonEncode(configJSON));
   }
 
 // Makes the overlay, wahoo
@@ -236,7 +206,7 @@ class JSONHandler {
     "winsLeft": "0",
     "winsRight": "0",
     "teamColorLeft": "#BE0F32",
-    "teamColorRight": "#FFFFFF",
+    "teamColorRight": "#0120AC",
     "overlay": "kart",
     "week": "0",
     "scoreLeft": "0",
