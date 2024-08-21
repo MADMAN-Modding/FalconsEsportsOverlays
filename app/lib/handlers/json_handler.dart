@@ -30,8 +30,11 @@ class JSONHandler {
       final dir = await getApplicationDocumentsDirectory();
 
       constants.Constants.executableDirectory = dir.path;
+      constants.Constants.overlayDirectory =
+          "$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays";
 
       executableDirectory = constants.Constants.executableDirectory;
+      overlayDirectory = constants.Constants.overlayDirectory;
     }
 
     // Try-catch to read config values

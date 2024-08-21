@@ -8,6 +8,7 @@ import 'package:falcons_esports_overlays_controller/constants.dart'
 class DownloadHandler {
   static download(String path) async {
     String slashType = constants.Constants.slashType;
+    print(path);
     if (!Platform.isAndroid || await Permission.storage.request().isGranted) {
       await http
           .get(Uri.https('codeload.github.com',
