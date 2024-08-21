@@ -236,6 +236,27 @@ class _ControlsPageState extends State<ControlsPage> {
         const SizedBox(height: 5),
         Row(
           children: [
+            ElevatedButton(
+                child: const Icon(Icons.hide_image_outlined),
+                onPressed: () {
+                  setState(() {
+                    showOverlays = !showOverlays;
+                  });
+                }),
+          ],
+        ),
+        Row(
+          children: [
+            Text("Update Overlay",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15 * multiplier)),
+          ],
+        ),
+        const SizedBox(height: 5),
+        Row(
+          children: [
             // Update all the values
             ElevatedButton(
               onPressed: () {
@@ -261,9 +282,6 @@ class _ControlsPageState extends State<ControlsPage> {
                 minimumSize: WidgetStatePropertyAll(
                   Size(60 * multiplier, 40 * multiplier),
                 ),
-                // maximumSize: WidgetStatePropertyAll(
-                //   Size(100 * multiplier, 60 * multiplier),
-                // ),
               ),
               child: const Icon(Icons.system_update_alt),
             ),
@@ -378,13 +396,6 @@ class _ControlsPageState extends State<ControlsPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              FloatingActionButton.small(
-                  child: const Icon(Icons.hide_image_outlined),
-                  onPressed: () {
-                    setState(() {
-                      showOverlays = !showOverlays;
-                    });
-                  }),
               if (showOverlays) ...[
                 if (constants.Constants.jsonHandler.readConfig("ssbuChecked"))
                   buildOverlayButton('ssbu', 'images/SSBU.png'),
