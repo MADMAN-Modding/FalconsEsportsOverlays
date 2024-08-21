@@ -19,8 +19,6 @@ class JSONHandler {
   // Gets the executable directory
   String executableDirectory = constants.Constants.executableDirectory;
 
-  String overlayDirectory = constants.Constants.overlayDirectory;
-
   JSONHandler() {
     jsonHandlerInit();
   }
@@ -34,7 +32,6 @@ class JSONHandler {
           "$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays";
 
       executableDirectory = constants.Constants.executableDirectory;
-      overlayDirectory = constants.Constants.overlayDirectory;
     }
 
     // Try-catch to read config values
@@ -82,7 +79,7 @@ class JSONHandler {
 // This is the same as the config but for the overlay
     try {
       overlayJSON = File(
-              '$overlayDirectory${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+              '$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
           .readAsJsonSync();
     } catch (e) {
       if (kDebugMode) {
@@ -100,7 +97,7 @@ class JSONHandler {
       if (!isWriting) {
         isWriting = true;
         overlayJSON[key] = data;
-        File('$overlayDirectory${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+        File('$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
             .writeAsStringSync(jsonEncode(overlayJSON));
       }
       // Tries to prevent the overlay being written to twice, idk if it really made improvements
@@ -201,7 +198,7 @@ class JSONHandler {
 
     try {
       // Initializes values
-      File('$overlayDirectory${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+      File('$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
           .writeAsStringSync('''
 {
     "teamNameLeft": "DC Falcons Red",
@@ -221,7 +218,7 @@ class JSONHandler {
 
       // Loads the overlay
       overlayJSON = File(
-              '$overlayDirectory${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+              '$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
           .readAsJsonSync();
     } catch (e) {
       return;
