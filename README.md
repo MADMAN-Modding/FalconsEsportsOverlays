@@ -6,9 +6,28 @@ This is a streaming overlay for esports teams with a nice gui app written in dar
 
 <h2>Using the App (Highly recommended)</h2>
 <p>Go to the latest release on the releases tab, download the zip file for your respective OS, unzip the file, make sure that you keep everything in that folder together, git must be installed in order to download the actual overlays, the homepage of the app will explain the rest.</p>
+<p>After that just follow the instruction on the first page of the app. Make sure to keep everything that came in the folder together!</p>
 
-<h1>Clone/update with git cli</h1>
-<h4>Git (optional but recommended)</h4>
+<h1>Overlay Status</h1>
+
+| Game Title  | Overlay Status |
+|--------------|:-----:|
+| Super Smash Bros. Ultimate |  Finished |
+| Mario Kart 8 Deluxe | Finished |
+| Overwatch | Finished |
+| Rocket League | In Progress |
+| Splatoon | Not Started |
+| Valorant | Not Started |
+| Hearthstone | Not Started |
+| League of Legends | Not Started |
+| Chess | Not Started |
+| Madden NFL | Not Started |
+| NBA 2K | Not Started |
+
+<h1>Legacy Setup (Not recommended)</h1>
+
+<h1>Clone/update with git cli (Legacy)</h1>
+<h4>Git</h4>
 
 <p>Installing git makes it easier to update the cloned code when the project it updated. Download git from <a href="https://git-scm.com/download/win">here</a>. Get the version for your machine, most likely it will be 64-bit. Run the .exe and just go through the menus, the default options will be fine for this. Or if you're on Linux just install in with your package manager ex:(sudo yay -Sy git or sudo apt install git)</p>
 
