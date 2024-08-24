@@ -385,3 +385,11 @@
     font-size: 10px;
     text-align: right;
 }
+
+/* School Logo */
+#schoolLogo {
+    position: absolute;
+    height: 284px;
+    top: 664px;
+    left: 71px;
+}
