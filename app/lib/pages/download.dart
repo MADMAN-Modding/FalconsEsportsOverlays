@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
 import 'package:falcons_esports_overlays_controller/handlers/download_handler.dart';
@@ -34,6 +35,23 @@ class _DownloadPage extends State<DownloadPage> {
                 Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: buttonAction("Update"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        NotificationHandler.notification(
+                            context, "Starting Reset...");
+                        try {
+                          File("${constants.Constants.executableDirectory}${constants.Constants.slashType}Esports-Logo.png")
+                              .delete();
+                        } catch (e) {}
+                        await DownloadHandler.download(chosenPath);
+
+                        NotificationHandler.notification(
+                            context, "Overlays Reset");
+                      },
+                      child: const Text("Reset Overlays")),
                 )
               ],
             ),

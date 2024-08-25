@@ -29,7 +29,7 @@ class JSONHandler {
 
       constants.Constants.executableDirectory = dir.path;
       constants.Constants.overlayDirectory =
-          "$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays";
+          "$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays-main";
 
       executableDirectory = constants.Constants.executableDirectory;
     }
@@ -44,7 +44,6 @@ class JSONHandler {
         print("Can't find file :( $e \nmaking a new config");
       }
       if (!Platform.isAndroid || await Permission.storage.request().isGranted) {
-        String path = executableDirectory;
         File('$executableDirectory${constants.Constants.slashType}config.json')
             .create(recursive: true)
             // This initializes the config stuff
@@ -52,7 +51,6 @@ class JSONHandler {
                     '$executableDirectory${constants.Constants.slashType}config.json')
                 .writeAsString('''
 {
-    "path": "$path",
     "appTheme": "#bf0f35",
     "ssbuChecked": true,
     "kartChecked": true,
@@ -79,7 +77,7 @@ class JSONHandler {
 // This is the same as the config but for the overlay
     try {
       overlayJSON = File(
-              '$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+              '$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays-main${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
           .readAsJsonSync();
     } catch (e) {
       if (kDebugMode) {
@@ -97,7 +95,7 @@ class JSONHandler {
       if (!isWriting) {
         isWriting = true;
         overlayJSON[key] = data;
-        File('$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+        File('$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays-main${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
             .writeAsStringSync(jsonEncode(overlayJSON));
       }
       // Tries to prevent the overlay being written to twice, idk if it really made improvements
@@ -198,7 +196,7 @@ class JSONHandler {
 
     try {
       // Initializes values
-      File('$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+      File('$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays-main${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
           .writeAsStringSync('''
 {
     "teamNameLeft": "DC Falcons Red",
@@ -218,7 +216,7 @@ class JSONHandler {
 
       // Loads the overlay
       overlayJSON = File(
-              '$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+              '$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays-main${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
           .readAsJsonSync();
     } catch (e) {
       return;

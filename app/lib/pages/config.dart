@@ -23,19 +23,13 @@ class _ControlsPage extends State<ConfigPage> {
   String codePath = constants.Constants.overlayDirectory;
   String imagePath = constants.Constants.imagePath;
 
-// Creates objects for the jsonHandler and for changing the text
-  TextEditingController gitDirectory = TextEditingController();
-
 // ImagePicker library object
   ImagePicker picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController directory = TextEditingController();
     TextEditingController appTheme = TextEditingController();
 
-    directory.text = constants.Constants.jsonHandler.configJSON["path"];
-    codePath = directory.text;
     appTheme.text =
         "${constants.Constants.jsonHandler.configJSON["appTheme"].replaceFirst("FF", "")}";
 
@@ -43,12 +37,12 @@ class _ControlsPage extends State<ConfigPage> {
 
     try {
       logo = FileImage(File(
-          "${constants.Constants.overlayDirectory}${constants.Constants.slashType}images${constants.Constants.slashType}Esports-Logo.png"));
+          "${constants.Constants.executableDirectory}${constants.Constants.slashType}Esports-Logo.png"));
     } catch (e) {
       logo = FileImage(File("path"));
     }
     if (!Platform.isAndroid) {
-      return appPage(directory, logo, appTheme);
+      return appPage(logo, appTheme);
     }
 
     return SizedBox(
@@ -57,8 +51,7 @@ class _ControlsPage extends State<ConfigPage> {
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: appPage(directory, logo, appTheme)),
+            scrollDirection: Axis.horizontal, child: appPage(logo, appTheme)),
       ),
     );
   }
@@ -85,29 +78,10 @@ class _ControlsPage extends State<ConfigPage> {
     );
   }
 
-  Widget appPage(TextEditingController directory, FileImage logo,
-      TextEditingController appTheme) {
+  Widget appPage(FileImage logo, TextEditingController appTheme) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // Code Directory
-        if (!Platform.isAndroid) ...[
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 13),
-                child: Text(
-                  "This is the directory that contains all the code",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17),
-                ),
-              ),
-            ],
-          ),
-        ],
         // Makes the image button and the text
         Row(
           children: [
@@ -136,18 +110,19 @@ class _ControlsPage extends State<ConfigPage> {
                                       File(imagePath.replaceAll(r"\", r"\\")))
                                   .file
                                   .readAsBytesSync());
+
+                              File("${constants.Constants.overlayDirectory}${constants.Constants.slashType}images${constants.Constants.slashType}Esports-Logo.png")
+                                  .writeAsBytesSync(
+                                      logo.file.readAsBytesSync());
                             } catch (e) {}
                           }
-                          // Sets the text equal to the path
-                          directory.text = codePath.toString();
-
                           // Clears the cache
                           logo.evict();
                         },
                       ),
                     ),
                     DefaultText.text(
-                        "Set the image you would like to use for the overlay icon. "),
+                        "Set the image you would like to use for the overlay icon. ${Platform.isWindows ? "\nThere's a bug with flutter on Windows,\nyou need to change pages, to see the logo change on this page" : ""}"),
                   ],
                 ),
                 // Displays the logo
@@ -217,7 +192,7 @@ class _ControlsPage extends State<ConfigPage> {
                   ],
                 )
               ],
-            )
+            ),
           ],
         ),
       ],

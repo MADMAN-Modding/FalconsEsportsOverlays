@@ -8,7 +8,7 @@ import 'package:hexcolor/hexcolor.dart';
 class Constants {
   static JSONHandler jsonHandler = JSONHandler();
 
-  static String slashType = Platform.isWindows ? r'\\' + r'\\' : "/";
+  static String slashType = Platform.isWindows ? r'\\' : "/";
 
   static HTTPHandler httpHandler = HTTPHandler();
 
@@ -16,9 +16,9 @@ class Constants {
       File(Platform.resolvedExecutable).parent.path;
 
   static String overlayDirectory =
-      "$executableDirectory${slashType}FalconsEsportsOverlays";
+      "$executableDirectory${slashType}FalconsEsportsOverlays-main";
 
-  static String imagePath = "$overlayDirectory${slashType}Esports-Logo.png";
+  static String imagePath = "$executableDirectory${slashType}Esports-Logo.png";
 
   static HexColor appTheme = HexColor(jsonHandler.readConfig("appTheme"));
 

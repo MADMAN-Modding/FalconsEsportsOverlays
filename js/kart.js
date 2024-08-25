@@ -1,5 +1,9 @@
 let i = 0;
 
+date = Date();
+
+document.getElementById('schoolLogo').src = "../images/Esports-Logo.png?" + date.getTime();
+
 setInterval(function () {
     fetch('../json/overlay.json?' + i)
         .then((response) => response.json())
