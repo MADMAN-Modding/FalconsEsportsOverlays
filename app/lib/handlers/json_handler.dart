@@ -14,8 +14,6 @@ class JSONHandler {
   // Controller config variables
   var configJSON;
 
-  bool isWriting = false;
-
   // Gets the executable directory
   String executableDirectory = constants.Constants.executableDirectory;
 
@@ -91,15 +89,11 @@ class JSONHandler {
   // Overlay methods
   void writeOverlay(String key, String data) {
     try {
-      // Makes sure the overlay isn't being written to
-      if (!isWriting) {
-        isWriting = true;
-        overlayJSON[key] = data;
-        File('$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays-main${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
-            .writeAsStringSync(jsonEncode(overlayJSON));
-      }
+      overlayJSON[key] = data;
+      File('$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays-main${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+          .writeAsStringSync(jsonEncode(overlayJSON));
+
       // Tries to prevent the overlay being written to twice, idk if it really made improvements
-      isWriting = false;
     } catch (e) {
       // Basically if it fails to write to the overlay and it didn't already exist it will try to make one if the directory is set
       if (kDebugMode) {
