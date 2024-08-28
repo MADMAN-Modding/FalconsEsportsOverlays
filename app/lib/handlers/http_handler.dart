@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:falcons_esports_overlays_controller/handlers/notification_handler.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart';
@@ -15,8 +16,6 @@ class HTTPHandler {
   Future<void> startServer(BuildContext context) async {
     String path = constants.Constants.overlayDirectory;
 
-    path += Platform.isAndroid ? "/FalconsEsportsOverlays" : "";
-
     try {
       // Start the server with the updated path
       server = await shelf_io.serve(
@@ -25,6 +24,9 @@ class HTTPHandler {
           8080);
       NotificationHandler.notification(context, "Server started");
     } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       NotificationHandler.notification(
           context, "Server failed to start or is already running");
     }
