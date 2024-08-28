@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:falcons_esports_overlays_controller/handlers/notification_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
