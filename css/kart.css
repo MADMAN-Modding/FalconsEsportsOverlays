@@ -80,18 +80,20 @@
 #homeText {
     position: absolute;
     left: 10px;
-    top: 16px;
+    top: 18px;
     width: 287px;
     height: 31px;
     text-align: left;
+    font-size: 30px;
 }
 
 #awayText {
     position: absolute;
-    left: 1833px;
+    left: 1790px;
     top: 15px;
     width: 287px;
     height: 31px;
+    font-size: 30px;
 }
 
 /* Away Score */
@@ -265,18 +267,18 @@
 #teamNameLeft {
     position: absolute;
     left: 10px;
-    top: -17px;
+    top: -7px;
     width: 360px;
-    font-size: 30px;
+    font-size: 21px;
     text-align: left;
 }
 
 #teamNameRight {
     position: absolute;
     left: 1610px;
-    top: -17px;
-    width: 305px;
-    font-size: 30px;
+    top: -7px;
+    width: 310px;
+    font-size: 21px;
     text-align: right;
 }
 
@@ -350,21 +352,21 @@
 #playerNamesLeft {
     position: absolute;
     left: 572px;
-    top: 506px;
+    top: 509px;
     width: 268px;
     height: 37px;
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
 }
 
 #playerNamesRight {
     position: absolute;
     left: 1098px;
-    top: 533px;
+    top: 536px;
     width: 268px;
     height: 37px;
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
 }
 
 #schoolNameLeft {

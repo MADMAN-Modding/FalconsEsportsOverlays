@@ -60,6 +60,14 @@ setInterval(function () {
       changeBackgroundColor("topRightWingLeftTrapezoid", teamColorRight);
       changeBackgroundColor("topRightWingRightRectangle", teamColorRight);
       changeBackgroundColor("awayScore", teamColorRight);
+
+      if (jsonData["playerNamesLeft"].length >= 15) {
+        document.getElementById("playerNamesLeft").style.top = "503px";
+      }   
+         
+      if (jsonData["playerNamesRight"].length >= 15) {
+        document.getElementById("playerNamesRight").style.top = "529px";
+      }
     });
 
   i = Math.floor(Math.random() * 1000000);

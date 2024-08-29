@@ -1,0 +1,39 @@
+/* Top Right Info */
+#cardRight {
+    position: absolute;
+    left: 1053.7927px;
+    top: 0px;
+    width: 617px;
+    height: 94px;
+    background-color: rgb(190, 15, 52);
+    /* border-bottom-left-radius: 15px; */
+    border-bottom-right-radius: 150px;
+}
+
+#textSeperatorRight {
+    position: absolute;
+    left: 1198.7927px;
+    top: 47px;
+    width: 316px;
+    height: 9px;
+    background-color: white;
+    border-bottom: 10px;
+    border-bottom-right-radius: 9px;
+    border-top-left-radius: 9px;
+}
+
+#teamNameRight {
+    position: absolute;
+    left: 1214px;
+    top: 10px;
+    font-size: 20.5px;
+}
+
+/* Hidden stuff */
+#winsRight,
+#winsLeft,
+#scoreLeft,
+#scoreRight,
+#week {
+    display: none;
+}

@@ -135,8 +135,8 @@
 #weekText {
     position: absolute;
     left: 4px;
-    top: 176px;
-    font-size: 24px;
+    top: 186px;
+    font-size: 16px;
     rotate: -7deg; /* I love using trig for this */
 }
 
