@@ -135,15 +135,13 @@
 #weekText {
     position: absolute;
     left: 4px;
-    top: 186px;
+    top: 182px;
     font-size: 16px;
-    rotate: -7deg; /* I love using trig for this */
 }
 
 #week {
     position: absolute;
     left: 72px;
-    top: 171px;
-    font-size: 24px;
-    rotate: -7deg; /* I love using trig for this */
+    top: 177px;
+    font-size: 20px;
 }
