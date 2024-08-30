@@ -36,30 +36,34 @@
 
 #arcOneRight {
     position: absolute;
-    left: 1568px;
-    top: 7.6417px;
-    rotate: 270deg;
-    width: 28px;
-}   
+    left: 1566px;
+    top: 10px;
+}
 
 #arcTwoRight {
     position: absolute;
-    left: 1597.5px;
+    left: 1597px;
     top: 10px;
 }
 
 #arcThreeRight {
     position: absolute;
-    left: 1596px;
-    top: 40px;
-    rotate: 90deg;
+    left: 1597px;
+    top: 40.5px;
 }
 
 #arcFourRight {
     position: absolute;
     left: 1566px;
-    top: 37.5px;
-    rotate: 180deg;
+    top: 40.5px;
+}
+
+#circleRight {
+    position: absolute;
+    left: 1575px;
+    top: 20px;
+    width: 40px;
+    height: 40px;
 }
 
 /* Top Left Info */
@@ -81,13 +85,79 @@
     fill: rgb(255, 255, 255);
 }
 
+#teamNameLeft {
+    position: absolute;
+    left: 398.0101px;
+    top: 9px;
+    width: 316px;
+    height: 29.9653px;
+    font-size: 23px;
+    text-align: center;
+}
+
+#playerNamesLeft {
+    position: absolute;
+    left: 398.0101px;
+    top: 54px;
+    width: 316px;
+    height: 13px;
+    font-size: 10px;
+    text-align: center;
+}
+
+#arcOneLeft {
+    position: absolute;
+    left: 296.5px;
+    top: 10px;
+}
+
+#arcTwoLeft {
+    position: absolute;
+    left: 327.5px;
+    top: 10px;
+}
+
+#arcThreeLeft {
+    position: absolute;
+    left: 327.5px;
+    top: 40.5px;
+}
+
+#arcFourLeft {
+    position: absolute;
+    left: 296.5px;
+    top: 40.5px;
+}
+
+#circleLeft {
+    position: absolute;
+    left: 306px;
+    top: 20px;
+    width: 40px;
+    height: 40px;
+}
+
+/* Arc settings */
+#arcOneRight,
+#arcTwoRight,
+#arcThreeRight,
+#arcFourRight,
+#arcOneLeft,
+#arcTwoLeft,
+#arcThreeLeft,
+#arcFourLeft {
+    fill: none;
+    stroke: #000;
+    stroke-miterlimit: 10;
+    stroke-width: 5px;
+    width: 28px;
+}
+
 /* Hidden stuff */
 #winsRight,
 #winsLeft,
 #scoreLeft,
 #scoreRight,
-#week,
-#playerNamesLeft,
-#teamNameLeft {
+#week {
     display: none;
 }
