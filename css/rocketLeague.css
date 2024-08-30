@@ -5,28 +5,80 @@
     top: 0px;
     width: 617px;
     height: 94px;
-    background-color: rgb(190, 15, 52);
-    /* border-bottom-left-radius: 15px; */
-    border-bottom-right-radius: 150px;
+    fill: rgb(190, 15, 52);
 }
 
 #textSeperatorRight {
     position: absolute;
     left: 1198.7927px;
-    top: 47px;
+    top: 42px;
     width: 316px;
     height: 9px;
-    background-color: white;
-    border-bottom: 10px;
-    border-bottom-right-radius: 9px;
-    border-top-left-radius: 9px;
+    fill: rgb(255, 255, 255);
 }
 
 #teamNameRight {
     position: absolute;
     left: 1214px;
     top: 10px;
-    font-size: 20.5px;
+    width: 316px;
+    font-size: 20px;
+}
+
+#playerNamesRight {
+    position: absolute;
+    left: 1198px;
+    top: 50px;
+    width: 316px;
+    text-align: center;
+    font-size: 10px;
+}
+
+#arcOneRight {
+    position: absolute;
+    left: 1568px;
+    top: 7.6417px;
+    rotate: 270deg;
+    width: 28px;
+}   
+
+#arcTwoRight {
+    position: absolute;
+    left: 1597.5px;
+    top: 10px;
+}
+
+#arcThreeRight {
+    position: absolute;
+    left: 1596px;
+    top: 40px;
+    rotate: 90deg;
+}
+
+#arcFourRight {
+    position: absolute;
+    left: 1566px;
+    top: 37.5px;
+    rotate: 180deg;
+}
+
+/* Top Left Info */
+#cardLeft {
+    position: absolute;
+    left: 248.0202px;
+    top: 0px;
+    width: 617px;
+    height: 94px;
+    fill: rgb(190, 15, 52);
+}
+
+#textSeperatorLeft {
+    position: absolute;
+    left: 398.0101px;
+    top: 44.0661px;
+    width: 316px;
+    height: 9px;
+    fill: rgb(255, 255, 255);
 }
 
 /* Hidden stuff */
@@ -34,6 +86,8 @@
 #winsLeft,
 #scoreLeft,
 #scoreRight,
-#week {
+#week,
+#playerNamesLeft,
+#teamNameLeft {
     display: none;
 }
