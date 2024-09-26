@@ -80,7 +80,7 @@ This is a streaming overlay for esports teams with a nice gui app written in dar
 
 <p>Look for the line that says ipv4 and copy the ip from there, if it doesn't look the example I supplied that's ok. In this test virtual machine the ip I would use is 10.0.0.120</p>
 
-![Ipconfig output image](https://github.com/MADMAN-Modding/FalconsEsportsOverlaysblob/main/README%20Stuff/ipconfig.png)
+![Ipconfig output image](https://github.com/MADMAN-Modding/FalconsEsportsOverlays/blob/main/README%20Stuff/ipconfig.png)
 
 <p>If you have added php to the PATH run the first command, if you chose to not add PHP to the PATH than run the second command. (You can replace the ip-address with localhost if you choose but it will only work on that machine)</p>
 
