@@ -61,12 +61,16 @@ setInterval(function () {
       changeBackgroundColor("topRightWingRightRectangle", teamColorRight);
       changeBackgroundColor("awayScore", teamColorRight);
 
-      if (jsonData["playerNamesLeft"].length >= 15) {
-        document.getElementById("playerNamesLeft").style.top = "503px";
-      }   
-         
-      if (jsonData["playerNamesRight"].length >= 15) {
-        document.getElementById("playerNamesRight").style.top = "529px";
+      if (jsonData["playerNamesLeft"].length >= 24) {
+        document.getElementById("playerNamesLeft").style.top = "500px";
+      } else {
+        document.getElementById("playerNamesLeft").style.top = "509px";
+      }
+
+      if (jsonData["playerNamesRight"].length >= 24) {
+        document.getElementById("playerNamesRight").style.top = "537px";
+      } else {
+        document.getElementById("playerNamesLeft").style.top = "1098px";
       }
     });
 
