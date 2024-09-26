@@ -48,19 +48,19 @@ This is a streaming overlay for esports teams with a nice gui app written in dar
 
 <p>Open the system environment variables by typing environmental into the Windows search bar and pressing enter, it should open the correct menu.</p>
 
-![An image of searching for environmental variables settings](https://github.com/MADMAN-Modding/FalconsEsportsOverlaysblob/main/README%20Stuff/environmentalVariables_Step1.png)
+![An image of searching for environmental variables settings](https://github.com/MADMAN-Modding/FalconsEsportsOverlays/blob/main/README%20Stuff/environmentalVariables_Step1.png)
 
 <p>Now click on the "Environmental Variables" button in the bottom right of the menu.</p>
 
-![Environmental variables step2](https://github.com/MADMAN-Modding/FalconsEsportsOverlaysblob/main/README%20Stuff/environmentalVariables_Step2.png)
+![Environmental variables step2](https://github.com/MADMAN-Modding/FalconsEsportsOverlays/blob/main/README%20Stuff/environmentalVariables_Step2.png)
 
 <p>We're almost done with this part, now select PATH and press edit</p>
 
-![An image opening the environmental variables configuration](https://github.com/MADMAN-Modding/FalconsEsportsOverlaysblob/main/README%20Stuff/environmentalVariables_Step3.png)
+![An image opening the environmental variables configuration](https://github.com/MADMAN-Modding/FalconsEsportsOverlays/blob/main/README%20Stuff/environmentalVariables_Step3.png)
 
 <p>Now just press new and type the path of the folder you are keeping the php files, if there are space than surround the path with quotes.</p>
 
-![A image of adding a environmental variable](https://github.com/MADMAN-Modding/FalconsEsportsOverlaysblob/main/README%20Stuff/environmentalVariables_Step4.png)
+![A image of adding a environmental variable](https://github.com/MADMAN-Modding/FalconsEsportsOverlays/blob/main/README%20Stuff/environmentalVariables_Step4.png)
 
 <p>Now you should be all set to continue on with setup.</p>
 
