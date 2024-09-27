@@ -52,3 +52,4 @@ app/android/app/release
 **Generated**
 **.lock
 app/macos/Flutter/ephemeral/**
+.vscode
