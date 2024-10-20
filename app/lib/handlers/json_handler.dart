@@ -74,9 +74,7 @@ class JSONHandler {
 
 // This is the same as the config but for the overlay
     try {
-      overlayJSON = File(
-              '$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays-main${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
-          .readAsJsonSync();
+      overlayJSON = File(constants.Constants.overlayJSONPath).readAsJsonSync();
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -90,7 +88,7 @@ class JSONHandler {
   void writeOverlay(String key, String data) {
     try {
       overlayJSON[key] = data;
-      File('$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays-main${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
+      File(constants.Constants.overlayJSONPath)
           .writeAsStringSync(jsonEncode(overlayJSON));
 
       // Tries to prevent the overlay being written to twice, idk if it really made improvements
@@ -119,19 +117,13 @@ class JSONHandler {
       if (kDebugMode) {
         print(e);
       }
-
-      // Another check to make the overlay
-      if (readConfig("path") != ".") {
-        makeOverlay();
-      }
-
       try {
         return overlayJSON[key].toString().replaceAll(r"\", r"\\");
       } catch (e) {
         try {
           return overlayJSON[key].toString().replaceAll(r"\", r"\\");
         } catch (e) {
-          return "Add overlay to the config";
+          return "Download Overlays Please";
         }
       }
     }
@@ -190,8 +182,7 @@ class JSONHandler {
 
     try {
       // Initializes values
-      File('$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays-main${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
-          .writeAsStringSync('''
+      File(constants.Constants.overlayJSONPath).writeAsStringSync('''
 {
     "teamNameLeft": "DC Falcons Red",
     "teamNameRight": "That other team",
@@ -204,14 +195,12 @@ class JSONHandler {
     "scoreLeft": "0",
     "scoreRight": "0",
     "playerNamesLeft": "MADMAN-Modding",
-    "playerNamesRight": "Another player"
+    "playerNamesRight": "Check out my Github"
 }
 ''');
 
       // Loads the overlay
-      overlayJSON = File(
-              '$executableDirectory${constants.Constants.slashType}FalconsEsportsOverlays-main${constants.Constants.slashType}json${constants.Constants.slashType}overlay.json')
-          .readAsJsonSync();
+      overlayJSON = File(constants.Constants.overlayJSONPath).readAsJsonSync();
     } catch (e) {
       return;
     }

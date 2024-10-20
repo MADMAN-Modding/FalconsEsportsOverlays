@@ -18,6 +18,9 @@ class Constants {
   static String overlayDirectory =
       "$executableDirectory${slashType}FalconsEsportsOverlays-main";
 
+  static String overlayJSONPath =
+      '$executableDirectory${slashType}FalconsEsportsOverlays-main${slashType}json${slashType}overlay.json';
+
   static String imagePath = "$executableDirectory${slashType}Esports-Logo.png";
 
   static HexColor appTheme = HexColor(jsonHandler.readConfig("appTheme"));

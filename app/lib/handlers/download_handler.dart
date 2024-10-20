@@ -7,7 +7,8 @@ import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
 
 class DownloadHandler {
-  static download(String path) async {
+  static download() async {
+    String path = constants.Constants.executableDirectory;
     String slashType = constants.Constants.slashType;
 
     if (!Platform.isAndroid || await Permission.storage.request().isGranted) {
@@ -19,7 +20,7 @@ class DownloadHandler {
             .writeAsBytesSync(response.bodyBytes);
       });
 
-      // Extract stff
+      // Extract stuff
       extractor(path);
 
       // Delete Stuff
@@ -33,7 +34,7 @@ class DownloadHandler {
 
       // Remove the app dir cause it isn't needed
       try {
-        Directory("$path${slashType}FalconsEsportsOverlays-main${slashType}app")
+        Directory("${constants.Constants.overlayDirectory}${slashType}app")
             .deleteSync(recursive: true);
       } catch (e) {}
 
@@ -43,7 +44,7 @@ class DownloadHandler {
         FileImage(File("$path${slashType}Esports-Logo.png"))
             .file
             .writeAsBytesSync(FileImage(File(
-                    "$path${slashType}FalconsEsportsOverlays-main${slashType}images${slashType}Esports-Logo.png"))
+                    "${constants.Constants.overlayDirectory}${slashType}images${slashType}Esports-Logo.png"))
                 .file
                 .readAsBytesSync());
       }
@@ -52,8 +53,7 @@ class DownloadHandler {
       FileImage(File(
               "$path${slashType}FalconsEsportsOverlays-main${slashType}images${slashType}Esports-Logo.png"))
           .file
-          .writeAsBytesSync(FileImage(File(
-                  "$path${slashType}FalconsEsportsOverlays-main${slashType}images${slashType}Esports-Logo.png"))
+          .writeAsBytesSync(FileImage(File("$path${slashType}Esports-Logo.png"))
               .file
               .readAsBytesSync());
     }

@@ -2,9 +2,7 @@ import 'dart:io';
 import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
 import 'package:falcons_esports_overlays_controller/handlers/download_handler.dart';
-import 'package:falcons_esports_overlays_controller/handlers/json_handler.dart';
 import 'package:falcons_esports_overlays_controller/handlers/notification_handler.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DownloadPage extends StatefulWidget {
@@ -15,8 +13,6 @@ class DownloadPage extends StatefulWidget {
 }
 
 class _DownloadPage extends State<DownloadPage> {
-  String chosenPath = constants.Constants.executableDirectory;
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -43,10 +39,9 @@ class _DownloadPage extends State<DownloadPage> {
                         NotificationHandler.notification(
                             context, "Starting Reset...");
                         try {
-                          File("${constants.Constants.executableDirectory}${constants.Constants.slashType}Esports-Logo.png")
-                              .delete();
+                          File(constants.Constants.imagePath).delete();
                         } catch (e) {}
-                        await DownloadHandler.download(chosenPath);
+                        await DownloadHandler.download();
 
                         NotificationHandler.notification(
                             context, "Overlays Reset");
@@ -61,21 +56,12 @@ class _DownloadPage extends State<DownloadPage> {
     );
   }
 
-  // Updates the value of the config
-  void updateValue(String value) {
-    chosenPath = value;
-    JSONHandler().writeConfig("path", value);
-    if (kDebugMode) {
-      print(chosenPath);
-    }
-  }
-
   Widget buttonAction(String action) {
     return ElevatedButton(
       onPressed: () async {
         NotificationHandler.notification(context, "Starting $action...");
 
-        await DownloadHandler.download(chosenPath);
+        await DownloadHandler.download();
 
         NotificationHandler.notification(context, "Overlays ${action}ed");
       },
