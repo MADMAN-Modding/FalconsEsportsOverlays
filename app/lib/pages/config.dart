@@ -30,8 +30,10 @@ class _ControlsPage extends State<ConfigPage> {
   Widget build(BuildContext context) {
     TextEditingController appTheme = TextEditingController();
 
-    appTheme.text =
-        "${constants.Constants.jsonHandler.configJSON["appTheme"].replaceFirst("FF", "")}";
+    appTheme.text = constants.Constants.jsonHandler.configJSON["appTheme"]
+        .replaceFirst("FF", "")
+        .toString()
+        .toUpperCase();
 
     FileImage logo;
 

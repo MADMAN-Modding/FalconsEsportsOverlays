@@ -1,3 +1,4 @@
+import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart' as constants;
 
@@ -28,7 +29,8 @@ class _HTTPPage extends State<HTTPPage> {
                     onPressed: () async {
                       constants.Constants.httpHandler.startServer(context);
                     },
-                    child: const Text("Start Web Server")),
+                    child: DefaultText.text("Start Web Server",
+                        color: constants.Constants.appTheme)),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -37,7 +39,8 @@ class _HTTPPage extends State<HTTPPage> {
                       // Stops the server
                       constants.Constants.httpHandler.stopServer(context);
                     },
-                    child: const Text("Stop Web Server")),
+                    child: DefaultText.text("Stop Web Server",
+                        color: constants.Constants.appTheme)),
               )
             ],
           )

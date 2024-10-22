@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 139, 27, 27)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Falcons Epsorts Overlay Controller'),
+      home: const MyHomePage(title: 'Falcons Esports Overlay Controller'),
     );
   }
 }

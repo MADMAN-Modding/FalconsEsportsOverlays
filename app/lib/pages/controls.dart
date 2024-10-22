@@ -91,6 +91,7 @@ class _ControlsPageState extends State<ControlsPage> {
     );
   }
 
+  // Function for making the logos to switch which overlay is currently being used
   Widget buildOverlayButton(String overlay, String imagePath) {
     return ElevatedButton(
       onPressed: () => setState(() =>
@@ -111,6 +112,7 @@ class _ControlsPageState extends State<ControlsPage> {
     );
   }
 
+  // Function for making buttons to switch the current score
   Widget scoreButton(
       {required String text, required String jsonKey, required int value}) {
     return Row(
@@ -126,7 +128,8 @@ class _ControlsPageState extends State<ControlsPage> {
                   Size(40 * multiplier, 30 * multiplier),
                 ),
               ),
-              child: Text(text),
+              child:
+                  DefaultText.text(text, color: constants.Constants.appTheme),
             ))
       ],
     );
@@ -237,7 +240,10 @@ class _ControlsPageState extends State<ControlsPage> {
         Row(
           children: [
             ElevatedButton(
-                child: const Icon(Icons.hide_image_outlined),
+                child: Icon(
+                  Icons.hide_image_outlined,
+                  color: constants.Constants.appTheme,
+                ),
                 onPressed: () {
                   setState(() {
                     showOverlays = !showOverlays;
@@ -283,7 +289,10 @@ class _ControlsPageState extends State<ControlsPage> {
                   Size(60 * multiplier, 40 * multiplier),
                 ),
               ),
-              child: const Icon(Icons.system_update_alt),
+              child: Icon(
+                Icons.system_update_alt,
+                color: constants.Constants.appTheme,
+              ),
             ),
           ],
         ),
@@ -370,7 +379,10 @@ class _ControlsPageState extends State<ControlsPage> {
                     Size(120 * multiplier, 60 * multiplier),
                   ),
                 ),
-                child: const Icon(Icons.swap_horiz_sharp))
+                child: Icon(
+                  Icons.swap_horiz_sharp,
+                  color: constants.Constants.appTheme,
+                ))
           ],
         ),
         Row(

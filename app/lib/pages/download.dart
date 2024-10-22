@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:falcons_esports_overlays_controller/common_widgets/default_text.dart';
 import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
 import 'package:falcons_esports_overlays_controller/handlers/download_handler.dart';
@@ -46,7 +47,8 @@ class _DownloadPage extends State<DownloadPage> {
                         NotificationHandler.notification(
                             context, "Overlays Reset");
                       },
-                      child: const Text("Reset Overlays")),
+                      child: DefaultText.text("Reset Overlays",
+                          color: constants.Constants.appTheme)),
                 )
               ],
             ),
@@ -65,7 +67,8 @@ class _DownloadPage extends State<DownloadPage> {
 
         NotificationHandler.notification(context, "Overlays ${action}ed");
       },
-      child: Text("$action Overlays"),
+      child: DefaultText.text("$action Overlays",
+          color: constants.Constants.appTheme),
     );
   }
 }
