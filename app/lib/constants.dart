@@ -12,8 +12,8 @@ class Constants {
 
   static HTTPHandler httpHandler = HTTPHandler();
 
-  static String executableDirectory =
-      File(Platform.resolvedExecutable).parent.path;
+  static String executableDirectory = !Platform.isMacOS ?
+      File(Platform.resolvedExecutable).parent.path : File(Platform.resolvedExecutable).parent.parent.parent.parent.path;
 
   static String overlayDirectory =
       "$executableDirectory${slashType}FalconsEsportsOverlays-main";

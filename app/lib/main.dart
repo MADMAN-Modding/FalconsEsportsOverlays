@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:falcons_esports_overlays_controller/constants.dart'
     as constants;
 import 'package:falcons_esports_overlays_controller/pages/download.dart';
@@ -5,13 +7,34 @@ import 'package:falcons_esports_overlays_controller/pages/http.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
+import 'package:window_manager/window_manager.dart';
 
 // Pages
 import 'pages/controls.dart';
 import 'pages/home.dart';
 import 'pages/config.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+
+
+  if(Platform.isMacOS) {
+    WindowOptions windowOptions = const WindowOptions(
+      size: Size(1100, 750),
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.normal,
+      windowButtonVisibility: false,
+    );
+
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
+  }
+
   runApp(const MyApp());
 }
 
