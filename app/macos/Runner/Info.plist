@@ -30,6 +30,8 @@
 	<string>NSApplication</string>
 	<key>com.apple.security.network.client</key>
 		<true/>
+	<key>CFBundleDisplayName</key>
+	<string>Falcons Esports Overlays Controller</string>
 
 </dict>
 </plist>
