@@ -26,8 +26,8 @@ setInterval(function () {
       // Updates the Team Names and week
       document.getElementById("teamNameLeft").innerHTML =
         jsonData["teamNameLeft"];
-      // document.getElementById("teamNameRight").innerHTML =
-      //   jsonData["teamNameRight"];
+      document.getElementById("teamNameRight").innerHTML =
+        jsonData["teamNameRight"];
       // document.getElementById("week").innerHTML = jsonData["week"];
       // document.getElementById("playerNamesLeft").innerHTML =
       //   jsonData["playerNamesLeft"];
