@@ -1,0 +1,61 @@
+@font-face {
+    font-family: 'Ethnocentric';
+    src: url('ethnocentric.woff') format('woff');
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+h1 {
+    font-family: 'Ethnocentric';
+    text-shadow: 2px 2px 2px black;
+}
+
+
+#teamNameLeft {
+    width: 215.75px;
+    position: absolute;
+    color: white;
+    left: 20px;
+    top: 15px;
+    text-align: center;
+    font-size: 10px;
+}
+
+#teamNameRight {
+    width: 215.75px;
+    position: absolute;
+    color: white;
+    left: 240px;
+    top: 15px;
+    text-align: center;
+    font-size: 10px;
+}
+
+#weekText {
+    width: 215.75px;
+    position: absolute;
+    color: rgb(156, 157, 156);
+    left: 32px;
+    top: 30px;
+    text-align: center;
+    font-size: 10px;
+}
+
+#week {
+    display: block;
+    width: 215.75px;
+    position: absolute;
+    color: rgb(156, 157, 156);
+    left: 62px;
+    top: 30px;
+    text-align: center;
+    font-size: 10px;
+}
+
+#playerNamesLeft,
+#playerNamesRight {
+    display: none;
+}
