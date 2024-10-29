@@ -229,7 +229,7 @@ class _ControlsPageState extends State<ControlsPage> {
       children: [
         Row(
           children: [
-            Text("Update Overlay",
+            Text("Hide Overlay Switchers",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
