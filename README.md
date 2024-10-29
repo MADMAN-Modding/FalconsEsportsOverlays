@@ -15,7 +15,7 @@ This is a streaming overlay for esports teams with a nice gui app written in dar
 | Mario Kart 8 Deluxe        |    Finished    |
 | Overwatch                  |    Finished    |
 | Rocket League              |    Finished    |
-| Splatoon                   |  Not Started   |
+| Splatoon                   |    Finished    |
 | Valorant                   |  In Progress   |
 | Hearthstone                |  Not Started   |
 | League of Legends          |  Not Started   |
