@@ -37,22 +37,25 @@ h1 {
 #weekText {
     width: 215.75px;
     position: absolute;
-    color: rgb(156, 157, 156);
+    color: rgb(156, 156, 156);
     left: 32px;
-    top: 30px;
+    top: 31px;
     text-align: center;
     font-size: 10px;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 1px black;
 }
 
 #week {
     display: block;
     width: 215.75px;
     position: absolute;
-    color: rgb(156, 157, 156);
+    color: rgb(156, 156, 156);
     left: 62px;
-    top: 30px;
+    top: 31px;
     text-align: center;
     font-size: 10px;
+    text-shadow: 1px 1px 1px black;
 }
 
 #playerNamesLeft,
