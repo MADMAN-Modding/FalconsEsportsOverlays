@@ -44,7 +44,17 @@ img {
 
 }
 
-#rightRoundsWon1 {
+#rightRoundsWon1  {
+    width: 35px;
+    height: 20px;
+    position: absolute;
+    right: 700px;
+    top: 62px;
+    background-color: black;
+    clip-path: polygon(50% 0, 100% 0%, 50% 100%, 0% 100%);
+}
+
+#rightRoundsWon2 {
     width: 35px;
     height: 20px;
     position: absolute;
@@ -54,7 +64,7 @@ img {
     clip-path: polygon(50% 0, 100% 0%, 50% 100%, 0% 100%);
 }
 
-#rightRoundsWon2  {
+#rightRoundsWon3  {
     width: 35px;
     height: 20px;
     position: absolute;
@@ -68,6 +78,16 @@ img {
     width: 35px;
     height: 20px;
     position: absolute;
+    left: 700px;
+    top: 62px;
+    background-color: black;
+    clip-path: polygon(0 0, 50% 0, 100% 100%, 50% 100%);
+}
+
+#leftRoundsWon2 {
+    width: 35px;
+    height: 20px;
+    position: absolute;
     left: 650px;
     top: 62px;
     left: 675px;
@@ -76,7 +96,7 @@ img {
     clip-path: polygon(0 0, 50% 0, 100% 100%, 50% 100%);
 }
 
-#leftRoundsWon2 {
+#leftRoundsWon3 {
     width: 35px;
     height: 20px;
     position: absolute;

@@ -1,15 +1,13 @@
 use std::fs;
 
+use serde_json::{Result, Value};
+
+
+
 #[tauri::command]
 fn open_json() {
-    let file = fs::File::open("text.json")
-        .expect("file should open read only");
-    let json: serde_json::Value = serde_json::from_reader(file)
-        .expect("file should be proper JSON");
-    let first_name = json.get("FirstName")
-        .expect("file should have FirstName key");   
-
-    println!("{}", first_name);
+    let file_path = "data/test.json".to_owned();
+    let contents = fs::read_to_string(file_path).expect("Couldn't find or load that file.");
 }
 
 #[tauri::command]
