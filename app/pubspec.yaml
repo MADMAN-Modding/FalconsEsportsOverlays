@@ -34,10 +34,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
-  rw_git: ^1.0.3
-  english_words: ^4.0.0
   provider: ^6.1.2
-  flutter_launcher_icons: "^0.13.1"
+  flutter_launcher_icons: ^0.14.1
   flutter_local_notifications: ^17.1.2
   flutter_popup_card: ^0.0.5
   json_file: ^0.1.0
@@ -46,7 +44,6 @@ dependencies:
   file_picker: "^8.0.0"
   shelf: ^1.0.0
   shelf_static: ^1.1.2
-  shared_preferences: ^2.2.3
   filesystem_picker: ^4.1.0
   image_picker: ^1.1.2
   path_provider: ^2.0.2
@@ -55,6 +52,7 @@ dependencies:
   archive: ^3.6.1
   network_info_plus: ^6.0.0
   window_manager: ^0.4.2
+  flutter_plugin_android_lifecycle: ^2.0.23
 
 dev_dependencies:
   flutter_test:
@@ -65,7 +63,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -121,7 +119,7 @@ flutter_launcher_icons:
   android: "images/Esports-Logo.png"
   ios: true
   image_path: "images/Esports-Logo.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
+  min_sdk_android: 17 # android min sdk min:16, default 21
   web:
     generate: true
     image_path: "images/Esports-Logo.png"
