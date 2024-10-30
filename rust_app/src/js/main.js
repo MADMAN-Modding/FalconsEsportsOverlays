@@ -6,4 +6,4 @@
 const invoke = window.__TAURI__.core.invoke;
 
 // Invoke the command
-invoke('open_json');
+invoke('my_custom_command');
