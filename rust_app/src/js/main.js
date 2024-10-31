@@ -6,4 +6,8 @@
 const invoke = window.__TAURI__.core.invoke;
 
 // Invoke the command
-invoke('my_custom_command');
+// invoke('my_custom_command');
+
+function download() {
+    download_files();
+}
