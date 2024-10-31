@@ -70,7 +70,7 @@ setInterval(function () {
       if (jsonData["playerNamesRight"].length >= 24) {
         document.getElementById("playerNamesRight").style.top = "537px";
       } else {
-        document.getElementById("playerNamesLeft").style.top = "1098px";
+        document.getElementById("playerNamesLeft").style.top = "537px";
       }
     });
 
