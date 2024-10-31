@@ -67,10 +67,10 @@ setInterval(function () {
         document.getElementById("playerNamesLeft").style.top = "509px";
       }
 
-      if (jsonData["playerNamesRight"].length >= 24) {
-        document.getElementById("playerNamesRight").style.top = "530px";
+      if (jsonData["playerNamesRight"].length <= 23) {
+        document.getElementById("playerNamesRight").style.top = "536px";
       } else {
-        document.getElementById("playerNamesRight").style.top = "546px";
+        document.getElementById("playerNamesRight").style.top = "530px";
       }
     });
 
