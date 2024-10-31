@@ -2,19 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="css/index.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Falcons Esports Overlays Controller</title>
     <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/download_handler.js"></script>
+    <script src="js/switchPage.js"></script>
   </head>
   <body>
     <div id="navbar">
       <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#news">Overlay Files</a></li>
-        <li><a href="#contact">Overlay Data</a></li>
-        <li><a href="#about">Web Server</a></li>
-        <li><a href="#about">Config</a></li>
+        <li onclick="switchPage('pages/main.html')">Home</li>
+        <li onclick="switchPage('pages/files.html')">Overlay Files</li>
+        <li onclick="switchPage('pages/controls.html')">Controls</li>
+        <li onclick="switchPage('pages/server.html')">Web Server</li>
+        <li onclick="switchPage('pages/config.html')">Config</li>
       </ul>
     </div>
     <iframe src="pages/main.html" id="page" frameborder="0"></iframe>

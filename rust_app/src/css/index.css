@@ -8,12 +8,12 @@ body {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 60px;
+  width: 80px;
   height: 100vh;
   position: absolute;
 } 
 
-#navbar li a {
+#navbar li {
   margin-top: 5vh;
   margin-bottom: 7vh;
   text-decoration: none;
@@ -22,9 +22,13 @@ body {
   text-align: center;
 }
 
+#navbar li:hover {
+  cursor: pointer;
+}
+
 #page {
   position: absolute;
-  left: 60px;
+  left: 80px;
   width: 100vw;
   height: 100vh;
 }

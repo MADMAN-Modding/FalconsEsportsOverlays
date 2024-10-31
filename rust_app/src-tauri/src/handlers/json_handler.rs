@@ -1,9 +1,5 @@
 use std::fs;
 
-use serde_json::{Result, Value};
-
-
-
 #[tauri::command]
 fn open_json() {
     let file_path = "data/test.json".to_owned();
