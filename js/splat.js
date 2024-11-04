@@ -29,12 +29,6 @@ setInterval(function () {
       document.getElementById("teamNameRight").innerHTML =
         jsonData["teamNameRight"];
       document.getElementById("week").innerHTML = jsonData["week"];
-      // document.getElementById("playerNamesLeft").innerHTML =
-      //   jsonData["playerNamesLeft"];
-      // document.getElementById("playerNamesRight").innerHTML =
-      //   jsonData["playerNamesRight"];
-      // document.getElementById("scoreLeft").innerHTML = jsonData["scoreLeft"];
-      // document.getElementById("scoreRight").innerHTML = jsonData["scoreRight"];
     });
   i = Math.floor(Math.random() * 1000000);
 }, 100);

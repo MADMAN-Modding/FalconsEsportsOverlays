@@ -15,33 +15,33 @@ h1 {
 
 
 #teamNameLeft {
-    width: 215.75px;
+    width: 390px;
     position: absolute;
     color: white;
     left: 20px;
-    top: 15px;
-    text-align: center;
-    font-size: 10px;
+    top: 21px;
+    text-align: left;
+    font-size: 19px;
 }
 
 #teamNameRight {
-    width: 215.75px;
+    width: 235px;
     position: absolute;
     color: white;
-    left: 240px;
-    top: 15px;
-    text-align: center;
-    font-size: 10px;
+    left: 26px;
+    top: 103px;
+    text-align: left;
+    font-size: 12px;
 }
 
 #weekText {
     width: 215.75px;
     position: absolute;
     color: rgb(156, 156, 156);
-    left: 32px;
-    top: 31px;
+    left: 82px;
+    top: 42px;
     text-align: center;
-    font-size: 10px;
+    font-size: 22px;
     letter-spacing: 2px;
     text-shadow: 1px 1px 1px black;
 }
@@ -51,10 +51,10 @@ h1 {
     width: 215.75px;
     position: absolute;
     color: rgb(156, 156, 156);
-    left: 62px;
-    top: 31px;
+    left: 142px;
+    top: 42px;
     text-align: center;
-    font-size: 10px;
+    font-size: 22px;
     text-shadow: 1px 1px 1px black;
 }
 
