@@ -251,6 +251,7 @@ class _ControlsPageState extends State<ControlsPage> {
                 }),
           ],
         ),
+        if (!Platform.isAndroid) const SizedBox(height: 15),
         Row(
           children: [
             Text("Update Overlay",

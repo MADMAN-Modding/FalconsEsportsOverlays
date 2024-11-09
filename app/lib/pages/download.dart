@@ -65,7 +65,8 @@ class _DownloadPage extends State<DownloadPage> {
 
         await DownloadHandler.download();
 
-        NotificationHandler.notification(context, "Overlays ${action}ed");
+        NotificationHandler.notification(
+            context, "Overlays $action${action.endsWith("e") ? "d" : "ed"}");
       },
       child: DefaultText.text("$action Overlays",
           color: constants.Constants.appTheme),
