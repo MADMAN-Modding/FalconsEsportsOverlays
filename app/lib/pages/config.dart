@@ -104,22 +104,31 @@ class _ControlsPage extends State<ConfigPage> {
                               (await FilePick.filePicker(context));
 
                           // If the returned path is blank then it won't take the value
-                          if (newImagePath != "") {
-                            imagePath = newImagePath;
-                            try {
-                              // Writes the old logo with the supplied path, this has both items as FileImages
-                              logo.file.writeAsBytesSync(FileImage(
-                                      File(imagePath.replaceAll(r"\", r"\\")))
-                                  .file
-                                  .readAsBytesSync());
+                          if (newImagePath.isNotEmpty) {
+                            setState(() {
+                              imagePath = newImagePath;
+                              try {
+                                print(imagePath);
+                                // Writes the old logo with the supplied path, this has both items as FileImages
+                                logo.file.writeAsBytesSync(FileImage(
+                                        File(imagePath.replaceAll(r"\", r"\\")))
+                                    .file
+                                    .readAsBytesSync());
 
-                              File("${constants.Constants.overlayDirectory}${constants.Constants.slashType}images${constants.Constants.slashType}Esports-Logo.png")
-                                  .writeAsBytesSync(
-                                      logo.file.readAsBytesSync());
-                            } catch (e) {}
+                                logo = FileImage(
+                                    File(imagePath.replaceAll(r"\", r"\\")));
+
+                                File("${constants.Constants.overlayDirectory}${constants.Constants.slashType}images${constants.Constants.slashType}Esports-Logo.png")
+                                    .writeAsBytesSync(
+                                        logo.file.readAsBytesSync());
+
+                                // Clears the image cache
+                                imageCache.evict(logo);
+                                imageCache.clear();
+                                imageCache.clearLiveImages();
+                              } catch (e) {}
+                            });
                           }
-                          // Clears the cache
-                          logo.evict();
                         },
                       ),
                     ),
@@ -135,6 +144,7 @@ class _ControlsPage extends State<ConfigPage> {
                       Image.file(
                         logo.file,
                         width: 400 * (Platform.isAndroid ? 0.4 : 1),
+                        key: UniqueKey(),
                       )
                     ],
                   ),

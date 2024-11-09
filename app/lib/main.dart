@@ -18,8 +18,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
 
-
-  if(Platform.isMacOS) {
+  if (Platform.isMacOS) {
     WindowOptions windowOptions = const WindowOptions(
       size: Size(1100, 750),
       center: true,
@@ -29,10 +28,10 @@ void main() async {
       windowButtonVisibility: true,
     );
 
-  windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
   }
 
   runApp(const MyApp());

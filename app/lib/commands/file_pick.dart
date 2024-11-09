@@ -13,22 +13,22 @@ class FilePick {
     // If they don't respond it will return ""
     try {
       // Since there's a bug on Linux that makes the file picker not work on linux this runs a separate one for Linux
-      // if (Platform.isWindows) {
-      FilePickerResult? result = await FilePicker.platform
-          .pickFiles(type: FileType.image, allowMultiple: false);
-      return result!.paths.toString().replaceAll("[", "").replaceAll("]", "");
-      // } else {
-      // This is here until the bug on linux is fixed
-      // return (await FilesystemPicker.open(
-      //     // Config stuff
-      //     context: context,
-      //     theme: FilesystemPickerTheme(
-      //         topBar: FilesystemPickerTopBarThemeData(
-      //             backgroundColor: Colors.grey),
-      //         backgroundColor: const Color.fromARGB(255, 110, 107, 107)),
-      //     rootDirectory: Directory(directory),
-      //     contextActions: [FilesystemPickerNewFolderContextAction()]))!;
-      // }
+      if (!Platform.isAndroid) {
+        FilePickerResult? result = await FilePicker.platform
+            .pickFiles(type: FileType.image, allowMultiple: false);
+        return result!.paths.toString().replaceAll("[", "").replaceAll("]", "");
+      } else {
+        // This is here until the bug on linux is fixed
+        return (await FilesystemPicker.open(
+            // Config stuff
+            context: context,
+            theme: FilesystemPickerTheme(
+                topBar: FilesystemPickerTopBarThemeData(
+                    backgroundColor: Colors.grey),
+                backgroundColor: const Color.fromARGB(255, 110, 107, 107)),
+            rootDirectory: Directory(directory),
+            contextActions: [FilesystemPickerNewFolderContextAction()]))!;
+      }
       // If the user doesn't pick a directory, return ""
     } catch (e) {
       return "";

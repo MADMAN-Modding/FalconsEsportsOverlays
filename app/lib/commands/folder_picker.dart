@@ -11,7 +11,7 @@ class FolderPicker {
     // If the user doesn't respond then it returns ""
     try {
       // If its windows it a nice and easy file pickers
-      if (Platform.isWindows) {
+      if (!Platform.isWindows) {
         var text = (await (FilePicker.platform.getDirectoryPath()))!;
         return text;
         // If its Unix, its not as easy :(
