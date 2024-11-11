@@ -62,3 +62,11 @@ h1 {
 #playerNamesRight {
     display: none;
 }
+
+#logo {
+    position: absolute;
+    width: 325px;
+    height: 284;
+    right: 11px;
+    bottom: 11px;
+}
