@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Falcons Esports Overlays Controller</title>
     <script type="module" src="js/main.js"></script>
-    <script type="module" src="js/download_handler.js"></script>
-    <script src="js/switchPage.js"></script>
+    <script src="js/download_handler.js"></script>
+    <script src="js/switchPage.js" defer></script>
   </head>
   <body>
     <div id="navbar">
       <ul>
-        <li onclick="switchPage('pages/main.html')">Home</li>
-        <li onclick="switchPage('pages/files.html')">Overlay Files</li>
-        <li onclick="switchPage('pages/controls.html')">Controls</li>
-        <li onclick="switchPage('pages/server.html')">Web Server</li>
-        <li onclick="switchPage('pages/config.html')">Config</li>
+        <li onclick="switchPage('main')">Home</li>
+        <li onclick="switchPage('files')">Overlay Files</li>
+        <li onclick="switchPage('controls')">Controls</li>
+        <li onclick="switchPage('server')">Web Server</li>
+        <li onclick="switchPage('config')">Config</li>
       </ul>
     </div>
-    <iframe src="pages/main.html" id="page" frameborder="0"></iframe>
+    <div id="page"></div>
   </body>
 </html>

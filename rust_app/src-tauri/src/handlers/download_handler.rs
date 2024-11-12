@@ -1,5 +1,5 @@
-use reqwest::{blocking::get};
-use std::{error::Error, fs::{File}, io::copy, path::Path};
+use reqwest::blocking::get;
+use std::{error::Error, fs::File, io::copy, path::Path};
 
 fn download_files() -> Result<(), Box<dyn Error>> {
     
@@ -7,8 +7,7 @@ fn download_files() -> Result<(), Box<dyn Error>> {
     let filename: &str = "overlays.zip";
     let directory: &str = "/home/mad/Downloads";
     let url: &str = "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main";
-    
-    
+
     // Download stuff
     let path = Path::new(directory).join(filename);
     
