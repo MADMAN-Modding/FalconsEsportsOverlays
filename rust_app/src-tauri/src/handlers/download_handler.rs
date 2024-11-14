@@ -21,7 +21,7 @@ fn download_files() -> Result<(), Box<dyn Error>> {
 }
 
 #[tauri::command]
-fn download_and_extract() {
+pub fn download_and_extract() {
     if let Err(e) = download_files() {
         eprintln!("Error {}", e);
     }

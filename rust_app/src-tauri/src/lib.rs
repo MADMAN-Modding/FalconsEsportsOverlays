@@ -1,13 +1,20 @@
-include!("handlers/json_handler.rs");
-include!("handlers/download_handler.rs");
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
+pub mod handlers {    
+    pub mod download_handler;
+    pub mod json_handler;
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    use handlers::download_handler::download_and_extract;
+    use handlers::json_handler::open_json;
+
+
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(tauri::generate_handler![greet])
