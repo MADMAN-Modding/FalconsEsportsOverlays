@@ -1,6 +1,6 @@
 use reqwest::blocking::get;
 use zip::ZipArchive;
-use std::{error::Error, fmt::format, fs::{self, File}, io::{self, copy, BufReader}, path::Path};
+use std::{error::Error, fs::{self, File}, io::{self, copy, BufReader}, path::Path};
 
 use crate::constants;
 
@@ -24,7 +24,7 @@ fn download_files() -> Result<[String; 2], Box<dyn Error>> {
     Ok(response)
 }
 
-fn extract_files(file_path : &str, output_dir: &str) -> io::Result<()> {
+fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
     // Opens the file and makes an object of the archive
     let file = File::open(file_path)?;
     let mut archive = ZipArchive::new(BufReader::new(file))?;
@@ -50,6 +50,8 @@ fn extract_files(file_path : &str, output_dir: &str) -> io::Result<()> {
             io::copy(&mut file, &mut out_file)?;
         }
     }
+
+    fs::remove_file(file_path);
 
     Ok(())
 }
