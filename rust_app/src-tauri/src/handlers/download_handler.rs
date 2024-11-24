@@ -1,6 +1,6 @@
 use reqwest::blocking::get;
 use zip::ZipArchive;
-use std::{error::Error, fs::File, io::{self, copy, BufReader}, path::Path};
+use std::{error::Error, fmt::format, fs::{self, File}, io::{self, copy, BufReader}, path::Path};
 
 use crate::constants;
 
@@ -54,6 +54,22 @@ fn extract_files(file_path : &str, output_dir: &str) -> io::Result<()> {
     Ok(())
 }
 
+fn setup_config_dir(config_dir: String) -> Result<(), std::io::Error> {
+    let logo = format!("{}{}", &config_dir, "/FalconsEsportsOverlays-main/images/Esports-Logo.png");
+
+    if let Err(e) = fs::copy(logo, format!("{}{}", &config_dir, "/Esports-Logo.png")) {
+        return Err(e);
+    }
+
+    let overlay_config = format!("{}{}", &config_dir, "/FalconsEsportsOverlays-main/json/overlay.json");
+
+    if let Err(e) = fs::copy(overlay_config, format!("{}{}", &config_dir, "/overlay.json")) {
+        return Err(e);
+    }
+    
+    Ok(())
+}
+
 #[tauri::command]
 pub fn download_and_extract() {
     let result:Result<[String; 2], Box<dyn Error>> = download_files();
@@ -68,7 +84,9 @@ pub fn download_and_extract() {
             dir = array[1].to_string();
 
             if let Err(e) = extract_files(&file, &dir) {
-                eprintln!("Extract Error {}", e);
+                eprintln!("Extract Error: {}", e);
+            } else if let Err(e) = setup_config_dir(dir) {
+                eprintln!("Setup Error: {}", e);
             }
         }
 
