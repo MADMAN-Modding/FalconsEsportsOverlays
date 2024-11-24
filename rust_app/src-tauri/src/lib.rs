@@ -9,10 +9,15 @@ pub mod handlers {
     pub mod json_handler;
 }
 
+pub mod constants;
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     use handlers::download_handler::download_and_extract;
     use handlers::json_handler::open_json;
+    use constants;
+    
+    constants::setup();
 
 
     tauri::Builder::default()

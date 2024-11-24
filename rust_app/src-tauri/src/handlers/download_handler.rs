@@ -2,10 +2,12 @@ use reqwest::blocking::get;
 use zip::ZipArchive;
 use std::{error::Error, fs::File, io::{self, copy, BufReader}, path::Path};
 
+use crate::constants;
+
 fn download_files() -> Result<[String; 2], Box<dyn Error>> {
     // Download config
     let filename: &str = "overlays.zip";
-    let directory: &str = "/home/mad/Downloads";
+    let directory: &str = &constants::get_config_dir();
     let url: &str = "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main";
 
     // Download stuff
