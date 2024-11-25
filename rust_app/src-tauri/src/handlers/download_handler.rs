@@ -51,7 +51,7 @@ fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
         }
     }
 
-    fs::remove_file(file_path);
+    let _ = fs::remove_file(file_path);
 
     Ok(())
 }
