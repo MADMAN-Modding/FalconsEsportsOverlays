@@ -14,6 +14,7 @@ pub mod constants;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     use handlers::download_handler::download_and_extract;
+    use handlers::download_handler::hi;
     use handlers::json_handler::open_json;
     use constants;
     
@@ -22,9 +23,11 @@ pub fn run() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![greet])
-        .invoke_handler(tauri::generate_handler![open_json])
-        .invoke_handler(tauri::generate_handler![download_and_extract])
+        .invoke_handler(tauri::generate_handler![
+            download_and_extract,
+            greet,
+            open_json,
+            hi])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

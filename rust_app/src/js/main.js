@@ -11,3 +11,7 @@ const invoke = window.__TAURI__.core.invoke;
 function download() {
     download_files();
 }
+
+function json() {
+    test_json()
+}
