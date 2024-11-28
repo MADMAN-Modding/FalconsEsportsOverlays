@@ -22,3 +22,15 @@ pub fn get_config_dir() -> String {
 
     return config_dir.to_string();
 }
+
+pub fn get_code_dir() -> String {
+    format!("{}/FalconsEsportsOverlays-main", get_config_dir())
+}
+
+pub fn get_overlay_json_path() -> String {
+    format!("{}/json/overlay.json", get_code_dir())
+}
+
+pub fn get_config_json_path() -> String {
+    format!("{}/config.json", get_config_dir())
+}

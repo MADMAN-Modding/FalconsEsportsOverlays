@@ -15,7 +15,7 @@ pub mod constants;
 pub fn run() {
     use handlers::download_handler::download_and_extract;
     use handlers::download_handler::hi;
-    use handlers::json_handler::open_json;
+    use handlers::json_handler::read_overlay_json;
     use constants;
     
     constants::setup();
@@ -26,7 +26,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             download_and_extract,
             greet,
-            open_json,
+            read_overlay_json,
             hi])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
