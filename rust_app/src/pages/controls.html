@@ -1,26 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="../css/controls.css" rel="stylesheet" type="text/css">
-        <link href="../css/common.css" rel="stylesheet" type="text/css">
+        <link href="css/controls.css" rel="stylesheet" type="text/css">
+        <link href="css/common.css" rel="stylesheet" type="text/css">
 
         <!-- Bootstrap -->
-        <link href="../css/bootstrap.css" rel="stylesheet">
-        <script src="../js/bootstrap.js"></script>
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <script src="js/bootstrap.js"></script>
     </head>
     <body>
-        <div id="buttons" class="row">
-            <div class="col"></div>
-            <div class="col">
-                <h2 onclick="read_overlay_json('overlay')" class="button">Read JSON</h2>
-            </div>
-            <div class="col">
-                <h2 onclick="write_overlay_json('overlay', 'overwatch')" class="button">Write JSON</h2>
-            </div>
-            <div class="col">
-                <h2 class="button">Reset Overlays</h2>
-            </div>
-            <div class="col"></div>
-        </div>
+        <div id="leftTeamColumn"></div>
+        <script>
+            console.log("Hi from Controls")
+            buildTeamColumn("left", "leftTeamColumn")
+        </script>
     </body>
 </html>
