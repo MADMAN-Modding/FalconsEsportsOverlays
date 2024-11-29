@@ -98,8 +98,3 @@ pub fn download_and_extract() {
         }
     }
 }
-
-#[tauri::command]
-pub fn hi() {
-    println!("Hi Mate!");
-}
