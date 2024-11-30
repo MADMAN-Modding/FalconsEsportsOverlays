@@ -1,6 +1,7 @@
 body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 /* Navbar */
@@ -8,6 +9,8 @@ body {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  top: 0;
+  left: 0;
   width: 80px;
   height: 100vh;
   position: absolute;

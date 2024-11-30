@@ -7,8 +7,7 @@ async function switchPage(page) {
     .catch(error => console.error("Error loading page:", error));
 
     if (page == "controls") {
-        console.log("Hi from Controls")
-        buildTeamColumn("Left", "leftTeamColumn")
+        setupControls();
     }
 }
 

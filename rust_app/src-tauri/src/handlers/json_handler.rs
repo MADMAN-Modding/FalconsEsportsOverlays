@@ -5,10 +5,10 @@ use serde_json::Value;
 use crate::constants;
 
 #[tauri::command]
-pub fn read_overlay_json(key : &str) -> Value {
+pub fn read_overlay_json(key : &str) -> String {
     let json_data: Value = open_json(constants::get_overlay_json_path());
 
-    json_data[key].clone()
+    json_data[key].to_string()
 }
 
 fn open_json(path: String) -> Value {

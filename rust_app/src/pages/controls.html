@@ -1,18 +1,133 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <link href="css/controls.css" rel="stylesheet" type="text/css">
-        <link href="css/common.css" rel="stylesheet" type="text/css">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overlay Controls</title>
+  <link rel="stylesheet" href="css/controls.css">
+</head>
+<body>
+  <div id="app">
+    <div class="overlay-buttons">
+        <!-- Super Smash Bros Ultimate -->
+        <button class="overlay-button" onclick="switchOverlay('ssbu')">
+          <img src="images/SSBU.png" alt="SSBU" />
+        </button>
+        
+        <!-- Mario Kart -->
+        <button class="overlay-button" onclick="switchOverlay('kart')">
+          <img src="images/Kart.png" alt="Mario Kart" />
+        </button>
+        
+        <!-- Overwatch -->
+        <button class="overlay-button" onclick="switchOverlay('overwatch')">
+          <img src="images/Overwatch.png" alt="Overwatch" />
+        </button>
+        
+        <!-- Rocket League -->
+        <button class="overlay-button" onclick="switchOverlay('rocketLeague')">
+          <img src="images/RL.png" alt="Rocket League" />
+        </button>
+        
+        <!-- Splatoon -->
+        <button class="overlay-button" onclick="switchOverlay('splat')">
+          <img src="images/SPLAT.png" alt="Splatoon" />
+        </button>
+        
+        <!-- Valorant -->
+        <button class="overlay-button" onclick="switchOverlay('val')">
+          <img src="images/VAL.png" alt="Valorant" />
+        </button>
+        
+        <!-- Hearthstone -->
+        <button class="overlay-button" onclick="switchOverlay('hearth')">
+          <img src="images/Hearth.png" alt="Hearthstone" />
+        </button>
+        
+        <!-- League of Legends -->
+        <button class="overlay-button" onclick="switchOverlay('lol')">
+          <img src="images/LOL.png" alt="League of Legends" />
+        </button>
+        
+        <!-- Chess -->
+        <button class="overlay-button" onclick="switchOverlay('chess')">
+          <img src="images/Chess.png" alt="Chess" />
+        </button>
+        
+        <!-- Madden -->
+        <button class="overlay-button" onclick="switchOverlay('madden')">
+          <img src="images/Madden.png" alt="Madden" />
+        </button>
+        
+        <!-- NBA2K -->
+        <button class="overlay-button" onclick="switchOverlay('nba2K')">
+          <img src="images/NBA2K.png" alt="NBA2K" />
+        </button>
+      </div>
+      
+    <div class="main-content">
+      <!-- Left Team Column -->
+      <div class="team-column">
+        <h2>Left Team</h2>
+        <div class="games-won">
+          <label>Games Won</label>
+          <div class="games-won-row">
+            <button onclick="updateWins('Left', 0)">0</button>
+            <button onclick="updateWins('Left', 1)">1</button>
+            <button onclick="updateWins('Left', 2)">2</button>
+          </div>
+          <div class="games-won-row">
+            <button onclick="updateWins('Left', 3)">3</button>
+            <button onclick="updateWins('Left', 4)">4</button>
+            <button onclick="updateWins('Left', 5)">5</button>
+          </div>
+        </div>
+        
+        <label for="scoreLeft">Score</label>
+        <input type="number" id="scoreLeft" value="0">
+        <label for="playerNamesLeft">Player Names</label>
+        <textarea id="playerNamesLeft"></textarea>
+        <label for="teamNameLeft">Team Name</label>
+        <textarea id="teamNameLeft"></textarea>
+        <label>Team Color</label>
+        <input type="color" id="teamColorLeft" value="#be0f32">
+      </div>
 
-        <!-- Bootstrap -->
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <script src="js/bootstrap.js"></script>
-    </head>
-    <body>
-        <div id="leftTeamColumn"></div>
-        <script>
-            console.log("Hi from Controls")
-            buildTeamColumn("left", "leftTeamColumn")
-        </script>
-    </body>
+      <!-- Middle Section -->
+      <div class="middle-column">
+        <button onclick="updateOverlay()">Update Overlay</button>
+        <button onclick="swapTeams()">Swap Teams</button>
+        <label for="week">Week</label>
+        <input type="number" id="week" value="1">
+      </div>
+
+      <!-- Right Team Column -->
+      <div class="team-column">
+        <h2>Right Team</h2>
+        <div class="games-won">
+          <label>Games Won</label>
+          <div class="games-won-row">
+            <button onclick="updateWins('Right', 0)">0</button>
+            <button onclick="updateWins('Right', 1)">1</button>
+            <button onclick="updateWins('Right', 2)">2</button>
+          </div>
+          <div class="games-won-row">
+            <button onclick="updateWins('Right', 3)">3</button>
+            <button onclick="updateWins('Right', 4)">4</button>
+            <button onclick="updateWins('Right', 5)">5</button>
+          </div>
+        </div>
+        
+        <label for="scoreRight">Score</label>
+        <input type="number" id="scoreRight" value="0">
+        <label for="playerNamesRight">Player Names</label>
+        <textarea id="playerNamesRight"></textarea>
+        <label for="teamNameRight">Team Name</label>
+        <textarea id="teamNameRight"></textarea>
+        <label>Team Color</label>
+        <input type="color" id="teamColorRight" value="#ffffff">
+      </div>
+    </div>
+  </div>
+</body>
 </html>
