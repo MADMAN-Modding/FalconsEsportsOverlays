@@ -16,13 +16,11 @@ fn open_json(path: String) -> Value {
 
     // Checks to make sure that the JSON file is there, if it isn't it makes it
     if Path::new(&path).exists() {
-        println!("Path exists");
         json_data = {
             let file_content: String = fs::read_to_string(&path).expect("File not found");
             serde_json::from_str::<Value>(&file_content).expect("Error serializing to JSON")
         };
     } else {
-        println!("Making new JSON");
         json_data = init_json(path);
     }
 
@@ -33,7 +31,7 @@ fn open_json(path: String) -> Value {
     json_data
 }
 
-fn init_json(path: String) -> Value {
+pub fn init_json(path: String) -> Value {
     // Creating the directories
     let _ = std::fs::create_dir_all(Path::new(&path).parent().unwrap());
 
@@ -71,13 +69,11 @@ fn init_json(path: String) -> Value {
         })
     }
 
-    println!("Creating the JSON file: {}", &path);
     // Creating the JSON file
     fs::write(&path, serde_json::to_string_pretty(&json_data).expect("Error 
     serializing to JSON")).expect("Error writing file");
 
      
-    println!("Trying to open the JSON");
     // Trying to open the JSON again
     open_json(path)
 }

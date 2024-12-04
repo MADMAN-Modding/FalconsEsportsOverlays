@@ -2,7 +2,8 @@ use reqwest::blocking::get;
 use zip::ZipArchive;
 use std::{error::Error, fs::{self, File}, io::{self, copy, BufReader}, path::Path};
 
-use crate::constants;
+use crate::constants::{self, get_config_dir};
+use crate::handlers::json_handler::init_json;
 
 fn download_files() -> Result<[String; 2], Box<dyn Error>> {
     // Download config
@@ -63,9 +64,11 @@ fn setup_config_dir(config_dir: String) -> Result<(), std::io::Error> {
         return Err(e);
     }
 
+    init_json(format!("{}/overlay.json", get_config_dir()));
+
     let overlay_config = format!("{}{}", &config_dir, "/FalconsEsportsOverlays-main/json/overlay.json");
 
-    if let Err(e) = fs::copy(overlay_config, format!("{}{}", &config_dir, "/overlay.json")) {
+    if let Err(e) = fs::copy(format!("{}/overlay.json", get_config_dir()), overlay_config) {
         return Err(e);
     }
     

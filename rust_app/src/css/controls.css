@@ -179,3 +179,8 @@ input {
   margin-left: auto;
   margin-right: auto;
 }
+
+.userInput {
+  background-color: white;
+  color: black;
+}
