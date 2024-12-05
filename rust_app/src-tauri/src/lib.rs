@@ -1,6 +1,7 @@
 pub mod handlers {    
     pub mod download_handler;
     pub mod json_handler;
+    pub mod http_handler;
 }
 
 pub mod constants;
@@ -9,6 +10,7 @@ pub mod constants;
 pub fn run() {
     use handlers::download_handler;
     use handlers::json_handler;
+    use handlers::http_handler;
     use constants;
     
     constants::setup();
@@ -20,6 +22,7 @@ pub fn run() {
             download_handler::download_and_extract,
             json_handler::read_overlay_json,
             json_handler::write_json,
+            http_handler::run_server,
             constants::get_overlay_json_path,
         ])
         .run(tauri::generate_context!())
