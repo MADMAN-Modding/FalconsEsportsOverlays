@@ -29,16 +29,19 @@ async fn handle_connection(listener: TcpListener) {
         // Gets just the requested resource
         file = file.replace("GET ", "").replace(" HTTP/1.1", "");
 
+       // Logic for processing the file path
         file = if file == "/" {
             "/index.html".to_owned()
+        } else if file.contains("?") {
+            file[..file.find("?").unwrap()].to_string()
         } else {
             file
         };
 
+        // Sometimes there would be two '/', this takes care of that
+        file = file.replace("//", "/");
+
         let file_path = get_code_dir() + &file;
-
-        println!("{}", &file_path);
-
 
         // TODO: Add logic to handle a '?' on requested resouces
         let (status_line, filename) = if Path::new(&file_path).exists() {
@@ -51,8 +54,6 @@ async fn handle_connection(listener: TcpListener) {
 
         let contents = fs::read_to_string(filename).unwrap();
         let length = contents.len();
-
-        println!("{}", request_line);
 
         let response =
             format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");
