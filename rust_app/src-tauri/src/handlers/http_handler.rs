@@ -1,49 +1,55 @@
 use std::{
-    fs, io::{prelude::*, BufReader}, net::{TcpListener, TcpStream}, path::Path
+    fs, io::{prelude::*, BufReader}, net::TcpListener, path::Path
 };
 
 #[tauri::command]
-pub fn run_server () {
-    let listener = TcpListener::bind("127.0.0.1").unwrap();
+pub async fn run_server () -> Result<String, String> {
+    let listener = TcpListener::bind("127.0.0.1:8080");
 
-    for stream in listener.incoming() {
-        let stream = stream.unwrap();
-
-        handle_connection(stream);
+    if listener.is_ok() {
+        handle_connection(listener.unwrap());
+        Ok("Server Started".to_string())
+    } else {
+        Err(format!("Error Starting Server: {}", listener.unwrap_err()))
     }
 }
 
-fn handle_connection(mut stream: TcpStream) {
-    let buf_reader = BufReader::new(&stream);
-    let request_line: String = buf_reader.lines().next().unwrap().unwrap();
+async fn handle_connection(listener: TcpListener) {
+    for stream in listener.incoming() {
 
-    let mut file = request_line.to_string();
+        let mut stream = stream.unwrap();    
 
-    // Gets just the requested resource
-    file = file.replace("GET ", "").replace(" HTTP/1.1", "");
+        let buf_reader = BufReader::new(&stream);
+        let request_line: String = buf_reader.lines().next().unwrap().unwrap();
 
-    file = if file == "/" {
-        "index.html".to_owned()
-    } else {
-        file.replace("/", "")
-    };
+        let mut file = request_line.to_string();
 
-    println!("{}", file);
+        // Gets just the requested resource
+        file = file.replace("GET ", "").replace(" HTTP/1.1", "");
+
+        file = if file == "/" {
+            "index.html".to_owned()
+        } else {
+            file.replace("/", "")
+        };
+
+        println!("{}", file);
 
 
-    let (status_line, filename) = if Path::new(&file).exists() {
-        ("HTTP/1.1 200 OK", file)
-    } else {
-        ("HTTP/1.1 404 NOT FOUND", "404.html".to_string())
-    };
+        let (status_line, filename) = if Path::new(&file).exists() {
+            ("HTTP/1.1 200 OK", file)
+        } else {
+            ("HTTP/1.1 404 NOT FOUND", "404.html".to_string())
+        };
 
-    let contents = fs::read_to_string(filename).unwrap();
-    let length = contents.len();
+        let contents = fs::read_to_string(filename).unwrap();
+        let length = contents.len();
 
-    println!("{}", request_line);
+        println!("{}", request_line);
 
-    let response =
-        format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");
+        let response =
+            format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");
 
-    stream.write_all(response.as_bytes()).unwrap();
+        stream.write_all(response.as_bytes()).unwrap();
+    }   
 }

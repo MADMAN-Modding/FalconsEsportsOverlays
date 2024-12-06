@@ -18,12 +18,13 @@ body {
 } 
 
 #navbar li {
-  margin-top: 5vh;
-  margin-bottom: 7vh;
+  margin-top: 20px;
+  margin-bottom: 10px;
   text-decoration: none;
   display: block;
   color: black;
   text-align: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 #navbar li:hover {
