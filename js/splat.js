@@ -31,4 +31,4 @@ setInterval(function () {
       document.getElementById("week").innerHTML = jsonData["week"];
     });
   i = Math.floor(Math.random() * 1000000);
-}, 100);
+}, updateInterval);
