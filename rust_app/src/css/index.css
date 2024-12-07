@@ -15,15 +15,17 @@ body {
   height: 100vh;
   position: absolute;
   background-color: white;
-} 
+}
 
-#navbar li {
+#navbar li,
+#navbar p {
   margin-top: 20px;
   margin-bottom: 10px;
   text-decoration: none;
   display: block;
   color: black;
   text-align: center;
+  font-size: 15px;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
