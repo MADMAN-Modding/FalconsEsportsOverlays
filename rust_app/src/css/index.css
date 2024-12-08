@@ -17,8 +17,8 @@ body {
   background-color: white;
 }
 
-#navbar li,
-#navbar p {
+#navbar li {
+  font-family: 'Noto Sans';
   margin-top: 20px;
   margin-bottom: 10px;
   text-decoration: none;
@@ -26,7 +26,6 @@ body {
   color: black;
   text-align: center;
   font-size: 15px;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 #navbar li:hover {
