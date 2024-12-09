@@ -38,7 +38,7 @@ setInterval(function () {
 
         });
     i = Math.floor(Math.random() * 1000000);
-}, updateInterval);
+}, 2000);
 
 
 function changeBackgroundColor(id, color) {
