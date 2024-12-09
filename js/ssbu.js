@@ -45,4 +45,4 @@ setInterval(function () {
         jsonData["teamColorRight"];
     });
   i = Math.floor(Math.random() * 1000000);
-}, updateInterval);
+}, 2000);
