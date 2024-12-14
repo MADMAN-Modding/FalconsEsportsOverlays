@@ -14,7 +14,7 @@ pub fn run() {
     use constants;
     
     constants::setup();
-
+    http_handler::setup();
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -23,6 +23,7 @@ pub fn run() {
             json_handler::read_overlay_json,
             json_handler::write_json,
             http_handler::run_server,
+            http_handler::stop_server,
             constants::get_overlay_json_path,
         ])
         .run(tauri::generate_context!())

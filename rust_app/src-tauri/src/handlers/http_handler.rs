@@ -2,36 +2,90 @@ use std::{
     fs,
     io::{prelude::*, BufReader},
     net::{TcpListener, TcpStream},
-    path::Path, thread,
+    path::Path,
+    sync::{Arc, Mutex},
+    thread::{self},
 };
+
+use once_cell::sync::OnceCell;
 
 use crate::constants::get_code_dir;
 
+// Adds necessary traits to the ThreadData structure
+#[derive(Clone, Copy, Debug)]
+struct ThreadData {
+    stop: bool,
+}
+
+static THREAD_DATA: OnceCell<Arc<Mutex<ThreadData>>> = OnceCell::new();
+
+pub fn setup() {
+    THREAD_DATA
+        .set(Arc::new(Mutex::new(ThreadData::setup())))
+        .unwrap();
+}
+
 #[tauri::command]
-pub async fn run_server() -> Result<String, String> {
+pub fn run_server() -> Result<String, String> {
+    let thread_data: &Arc<Mutex<ThreadData>> =
+        THREAD_DATA.get().expect("Unable to get thread_data");
+
     let listener = TcpListener::bind("127.0.0.1:8080");
 
     if listener.is_ok() {
-        let _ = thread::Builder::new().name("http_server_thread".to_string()).spawn(|| {handle_connection(listener.unwrap())});
+        let _ = thread::Builder::new()
+            .name("http_server_thread".to_string())
+            .spawn(move || ThreadData::handle_connection(listener.unwrap(), thread_data.clone()));
+
         Ok("Server Started".to_string())
     } else {
         Err(format!("Error Starting Server: {}", listener.unwrap_err()))
     }
 }
 
-fn handle_connection(listener: TcpListener) {
-    for stream in listener.incoming() {
+#[tauri::command]
+pub fn stop_server() {
+    if let Some(thread_data) = THREAD_DATA.get() {
+        let mut data = thread_data.lock().unwrap();
+        data.set_stop(true);
+        println!("Setting server stop to true")
+    } else {
+        eprintln!("Failed to stop the server: THREAD_DATA not initialized");
+    }
+}
 
-        match stream {
-            Ok(stream) => {
-                process_request(stream);
+impl ThreadData {
+    fn handle_connection(listener: TcpListener, thread_data: Arc<Mutex<Self>>) {
+        for stream in listener.incoming() {
+            if thread_data.lock().unwrap().get_stop() {
+                println!("Stopping thread");
+                Self::set_stop(&mut *thread_data.lock().unwrap(), false);
+                break;
             }
-            Err(e) => {
-                eprintln!("Failed to handle the connection: {e}");
-                continue;
+            match stream {
+                Ok(stream) => {
+                    process_request(stream);
+                }
+                Err(e) => {
+                    eprintln!("Failed to handle the connection: {e}");
+                    continue;
+                }
             }
         }
-    }   
+    }
+
+    fn setup() -> ThreadData {
+        Self { stop: false }
+    }
+
+    fn get_stop(&self) -> bool {
+        self.stop
+    }
+
+    fn set_stop(&mut self, stop_value: bool) {
+        self.stop = stop_value;
+        println!("{}", self.stop);
+    }
 }
 
 fn process_request(mut stream: TcpStream) {
@@ -44,7 +98,6 @@ fn process_request(mut stream: TcpStream) {
     };
 
     println!("{}", request_line);
-
 
     let mut file = request_line.to_string();
 
@@ -64,13 +117,16 @@ fn process_request(mut stream: TcpStream) {
     file = file.replace("//", "/");
 
     let file_path = get_code_dir() + &file;
-    
+
     // TODO: Add logic to handle a '?' on requested resouces
     let (status_line, contents) = if Path::new(&file_path).exists() {
         ("HTTP/1.1 200 OK", fs::read(file_path).unwrap())
     } else {
         println!("{}/404.html", get_code_dir());
-        ("HTTP/1.1 404 NOT FOUND", fs::read(format!("{}/404.html", get_code_dir())).unwrap())
+        (
+            "HTTP/1.1 404 NOT FOUND",
+            fs::read(format!("{}/404.html", get_code_dir())).unwrap(),
+        )
     };
 
     let length = contents.len();
