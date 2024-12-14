@@ -30,6 +30,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 
@@ -39,6 +40,7 @@
   padding: 0;
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
+  border-bottom: 1px solid #ffffff;
 }
 
 .overlay-button img {
@@ -183,4 +185,20 @@ input {
 .userInput {
   background-color: white;
   color: black;
+}
+
+/* Settings for all the individual overlay buttons because of how the javascript is handling stuff */
+#ssbu,
+#kart,
+#overwatch,
+#rocketLeague,
+#splatoon,
+#valorant,
+#hearthstone,
+#lol,
+#chess,
+#madden,
+#nba2K {
+  transform-origin: bottom;
+  transition-duration: 1000ms;
 }
