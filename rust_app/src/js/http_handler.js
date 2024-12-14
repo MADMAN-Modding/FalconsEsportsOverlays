@@ -5,5 +5,7 @@ async function start_server() {
 }
 
 function stop_server() {
-    invoke('stop_server');
+    invoke('stop_server')
+        .then((message) => console.log(message))
+        .catch((error) => console.log(error));
 }
