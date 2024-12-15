@@ -39,8 +39,12 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: transform 0.2s ease-in-out;
   border-bottom: 1px solid #ffffff;
+}
+
+.overlay-button:hover {
+  transition: background-color 0.75s ease-in-out;
+  background-color: gray;
 }
 
 .overlay-button img {
@@ -188,17 +192,15 @@ input {
 }
 
 /* Settings for all the individual overlay buttons because of how the javascript is handling stuff */
-#ssbu,
+/* #ssbu,
 #kart,
 #overwatch,
 #rocketLeague,
-#splatoon,
-#valorant,
-#hearthstone,
+#splat,
+#val,
+#hearth,
 #lol,
 #chess,
 #madden,
 #nba2K {
-  transform-origin: bottom;
-  transition-duration: 1000ms;
-}
+} */

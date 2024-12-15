@@ -2,7 +2,7 @@
 let currentOverlay = "ssbu";
 
 let keys = ["scoreLeft", "scoreRight", "playerNamesLeft", "playerNamesRight", "teamNameLeft", "teamNameRight", "teamColorLeft", "teamColorRight", "week"];
-let overlays = ["ssbu", "kart", "overwatch", "rocketLeague", "splatoon", "valorant", "hearthstone", "lol", "chess", "madden", "nba2K"]
+let overlays = ["ssbu", "kart", "overwatch", "rocketLeague", "splat", "val", "hearth", "lol", "chess", "madden", "nba2K"]
 
 function switchOverlay(overlay) {
   currentOverlay = overlay;
@@ -83,4 +83,11 @@ async function setupControls() {
   setTimeout(function() {for (let i = 0; i < keys.length; i++) {
     invoke('read_overlay_json', { "key" : keys[i] }).then((value) => document.getElementById(keys[i]).value = Array.from(value).filter(char => char !== "\"").join(''));
   }}, 200);
+
+  // Highlights the active overlay
+  let overlay;
+
+  await invoke('read_overlay_json', { "key" : "overlay" }).then((value) => overlay = Array.from(value).filter(char => char !== "\"").join(''));
+
+  document.getElementById(overlay).style.backgroundColor = "gray";
 }
