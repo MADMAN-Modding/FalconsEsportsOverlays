@@ -1,70 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Overlay Controls</title>
   <link rel="stylesheet" href="../css/controls.css">
+
+  <!-- Bootstrap -->
+  <link href="../css/bootstrap.css" rel="stylesheet">
+  <script src="../js/bootstrap.js"></script>
 </head>
+
 <body>
   <div id="app">
     <div class="overlay-buttons">
-        <!-- Super Smash Bros Ultimate -->
-        <button id="ssbu" class="overlay-button" onclick="switchOverlay('ssbu')">
-          <img src="images/SSBU.png" alt="SSBU" />
-        </button>
-        
-        <!-- Mario Kart -->
-        <button id="kart" class="overlay-button" onclick="switchOverlay('kart')">
-          <img src="images/Kart.png" alt="Mario Kart" />
-        </button>
-        
-        <!-- Overwatch -->
-        <button id="overwatch" class="overlay-button" onclick="switchOverlay('overwatch')">
-          <img src="images/Overwatch.png" alt="Overwatch" />
-        </button>
-        
-        <!-- Rocket League -->
-        <button id="rocketLeague" class="overlay-button" onclick="switchOverlay('rocketLeague')">
-          <img src="images/RL.png" alt="Rocket League" />
-        </button>
-        
-        <!-- Splatoon -->
-        <button id="splat" class="overlay-button" onclick="switchOverlay('splat')">
-          <img src="images/SPLAT.png" alt="Splatoon" />
-        </button>
-        
-        <!-- Valorant -->
-        <button id="val" class="overlay-button" onclick="switchOverlay('val')">
-          <img src="images/VAL.png" alt="Valorant" />
-        </button>
-        
-        <!-- Hearthstone -->
-        <button id="hearth" class="overlay-button" onclick="switchOverlay('hearth')">
-          <img src="images/Hearth.png" alt="Hearthstone" />
-        </button>
-        
-        <!-- League of Legends -->
-        <button id="lol" class="overlay-button" onclick="switchOverlay('lol')">
-          <img src="images/LOL.png" alt="League of Legends" />
-        </button>
-        
-        <!-- Chess -->
-        <button id="chess" class="overlay-button" onclick="switchOverlay('chess')">
-          <img src="images/Chess.png" alt="Chess" />
-        </button>
-        
-        <!-- Madden -->
-        <button id="madden" class="overlay-button" onclick="switchOverlay('madden')">
-          <img src="images/Madden.png" alt="Madden" />
-        </button>
-        
-        <!-- NBA2K -->
-        <button id="nba2K" class="overlay-button" onclick="switchOverlay('nba2K')">
-          <img src="images/NBA2K.png" alt="NBA2K" />
-        </button>
-      </div>
-      
+      <!-- Super Smash Bros Ultimate -->
+      <button id="ssbu" class="overlay-button" onclick="switchOverlay('ssbu')">
+        <img src="images/SSBU.png" alt="SSBU" />
+      </button>
+
+      <!-- Mario Kart -->
+      <button id="kart" class="overlay-button" onclick="switchOverlay('kart')">
+        <img src="images/Kart.png" alt="Mario Kart" />
+      </button>
+
+      <!-- Overwatch -->
+      <button id="overwatch" class="overlay-button" onclick="switchOverlay('overwatch')">
+        <img src="images/Overwatch.png" alt="Overwatch" />
+      </button>
+
+      <!-- Rocket League -->
+      <button id="rocketLeague" class="overlay-button" onclick="switchOverlay('rocketLeague')">
+        <img src="images/RL.png" alt="Rocket League" />
+      </button>
+
+      <!-- Splatoon -->
+      <button id="splat" class="overlay-button" onclick="switchOverlay('splat')">
+        <img src="images/SPLAT.png" alt="Splatoon" />
+      </button>
+
+      <!-- Valorant -->
+      <button id="val" class="overlay-button" onclick="switchOverlay('val')">
+        <img src="images/VAL.png" alt="Valorant" />
+      </button>
+
+      <!-- Hearthstone -->
+      <button id="hearth" class="overlay-button" onclick="switchOverlay('hearth')">
+        <img src="images/Hearth.png" alt="Hearthstone" />
+      </button>
+
+      <!-- League of Legends -->
+      <button id="lol" class="overlay-button" onclick="switchOverlay('lol')">
+        <img src="images/LOL.png" alt="League of Legends" />
+      </button>
+
+      <!-- Chess -->
+      <button id="chess" class="overlay-button" onclick="switchOverlay('chess')">
+        <img src="images/Chess.png" alt="Chess" />
+      </button>
+
+      <!-- Madden -->
+      <button id="madden" class="overlay-button" onclick="switchOverlay('madden')">
+        <img src="images/Madden.png" alt="Madden" />
+      </button>
+
+      <!-- NBA2K -->
+      <button id="nba2K" class="overlay-button" onclick="switchOverlay('nba2K')">
+        <img src="images/NBA2K.png" alt="NBA2K" />
+      </button>
+    </div>
+
     <div class="main-content">
       <!-- Left Team Column -->
       <div class="team-column">
@@ -82,7 +88,7 @@
             <button onclick="updateWins('Left', 5)">5</button>
           </div>
         </div>
-        
+
         <label for="scoreLeft">Score</label>
         <input class="userInput" type="number" id="scoreLeft" value="0">
         <label for="playerNamesLeft">Player Names</label>
@@ -117,7 +123,7 @@
             <button onclick="updateWins('Right', 5)">5</button>
           </div>
         </div>
-        
+
         <label for="scoreRight">Score</label>
         <input class="userInput" type="number" id="scoreRight" value="0">
         <label for="playerNamesRight">Player Names</label>
@@ -130,4 +136,5 @@
     </div>
   </div>
 </body>
+
 </html>
