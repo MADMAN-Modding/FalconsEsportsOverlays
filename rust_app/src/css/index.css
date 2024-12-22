@@ -1,7 +1,6 @@
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 /* Navbar */
@@ -18,7 +17,6 @@ body {
 }
 
 #navbar li {
-  font-family: 'Noto Sans' -apple-system;
   margin-top: 20px;
   margin-bottom: 10px;
   text-decoration: none;
@@ -35,6 +33,6 @@ body {
 #page {
   position: absolute;
   left: 80px;
-  width: 100vw;
+  width: calc(100vw - 80px);
   height: 100vh;
 }
