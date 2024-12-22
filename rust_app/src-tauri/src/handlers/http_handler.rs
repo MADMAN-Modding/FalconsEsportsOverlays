@@ -105,7 +105,7 @@ fn process_request(mut stream: TcpStream) {
     };
 
     // Print what is being requested
-    println!("{}", request_line);
+    // println!("{}", request_line);
 
     let mut file = request_line.to_string();
 
