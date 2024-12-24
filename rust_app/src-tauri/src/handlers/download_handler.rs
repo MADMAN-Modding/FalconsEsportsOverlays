@@ -1,26 +1,41 @@
 use reqwest::blocking::get;
+use std::{
+    error::Error,
+    fs::{self, File},
+    io::{self, copy, BufReader},
+    path::Path,
+};
 use zip::ZipArchive;
-use std::{error::Error, fs::{self, File}, io::{self, copy, BufReader}, path::Path};
 
-use crate::constants::{self, get_config_dir};
+use crate::constants::{self, get_config_dir, get_config_dir_overlay_json_path, get_overlay_json_path};
 use crate::handlers::json_handler::init_json;
+
+use super::json_handler::check_json_exists;
 
 fn download_files() -> Result<[String; 2], Box<dyn Error>> {
     // Download config
     let filename: &str = "overlays.zip";
     let directory: &str = &constants::get_config_dir();
-    let url: &str = "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main";
+    let url: &str =
+        "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main";
 
     // Download stuff
     let path = Path::new(directory).join(filename);
-    
+
     let response = get(url)?;
-    
+
     let mut file = File::create(&path)?;
-    
+
     copy(&mut response.bytes()?.as_ref(), &mut file)?;
-    
+
     let response: [String; 2] = [filename.to_string(), directory.to_string()];
+
+    let overlay_path = get_config_dir_overlay_json_path();
+
+    if check_json_exists(Path::new(&overlay_path)) {
+        println!("Copying");
+        let _ = fs::copy(constants::get_overlay_json_path(), overlay_path).map_err(|err| return err);
+    }
 
     Ok(response)
 }
@@ -29,7 +44,6 @@ fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
     // Opens the file and makes an object of the archive
     let file = File::open(file_path)?;
     let mut archive = ZipArchive::new(BufReader::new(file))?;
-
 
     // For every file or folder in the archive
     for i in 0..archive.len() {
@@ -58,7 +72,10 @@ fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
 }
 
 fn setup_config_dir(config_dir: String) -> Result<(), std::io::Error> {
-    let logo = format!("{}{}", &config_dir, "/FalconsEsportsOverlays-main/images/Esports-Logo.png");
+    let logo = format!(
+        "{}{}",
+        &config_dir, "/FalconsEsportsOverlays-main/images/Esports-Logo.png"
+    );
 
     if let Err(e) = fs::copy(logo, format!("{}{}", &config_dir, "/Esports-Logo.png")) {
         return Err(e);
@@ -66,18 +83,21 @@ fn setup_config_dir(config_dir: String) -> Result<(), std::io::Error> {
 
     init_json(format!("{}/overlay.json", get_config_dir()));
 
-    let overlay_config = format!("{}{}", &config_dir, "/FalconsEsportsOverlays-main/json/overlay.json");
+    let overlay_config = format!(
+        "{}{}",
+        &config_dir, "/FalconsEsportsOverlays-main/json/overlay.json"
+    );
 
     if let Err(e) = fs::copy(format!("{}/overlay.json", get_config_dir()), overlay_config) {
         return Err(e);
     }
-    
+
     Ok(())
 }
 
 #[tauri::command]
 pub fn download_and_extract() {
-    let result:Result<[String; 2], Box<dyn Error>> = download_files();
+    let result: Result<[String; 2], Box<dyn Error>> = download_files();
 
     // Initial variables for storing dir and file
     let dir: String;
@@ -90,8 +110,17 @@ pub fn download_and_extract() {
 
             if let Err(e) = extract_files(&file, &dir) {
                 eprintln!("Extract Error: {}", e);
-            } else if let Err(e) = setup_config_dir(dir) {
-                eprintln!("Setup Error: {}", e);
+
+                match check_json_exists(Path::new(&get_config_dir_overlay_json_path())) {
+                    true => {
+                        let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path()).map_err(|err| return err);
+                    },
+                    false => {
+                        if let Err(e) = setup_config_dir(dir) {
+                            eprintln!("Setup Error: {}", e);
+                        }
+                    }
+                }
             }
         }
 
@@ -101,3 +130,6 @@ pub fn download_and_extract() {
         }
     }
 }
+
+#[tauri::command]
+pub fn reset_overlays() {}

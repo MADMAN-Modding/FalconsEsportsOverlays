@@ -1,5 +1,5 @@
-// Stores how many milliseconds left till the notification hides itself
-let timeLeft = 5000;
+// Stores how many milliseconds until the notification hides itself
+let displayTime = 3000;
 
 async function push_notification(text) {
     let notificationBox = document.getElementById("notification");
@@ -12,6 +12,6 @@ async function push_notification(text) {
     setTimeout(() => {
         notificationText.innerHTML = "";
         notificationBox.style.top = "-80px";
-    }, timeLeft)
+    }, displayTime)
 
 }

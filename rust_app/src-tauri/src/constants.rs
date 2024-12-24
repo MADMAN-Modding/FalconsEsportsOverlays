@@ -32,6 +32,10 @@ pub fn get_overlay_json_path() -> String {
     format!("{}/json/overlay.json", get_code_dir())
 }
 
+pub fn get_config_dir_overlay_json_path() -> String {
+    format!("{}/overlay.json", get_config_dir()).to_owned()
+}
+
 #[tauri::command]
 pub fn get_config_json_path() -> String {
     format!("{}/config.json", get_config_dir())

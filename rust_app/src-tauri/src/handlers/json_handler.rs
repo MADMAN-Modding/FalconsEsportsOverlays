@@ -92,3 +92,8 @@ pub fn write_json(path: String, json_key: String, value: String) {
 
     fs::write(path, serde_json::to_string_pretty(&json_data).expect("Error serializing to JSON")).expect("Error writing file");
 }
+
+pub fn check_json_exists(path: &Path) -> bool {
+    println!("{}: {}", path.display(), path.exists());
+    path.exists()
+}
