@@ -33,6 +33,23 @@ body {
 #page {
   position: absolute;
   left: 80px;
+  top: 0px;
   width: calc(100vw - 80px);
   height: 100vh;
+}
+
+#notification {
+  position: absolute;
+  right: 20px;
+  top: -80px;
+  width: 200px;
+  height: fit-content;
+  background-color: white;
+  border-radius: 20%;
+}
+
+#notificationText {
+  color: black;
+  text-align: center;
+  height: fit-content;
 }

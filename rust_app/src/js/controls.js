@@ -45,6 +45,8 @@ function updateOverlay() {
   for (let i = 0; i < keys.length; i++) {
     write_overlay_json(keys[i], `${values[i]}`);
   }
+
+  push_notification("Overlays Updated");
 }
 
 function swapTeams() {
