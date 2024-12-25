@@ -14,6 +14,8 @@ function switchOverlay(overlay) {
   });
 
   document.getElementById(overlay).style.backgroundColor = "gray";
+
+  push_notification("Overlay Changed");
 }
 
 function updateOverlay() {
