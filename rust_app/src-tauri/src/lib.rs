@@ -20,6 +20,7 @@ pub fn run() {
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(tauri::generate_handler![
             download_handler::download_and_extract,
+            download_handler::reset_overlays,
             json_handler::read_overlay_json,
             json_handler::write_json,
             http_handler::run_server,

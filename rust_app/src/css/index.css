@@ -46,6 +46,7 @@ body {
   height: fit-content;
   background-color: white;
   border-radius: 20%;
+  transition: top 0.3s;
 }
 
 #notificationText {

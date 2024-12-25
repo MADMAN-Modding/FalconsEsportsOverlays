@@ -40,3 +40,7 @@ pub fn get_config_dir_overlay_json_path() -> String {
 pub fn get_config_json_path() -> String {
     format!("{}/config.json", get_config_dir())
 }
+
+pub fn get_config_dir_image_path() -> String{
+    format!("{}/Esports-Logo.png", get_config_dir())
+}

@@ -7,7 +7,10 @@ use std::{
 };
 use zip::ZipArchive;
 
-use crate::constants::{self, get_config_dir, get_config_dir_overlay_json_path, get_overlay_json_path};
+use crate::constants::{
+    self, get_config_dir, get_config_dir_image_path, get_config_dir_overlay_json_path,
+    get_overlay_json_path,
+};
 use crate::handlers::json_handler::init_json;
 
 use super::json_handler::check_json_exists;
@@ -34,7 +37,8 @@ fn download_files() -> Result<[String; 2], Box<dyn Error>> {
 
     if check_json_exists(Path::new(&overlay_path)) {
         println!("Copying");
-        let _ = fs::copy(constants::get_overlay_json_path(), overlay_path).map_err(|err| return err);
+        let _ =
+            fs::copy(constants::get_overlay_json_path(), overlay_path).map_err(|err| return err);
     }
 
     Ok(response)
@@ -109,27 +113,33 @@ pub fn download_and_extract() {
             dir = array[1].to_string();
 
             if let Err(e) = extract_files(&file, &dir) {
-                eprintln!("Extract Error: {}", e);
+                println!("Extract Error: {}", e);
 
-                match check_json_exists(Path::new(&get_config_dir_overlay_json_path())) {
-                    true => {
-                        let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path()).map_err(|err| return err);
-                    },
-                    false => {
-                        if let Err(e) = setup_config_dir(dir) {
-                            eprintln!("Setup Error: {}", e);
-                        }
-                    }
+                // If there is no error, it will check if a overlay.json file exists, if it does, it will copy it to the overlay folder
+                // If it doesn't, it will copy one to the config dir from the overlay directory
+            } else if check_json_exists(Path::new(&get_config_dir_overlay_json_path())) {
+                let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path())
+                    .map_err(|err| return err);
+            } else {
+                if let Err(e) = setup_config_dir(dir) {
+                    println!("Setup Error: {}", e);
                 }
             }
         }
 
         Err(e) => {
-            eprintln!("Download Error: {}", e);
+            println!("Download Error: {}", e);
             return;
         }
     }
 }
 
 #[tauri::command]
-pub fn reset_overlays() {}
+pub fn reset_overlays() {
+    let _ = fs::remove_file(Path::new(&get_config_dir_overlay_json_path()))
+        .map_err(|err| println!("{err}"));
+    let _ =
+        fs::remove_file(Path::new(&get_config_dir_image_path())).map_err(|err| println!("{err}"));
+
+    download_and_extract();
+}
