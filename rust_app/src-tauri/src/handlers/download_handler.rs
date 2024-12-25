@@ -36,7 +36,6 @@ fn download_files() -> Result<[String; 2], Box<dyn Error>> {
     let overlay_path = get_config_dir_overlay_json_path();
 
     if check_json_exists(Path::new(&overlay_path)) {
-        println!("Copying");
         let _ =
             fs::copy(constants::get_overlay_json_path(), overlay_path).map_err(|err| return err);
     }
