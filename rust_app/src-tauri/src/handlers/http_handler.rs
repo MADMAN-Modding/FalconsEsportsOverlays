@@ -1,10 +1,5 @@
 use std::{
-    fs,
-    io::{prelude::*, BufReader},
-    net::{TcpListener, TcpStream},
-    path::Path,
-    sync::{Arc, Mutex},
-    thread::{self},
+    fs, io::{prelude::*, BufReader}, net::{TcpListener, TcpStream}, path::Path, sync::{Arc, Mutex}, thread::{self}
 };
 
 use once_cell::sync::OnceCell;
@@ -53,7 +48,6 @@ pub fn stop_server() -> Result<String, String> {
     if let Some(thread_data) = THREAD_DATA.get() {
         let mut data = thread_data.lock().unwrap();
         data.set_stop(true);
-
         Ok("Server Stopped".to_string())
     } else {
         Err("Failed to stop the server: THREAD_DATA not initialized".to_string())
@@ -63,10 +57,7 @@ pub fn stop_server() -> Result<String, String> {
 // Handles the incoming server traffic to either send it to the request processor or exit this cycle of the loop
 impl ThreadData {
     fn handle_connection(listener: TcpListener, thread_data: Arc<Mutex<Self>>) {
-        listener
-            .set_nonblocking(true)
-            .expect("Failed to set non-blocking mode");
-        loop {
+        for stream in listener.incoming() {
             // If the stop variable is true stop the thread
             if thread_data.lock().unwrap().get_stop() {
                 // Set the stop variable to false so the server can be started again
@@ -75,15 +66,9 @@ impl ThreadData {
             }
 
             // If the incoming traffic is valid then process it, otherwise print an error and continue to the next loop
-            match listener.accept() {
+            match stream {
                 Ok(stream) => {
-                    // Get's the TcpStream instead of the Socket Address using .0
-                    process_request(stream.0);
-                }
-                // If there aren't any current connections it will sleep for 100ms
-                Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {
-                    // No incoming connections, continue looping
-                    continue;
+                    process_request(stream);
                 }
                 Err(e) => {
                     eprintln!("Failed to handle the connection: {e}");
@@ -107,6 +92,7 @@ impl ThreadData {
         self.stop = stop_value;
     }
 }
+
 
 fn process_request(mut stream: TcpStream) {
     let buf_reader = BufReader::new(&stream).lines().next();
