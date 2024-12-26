@@ -3,6 +3,7 @@ use std::{
 };
 
 use once_cell::sync::OnceCell;
+use tokio::stream;
 
 use crate::constants::get_code_dir;
 
@@ -48,6 +49,11 @@ pub fn stop_server() -> Result<String, String> {
     if let Some(thread_data) = THREAD_DATA.get() {
         let mut data = thread_data.lock().unwrap();
         data.set_stop(true);
+
+        // Connects to the server and writes it so that it reads the stop variable
+        let mut stream = TcpStream::connect("127.0.0.1:8080").unwrap();
+        stream.write("SHUTDOWN".as_bytes()).unwrap();
+        
         Ok("Server Stopped".to_string())
     } else {
         Err("Failed to stop the server: THREAD_DATA not initialized".to_string())
