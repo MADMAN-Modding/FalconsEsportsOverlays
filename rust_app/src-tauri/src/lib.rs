@@ -26,6 +26,7 @@ pub fn run() {
             http_handler::run_server,
             http_handler::stop_server,
             constants::get_overlay_json_path,
+            constants::get_code_dir_image_path,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

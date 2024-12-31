@@ -24,4 +24,10 @@ function serverOff() {
 
 function setupServer() {
     document.getElementById("serverImage").src = ("../images/Server" + (server ? "On.png" : "Off.png"));
+
+    // This for some reason fixes an issue with the image not centering
+    document.getElementById("serverImage").style.width = "20px";
+    setTimeout(function() {
+        document.getElementById("serverImage").style.width = "200px";
+    }, 10);
 }

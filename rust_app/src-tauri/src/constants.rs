@@ -1,3 +1,5 @@
+use std::{fs::File, io::Read};
+
 use once_cell::sync::OnceCell;
 use directories::ProjectDirs;
 
@@ -43,4 +45,9 @@ pub fn get_config_json_path() -> String {
 
 pub fn get_config_dir_image_path() -> String{
     format!("{}/Esports-Logo.png", get_config_dir())
+}
+
+pub fn get_code_dir_image_path() -> String {
+    format!("{}/images/Esports-Logo.png", get_code_dir())
+
 }

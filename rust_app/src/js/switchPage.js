@@ -10,6 +10,8 @@ async function switchPage(page) {
         setupControls();
     } else if (page == "server") {
         setupServer();
+    } else if (page == "config") {
+        setupConfig();
     }
 }
 
