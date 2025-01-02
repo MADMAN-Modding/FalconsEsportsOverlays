@@ -47,6 +47,7 @@ pub fn get_config_dir_image_path() -> String{
     format!("{}/Esports-Logo.png", get_config_dir())
 }
 
+#[tauri::command]
 pub fn get_code_dir_image_path() -> String {
     format!("{}/images/Esports-Logo.png", get_code_dir())
 
