@@ -2,22 +2,21 @@
     width: 200px;
 }
 
-.appearance-column .color-picker {
+.appearance-column, .color-picker, .enabled-sports-column {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.appearance-column {
+.appearance-column, .enabled-sports-column {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     gap: 15px;
     background-color: #2c2c2c;
-    padding: 20px;
     border-radius: 10px;
     width: 300px;
     height: 75vh;
+    margin-top: 10vh;
 }
 
 #appColor {
@@ -36,4 +35,12 @@
 .app-logo {
     margin-left: auto;
     margin-right: auto;
+}
+
+.config-row {
+    max-width: calc(100vw - 80px);
+}
+
+#checkBoxes {
+    text-align: center;
 }

@@ -22,11 +22,13 @@ pub fn run() {
             download_handler::download_and_extract,
             download_handler::reset_overlays,
             json_handler::read_overlay_json,
+            json_handler::read_config_json,
             json_handler::write_json,
             http_handler::run_server,
             http_handler::stop_server,
             constants::get_overlay_json_path,
             constants::get_code_dir_image_path,
+            constants::get_config_json_path,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,4 +1,3 @@
-use std::{fs::File, io::Read};
 
 use once_cell::sync::OnceCell;
 use directories::ProjectDirs;

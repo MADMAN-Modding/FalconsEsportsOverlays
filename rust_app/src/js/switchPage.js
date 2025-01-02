@@ -12,6 +12,8 @@ async function switchPage(page) {
         setupServer();
     } else if (page == "config") {
         setupConfig();
+    } else if (page == "main") {
+        setupApp()
     }
 }
 

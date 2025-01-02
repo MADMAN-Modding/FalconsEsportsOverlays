@@ -5,8 +5,15 @@ use serde_json::{json, Value};
 use crate::constants;
 
 #[tauri::command]
-pub fn read_overlay_json(key : &str) -> String {
+pub fn read_overlay_json(key: &str) -> String {
     let json_data: Value = open_json(constants::get_overlay_json_path());
+
+    json_data[key].to_string()
+}
+
+#[tauri::command]
+pub fn read_config_json(key: &str) -> String {
+    let json_data: Value = open_json(constants::get_config_json_path());
 
     json_data[key].to_string()
 }
@@ -24,7 +31,7 @@ fn open_json(path: String) -> Value {
         json_data = init_json(path);
     }
 
-    // Prints the entire JSON, mainly for debugging 
+    // Prints the entire JSON, mainly for debugging
     // println!("{:?}", serde_json::to_string_pretty(&json_data).expect("Error parsing to JSON"));
 
     // Returns the json data
@@ -57,8 +64,8 @@ pub fn init_json(path: String) -> Value {
             "appTheme": "#bf0f35",
             "ssbuChecked": true,
             "kartChecked": true,
-            "owChecked": true,
-            "rlChecked": true,
+            "overwatchChecked": true,
+            "rocketLeagueChecked": true,
             "splatChecked": true,
             "valChecked": true,
             "hearthChecked": true,
@@ -70,10 +77,15 @@ pub fn init_json(path: String) -> Value {
     }
 
     // Creating the JSON file
-    fs::write(&path, serde_json::to_string_pretty(&json_data).expect("Error 
-    serializing to JSON")).expect("Error writing file");
+    fs::write(
+        &path,
+        serde_json::to_string_pretty(&json_data).expect(
+            "Error 
+    serializing to JSON",
+        ),
+    )
+    .expect("Error writing file");
 
-     
     // Trying to open the JSON again
     open_json(path)
 }
@@ -88,9 +100,24 @@ pub fn write_json(path: String, json_key: String, value: String) {
     // Cloning the data because a borrow won't work in this case
     let mut json_data = open_json(path.clone());
 
-    json_data[json_key] = serde_json::Value::String(value);
+    // Writes a bool if the json_key is a checked value which must be a bool
+    if json_key.contains("Checked") {
+        let bool_value = match value.to_lowercase().as_str() {
+            "true" => true,
+            "false" => false,
+            _ => false,
+        };
 
-    fs::write(path, serde_json::to_string_pretty(&json_data).expect("Error serializing to JSON")).expect("Error writing file");
+        json_data[json_key] = serde_json::Value::Bool(bool_value);
+    } else {
+        json_data[json_key] = serde_json::Value::String(value);
+    }
+
+    fs::write(
+        path,
+        serde_json::to_string_pretty(&json_data).expect("Error serializing to JSON"),
+    )
+    .expect("Error writing file");
 }
 
 pub fn check_json_exists(path: &Path) -> bool {
