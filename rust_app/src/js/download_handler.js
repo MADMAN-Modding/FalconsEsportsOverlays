@@ -10,4 +10,6 @@ async function reset_files() {
     push_notification("Resetting Overlays");
 
     await invoke('reset_overlays');
+
+    push_notification("Reset Complete");
 }

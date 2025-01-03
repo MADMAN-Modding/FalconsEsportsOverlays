@@ -8,8 +8,8 @@ use std::{
 use zip::ZipArchive;
 
 use crate::constants::{
-    self, get_config_dir, get_config_dir_image_path, get_config_dir_overlay_json_path,
-    get_overlay_json_path,
+    self, get_code_dir_image_path, get_config_dir, get_config_dir_image_path,
+    get_config_dir_overlay_json_path, get_overlay_json_path,
 };
 use crate::handlers::json_handler::init_json;
 
@@ -40,6 +40,10 @@ fn download_files() -> Result<[String; 2], Box<dyn Error>> {
             fs::copy(constants::get_overlay_json_path(), overlay_path).map_err(|err| return err);
     }
 
+    if Path::new(&get_code_dir_image_path()).exists() {
+        let _ = fs::copy(&get_code_dir_image_path(), get_config_dir_image_path());
+    }
+
     Ok(response)
 }
 
@@ -54,7 +58,7 @@ fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
         let mut file = archive.by_index(i)?;
 
         // Complete path to the folder holding the file or folder
-        let out_path = Path::new(output_dir).join(file.sanitized_name());
+        let out_path = Path::new(output_dir).join(file.enclosed_name().unwrap());
 
         // If the file is a folder make a folder with that path
         if file.is_dir() {
@@ -119,6 +123,8 @@ pub fn download_and_extract() {
             } else if check_json_exists(Path::new(&get_config_dir_overlay_json_path())) {
                 let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path())
                     .map_err(|err| return err);
+
+                let _ = fs::copy(get_config_dir_image_path(), get_code_dir_image_path());
             } else {
                 if let Err(e) = setup_config_dir(dir) {
                     println!("Setup Error: {}", e);

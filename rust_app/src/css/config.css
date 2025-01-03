@@ -44,3 +44,16 @@
 #checkBoxes {
     text-align: center;
 }
+
+#newLogo {
+    text-align: center;
+    max-width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#top-column #bottom-column {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}

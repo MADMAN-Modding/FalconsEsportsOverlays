@@ -461,7 +461,7 @@ tr {
 }
 
 label {
-    display: inline-block
+    /* display: inline-block */
 }
 
 button {
@@ -2967,7 +2967,7 @@ textarea.form-control-lg {
     height: 100%;
     padding: 1rem .75rem;
     overflow: hidden;
-    text-align: start;
+    /* text-align: start; */
     text-overflow: ellipsis;
     white-space: nowrap;
     pointer-events: none;

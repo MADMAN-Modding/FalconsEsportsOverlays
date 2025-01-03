@@ -1,8 +1,7 @@
 use std::{
     error::Error,
     fs::File,
-    io::{BufReader, Read},
-    path::Path,
+    io::{BufReader, Read}
 };
 use tokio::fs;
 

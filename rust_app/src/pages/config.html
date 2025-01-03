@@ -19,11 +19,16 @@
         <!-- Appearance Column -->
         <div class="appearance-column col-3">
             <div class="app-logo">
-                <h2>Appearance</h2>
-                <img id="esportsLogo" class="img-fluid">
-                
-                <label for="newLogo">Set a logo for your team:</label>
-                <input type="file" onchange="updateImage()" id="newLogo" name="newLogo" accept="image/png" />
+                <div id="top-column">
+                    <h2 style="text-align: center;">Appearance</h2>
+                    <center>
+                        <img id="esportsLogo" class="img-fluid">
+                    </center>
+                </div>
+                <div id="bottom-column">
+                    <p style="text-align: center;">Set a logo for your team:</p>
+                    <input type="file" onchange="updateImage()" id="newLogo" name="newLogo" accept="image/png" />
+                </div>
             </div>
             <div id="appColor">
                 <label>App Color</label>

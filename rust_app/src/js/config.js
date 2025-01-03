@@ -65,14 +65,14 @@ function toggleSport() {
 async function updateImage() {
     let file = document.getElementById("newLogo").files[0];
 
-    console.log(file);
-
     let byte_array = new Uint8Array(await readFile(file));
 
-    setImage(byte_array);
-
+ 
     // Copies the selected image to the code dir
     await invoke('copy_image', {"bytes" : byte_array});
+  
+    
+    await setImage();
 }
 
 async function setImage() {
@@ -86,6 +86,7 @@ async function setImage() {
 
     const blob = new Blob([bytes], { type: "image/png" });
     const imageURL = URL.createObjectURL(blob);
+
     document.getElementById("esportsLogo").src = imageURL;
 }
 

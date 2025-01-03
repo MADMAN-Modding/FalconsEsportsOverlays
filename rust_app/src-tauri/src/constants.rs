@@ -1,6 +1,3 @@
-
-use std::{error::Error, fs::File, io::{BufReader, Read}};
-
 use once_cell::sync::OnceCell;
 use directories::ProjectDirs;
 
