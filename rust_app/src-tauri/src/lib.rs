@@ -27,7 +27,7 @@ pub fn run() {
             http_handler::run_server,
             http_handler::stop_server,
             constants::get_overlay_json_path,
-            constants::get_code_dir_image_path,
+            constants::get_tauri_bytes,
             constants::get_config_json_path,
         ])
         .run(tauri::generate_context!())

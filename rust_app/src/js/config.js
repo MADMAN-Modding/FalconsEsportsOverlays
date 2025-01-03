@@ -11,7 +11,17 @@ async function setupConfig() {
         document.getElementById(`${overlay}`).checked = (value === "true");
     })
 
-    // invoke("get_code_dir_image_path").then((value) => document.getElementById("esportsLogo").src = value);
+    let bytes;
+    
+    await invoke("get_tauri_bytes")
+        .then((value) => bytes = value)
+        .catch((error) => {push_notification(error); return;});
+
+    bytes = new Uint8Array(bytes);
+
+    const blob = new Blob([bytes], { type: "image/png" });
+    const imageURL = URL.createObjectURL(blob);
+    document.getElementById("esportsLogo").src = imageURL;
 }
 
 function generateCheckBoxes() {
