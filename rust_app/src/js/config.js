@@ -11,17 +11,7 @@ async function setupConfig() {
         document.getElementById(`${overlay}`).checked = (value === "true");
     })
 
-    let bytes;
-    
-    await invoke("get_tauri_bytes")
-        .then((value) => bytes = value)
-        .catch((error) => {push_notification(error); return;});
-
-    bytes = new Uint8Array(bytes);
-
-    const blob = new Blob([bytes], { type: "image/png" });
-    const imageURL = URL.createObjectURL(blob);
-    document.getElementById("esportsLogo").src = imageURL;
+    setImage();
 }
 
 function generateCheckBoxes() {
@@ -69,5 +59,46 @@ function toggleSport() {
         
             push_notification(`${text} ${nameMap[overlay]}`);
         }
+    });
+}
+
+async function updateImage() {
+    let file = document.getElementById("newLogo").files[0];
+
+    console.log(file);
+
+    let byte_array = new Uint8Array(await readFile(file));
+
+    setImage(byte_array);
+
+    // Copies the selected image to the code dir
+    await invoke('copy_image', {"bytes" : byte_array});
+}
+
+async function setImage() {
+    let bytes;
+    
+    await invoke("get_tauri_bytes")
+        .then((value) => bytes = value)
+        .catch((error) => {push_notification(error); return;});
+
+    bytes = new Uint8Array(bytes);
+
+    const blob = new Blob([bytes], { type: "image/png" });
+    const imageURL = URL.createObjectURL(blob);
+    document.getElementById("esportsLogo").src = imageURL;
+}
+
+function readFile(file) {
+    return new Promise((resolve, reject) => {
+        // Create file reader
+        let reader = new FileReader();
+
+        // Register event listeners
+        reader.addEventListener("loadend", e => resolve(e.target.result));
+        reader.addEventListener("error", reject);
+
+        // Read file
+        reader.readAsArrayBuffer(file);
     });
 }

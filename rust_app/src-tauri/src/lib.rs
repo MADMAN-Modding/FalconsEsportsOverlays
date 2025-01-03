@@ -2,6 +2,7 @@ pub mod handlers {
     pub mod download_handler;
     pub mod json_handler;
     pub mod http_handler;
+    pub mod image_handler;
 }
 
 pub mod constants;
@@ -11,6 +12,7 @@ pub fn run() {
     use handlers::download_handler;
     use handlers::json_handler;
     use handlers::http_handler;
+    use handlers::image_handler;
     use constants;
     
     constants::setup();
@@ -27,8 +29,9 @@ pub fn run() {
             http_handler::run_server,
             http_handler::stop_server,
             constants::get_overlay_json_path,
-            constants::get_tauri_bytes,
             constants::get_config_json_path,
+            image_handler::get_tauri_bytes,
+            image_handler::copy_image,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -20,7 +20,10 @@
         <div class="appearance-column col-3">
             <div class="app-logo">
                 <h2>Appearance</h2>
-                <img id="esportsLogo" class="img-fluid" src="../images/Esports-Logo.png">
+                <img id="esportsLogo" class="img-fluid">
+                
+                <label for="newLogo">Set a logo for your team:</label>
+                <input type="file" onchange="updateImage()" id="newLogo" name="newLogo" accept="image/png" />
             </div>
             <div id="appColor">
                 <label>App Color</label>
