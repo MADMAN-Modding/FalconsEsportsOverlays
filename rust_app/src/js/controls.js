@@ -1,8 +1,14 @@
-// Initialize values
+/** Default value for the overlay */
 let currentOverlay = "ssbu";
 
+/** Array of all the different `JSON` keys */
 let keys = ["scoreLeft", "scoreRight", "playerNamesLeft", "playerNamesRight", "teamNameLeft", "teamNameRight", "teamColorLeft", "teamColorRight", "week"];
 
+/**
+ * Changes which sport's overlay is being displayed
+ * @param {String} overlay 
+ * @returns {void}
+ */
 function switchOverlay(overlay) {
   currentOverlay = overlay;
 
@@ -17,6 +23,10 @@ function switchOverlay(overlay) {
   push_notification("Overlay Changed");
 }
 
+/**
+ * Iterates through the keys 
+ * @returns {void}
+ */
 function updateOverlay() {
   const leftScore = document.getElementById("scoreLeft").value;
   const rightScore = document.getElementById("scoreRight").value;
@@ -28,19 +38,7 @@ function updateOverlay() {
   const rightTeamColor = document.getElementById("teamColorRight").value;
   const week = document.getElementById("week").value;
 
-  console.log("Overlay updated with the following values:");
-  console.log({
-    leftScore,
-    rightScore,
-    playerNamesLeft,
-    playerNamesRight,
-    leftTeamName,
-    rightTeamName,
-    leftTeamColor,
-    rightTeamColor,
-    week
-  });
-
+  /** Array of all the values of the inputs */
   let values = [leftScore, rightScore, playerNamesLeft, playerNamesRight, leftTeamName, rightTeamName, leftTeamColor, rightTeamColor, week];
 
   for (let i = 0; i < keys.length; i++) {
@@ -50,6 +48,10 @@ function updateOverlay() {
   push_notification("Overlays Updated");
 }
 
+/**
+ * Swaps the values of the two sides of the overlay
+ * @returns {void}
+ */
 function swapTeams() {
   // Get current values
   const leftScore = document.getElementById("scoreLeft").value;
@@ -70,42 +72,57 @@ function swapTeams() {
   document.getElementById("teamNameRight").value = leftTeamName;
   document.getElementById("teamColorLeft").value = rightTeamColor;
   document.getElementById("teamColorRight").value = leftTeamColor;
-
-  console.log("Teams swapped!");
 }
 
+/**
+ * Updates the wins for the targeted team
+ * @param {String} team - Left or Right Team
+ * @param {number} wins - Amount of Wins
+ * @returns {void}
+ */
 function updateWins(team, wins) {
-  console.log(`${team} team has ${wins} wins`);
-
   write_overlay_json(`wins${team}`, `${wins}`);
+
+  push_notification("Wins Updated");
 }
 
-
+/**
+ * Calls the `generateImages` function to generate the image html
+ * 
+ * Waits 200 milliseconds to set the values of the input fields
+ * 
+ * Sets the `background-color` of the selected overlay to `gray`
+ * @async
+ * @returns {void}
+ */
 async function setupControls() {
   generateImages();
 
   // Delay to allow the page to load
-  setTimeout(function () {
+  setTimeout(async function () {
     for (let i = 0; i < keys.length; i++) {
-      invoke('read_overlay_json', { "key": keys[i] }).then((value) => document.getElementById(keys[i]).value = Array.from(value).filter(char => char !== "\"").join(''));
+      document.getElementById(keys[i]).value = await read_overlay_json(keys[i]);
     }
   }, 200);
 
+  // Gets the ID of the current overlay
+  let overlay = await read_overlay_json("overlay");
+
   // Highlights the active overlay
-  let overlay;
-
-  await invoke('read_overlay_json', { "key": "overlay" }).then((value) => overlay = Array.from(value).filter(char => char !== "\"").join(''));
-
   document.getElementById(overlay).style.backgroundColor = "gray";
 }
 
+/**
+ * Iterates through all the overlays and makes images based on the current value
+ * 
+ * @var nameMap - This is used for the alt text of the images  
+ * @returns {void}
+ */
 function generateImages() {
   overlays.forEach(async overlay => {
     let overlayButtons = document.getElementById("overlayButtons");
 
     let sportEnabled = await read_config_json(`${overlay}Checked`);
-
-    console.log(sportEnabled);
 
     if (sportEnabled === "true") {
       overlayButtons.innerHTML += `

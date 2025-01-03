@@ -14,19 +14,9 @@ pub async fn copy_image(bytes: Vec<u8>) -> Result<String, String> {
     let write_result = fs::write(get_code_dir_image_path(), bytes).await;
 
     match  write_result {
-        Ok(_) => Ok("Write Succesful".to_string()),
+        Ok(_) => Ok("Write Successful".to_string()),
         Err(err) => Err(format!("Write Error: {}", err))
     }
-
-    // if Path::new(&bytes).exists() {
-    //     let copy_result = fs::copy(bytes, get_code_dir_image_path()).await;
-
-    //     if copy_result.is_err() {
-    //         println!("{}", copy_result.unwrap_err());
-    //     } else {
-    //         println!("{}", copy_result.unwrap());
-    //     }
-    // }
 }
 
 #[tauri::command]
