@@ -182,6 +182,13 @@ fn process_request(mut stream: TcpStream) {
 
     // Format the data and write the header
     let header = format!("{status_line}\r\nContent-Length: {length}\r\n\r\n");
-    stream.write_all(header.as_bytes()).unwrap();
-    stream.write_all(&contents).unwrap();
+    // Ensures the writes are successful
+    let header_write = stream.write_all(header.as_bytes());
+    if header_write.is_ok() {
+        header_write.unwrap();
+    }
+    let content_write = stream.write_all(&contents);
+    if content_write.is_ok() {
+        content_write.unwrap();
+    }
 }
