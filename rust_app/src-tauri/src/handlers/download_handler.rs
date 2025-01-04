@@ -1,3 +1,6 @@
+//! This module downloads and extracts the overlays
+//!
+//! It also copies stuff from the config directory to the code directory
 use reqwest::blocking::get;
 use std::{
     error::Error,
@@ -8,13 +11,20 @@ use std::{
 use zip::ZipArchive;
 
 use crate::constants::{
-    self, get_code_dir_image_path, get_config_dir, get_config_dir_image_path,
-    get_config_dir_overlay_json_path, get_overlay_json_path,
+    self, get_code_dir_image_path, get_config_dir_image_path, get_config_dir_overlay_json_path,
+    get_overlay_json_path,
 };
-use crate::handlers::json_handler::init_json;
 
-use super::json_handler::check_json_exists;
+use super::{config_handler, json_handler::check_json_exists};
 
+/// Downloads the data for the overlays
+///
+/// Used to get the zip file for ```extract_files```
+///
+/// # Returns
+/// `Ok([String; 2]` - Returns the filename and directory the zip file is in
+///
+/// `Box<dyn Error>>` - Returns an error if there's an issue downloading files
 fn download_files() -> Result<[String; 2], Box<dyn Error>> {
     // Download config
     let filename: &str = "overlays.zip";
@@ -47,6 +57,18 @@ fn download_files() -> Result<[String; 2], Box<dyn Error>> {
     Ok(response)
 }
 
+/// Extracts files from a .zip to a directory
+///
+/// # Arguments
+/// * `file_path` - The path to the zip file
+/// * `output_dir` - The path to output the directed contents
+///
+/// # Panics
+/// This function will panic if there is an error writing files or removing files
+///
+/// # Returns
+/// * `Ok(())` - The result of no IO errors
+/// * `Err(std::error::Error)` - The result of an IO error
 fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
     // Opens the file and makes an object of the archive
     let file = File::open(file_path)?;
@@ -78,32 +100,13 @@ fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
     Ok(())
 }
 
-fn setup_config_dir(config_dir: String) -> Result<(), std::io::Error> {
-    let logo = format!(
-        "{}{}",
-        &config_dir, "/FalconsEsportsOverlays-main/images/Esports-Logo.png"
-    );
-
-    if let Err(e) = fs::copy(logo, format!("{}{}", &config_dir, "/Esports-Logo.png")) {
-        return Err(e);
-    }
-
-    init_json(format!("{}/overlay.json", get_config_dir()));
-
-    let overlay_config = format!(
-        "{}{}",
-        &config_dir, "/FalconsEsportsOverlays-main/json/overlay.json"
-    );
-
-    if let Err(e) = fs::copy(format!("{}/overlay.json", get_config_dir()), overlay_config) {
-        return Err(e);
-    }
-
-    Ok(())
-}
-
+/// Downloads a zip containing all of the overlays and extracts it
+///
+/// # Returns
+/// * `Ok(())` - If there are no errors
+/// * `Err(String)` - If a function fails it will return the error from that function
 #[tauri::command]
-pub fn download_and_extract() {
+pub fn download_and_extract() -> Result<(), String> {
     let result: Result<[String; 2], Box<dyn Error>> = download_files();
 
     // Initial variables for storing dir and file
@@ -126,25 +129,17 @@ pub fn download_and_extract() {
 
                 let _ = fs::copy(get_config_dir_image_path(), get_code_dir_image_path());
             } else {
-                if let Err(e) = setup_config_dir(dir) {
+                if let Err(e) = config_handler::setup_config_dir(dir) {
                     println!("Setup Error: {}", e);
                 }
             }
+
+            Ok(())
         }
 
         Err(e) => {
             println!("Download Error: {}", e);
-            return;
+            return Err(e.to_string());
         }
     }
-}
-
-#[tauri::command]
-pub fn reset_overlays() {
-    let _ = fs::remove_file(Path::new(&get_config_dir_overlay_json_path()))
-        .map_err(|err| println!("{err}"));
-    let _ =
-        fs::remove_file(Path::new(&get_config_dir_image_path())).map_err(|err| println!("{err}"));
-
-    download_and_extract();
 }

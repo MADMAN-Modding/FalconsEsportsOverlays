@@ -119,7 +119,7 @@ async function updateImage() {
  * Sets the `esportsLogo` document to the `ObjectURL`
 */
 async function setImage() {
-    let bytes = await invoke("get_tauri_bytes")
+    let bytes = await invoke('get_image_bytes')
         .then((value) => bytes = value)
         .catch((error) => {push_notification(error); return;});
 
