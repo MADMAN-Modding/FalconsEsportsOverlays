@@ -14,7 +14,7 @@ use crate::constants::{
 ///
 /// # Returns
 /// * `Ok(())` - Empty Ok if no IO errors
-/// * `Err(std::io::Error)` - Returns an Error if there's an IO error copying files
+/// * `Err(String)` - Returns an Error if there's an IO error copying files
 ///
 /// # Examples
 /// ```ignore
@@ -22,14 +22,14 @@ use crate::constants::{
 /// let setup_result = setup_config_dir(path);
 /// assert_eq!(setup_result, Ok(()));
 /// ```
-pub fn setup_config_dir(config_dir: String) -> Result<(), std::io::Error> {
+pub fn setup_config_dir(config_dir: String) -> Result<(), String> {
     let logo = format!(
         "{}{}",
         &config_dir, "/FalconsEsportsOverlays-main/images/Esports-Logo.png"
     );
 
     if let Err(e) = fs::copy(logo, format!("{}{}", &config_dir, "/Esports-Logo.png")) {
-        return Err(e);
+        return Err(format!("Setup Error: {}", e));
     }
 
     json_handler::init_json(format!("{}/overlay.json", get_config_dir()));
@@ -40,7 +40,7 @@ pub fn setup_config_dir(config_dir: String) -> Result<(), std::io::Error> {
     );
 
     if let Err(e) = fs::copy(format!("{}/overlay.json", get_config_dir()), overlay_config) {
-        return Err(e);
+        return Err(format!("Copy Error: {}", e));
     }
 
     Ok(())

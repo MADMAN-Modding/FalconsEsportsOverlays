@@ -77,5 +77,5 @@ function setupServer() {
 
     setTimeout(function() {
         document.getElementById("serverImage").style.width = "200px"; // Restore the width after a short delay.
-    }, 10);
+    }, 200);
 }

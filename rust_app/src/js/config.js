@@ -117,9 +117,12 @@ async function updateImage() {
  * Create of an `ObjectURL` of the blob
  * 
  * Sets the `esportsLogo` document to the `ObjectURL`
+ * @async
 */
 async function setImage() {
-    let bytes = await invoke('get_image_bytes')
+    let bytes;
+    
+    bytes = await invoke('get_image_bytes')
         .then((value) => bytes = value)
         .catch((error) => {push_notification(error); return;});
 
