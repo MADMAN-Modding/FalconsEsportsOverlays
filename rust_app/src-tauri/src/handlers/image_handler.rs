@@ -36,8 +36,12 @@ pub async fn copy_image(bytes: Vec<u8>) -> Result<String, String> {
 #[tauri::command]
 pub fn get_image_bytes() -> Result<Vec<u8>, String> {
     let image: Result<File, std::io::Error> =
-        File::open(constants::get_code_dir_image_path()).map_err(|err| return err);
+        File::open(constants::get_code_dir_image_path());
 
+    if image.is_err() {
+        return Err(image.unwrap_err().to_string());
+    }
+    
     let mut reader: BufReader<File> = BufReader::new(image.unwrap());
 
     let mut buffer: Vec<u8> = Vec::new();
