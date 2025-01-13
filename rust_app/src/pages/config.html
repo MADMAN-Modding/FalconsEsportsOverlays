@@ -15,7 +15,7 @@
 
 <body>
     <div class="row config-row">
-        <div class="col-3"></div>
+        <div class="col"></div>
         <!-- Appearance Column -->
         <div class="appearance-column col-3">
             <div class="app-logo">
@@ -35,16 +35,22 @@
                 <input class="color" type="color" onchange="getColor()" id="appColorInput" value="#bf0f35">
             </div>
         </div>
-        <div class="col-3">
-            <!-- Enabled Sports Column -->
-            <div class="enabled-sports-column col-3">
-                <div id="checkBoxes">
-                    <h2>Enabled Sports</h2>
-                </div>
+        <!-- Enabled Sports Column -->
+        <div class="col"></div>
+        <div class="enabled-sports-column col-3">
+            <div id="checkBoxes">
+                <h2>Enabled Sports</h2>
             </div>
         </div>
-        <div class="col-3"></div>
+        <div class="col"></div>
+        <div class="config-column col-3">
+            <h2>Other Settings</h2>
+            <p><input type="checkbox" id="autoUpdate" name="autoUpdate" onclick="autoUpdate()">
+            <label for="autoUpdate">Auto Update</label><br>
+            </p>
+        </div>
+        <div class="col"></div>
     </div>
 </body>
-
+                 
 </html>

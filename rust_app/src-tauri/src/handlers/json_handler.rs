@@ -101,7 +101,8 @@ pub fn init_json(path: String) -> Value {
             "lolChecked": true,
             "chessChecked": true,
             "maddenChecked": true,
-            "nba2KChecked": true
+            "nba2KChecked": true,
+            "autoUpdate": true
         })
     }
 
@@ -136,7 +137,7 @@ pub fn write_json(path: String, json_key: String, value: String) {
     let mut json_data = open_json(path.clone());
 
     // Writes a bool if the json_key is a checked value which must be a bool
-    if json_key.contains("Checked") {
+    if json_key.contains("Checked") || json_key.contains("autoUpdate") {
         let bool_value = match value.to_lowercase().as_str() {
             "true" => true,
             "false" => false,

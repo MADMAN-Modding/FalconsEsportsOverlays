@@ -16,6 +16,8 @@ async function setupConfig() {
         document.getElementById(`${overlay}`).checked = (value === "true");
     })
 
+    document.getElementById("autoUpdate").checked = (await read_config_json("autoUpdate") === "true");
+
     setImage();
 }
 
@@ -152,3 +154,13 @@ function readFile(file) {
         reader.readAsArrayBuffer(file);
     });
 }
+
+/**
+ * Sets the auto update value in the config
+ * @returns {void}
+ */
+function autoUpdate() {
+    write_config_json("autoUpdate", document.getElementById("autoUpdate").checked.toString());
+
+    push_notification("Auto Update " + (document.getElementById("autoUpdate").checked ? "Enabled" : "Disabled"));
+} 
