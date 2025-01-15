@@ -4,6 +4,7 @@ pub mod handlers {
     pub mod json_handler;
     pub mod http_handler;
     pub mod image_handler;
+    pub mod custom_config;
 }
 
 pub mod constants;

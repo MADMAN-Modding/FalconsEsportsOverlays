@@ -58,3 +58,7 @@ pub fn get_config_dir_image_path() -> String {
 pub fn get_code_dir_image_path() -> String {
     format!("{}/images/Esports-Logo.png", get_code_dir())
 }
+
+pub fn get_custom_config_path() -> String {
+    format!("{}/custom_config.json", get_config_dir())
+}

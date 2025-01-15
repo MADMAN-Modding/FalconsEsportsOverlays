@@ -14,9 +14,7 @@ use crate::constants;
 /// * `String` - The data at the desired key 
 #[tauri::command]
 pub fn read_overlay_json(key: &str) -> String {
-    let json_data: Value = open_json(constants::get_overlay_json_path());
-
-    json_data[key].to_string()
+    read_json(key, constants::get_overlay_json_path())
 }
 
 /// Reads the config json and returns the value of the requested key
@@ -28,8 +26,33 @@ pub fn read_overlay_json(key: &str) -> String {
 /// * `String` - The data at the desired key 
 #[tauri::command]
 pub fn read_config_json(key: &str) -> String {
-    let json_data: Value = open_json(constants::get_config_json_path());
-    
+    read_json(key, constants::get_config_json_path())
+}
+
+/// Reads the config json and returns the value of the requested key
+/// 
+/// # Arguments
+/// * `key: &str` - The key to be read from the json file
+/// 
+/// # Returns
+/// * `String` - The data at the desired key 
+#[tauri::command]
+pub fn read_custom_json(key: &str) -> String {
+    read_json(key, constants::get_custom_config_path())
+}
+
+/// Reads the json at the supplied path and returns the value of the requested key
+/// 
+/// # Arguments
+/// * 'key: &str' - The key to be read from the json file
+/// * 'path': String' - The path to the json file
+/// 
+/// #Returns
+/// * 'String' - The data at the desired key
+#[tauri::command]
+pub fn read_json(key: &str, path: String) -> String {
+    let json_data: Value = open_json(path);
+
     json_data[key].to_string()
 }
 
@@ -91,6 +114,7 @@ pub fn init_json(path: String) -> Value {
     } else {
         json_data = json!({
             "appTheme": "#bf0f35",
+            "columnColor": "#ffffff",
             "ssbuChecked": true,
             "kartChecked": true,
             "overwatchChecked": true,

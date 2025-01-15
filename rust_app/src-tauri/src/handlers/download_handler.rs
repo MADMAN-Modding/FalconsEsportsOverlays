@@ -25,12 +25,15 @@ use super::{config_handler, json_handler::check_json_exists};
 /// `Ok([String; 2]` - Returns the filename and directory the zip file is in
 ///
 /// `Box<dyn Error>>` - Returns an error if there's an issue downloading files
-fn download_files() -> Result<[String; 2], Box<dyn Error>> {
+pub fn download_files(url: &str, file_save_name: Option<&str>) -> Result<[String; 2], Box<dyn Error>> {
     // Download config
-    let filename: &str = "overlays.zip";
+    let filename = match file_save_name {
+        Some(url) => url,
+        None => "overlays.zip"
+    };
+
+
     let directory: &str = &constants::get_config_dir();
-    let url: &str =
-        "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main";
 
     // Download stuff
     let path = Path::new(directory).join(filename);
@@ -107,7 +110,7 @@ fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
 /// * `Err(String)` - If a function fails it will return the error from that function
 #[tauri::command]
 pub fn download_and_extract() -> Result<(), String> {
-    let result: Result<[String; 2], Box<dyn Error>> = download_files();
+    let result: Result<[String; 2], Box<dyn Error>> = download_files("https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main", None);
 
     // Initial variables for storing dir and file
     let dir: String;
