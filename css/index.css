@@ -4,7 +4,8 @@
 }
 
 html {
-    margin: auto;
+    width: 1920px;
+    height: 1080px;
 }
 
 body {
@@ -12,6 +13,8 @@ body {
     overflow: hidden;
     color: white;
     margin: auto;
+    width: 1920px;
+    height: 1080px;
 }
 
 #logo {
