@@ -15,7 +15,7 @@ use crate::constants::{
     get_overlay_json_path,
 };
 
-use super::{config_handler, json_handler::check_json_exists};
+use super::{config_handler, json_handler::{check_json_exists, read_config_json}};
 
 /// Downloads the data for the overlays
 ///
@@ -130,7 +130,7 @@ pub fn download_and_extract() -> Result<(), String> {
                 let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path())
                     .map_err(|err| return err);
 
-                let _ = fs::copy(get_config_dir_image_path(), get_code_dir_image_path());
+                let _ = download_files(&read_config_json("imageURL"), Some("Esports-Logo.png")).map_err(|err| return format!("Error Downloading Files: {}", err));
             } else {
                 if let Err(e) = config_handler::setup_config_dir(dir) {
                     println!("Setup Error: {}", e);

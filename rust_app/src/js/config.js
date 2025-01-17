@@ -30,6 +30,10 @@ async function setupConfig() {
 function generateCheckBoxes() {
     let checkBoxes = document.getElementById("checkBoxes");
 
+    // Empties the checkboxes
+    checkBoxes.innerHTML = "";
+
+    // Makes the checkboxes
     overlays.forEach(overlay => {
         checkBoxes.innerHTML += `<input type="checkbox" onchange="toggleSport()" id="${overlay}" name="${overlay}"><label for="${overlay}">${nameMap[overlay]}</label><br>`
     });
@@ -60,7 +64,7 @@ async function setColor(color, setup) {
 
     // If this isn't the setup it will write the new value to the config and then notify the user
     if (!setup) {
-        await write_config_json("appTheme", color);
+        write_config_json("appTheme", color);
 
         push_notification(`Color Updated to ${color}`)
     }
@@ -100,7 +104,6 @@ async function updateImage() {
     let file = document.getElementById("newLogo").files[0];
 
     let byte_array = new Uint8Array(await readFile(file));
-
  
     // Copies the selected image to the code dir
     await invoke('copy_image', {"bytes" : byte_array});
@@ -164,3 +167,24 @@ function autoUpdate() {
 
     push_notification("Auto Update " + (document.getElementById("autoUpdate").checked ? "Enabled" : "Disabled"));
 } 
+
+/**
+ * Resets the config to defaults and applies the changes to the app
+ * @returns {void}
+ * @async
+ */
+async function reset_config() {
+    // Calls the reset_config function
+    await invoke('reset_config');
+
+    // Resets the page to the new values
+    switchPage("config")
+
+    // Set page color
+    setColor(await read_config_json("appTheme"), false);
+
+    // Notifies the user the reset completed
+    push_notification("Config Reset");
+}
+
+write

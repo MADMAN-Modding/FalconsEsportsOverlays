@@ -112,22 +112,7 @@ pub fn init_json(path: String) -> Value {
             "playerNamesRight": "Check out my Github"
         });
     } else {
-        json_data = json!({
-            "appTheme": "#bf0f35",
-            "columnColor": "#ffffff",
-            "ssbuChecked": true,
-            "kartChecked": true,
-            "overwatchChecked": true,
-            "rocketLeagueChecked": true,
-            "splatChecked": true,
-            "valChecked": true,
-            "hearthChecked": true,
-            "lolChecked": true,
-            "chessChecked": true,
-            "maddenChecked": true,
-            "nba2KChecked": true,
-            "autoUpdate": true
-        })
+        json_data = get_default_json_data();
     }
 
     // Creating the JSON file
@@ -156,7 +141,7 @@ pub fn init_json(path: String) -> Value {
 /// write_json("random_path/overlay.json", "overlay", "kart");
 /// ```
 #[tauri::command]
-pub fn write_json(path: String, json_key: String, value: String) {
+pub fn write_json(path: String, json_key: String, mut value: String) {
     // Cloning the data because a borrow won't work in this case
     let mut json_data = open_json(path.clone());
 
@@ -170,6 +155,8 @@ pub fn write_json(path: String, json_key: String, value: String) {
 
         json_data[json_key] = serde_json::Value::Bool(bool_value);
     } else {
+        value = value.replace("\"", "");
+
         json_data[json_key] = serde_json::Value::String(value);
     }
 
@@ -180,10 +167,45 @@ pub fn write_json(path: String, json_key: String, value: String) {
     .expect("Error writing file");
 }
 
+pub fn write_config(json_key: String, value: String) {
+    write_json(constants::get_config_json_path(), json_key, value);
+}
+
 /// Literally just is a compact version of checking if path exists which probably is worse than just making Path objects but whatever
 /// 
 /// # Arguments
 /// * `path: &Path` - Path object for the JSON file
 pub fn check_json_exists(path: &Path) -> bool {
     path.exists()
+}
+
+/// Resets the config
+#[tauri::command]
+pub fn reset_config() {
+    let default_json = get_default_json_data();
+    for key in default_json.as_object().unwrap() {
+        let value: String = key.1.to_string(); 
+        write_config(key.0.to_owned(), value);
+    }
+}
+
+pub fn get_default_json_data() -> serde_json::Value {
+    json!({
+        "appTheme": "#bf0f35",
+        "columnColor": "#ffffff",
+        "defaultURL" : "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main",
+        "imageURL" : "https://github.com/MADMAN-Modding/FalconsEsportsOverlays/blob/main/images/Esports-Logo.png",
+        "ssbuChecked": true,
+        "kartChecked": true,
+        "overwatchChecked": true,
+        "rocketLeagueChecked": true,
+        "splatChecked": true,
+        "valChecked": true,
+        "hearthChecked": true,
+        "lolChecked": true,
+        "chessChecked": true,
+        "maddenChecked": true,
+        "nba2KChecked": true,
+        "autoUpdate": true
+    })
 }

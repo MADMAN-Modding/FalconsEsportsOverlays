@@ -29,6 +29,7 @@ pub fn run() {
             json_handler::read_overlay_json,
             json_handler::read_config_json,
             json_handler::write_json,
+            json_handler::reset_config,
             http_handler::run_server,
             http_handler::stop_server,
             constants::get_overlay_json_path,
