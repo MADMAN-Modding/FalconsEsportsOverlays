@@ -13,13 +13,13 @@ setInterval(function () {
 
       // Update the left side rounds won
       for (let i = 1; i <= 2; i++) {
-        document.getElementById(`leftRoundsWon${i}`).style.backgroundColor =
+        document.getElementById(`leftRoundsWon${i}`).style.fill =
           winsLeft >= i ? "white" : "black";
       }
 
       // Update the right side rounds won
       for (let i = 1; i <= 2; i++) {
-        document.getElementById(`rightRoundsWon${i}`).style.backgroundColor =
+        document.getElementById(`rightRoundsWon${i}`).style.fill =
           winsRight >= i ? "white" : "black";
       }
 
@@ -36,30 +36,20 @@ setInterval(function () {
       document.getElementById("scoreLeft").innerHTML = jsonData["scoreLeft"];
       document.getElementById("scoreRight").innerHTML = jsonData["scoreRight"];
 
-      document.getElementById("week").style.left =
-        +document.getElementById("week").innerHTML > 9 ? "1863px" : "1877px";
+      if (+document.getElementById("week").innerHTML > 9) {
+        document.getElementById("week").style.left = "1862px";
+        document.getElementById("week").style.top = "984px"
+        document.getElementById("week").style.fontSize = "40px";
+      } else {
+        document.getElementById("week").style.left = "1870px";
+      document.getElementById("week").style.top = "970px";
+      document.getElementById("week").style.fontSize = "48px";
+      }
+
 
       // Sets all the home team respective colors
-      let teamColorLeft = jsonData["teamColorLeft"];
-
-      changeBackgroundColor("topLeftWingRightTrapezoid", teamColorLeft);
-      changeBackgroundColor("topLeftWingLeftRectangle", teamColorLeft);
-      changeBackgroundColor("leftRoundsWon", teamColorLeft);
-      changeBackgroundColor("homeScore", teamColorLeft);
-      changeBackgroundColor("topNamesLeftTrapezoid", teamColorLeft);
-      changeBackgroundColor("topNamesRightRectangle", teamColorLeft);
-      changeBackgroundColor("bottomNamesLeftRectangle", teamColorLeft);
-      changeBackgroundColor("bottomNamesRightTrapezoid", teamColorLeft);
-      changeBackgroundColor("weekBackTrapezoidTop", teamColorLeft);
-      changeBackgroundColor("weekBackRectangleBottom", teamColorLeft);
-
-      // Set the away team respective colors
-      let teamColorRight = jsonData["teamColorRight"];
-
-      changeBackgroundColor("rightRoundsWon", teamColorRight);
-      changeBackgroundColor("topRightWingLeftTrapezoid", teamColorRight);
-      changeBackgroundColor("topRightWingRightRectangle", teamColorRight);
-      changeBackgroundColor("awayScore", teamColorRight);
+      document.documentElement.style.setProperty('--homeTheme', jsonData["teamColorLeft"]);
+      document.documentElement.style.setProperty('--awayTheme', jsonData["teamColorRight"]);
 
       if (jsonData["playerNamesLeft"].length >= 24) {
         document.getElementById("playerNamesLeft").style.top = "503px";
@@ -76,7 +66,3 @@ setInterval(function () {
 
   i = Math.floor(Math.random() * 1000000);
 }, 2000);
-
-function changeBackgroundColor(id, color) {
-  document.getElementById(id).style.backgroundColor = color;
-}

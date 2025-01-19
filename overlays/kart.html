@@ -8,17 +8,47 @@
 </head>
 
 <body id="body">
-    <!-- Top Left Info -->
-    <div id="topLeftWingRightTrapezoid"></div>
-    <div id="topLeftWingLeftRectangle"></div>
-    <div id="middleLeftWingRightTrapezoid"></div>
-    <div id="middleLeftWingLeftRectangle"></div>
-
-    <!-- Top Right Info -->
-    <div id="topRightWingLeftTrapezoid"></div>
-    <div id="topRightWingRightRectangle"></div>
-    <div id="middleRightWingLeftTrapezoid"></div>
-    <div id="middleRightWingRightRectangle"></div>
+    <?xml version="1.0" encoding="UTF-8"?>
+    <svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920.25 1081.43">
+      <defs>
+      </defs>
+      <g id="Week_Info" data-name="Week Info">
+        <polygon class="homeTheme" data-name="Red Strip, cls-10" points="1887.8 683.16 1863.03 707.93 1863.03 1081.43 1920.07 1081.43 1920.07 683.16 1887.8 683.16"/>
+        <polygon id="Trapezoid" points="1905.63 1052.43 1877.52 1052.43 1864.07 1052.43 1877.52 1065.88 1905.63 1065.88 1919.07 1052.43 1905.63 1052.43"/>
+      </g>
+      <g id="Home_Score" data-name="Home Score">
+        <polygon class="homeTheme" data-name="Trapezoid, homeTheme" points="323.09 443.05 145.39 443.05 60.4 443.05 145.39 486.43 323.09 486.43 408.07 443.05 323.09 443.05"/>
+      </g>
+      <g id="Away_Score" data-name="Away Score">
+        <polygon class="awayTheme" data-name="Trapezoid, cls-4" points="1752.7 443.04 1575.01 443.04 1490.02 443.04 1575.01 486.42 1752.7 486.42 1837.69 443.04 1752.7 443.04"/>
+      </g>
+      <g id="Names">
+        <polygon class="homeTheme" points="550.07 509.03 550.07 531.65 572.2 546.22 840.54 546.22 840.54 509.03 550.07 509.03"/>
+        <polyline class="homeTheme" points="1388.31 573.03 1388.31 550.41 1366.18 535.84 1097.84 535.84 1097.84 573.03"/>
+      </g>
+      <g id="Score">
+        <polygon class="homeTheme" points="550.07 38.43 524 38.43 524 133.43 550.5 159.93 550.07 38.43"/>
+        <polygon id="leftRoundsWon2" points="528.07 107.43 546.07 125.43 546.07 113.43 528.05 95.41 528.07 107.43"/>
+        <polygon id="leftRoundsWon1" points="528.82 69.25 546.82 87.25 546.82 75.25 528.79 57.23 528.82 69.25"/>
+        <polygon class="homeTheme" points="1388.81 38.46 1414.89 38.46 1414.89 133.46 1388.39 159.96 1388.81 38.46"/>
+        <polygon id="rightRoundsWon2" points="1410.81 107.46 1392.81 125.46 1392.81 113.46 1410.84 95.44 1410.81 107.46"/>
+        <polygon id="rightRoundsWon1" points="1411.07 69.28 1393.07 87.28 1393.07 75.28 1411.09 57.26 1411.07 69.28"/>
+      </g>
+      <g id="Team_Info" data-name="Team Info">
+        <g id="Home_Right_" data-name="Home (Right)">
+          <polygon class="homeTheme" points="361.07 1.43 361.07 28.43 346.04 43.47 0 43.47 0 1.43 361.07 1.43"/>
+          <polygon class="offTheme" points="0 43.47 0 74.66 286.91 74.66 299.07 62.29 299.07 43.47 0 43.47"/>
+        </g>
+        <g id="Away_Left_" data-name="Away (Left)">
+          <polygon class="awayTheme" points="1559.18 0 1559.18 27 1574.22 42.04 1920.25 42.04 1920.25 0 1559.18 0"/>
+          <polygon class="offTheme" points="1920.25 42.04 1920.25 73.22 1633.35 73.22 1621.18 60.86 1621.18 42.04 1920.25 42.04"/>
+        </g>
+      </g>
+    </svg>
+    <div></div>
+    
+    <!-- School Logo -->
+    <img src="../images/Esports-Logo.png" id="schoolLogo">
 
     <!-- Home/Away Text -->
     <h1 id="homeText">Home</h1>
@@ -33,30 +63,7 @@
     <h1 id="homeScoreText">Score</h1>
 
     <!-- Week -->
-    <div id="weekBackTrapezoidTop"></div>
-    <div id="weekBackRectangleBottom"></div>
-    <div id="weekNumberTrapezoid"></div>
     <div id="weekText">Week</div>
-
-    <!--Top Names -->
-    <div id="topNamesLeftTrapezoid"></div>
-    <div id="topNamesRightRectangle"></div>
-
-    <!-- Bottom Names -->
-    <div id="bottomNamesRightTrapezoid"></div>
-    <div id="bottomNamesLeftRectangle"></div>
-
-    <!-- Rounds Won 1 is top 2 is bottom-->
-    <div id="leftRoundsWon"></div>
-    <div id="leftRoundsWon1"></div>
-    <div id="leftRoundsWon2"></div>
-
-    <div id="rightRoundsWon"></div>
-    <div id="rightRoundsWon1"></div>
-    <div id="rightRoundsWon2"></div>
-    
-    <!-- School Logo -->
-    <img src="../images/Esports-Logo.png" id="schoolLogo">
 
     <script src="../js/overlays.js"></script>
     <script src="../js/kart.js?v=1"></script>
