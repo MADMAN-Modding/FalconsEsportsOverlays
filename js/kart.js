@@ -36,8 +36,16 @@ setInterval(function () {
       document.getElementById("scoreLeft").innerHTML = jsonData["scoreLeft"];
       document.getElementById("scoreRight").innerHTML = jsonData["scoreRight"];
 
-      document.getElementById("week").style.left =
-        +document.getElementById("week").innerHTML > 9 ? "1863px" : "1877px";
+      if (+document.getElementById("week").innerHTML > 9) {
+        document.getElementById("week").style.left = "1862px";
+        document.getElementById("week").style.top = "984px"
+        document.getElementById("week").style.fontSize = "40px";
+      } else {
+        document.getElementById("week").style.left = "1870px";
+      document.getElementById("week").style.top = "970px";
+      document.getElementById("week").style.fontSize = "48px";
+      }
+
 
       // Sets all the home team respective colors
       document.documentElement.style.setProperty('--homeTheme', jsonData["teamColorLeft"]);

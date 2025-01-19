@@ -15,6 +15,63 @@
     fill: #9c9c9c;
 }
 
+/* Home/Away Text */
+#homeText {
+    position: absolute;
+    left: 10px;
+    top: 18px;
+    width: 287px;
+    height: 31px;
+    text-align: left;
+    font-size: 30px;
+}
+
+#awayText {
+    position: absolute;
+    left: 1790px;
+    top: 15px;
+    width: 287px;
+    height: 31px;
+    font-size: 30px;
+}
+
+#awayScoreText {
+    position: absolute;
+    left: 1574px;
+    top: 424px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
+}
+
+#scoreRight {
+    position: absolute;
+    left: 1572px;
+    top: 384px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
+}
+
+#homeScoreText {
+    position: absolute;
+    left: 145px;
+    top: 424px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
+}
+
+#scoreLeft {
+    position: absolute;
+    left: 145px;
+    top: 384px;
+    width: 177px;
+    height: 43px;
+    text-align: center;
+}
+
+
 /* Team Positions */
 #teamNameLeft {
     position: absolute;
@@ -34,11 +91,29 @@
     text-align: right;
 }
 
+#weekText {
+    position: absolute;
+    left: 1862px;
+    top: 706px;
+    font-size: 46px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 2px 2px 2px black;
+    text-align: center;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    font-family: ethnocentric;
+}
+
+#week {
+    position: absolute;
+    left: 1877px;
+}
+
 /* Rounds Won */
 #leftRoundsWon {
     position: absolute;
     top: 37px;
-    left: 524px;
+    left: 530px;
     width: 26px;
     height: 121px;
     background-color: rgb(190, 15, 52);
