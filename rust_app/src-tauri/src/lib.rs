@@ -16,6 +16,7 @@ pub fn run() {
     use handlers::json_handler;
     use handlers::http_handler;
     use handlers::image_handler;
+    use handlers::custom_config;
     use constants;
     
     constants::setup();
@@ -36,6 +37,7 @@ pub fn run() {
             constants::get_config_json_path,
             image_handler::get_image_bytes,
             image_handler::copy_image,
+            custom_config::setup_custom_config,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

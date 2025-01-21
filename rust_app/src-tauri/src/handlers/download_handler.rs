@@ -146,3 +146,16 @@ pub fn download_and_extract() -> Result<(), String> {
         }
     }
 }
+
+
+fn download_logo() -> Result<String, String> {
+    let image_location = read_config_json("imageURL");
+
+    let download_result = download_files(&image_location, Some("Esports-Logo.png"));
+
+    if download_result.is_err() {
+        return Err(download_result.unwrap_err().to_string());
+    }
+
+    Ok("Custom Config Successfully Applied".to_string())
+}

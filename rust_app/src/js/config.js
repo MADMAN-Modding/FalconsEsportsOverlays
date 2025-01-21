@@ -187,4 +187,14 @@ async function reset_config() {
     push_notification("Config Reset");
 }
 
-write
+async function makeCustomConfig() { 
+    let file = document.getElementById("customConfig").files[0];
+
+    let byte_array = new Uint8Array(await readFile(file));
+ 
+    // Copies the selected image to the code dir
+    await invoke('setup_custom_config', {"configFile" : byte_array});
+  
+    
+    push_notification("Custom Config Applied");
+}
