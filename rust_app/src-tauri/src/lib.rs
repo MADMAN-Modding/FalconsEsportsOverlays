@@ -21,6 +21,7 @@ pub fn run() {
     
     constants::setup();
     http_handler::setup();
+    custom_config::search_overlay();
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())

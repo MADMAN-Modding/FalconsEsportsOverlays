@@ -167,8 +167,8 @@ pub fn write_json(path: String, json_key: String, mut value: String) {
     .expect("Error writing file");
 }
 
-pub fn write_config(json_key: String, value: String) {
-    write_json(constants::get_config_json_path(), json_key, value);
+pub fn write_config(json_key: String, value: &str) {
+    write_json(constants::get_config_json_path(), json_key, value.to_string());
 }
 
 /// Resets the config
@@ -176,8 +176,10 @@ pub fn write_config(json_key: String, value: String) {
 pub fn reset_config() {
     let default_json = get_default_json_data();
     for key in default_json.as_object().unwrap() {
-        let value: String = key.1.to_string(); 
-        write_config(key.0.to_owned(), value);
+        // If the key is a string, it will write the key and value to the config file
+        let value = key.1.to_string().replace("\"", "");
+
+        write_config(key.0.to_owned(), value.as_str());
     }
 }
 
@@ -187,6 +189,7 @@ pub fn get_default_json_data() -> serde_json::Value {
         "columnColor": "#ffffff",
         "overlayURL" : "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main",
         "imageURL" : "https://github.com/MADMAN-Modding/FalconsEsportsOverlays/blob/main/images/Esports-Logo.png",
+        "overlay_dir": "FalconsEsportsOverlays-main",
         "ssbuChecked": true,
         "kartChecked": true,
         "overwatchChecked": true,
@@ -198,6 +201,6 @@ pub fn get_default_json_data() -> serde_json::Value {
         "chessChecked": true,
         "maddenChecked": true,
         "nba2KChecked": true,
-        "autoUpdate": true
+        "autoUpdate": false
     })
 }

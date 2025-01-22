@@ -32,7 +32,7 @@ async function write_overlay_json(key, value) {
  * @async
  */
 async function readConfigJSON(key) {
-    let value = await invoke('read_config_json', { "key" : key }).then((value) => overlay = Array.from(value).filter(char => char !== "\"").join(''));
+    let value = await invoke('read_config_json', { "key" : key });
 
     return value;
 }

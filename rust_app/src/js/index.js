@@ -27,11 +27,11 @@ let firstRun = true;
  */
 async function setupApp() {
     if (firstRun) {
+        setTimeout(async () => {
         if (await readConfigJSON("autoUpdate") === "true") {
-            setTimeout(() => {
                 download_files("Update");
-            }, 2500);
-        }
+            }
+        }, 10000);
 
         setAppColor(await readConfigJSON('appColor'), true);
         setColumnColor(await readConfigJSON('columnColor'), true);

@@ -1,6 +1,8 @@
 use directories::ProjectDirs;
 use once_cell::sync::OnceCell;
 
+use crate::handlers::json_handler::read_config_json;
+
 static PROJ_DIRS: OnceCell<ProjectDirs> = OnceCell::new();
 
 pub fn setup() {
@@ -34,7 +36,7 @@ pub fn get_config_dir() -> String {
 }
 
 pub fn get_code_dir() -> String {
-    format!("{}/FalconsEsportsOverlays-main", get_config_dir())
+    format!("{}/{}", get_config_dir(), read_config_json("overlay_dir"))
 }
 
 #[tauri::command]

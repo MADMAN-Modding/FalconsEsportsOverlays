@@ -2,9 +2,9 @@
 
 use std::{fs, path::Path};
 
-use super::{download_handler::download_and_extract, json_handler};
+use super::{download_handler::{download_and_extract, download_logo}, json_handler};
 use crate::constants::{
-    get_config_dir, get_config_dir_image_path, get_config_dir_overlay_json_path,
+    get_code_dir, get_code_dir_image_path, get_config_dir, get_config_dir_image_path, get_config_dir_overlay_json_path, get_overlay_json_path
 };
 
 /// Copies the necessary files to `config_dir` from the `code_dir`
@@ -25,18 +25,24 @@ use crate::constants::{
 pub fn setup_config_dir(config_dir: String) -> Result<(), String> {
     let logo = format!(
         "{}{}",
-        &config_dir, "/FalconsEsportsOverlays-main/images/Esports-Logo.png"
+        &config_dir, get_code_dir_image_path()
     );
 
-    if let Err(e) = fs::copy(logo, format!("{}{}", &config_dir, "/Esports-Logo.png")) {
-        return Err(format!("Setup Error: {}", e));
+    match download_logo() {
+        Ok(_) => {       
+            if let Err(e) = fs::copy(logo, format!("{}{}", &config_dir, "/Esports-Logo.png")) {
+                return Err(format!("Setup Error: {}", e));
+            }
+        },
+        _ => return Err("Error downloading logo".to_string())
     }
+
 
     json_handler::init_json(format!("{}/overlay.json", get_config_dir()));
 
     let overlay_config = format!(
         "{}{}",
-        &config_dir, "/FalconsEsportsOverlays-main/json/overlay.json"
+        &config_dir, get_overlay_json_path()
     );
 
     if let Err(e) = fs::copy(format!("{}/overlay.json", get_config_dir()), overlay_config) {
@@ -57,7 +63,13 @@ pub fn reset_overlays() -> Result<(), String> {
         fs::remove_file(Path::new(&get_config_dir_overlay_json_path())).map_err(|err| return err);
     let _ = fs::remove_file(Path::new(&get_config_dir_image_path())).map_err(|err| return err);
 
-    let download_result = download_and_extract();
+    let _ = fs::remove_dir_all(Path::new(&get_code_dir())).map_err(|err| return err);
+
+    println!("Files Removed");
+
+    let download_result = download_and_extract(false);
+
+    println!("Downloaded");
 
     match download_result {
         Ok(_) => Ok(()),

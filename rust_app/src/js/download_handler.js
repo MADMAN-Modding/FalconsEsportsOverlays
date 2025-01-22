@@ -5,9 +5,9 @@
  * @async
  */
 async function download_files(action) {
-    push_notification(`${action}ing Overlays`);
+    push_notification(`${action.replace("Update", "Updat")}ing Overlays`);
 
-    invoke('download_and_extract')
+    invoke('download_and_extract', { "preserve" : true})
         .then(() => push_notification(`${action} Complete`))
         .catch((error) => push_notification(`${action} Failed: ${error}`));
 }

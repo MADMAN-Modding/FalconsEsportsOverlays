@@ -174,7 +174,7 @@ fn process_request(mut stream: TcpStream) {
     } else {
         (
             "HTTP/1.1 404 NOT FOUND",
-            fs::read(format!("{}/404.html", get_code_dir())).unwrap(),
+            "<h1>404 Not Found</h1>".as_bytes().to_vec(),
         )
     };
 

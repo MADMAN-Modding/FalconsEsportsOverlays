@@ -197,7 +197,7 @@ async function reset_config() {
     await invoke('reset_config');
 
     // Redownload the overlays
-    await download_files("Reset");    
+    await reset_files();    
 
     // Resets the page to the new values
     switchPage("config")
