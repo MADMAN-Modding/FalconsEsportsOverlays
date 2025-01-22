@@ -118,63 +118,37 @@ pub fn download_and_extract(preserve: bool) -> Result<(), String> {
     // Removes the overlay directory before downloading the new one
     if Path::new(&get_code_dir()).exists() {
         let _ = fs::remove_dir_all(get_code_dir()).map_err(|err| return err);
+    } else {
+        println!("{} doesn't exist", get_code_dir());
     }
 
     let result: Result<[String; 2], Box<dyn Error>> =
         download_files(&read_config_json("overlayURL"), "overlays.zip").map_err(|err| return err);
+        
+        // Values to be used when extracting the zip
+        let array = result.unwrap();
+        let file = format!("{}/{}", array[1].to_string(), &array[0].to_string());
+        let dir = array[1].to_string();
+        
+        let _ = extract_files(&file, &dir).map_err(|err| return err);
+        
+        search_overlay();
+        
+        // Copies the downloaded image to the config directory
+        let _ = fs::copy(get_code_dir_image_path(), get_config_dir_image_path()).map_err(|err| return err);
 
-    search_overlay();
-
-    println!("Overlays Downloaded");
-
-    // Initial variables for storing dir and file
-    let dir: String;
-    let file: String;
-
-    let array = result.unwrap();
-
-    file = format!("{}/{}", array[1].to_string(), &array[0].to_string());
-    dir = array[1].to_string();
-
-    let _ = extract_files(&file, &dir).map_err(|err| return err);
-
-    // If there is no error, it will check if a overlay.json file exists, if it does, it will copy it to the overlay folder
-    // If it doesn't, it will copy one to the config dir from the overlay directory
-    if Path::new(&get_config_dir_overlay_json_path()).exists() {
-        let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path())
+        // If there is a json
+        if Path::new(&get_config_dir_overlay_json_path()).exists() {
+            let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path())
             .map_err(|err| return err);
     }
-    let _ = download_logo();
+
 
     let _ = config_handler::setup_config_dir(dir).map_err(|err| return err);
 
     Ok(())
 }
 
-/// Downloads the logo from the config file
-///
-/// # Returns
-/// * `Ok(String)` - Message to be displayed in the UI
-/// * `Err(String)` - If a function fails it will return the error from that function
-#[tauri::command]
-pub fn download_logo() -> Result<String, String> {
-    let image_location = read_config_json("imageURL");
-
-    let download_result = download_files(image_location.as_str(), "Esports-Logo.png");
-
-    if download_result.is_err() {
-        println!("Download Error: {}", download_result.as_ref().unwrap_err());
-        return Err(download_result.unwrap_err().to_string());
-    } else {
-        // If the copy is successful, unwrap it
-        let copy = fs::copy(get_config_dir_image_path(), get_code_dir_image_path());
-        if copy.is_ok() {
-            copy.unwrap();
-        }
-    }
-
-    Ok("Custom Config Successfully Applied".to_string())
-}
 
 /// Preserves the data in the code directory when downloading new overlays
 fn preserve_data() {

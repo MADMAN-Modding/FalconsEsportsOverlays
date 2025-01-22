@@ -188,7 +188,6 @@ pub fn get_default_json_data() -> serde_json::Value {
         "appColor": "#bf0f35",
         "columnColor": "#ffffff",
         "overlayURL" : "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main",
-        "imageURL" : "https://github.com/MADMAN-Modding/FalconsEsportsOverlays/blob/main/images/Esports-Logo.png",
         "overlay_dir": "FalconsEsportsOverlays-main",
         "ssbuChecked": true,
         "kartChecked": true,

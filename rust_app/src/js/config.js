@@ -193,11 +193,8 @@ function autoUpdate() {
  * @async
  */
 async function reset_config() {
-    // Calls the reset_config function
-    await invoke('reset_config');
-
     // Redownload the overlays
-    await reset_files();    
+    await reset_files().catch((error) => {push_notification(`Reset Failed: ${error}`); return;});    
 
     // Resets the page to the new values
     switchPage("config")
@@ -233,24 +230,19 @@ async function makeCustomConfig() {
 async function setNewValues() {
     let columnColor = await readConfigJSON("columnColor");
 
-    console.log(`Column Color ${columnColor}`);
-
     // Sets the new value of the column color
     document.documentElement.style.setProperty('--column-color', `${columnColor}`);
 
     let appColor = await readConfigJSON("appColor"); 
-
-    console.log(`App Color: ${appColor}`);
 
     // Sets the new value of the app color
     setAppColor(appColor, true);
 
     document.getElementById("appColorInput").value = `${appColor}`;
 
-    // Downloads the new logo and applies it
-    await invoke('download_logo');
-    await setImage();
-
     // Downloads the new overlays
     await download_files("Update");
+    
+    // Applies the new logo
+    await setImage();
 }

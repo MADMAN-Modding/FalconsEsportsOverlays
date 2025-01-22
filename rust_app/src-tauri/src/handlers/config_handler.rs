@@ -2,10 +2,10 @@
 
 use std::{fs, path::Path};
 
-use super::{download_handler::{download_and_extract, download_logo}, json_handler};
-use crate::constants::{
-    get_code_dir, get_code_dir_image_path, get_config_dir, get_config_dir_image_path, get_config_dir_overlay_json_path, get_overlay_json_path
-};
+use super::{download_handler::download_and_extract, json_handler};
+use crate::{constants::{
+    get_code_dir, get_config_dir, get_config_dir_image_path, get_config_dir_overlay_json_path, get_overlay_json_path
+}, handlers::json_handler::reset_config};
 
 /// Copies the necessary files to `config_dir` from the `code_dir`
 ///
@@ -23,21 +23,6 @@ use crate::constants::{
 /// assert_eq!(setup_result, Ok(()));
 /// ```
 pub fn setup_config_dir(config_dir: String) -> Result<(), String> {
-    let logo = format!(
-        "{}{}",
-        &config_dir, get_code_dir_image_path()
-    );
-
-    match download_logo() {
-        Ok(_) => {       
-            if let Err(e) = fs::copy(logo, format!("{}{}", &config_dir, "/Esports-Logo.png")) {
-                return Err(format!("Setup Error: {}", e));
-            }
-        },
-        _ => return Err("Error downloading logo".to_string())
-    }
-
-
     json_handler::init_json(format!("{}/overlay.json", get_config_dir()));
 
     let overlay_config = format!(
@@ -59,17 +44,19 @@ pub fn setup_config_dir(config_dir: String) -> Result<(), String> {
 /// * `Err(String)` - Returns an error if there are io errors or errors downloading data
 #[tauri::command]
 pub fn reset_overlays() -> Result<(), String> {
-    let _ =
-        fs::remove_file(Path::new(&get_config_dir_overlay_json_path())).map_err(|err| return err);
-    let _ = fs::remove_file(Path::new(&get_config_dir_image_path())).map_err(|err| return err);
-
+    // Removes the overlay directory before downloading the new one
     let _ = fs::remove_dir_all(Path::new(&get_code_dir())).map_err(|err| return err);
 
-    println!("Files Removed");
+    // Removes the overlay.json and Esports-Logo.png files
+    let _ =
+        fs::remove_file(Path::new(&get_config_dir_overlay_json_path())).map_err(|err| return err);
+    
+    // Removes the Esports-Logo.png file
+    let _ = fs::remove_file(Path::new(&get_config_dir_image_path())).map_err(|err| return err);
+
+    reset_config();
 
     let download_result = download_and_extract(false);
-
-    println!("Downloaded");
 
     match download_result {
         Ok(_) => Ok(()),
