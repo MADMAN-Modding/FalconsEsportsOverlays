@@ -27,14 +27,14 @@ let firstRun = true;
  */
 async function setupApp() {
     if (firstRun) {
-        if (await read_config_json("autoUpdate") === "true") {
+        if (await readConfigJSON("autoUpdate") === "true") {
             setTimeout(() => {
                 download_files("Update");
             }, 2500);
         }
-        let color = await invoke('read_config_json', { "key": "appTheme" }).then((value) => overlay = Array.from(value).filter(char => char !== "\"").join(''));
 
-        setColor(color, true);
+        setAppColor(await readConfigJSON('appColor'), true);
+        setColumnColor(await readConfigJSON('columnColor'), true);
         firstRun = false;
     }
 }

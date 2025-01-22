@@ -10,7 +10,7 @@ fn update_config(key: &str, value: String) {
 pub fn setup_custom_config(config_file: Vec<u8>) -> Result<String, String> {
     let _ = std::fs::write(get_custom_config_path(), config_file).map_err(|err| return err.to_string());
 
-    let custom_keys: Vec<&str> = ["columnColor", "imageURL", "overlayURL"].to_vec();
+    let custom_keys: Vec<&str> = ["columnColor", "imageURL", "overlayURL", "appColor"].to_vec();
 
     for key in custom_keys {
         if read_custom_json(key) == "null" {

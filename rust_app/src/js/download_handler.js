@@ -7,7 +7,7 @@
 async function download_files(action) {
     push_notification(`${action}ing Overlays`);
 
-    await invoke('download_and_extract')
+    invoke('download_and_extract')
         .then(() => push_notification(`${action} Complete`))
         .catch((error) => push_notification(`${action} Failed: ${error}`));
 }
@@ -21,7 +21,7 @@ async function download_files(action) {
 async function reset_files() {
     push_notification("Resetting Overlays");
 
-    await invoke('reset_overlays')
+    invoke('reset_overlays')
         .then(() => push_notification("Reset Complete"))
         .catch((error) => push_notification(`Reset Failed: ${error}`));
 }

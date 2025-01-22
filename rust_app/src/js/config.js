@@ -4,19 +4,19 @@
  * @async
 */
 async function setupConfig() {
-    let color = await read_config_json("appTheme");
+    let color = await readConfigJSON("appColor");
 
     document.getElementById("appColorInput").value = `${color}`;
 
     generateCheckBoxes();
 
     overlays.forEach(async overlay => {
-        let value = await read_config_json(`${overlay}Checked`);
+        let value = await readConfigJSON(`${overlay}Checked`);
 
         document.getElementById(`${overlay}`).checked = (value === "true");
     })
 
-    document.getElementById("autoUpdate").checked = (await read_config_json("autoUpdate") === "true");
+    document.getElementById("autoUpdate").checked = (await readConfigJSON("autoUpdate") === "true");
 
     setImage();
 }
@@ -45,17 +45,17 @@ function generateCheckBoxes() {
 function getColor() {
     let color = document.getElementById("appColorInput").value;
 
-    setColor(color, false);
+    setAppColor(color, false);
 }
 
 /**
  * Sets the color of the app and saves it to the config
  * @param {String} color Color to set the background to
- * @param {bool} setup Whether or not this being called when the app launches
+ * @param {bool} setup Whether or not this is being called when the app launches
  * @returns {void}
  * @async
  */
-async function setColor(color, setup) {
+async function setAppColor(color, setup) {
     // Checks if the color is pure white
     if (color == "#ffffff") {
         push_notification("Don't set the color to white...");
@@ -64,13 +64,32 @@ async function setColor(color, setup) {
 
     // If this isn't the setup it will write the new value to the config and then notify the user
     if (!setup) {
-        write_config_json("appTheme", color);
+        write_config_json("appColor", color);
 
         push_notification(`Color Updated to ${color}`)
     }
 
     // Sets the color of the app
     document.documentElement.style.setProperty('--app-color', `${color}`);
+}
+
+/**
+ * Sets the color of the column and saves it to the config
+ * @param {String} color Color to set the column to 
+ * @param {bool} setup Whether or not this is being called when the app launches
+ * @returns {void}
+ * @async
+ */
+async function setColumnColor(color, setup) {
+    // If this isn't the setup it will write the new value to the config and then notify the user
+    if (!setup) {
+        write_config_json("columnColor", color);
+
+        push_notification(`Column Color Updated to ${color}`)
+    }
+
+    // Sets the color of the app
+    document.documentElement.style.setProperty('--column-color', `${color}`);
 }
 
 /**
@@ -86,7 +105,7 @@ function toggleSport() {
         write_config_json(`${overlay}Checked`, value.toString());
 
         // Sends a notification if the new value is different than the old one
-        if (value.toString() !== await read_config_json(`${overlay}Checked`)) {
+        if (value.toString() !== await readConfigJSON(`${overlay}Checked`)) {
             let text = value ? "Enabled" : "Disabled";
 
             push_notification(`${text} ${nameMap[overlay]}`);
@@ -177,11 +196,17 @@ async function reset_config() {
     // Calls the reset_config function
     await invoke('reset_config');
 
+    // Redownload the overlays
+    await download_files("Reset");    
+
     // Resets the page to the new values
     switchPage("config")
 
     // Set page color
-    setColor(await read_config_json("appTheme"), false);
+    setAppColor(await readConfigJSON("appColor"), false);
+
+    // Set column color
+    setColumnColor(await readConfigJSON("columnColor"), false);
 
     // Notifies the user the reset completed
     push_notification("Config Reset");
@@ -195,6 +220,37 @@ async function makeCustomConfig() {
     // Copies the selected image to the code dir
     await invoke('setup_custom_config', {"configFile" : byte_array});
   
+    setNewValues();
     
     push_notification("Custom Config Applied");
+}
+
+/**
+ * Sets the new values of the config from the custom config file
+ * @returns {void}
+ * @async
+ */
+async function setNewValues() {
+    let columnColor = await readConfigJSON("columnColor");
+
+    console.log(`Column Color ${columnColor}`);
+
+    // Sets the new value of the column color
+    document.documentElement.style.setProperty('--column-color', `${columnColor}`);
+
+    let appColor = await readConfigJSON("appColor"); 
+
+    console.log(`App Color: ${appColor}`);
+
+    // Sets the new value of the app color
+    setAppColor(appColor, true);
+
+    document.getElementById("appColorInput").value = `${appColor}`;
+
+    // Downloads the new logo and applies it
+    await invoke('download_logo');
+    await setImage();
+
+    // Downloads the new overlays
+    await download_files("Update");
 }

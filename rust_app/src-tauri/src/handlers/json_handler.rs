@@ -53,7 +53,7 @@ pub fn read_custom_json(key: &str) -> String {
 pub fn read_json(key: &str, path: String) -> String {
     let json_data: Value = open_json(path);
 
-    json_data[key].to_string()
+    json_data[key].to_string().replace("\"", "")
 }
 
 /// Opens the json file with the supplied path
@@ -171,14 +171,6 @@ pub fn write_config(json_key: String, value: String) {
     write_json(constants::get_config_json_path(), json_key, value);
 }
 
-/// Literally just is a compact version of checking if path exists which probably is worse than just making Path objects but whatever
-/// 
-/// # Arguments
-/// * `path: &Path` - Path object for the JSON file
-pub fn check_json_exists(path: &Path) -> bool {
-    path.exists()
-}
-
 /// Resets the config
 #[tauri::command]
 pub fn reset_config() {
@@ -191,7 +183,7 @@ pub fn reset_config() {
 
 pub fn get_default_json_data() -> serde_json::Value {
     json!({
-        "appTheme": "#bf0f35",
+        "appColor": "#bf0f35",
         "columnColor": "#ffffff",
         "overlayURL" : "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main",
         "imageURL" : "https://github.com/MADMAN-Modding/FalconsEsportsOverlays/blob/main/images/Esports-Logo.png",

@@ -122,7 +122,7 @@ function generateImages() {
   overlays.forEach(async overlay => {
     let overlayButtons = document.getElementById("overlayButtons");
 
-    let sportEnabled = await read_config_json(`${overlay}Checked`);
+    let sportEnabled = await readConfigJSON(`${overlay}Checked`);
 
     if (sportEnabled === "true") {
       overlayButtons.innerHTML += `

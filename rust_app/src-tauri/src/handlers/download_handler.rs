@@ -15,7 +15,7 @@ use crate::constants::{
     get_overlay_json_path,
 };
 
-use super::{config_handler, json_handler::{check_json_exists, read_config_json}};
+use super::{config_handler, json_handler::read_config_json};
 
 /// Downloads the data for the overlays
 ///
@@ -25,36 +25,33 @@ use super::{config_handler, json_handler::{check_json_exists, read_config_json}}
 /// `Ok([String; 2]` - Returns the filename and directory the zip file is in
 ///
 /// `Box<dyn Error>>` - Returns an error if there's an issue downloading files
-pub fn download_files(url: &str, file_save_name: Option<&str>) -> Result<[String; 2], Box<dyn Error>> {
-    // Download config
-    let filename = match file_save_name {
-        Some(url) => url,
-        None => "overlays.zip"
-    };
-
-
+pub fn download_files(url: &str, filename: &str) -> Result<[String; 2], Box<dyn Error>> {
     let directory: &str = &constants::get_config_dir();
 
-    // Download stuff
+    // Download the requested file
     let path = Path::new(directory).join(filename);
 
-    let response = get(url)?;
+    // Get the response from the url
+    let response = get(url.to_string()).map_err(|err| format!("Get Error: {}", err))?;
 
-    let mut file = File::create(&path)?;
+    // Removes the file if it already exists
+    if Path::new(&path).exists() {
+        let _ = fs::remove_file(&path).map_err(|err| format!("File Removal Error: {}", err));
+    }
 
-    copy(&mut response.bytes()?.as_ref(), &mut file)?;
+    // Create a file to save the response to
+    let mut file = File::create(&path).map_err(|err| format!("File Creation Error: {}", err))?;
+
+    // Copy the response to the file
+    copy(&mut response.bytes()?.as_ref(), &mut file).map_err(|err| format!("Download Copy Error: {}", err))?;
 
     let response: [String; 2] = [filename.to_string(), directory.to_string()];
 
     let overlay_path = get_config_dir_overlay_json_path();
 
-    if check_json_exists(Path::new(&overlay_path)) {
+    if Path::new(&overlay_path).exists() {
         let _ =
-            fs::copy(constants::get_overlay_json_path(), overlay_path).map_err(|err| return err);
-    }
-
-    if Path::new(&get_code_dir_image_path()).exists() {
-        let _ = fs::copy(&get_code_dir_image_path(), get_config_dir_image_path());
+            fs::copy(constants::get_overlay_json_path(), overlay_path).map_err(|err| err);
     }
 
     Ok(response)
@@ -110,7 +107,7 @@ fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
 /// * `Err(String)` - If a function fails it will return the error from that function
 #[tauri::command]
 pub fn download_and_extract() -> Result<(), String> {
-    let result: Result<[String; 2], Box<dyn Error>> = download_files("https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main", None);
+    let result: Result<[String; 2], Box<dyn Error>> = download_files(&read_config_json("overlayURL"), "overlays.zip");
 
     // Initial variables for storing dir and file
     let dir: String;
@@ -126,11 +123,15 @@ pub fn download_and_extract() -> Result<(), String> {
 
                 // If there is no error, it will check if a overlay.json file exists, if it does, it will copy it to the overlay folder
                 // If it doesn't, it will copy one to the config dir from the overlay directory
-            } else if check_json_exists(Path::new(&get_config_dir_overlay_json_path())) {
+            } else if Path::new(&get_config_dir_overlay_json_path()).exists() {
                 let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path())
                     .map_err(|err| return err);
 
-                let _ = download_files(&read_config_json("imageURL"), Some("Esports-Logo.png")).map_err(|err| return format!("Error Downloading Files: {}", err));
+                let _ = download_files(&read_config_json("imageURL"), "Esports-Logo.png").map_err(|err| return format!("Error Downloading Files: {}", err));
+                
+                if Path::new(&get_code_dir_image_path()).exists() {
+                    let _ = fs::copy(&get_code_dir_image_path(), get_config_dir_image_path());
+                }
             } else {
                 if let Err(e) = config_handler::setup_config_dir(dir) {
                     println!("Setup Error: {}", e);
@@ -147,14 +148,22 @@ pub fn download_and_extract() -> Result<(), String> {
     }
 }
 
-
-fn download_logo() -> Result<String, String> {
+/// Downloads the logo from the config file
+/// 
+/// # Returns
+/// * `Ok(String)` - Message to be displayed in the UI
+/// * `Err(String)` - If a function fails it will return the error from that function
+#[tauri::command]
+pub fn download_logo() -> Result<String, String> {
     let image_location = read_config_json("imageURL");
 
-    let download_result = download_files(&image_location, Some("Esports-Logo.png"));
+    let download_result = download_files(image_location.as_str(), "Esports-Logo.png");
 
     if download_result.is_err() {
+        println!("Download Error: {}", download_result.as_ref().unwrap_err());
         return Err(download_result.unwrap_err().to_string());
+    } else {
+        fs::copy(get_config_dir_image_path(), get_code_dir_image_path()).unwrap();
     }
 
     Ok("Custom Config Successfully Applied".to_string())
