@@ -126,7 +126,13 @@ pub fn download_and_extract(preserve: bool) -> Result<(), String> {
         download_files(&read_config_json("overlayURL"), "overlays.zip").map_err(|err| return err);
         
         // Values to be used when extracting the zip
-        let array = result.unwrap();
+        let array: [String; 2];
+
+        match result {
+            Ok(value) => array = value,
+            Err(e) => return Err(e.to_string())
+        };
+
         let file = format!("{}/{}", array[1].to_string(), &array[0].to_string());
         let dir = array[1].to_string();
         

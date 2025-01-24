@@ -197,7 +197,7 @@ async function reset_config() {
     await reset_files().catch((error) => {push_notification(`Reset Failed: ${error}`); return;});    
 
     // Resets the page to the new values
-    switchPage("config")
+    await switchPage("config")
 
     // Set page color
     setAppColor(await readConfigJSON("appColor"), false);
@@ -234,6 +234,8 @@ async function setNewValues() {
     document.documentElement.style.setProperty('--column-color', `${columnColor}`);
 
     let appColor = await readConfigJSON("appColor"); 
+
+    console.log(appColor);
 
     // Sets the new value of the app color
     setAppColor(appColor, true);
