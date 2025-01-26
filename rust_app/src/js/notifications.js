@@ -19,7 +19,7 @@ let notificationID = 0;
  *
  * Automatically hides the notification after the specified display time, unless a new notification is pushed before it times out.
  */
-async function push_notification(text) {
+async function pushNotification(text) {
     // Increment the notification ID to track this notification.
     notificationID++;
 

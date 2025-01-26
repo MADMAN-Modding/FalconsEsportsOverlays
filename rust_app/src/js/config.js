@@ -16,7 +16,9 @@ async function setupConfig() {
         document.getElementById(`${overlay}`).checked = (value === "true");
     })
 
+    // Sets the checkbox values
     document.getElementById("autoUpdate").checked = (await readConfigJSON("autoUpdate") === "true");
+    document.getElementById("autoServer").checked = (await readConfigJSON("autoServer") === "true");
 
     setImage();
 }
@@ -58,15 +60,15 @@ function getColor() {
 async function setAppColor(color, setup) {
     // Checks if the color is pure white
     if (color == "#ffffff") {
-        push_notification("Don't set the color to white...");
+        pushNotification("Don't set the color to white...");
         return;
     }
 
     // If this isn't the setup it will write the new value to the config and then notify the user
     if (!setup) {
-        write_config_json("appColor", color);
+        writeConfigJSON("appColor", color);
 
-        push_notification(`Color Updated to ${color}`)
+        pushNotification(`Color Updated to ${color}`)
     }
 
     // Sets the color of the app
@@ -83,9 +85,9 @@ async function setAppColor(color, setup) {
 async function setColumnColor(color, setup) {
     // If this isn't the setup it will write the new value to the config and then notify the user
     if (!setup) {
-        write_config_json("columnColor", color);
+        writeConfigJSON("columnColor", color);
 
-        push_notification(`Column Color Updated to ${color}`)
+        pushNotification(`Column Color Updated to ${color}`)
     }
 
     // Sets the color of the app
@@ -102,13 +104,13 @@ function toggleSport() {
     overlays.forEach(async overlay => {
         let value = document.getElementById(overlay).checked;
 
-        write_config_json(`${overlay}Checked`, value.toString());
+        writeConfigJSON(`${overlay}Checked`, value.toString());
 
         // Sends a notification if the new value is different than the old one
         if (value.toString() !== await readConfigJSON(`${overlay}Checked`)) {
             let text = value ? "Enabled" : "Disabled";
 
-            push_notification(`${text} ${nameMap[overlay]}`);
+            pushNotification(`${text} ${nameMap[overlay]}`);
         }
     });
 }
@@ -148,7 +150,7 @@ async function setImage() {
     
     bytes = await invoke('get_image_bytes')
         .then((value) => bytes = value)
-        .catch((error) => {push_notification(error); return;});
+        .catch((error) => {pushNotification(error); return;});
 
     bytes = new Uint8Array(bytes);
 
@@ -181,10 +183,13 @@ function readFile(file) {
  * Sets the auto update value in the config
  * @returns {void}
  */
-function autoUpdate() {
-    write_config_json("autoUpdate", document.getElementById("autoUpdate").checked.toString());
+function toggleSetting(setting) {
+    writeConfigJSON(setting, document.getElementById(setting).checked.toString());
 
-    push_notification("Auto Update " + (document.getElementById("autoUpdate").checked ? "Enabled" : "Disabled"));
+    // Removes the "auto" from the setting key
+    let notificationText = setting.split("auto")[1];
+    
+    pushNotification(`Auto ${notificationText} ${(document.getElementById(setting).checked ? "Enabled" : "Disabled")}`);
 } 
 
 /**
@@ -194,7 +199,7 @@ function autoUpdate() {
  */
 async function reset_config() {
     // Redownload the overlays
-    await reset_files().catch((error) => {push_notification(`Reset Failed: ${error}`); return;});    
+    await reset_files().catch((error) => {pushNotification(`Reset Failed: ${error}`); return;});    
 
     // Resets the page to the new values
     await switchPage("config")
@@ -206,7 +211,7 @@ async function reset_config() {
     setColumnColor(await readConfigJSON("columnColor"), false);
 
     // Notifies the user the reset completed
-    push_notification("Config Reset");
+    pushNotification("Config Reset");
 }
 
 async function makeCustomConfig() { 
@@ -219,7 +224,7 @@ async function makeCustomConfig() {
   
     setNewValues();
     
-    push_notification("Custom Config Applied");
+    pushNotification("Custom Config Applied");
 }
 
 /**
@@ -243,7 +248,7 @@ async function setNewValues() {
     document.getElementById("appColorInput").value = `${appColor}`;
 
     // Downloads the new overlays
-    await download_files("Update");
+    await downloadFiles("Update");
     
     // Applies the new logo
     await setImage();

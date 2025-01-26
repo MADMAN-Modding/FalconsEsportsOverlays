@@ -11,14 +11,17 @@ let server = false;
  * @async
  * @returns {void}
  */
-async function start_server() {
+async function startServer(image) {
     invoke('run_server')
         .then((message) => {
-            push_notification(message); // Notify the user of the successful server start.
+            pushNotification(message); // Notify the user of the successful server start.
 
-            serverOn(); // Update the server state and UI to 'on'.
+            server = true; // Set the server state to 'on'.
+            if (image) {
+                serverOn(); // Update the server state and UI to 'on'.
+            }
         })
-        .catch((error) => push_notification(error)); // Notify the user of the error.
+        .catch((error) => {pushNotification(error); console.log(error)}); // Notify the user of the error.
 }
 
 /**
@@ -33,11 +36,11 @@ async function start_server() {
 async function stop_server() {
     invoke('stop_server')
         .then((message) => {
-            push_notification(message); // Notify the user of the successful server stop.
+            pushNotification(message); // Notify the user of the successful server stop.
 
             serverOff(); // Update the server state and UI to 'off'.
         })
-        .catch((error) => push_notification(error)); // Notify the user of the error.
+        .catch((error) => pushNotification(error)); // Notify the user of the error.
 }
 
 /**
@@ -45,8 +48,6 @@ async function stop_server() {
  * @returns {void}
  */
 function serverOn() {
-    server = true; // Set the server state to 'on'.
-
     document.getElementById("serverImage").src = "../images/ServerOn.png"; // Update the server image.
 }
 

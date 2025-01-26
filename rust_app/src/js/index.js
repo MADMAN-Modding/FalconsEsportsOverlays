@@ -27,14 +27,21 @@ let firstRun = true;
  */
 async function setupApp() {
     if (firstRun) {
+        // Check if the app should auto update or auto start the server
         setTimeout(async () => {
-        if (await readConfigJSON("autoUpdate") === "true") {
-                download_files("Update");
+            if (await readConfigJSON("autoUpdate") === "true") {
+                    downloadFiles("Update");
+                }
+            if (await readConfigJSON("autoServer") === "true") {
+                startServer();
             }
-        }, 10000);
+        }, 2000);
 
         setAppColor(await readConfigJSON('appColor'), true);
         setColumnColor(await readConfigJSON('columnColor'), true);
         firstRun = false;
     }
+
+    // Used to generate the overlay file if it doesn't exist
+    readOverlayJSON("overlay");
 }

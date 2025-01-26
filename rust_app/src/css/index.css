@@ -58,3 +58,7 @@ body {
   text-align: center;
   height: fit-content;
 }
+
+a {
+  color: white;
+}

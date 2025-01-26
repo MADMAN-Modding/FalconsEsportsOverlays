@@ -1,11 +1,11 @@
 /**
- * Calls the read_overlay_json function from rust, passes the argument `key` with the value of key
+ * Calls the readOverlayJSON function from rust, passes the argument `key` with the value of key
  * @param {String} key
  * @returns {Promise<String>} 
  * @async
 */
-async function read_overlay_json(key) {
-    let value = await invoke('read_overlay_json', { "key" : key }).then((value) => overlay = Array.from(value).filter(char => char !== "\"").join(''));
+async function readOverlayJSON(key) {
+    let value = await invoke('read_overlay_json', { "key" : key });
         
     return value;
 }
@@ -17,7 +17,7 @@ async function read_overlay_json(key) {
  * @returns {void}
  * @async
  */
-async function write_overlay_json(key, value) {
+async function writeOverlayJSON(key, value) {
     // Gets the json path
     let jsonPath = await invoke('get_overlay_json_path');
 
@@ -44,7 +44,7 @@ async function readConfigJSON(key) {
  * @returns {void}
  * @async
  */
-async function write_config_json(key, value) {
+async function writeConfigJSON(key, value) {
     // Gets the json path
     let jsonPath = await invoke('get_config_json_path');
 

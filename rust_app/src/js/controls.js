@@ -12,7 +12,7 @@ let keys = ["scoreLeft", "scoreRight", "playerNamesLeft", "playerNamesRight", "t
 function switchOverlay(overlay) {
   currentOverlay = overlay;
 
-  write_overlay_json("overlay", overlay);
+  writeOverlayJSON("overlay", overlay);
 
   overlays.forEach(overlay => {
     document.getElementById(overlay).style.backgroundColor = "transparent";
@@ -20,7 +20,7 @@ function switchOverlay(overlay) {
 
   document.getElementById(overlay).style.backgroundColor = "gray";
 
-  push_notification("Overlay Changed");
+  pushNotification("Overlay Changed");
 }
 
 /**
@@ -42,10 +42,10 @@ function updateOverlay() {
   let values = [leftScore, rightScore, playerNamesLeft, playerNamesRight, leftTeamName, rightTeamName, leftTeamColor, rightTeamColor, week];
 
   for (let i = 0; i < keys.length; i++) {
-    write_overlay_json(keys[i], `${values[i]}`);
+    writeOverlayJSON(keys[i], `${values[i]}`);
   }
 
-  push_notification("Overlays Updated");
+  pushNotification("Overlays Updated");
 }
 
 /**
@@ -72,6 +72,8 @@ function swapTeams() {
   document.getElementById("teamNameRight").value = leftTeamName;
   document.getElementById("teamColorLeft").value = rightTeamColor;
   document.getElementById("teamColorRight").value = leftTeamColor;
+
+  pushNotification("Teams Swapped");
 }
 
 /**
@@ -81,9 +83,9 @@ function swapTeams() {
  * @returns {void}
  */
 function updateWins(team, wins) {
-  write_overlay_json(`wins${team}`, `${wins}`);
+  writeOverlayJSON(`wins${team}`, `${wins}`);
 
-  push_notification("Wins Updated");
+  pushNotification("Wins Updated");
 }
 
 /**
@@ -101,12 +103,12 @@ async function setupControls() {
   // Delay to allow the page to load
   setTimeout(async function () {
     for (let i = 0; i < keys.length; i++) {
-      document.getElementById(keys[i]).value = await read_overlay_json(keys[i]);
+      document.getElementById(keys[i]).value = await readOverlayJSON(keys[i]);
     }
   }, 200);
 
   // Gets the ID of the current overlay
-  let overlay = await read_overlay_json("overlay");
+  let overlay = await readOverlayJSON("overlay");
 
   // Highlights the active overlay
   document.getElementById(overlay).style.backgroundColor = "gray";

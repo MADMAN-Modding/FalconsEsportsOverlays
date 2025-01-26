@@ -200,6 +200,7 @@ pub fn get_default_json_data() -> serde_json::Value {
         "chessChecked": true,
         "maddenChecked": true,
         "nba2KChecked": true,
-        "autoUpdate": false
+        "autoUpdate": false,
+        "autoServer": false
     })
 }
