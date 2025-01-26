@@ -1,3 +1,7 @@
+:root {
+  --iframe-scale: calc(80vw / 1920);
+}
+
 .container {
   max-width: 1200px;
   width: 100%;
@@ -173,21 +177,39 @@ input {
   color: black;
 }
 
-/* Settings for all the individual overlay buttons because of how the javascript is handling stuff */
-/* #ssbu,
-#kart,
-#overwatch,
-#rocketLeague,
-#splat,
-#val,
-#hearth,
-#lol,
-#chess,
-#madden,
-#nba2K {
-} */
-
 .color {
   padding: 0;
   border-radius: 0px;
+}
+
+#preview {
+  width: 80vw;
+  height: calc(80vw * 9 / 16);
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  position: absolute;
+  left: calc(calc(20vw - 80px) / 2);
+  top: 20px;
+  background-color: white;
+  display: none;
+}
+
+#preview-iframe {
+  width: 1920px;
+  height: 1080px;
+  transform-origin: top left;
+  border: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#closedEye {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
 }

@@ -13,6 +13,10 @@
 </head>
 
 <body>
+  <div id="preview">
+    <iframe src="http://127.0.0.1:8080/" id="preview-iframe" frameborder="0"></iframe>
+    <img src="../images/closedEye.png" id="closedEye" onclick="togglePreview()">
+  </div>
   <div id="app">
     <div class="overlay-buttons" id="overlayButtons"></div>
 
@@ -48,6 +52,7 @@
       <div class="middle-column">
         <button onclick="updateOverlay()">Update Overlay</button>
         <button onclick="swapTeams()">Swap Teams</button>
+        <button onclick="togglePreview()">View Preview</button>
         <label for="week">Week</label>
         <input class="userInput" type="number" id="week" value="1">
       </div>

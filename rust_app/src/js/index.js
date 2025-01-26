@@ -22,8 +22,9 @@ let nameMap = {
 let firstRun = true;
 
 /**
- * Sets the color of the app from the config
+ * Sets up the app on the first run
  * @async
+ * @returns {void}
  */
 async function setupApp() {
     if (firstRun) {
@@ -35,7 +36,7 @@ async function setupApp() {
             if (await readConfigJSON("autoServer") === "true") {
                 startServer();
             }
-        }, 2000);
+        }, 1000);
 
         setAppColor(await readConfigJSON('appColor'), true);
         setColumnColor(await readConfigJSON('columnColor'), true);

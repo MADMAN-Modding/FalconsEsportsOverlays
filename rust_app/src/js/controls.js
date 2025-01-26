@@ -98,6 +98,7 @@ function updateWins(team, wins) {
  * @returns {void}
  */
 async function setupControls() {
+  document.getElementById("preview-iframe").style.transform = `scale(${window.innerWidth * .8 / 1920})`;
   generateImages();
 
   // Delay to allow the page to load
@@ -133,5 +134,21 @@ function generateImages() {
       </button>`
     }
   });
+}
 
+/**
+ * Toggles the preview visibility
+ * @returns {void}
+ */
+function togglePreview() {
+  let preview = document.getElementById("preview");
+  let app = document.getElementById("app");
+
+  if (preview.style.display === "block") {
+    preview.style.display = "none";
+    app.style.display = "block";
+  } else {
+    preview.style.display = "block";
+    app.style.display = "none";
+  }
 }
