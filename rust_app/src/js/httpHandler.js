@@ -33,7 +33,7 @@ async function startServer(image) {
  * @async
  * @returns {void}
  */
-async function stop_server() {
+async function stopServer() {
     invoke('stop_server')
         .then((message) => {
             pushNotification(message); // Notify the user of the successful server stop.

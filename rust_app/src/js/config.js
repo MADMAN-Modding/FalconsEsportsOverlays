@@ -199,7 +199,7 @@ function toggleSetting(setting) {
  */
 async function reset_config() {
     // Redownload the overlays
-    await reset_files().catch((error) => {pushNotification(`Reset Failed: ${error}`); return;});    
+    await resetFiles().catch((error) => {pushNotification(`Reset Failed: ${error}`); return;});    
 
     // Resets the page to the new values
     await switchPage("config")
