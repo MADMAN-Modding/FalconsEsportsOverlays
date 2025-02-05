@@ -117,8 +117,6 @@ pub async fn download_and_extract(preserve: bool) -> Result<(), String> {
     // Removes the overlay directory before downloading the new one
     if Path::new(&get_code_dir()).exists() {
         let _ = fs::remove_dir_all(get_code_dir()).map_err(|err| return err);
-    } else {
-        println!("{} doesn't exist", get_code_dir());
     }
 
     let thread =

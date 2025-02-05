@@ -16,9 +16,8 @@ async function downloadFiles(action) {
  * Push Notification when Started
  * Start the Reset
  * Push Notification when Complete if Successful
- * @async
  */
-async function resetFiles() {
+function resetFiles() {
     pushNotification("Resetting Overlays");
 
     invoke('reset_overlays')
