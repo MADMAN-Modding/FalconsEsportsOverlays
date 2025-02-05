@@ -8,6 +8,7 @@ pub mod handlers {
 }
 
 pub mod constants;
+pub mod thread_data;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

@@ -10,24 +10,13 @@ use std::{
 
 use once_cell::sync::OnceCell;
 
-use crate::constants::get_code_dir;
-
-// Adds necessary traits to the ThreadData structure
-#[derive(Clone, Copy, Debug)]
-
-/// Used for sharing data between the `http_server` thread and the thread the app is running on
-struct ThreadData {
-    /// `stop` - For telling the thread to stop itself
-    stop: bool,
-}
+use crate::{constants::get_code_dir, thread_data::{thread_data_setup, ThreadData}};
 
 static THREAD_DATA: OnceCell<Arc<Mutex<ThreadData>>> = OnceCell::new();
 
 /// Sets the `THREAD_DATA` variable to a new `ThreadData` struct
 pub fn setup() {
-    THREAD_DATA
-        .set(Arc::new(Mutex::new(ThreadData::setup())))
-        .unwrap();
+    THREAD_DATA.set(thread_data_setup()).unwrap();
 }
 
 /// Starts a thread for the HTTP server called `http_server`
@@ -115,21 +104,6 @@ impl ThreadData {
                 }
             }
         }
-    }
-
-    /// Returns `ThreadData { stop: false}` so the server doesn't stop on start
-    fn setup() -> ThreadData {
-        Self { stop: false }
-    }
-
-    /// Getter function for `stop`
-    fn get_stop(&self) -> bool {
-        self.stop
-    }
-
-    /// Accessor for changing `stop`
-    fn set_stop(&mut self, stop_value: bool) {
-        self.stop = stop_value;
     }
 }
 

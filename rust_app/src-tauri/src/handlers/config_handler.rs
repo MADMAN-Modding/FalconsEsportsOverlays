@@ -43,7 +43,7 @@ pub fn setup_config_dir(config_dir: String) -> Result<(), String> {
 /// * `Ok(())` - Returns an empty `Ok` if no errors occur
 /// * `Err(String)` - Returns an error if there are io errors or errors downloading data
 #[tauri::command]
-pub fn reset_overlays() -> Result<(), String> {
+pub async fn reset_overlays() -> Result<(), String> {
     // Removes the overlay directory before downloading the new one
     let _ = fs::remove_dir_all(Path::new(&get_code_dir())).map_err(|err| return err);
 
@@ -58,7 +58,7 @@ pub fn reset_overlays() -> Result<(), String> {
 
     let download_result = download_and_extract(false);
 
-    match download_result {
+    match download_result.await {
         Ok(_) => Ok(()),
         Err(error) => Err(format!("Downloading Error: {}", error)),
     }

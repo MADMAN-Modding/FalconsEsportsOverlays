@@ -3,10 +3,9 @@
 //! It also copies stuff from the config directory to the code directory
 use reqwest::blocking::get;
 use std::{
-    error::Error,
     fs::{self, File},
     io::{self, copy, BufReader},
-    path::Path,
+    path::Path, thread,
 };
 use zip::ZipArchive;
 
@@ -17,7 +16,7 @@ use crate::{constants::{
 
 use super::{config_handler, json_handler::read_config_json};
 
-/// Downloads the data for the overlays
+/// Downloads the data for the overlays on a separate thread
 ///
 /// Used to get the zip file for ```extract_files```
 ///
@@ -25,7 +24,7 @@ use super::{config_handler, json_handler::read_config_json};
 /// `Ok([String; 2]` - Returns the filename and directory the zip file is in
 ///
 /// `Box<dyn Error>>` - Returns an error if there's an issue downloading files
-pub fn download_files(url: &str, filename: &str) -> Result<[String; 2], Box<dyn Error>> {
+pub fn download_files(url: &str, filename: &str) -> Result<[String; 2], String> {
     let directory: &str = &constants::get_config_dir();
 
     // Download the requested file
@@ -43,7 +42,7 @@ pub fn download_files(url: &str, filename: &str) -> Result<[String; 2], Box<dyn 
     let mut file = File::create(&path).map_err(|err| format!("File Creation Error: {}", err))?;
 
     // Copy the response to the file
-    copy(&mut response.bytes()?.as_ref(), &mut file)
+    copy(&mut response.bytes().map_err(|error| error).unwrap().as_ref(), &mut file)
         .map_err(|err| format!("Download Copy Error: {}", err))?;
 
     let response: [String; 2] = [filename.to_string(), directory.to_string()];
@@ -109,7 +108,7 @@ fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
 /// * `Ok(())` - If there are no errors
 /// * `Err(String)` - If a function fails it will return the error from that function
 #[tauri::command]
-pub fn download_and_extract(preserve: bool) -> Result<(), String> {
+pub async fn download_and_extract(preserve: bool) -> Result<(), String> {
     // Preserves the data in the code directory
     if preserve {
         preserve_data()
@@ -122,31 +121,33 @@ pub fn download_and_extract(preserve: bool) -> Result<(), String> {
         println!("{} doesn't exist", get_code_dir());
     }
 
-    let result: Result<[String; 2], Box<dyn Error>> =
-        download_files(&read_config_json("overlayURL"), "overlays.zip").map_err(|err| return err);
+    let thread =
+        thread::spawn(|| {download_files(&read_config_json("overlayURL"), "overlays.zip")});
         
-        // Values to be used when extracting the zip
-        let array: [String; 2];
+    let result = thread.join().unwrap();
 
-        match result {
-            Ok(value) => array = value,
-            Err(e) => return Err(e.to_string())
-        };
+    // Values to be used when extracting the zip
+    let array: [String; 2];
 
-        let file = format!("{}/{}", array[1].to_string(), &array[0].to_string());
-        let dir = array[1].to_string();
-        
-        let _ = extract_files(&file, &dir).map_err(|err| return err);
-        
-        search_overlay();
-        
-        // Copies the downloaded image to the config directory
-        let _ = fs::copy(get_code_dir_image_path(), get_config_dir_image_path()).map_err(|err| return err);
+    match result {
+        Ok(value) => array = value,
+        Err(e) => return Err(e.to_string())
+    };
 
-        // If there is a json
-        if Path::new(&get_config_dir_overlay_json_path()).exists() {
-            let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path())
-            .map_err(|err| return err);
+    let file = format!("{}/{}", array[1].to_string(), &array[0].to_string());
+    let dir = array[1].to_string();
+    
+    let _ = extract_files(&file, &dir).map_err(|err| return err);
+    
+    search_overlay();
+    
+    // Copies the downloaded image to the config directory
+    let _ = fs::copy(get_code_dir_image_path(), get_config_dir_image_path()).map_err(|err| return err);
+
+    // If there is a json
+    if Path::new(&get_config_dir_overlay_json_path()).exists() {
+        let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path())
+        .map_err(|err| return err);
     }
 
 
