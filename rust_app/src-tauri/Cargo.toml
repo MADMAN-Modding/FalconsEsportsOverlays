@@ -1,6 +1,6 @@
 [package]
 name = "falcons_esports_overlays_controller"
-version = "1.0.1-2"
+version = "1.0.6"
 description = "Falcons Esports Overlays Controller"
 authors = ["MADMAN-Modding"]
 edition = "2021"
