@@ -125,7 +125,7 @@
               <Shortcut Id="ApplicationStartMenuShortcut" 
                         Name="Falcons Esports Overlays Controller"
                         Description="My Application Description"
-                        Target="[INSTALLFOLDER]falcons_esports_overlays_controller.exe"
+                        Target="[Bin]falcons_esports_overlays_controller.exe"
                         WorkingDirectory="APPLICATIONFOLDER"/>
               <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
               <RegistryValue Root="HKCU" Key="Software\MADMAN-Modding\Falcons_Esports_Overlays_Controller" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
