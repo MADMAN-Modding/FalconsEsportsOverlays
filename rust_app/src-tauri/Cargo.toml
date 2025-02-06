@@ -4,6 +4,8 @@ version = "1.0.6"
 description = "Falcons Esports Overlays Controller"
 authors = ["MADMAN-Modding"]
 edition = "2021"
+license = "MIT"
+homepage = "https://github.com/MADMAN-Modding/FalconsEsportsOverlays"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
