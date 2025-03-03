@@ -144,10 +144,11 @@ pub async fn download_and_extract(preserve: bool) -> Result<(), String> {
 
     // If there is a json
     if Path::new(&get_config_dir_overlay_json_path()).exists() {
-        let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path())
-        .map_err(|err| return err);
-    }
+        let _ = fs::create_dir_all(format!("{}/json", get_code_dir())).map_err(|e| e);
 
+        let _ = fs::copy(get_config_dir_overlay_json_path(), get_overlay_json_path())
+        .map_err(|err| err);
+    }
 
     let _ = config_handler::setup_config_dir(dir).map_err(|err| return err);
 
