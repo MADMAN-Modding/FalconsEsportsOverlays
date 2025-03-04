@@ -20,7 +20,14 @@ function switchOverlay(overlay) {
 
   document.getElementById(overlay).style.backgroundColor = "gray";
 
-  pushNotification("Overlay Changed");
+  let name;
+  if (nameMap[overlay] === undefined) {
+    name = overlay;
+  } else {
+    name = nameMap[overlay];
+  }
+
+  pushNotification(`Overlay Changed to ${name}`);
 }
 
 /**
@@ -112,7 +119,7 @@ async function setupControls() {
   let overlay = await readOverlayJSON("overlay");
 
   // Highlights the active overlay
-  document.getElementById(overlay).style.backgroundColor = "gray";
+  // document.getElementById(overlay).style.backgroundColor = "gray";
 }
 
 /**
@@ -127,10 +134,14 @@ function generateImages() {
 
     let sportEnabled = await readConfigJSON(`${overlay}Checked`);
 
+    let codeDir = await invoke("get_code_dir");
+
     if (sportEnabled === "true") {
+      let url = await getImage(`${codeDir}/overlays/images/${overlay}.png`);
+      
       overlayButtons.innerHTML += `
       <button id="${overlay}" class="overlay-button" onclick="switchOverlay('${overlay}')">
-        <img src="images/${overlay}.png" alt="${nameMap[overlay]}" />
+        <img src="${url}" alt="${nameMap[overlay]}" />
       </button>`
     }
   });

@@ -35,6 +35,7 @@ pub fn get_config_dir() -> String {
     return config_dir.to_string();
 }
 
+#[tauri::command]
 pub fn get_code_dir() -> String {
     format!("{}/{}", get_config_dir(), read_config_json("overlay_dir"))
 }
@@ -57,6 +58,7 @@ pub fn get_config_dir_image_path() -> String {
     format!("{}/Esports-Logo.png", get_config_dir())
 }
 
+#[tauri::command]
 pub fn get_code_dir_image_path() -> String {
     format!("{}/images/Esports-Logo.png", get_code_dir())
 }

@@ -5,6 +5,7 @@ pub mod handlers {
     pub mod http_handler;
     pub mod image_handler;
     pub mod custom_config;
+    pub mod overlay_searcher;
 }
 
 pub mod constants;
@@ -18,6 +19,7 @@ pub fn run() {
     use handlers::http_handler;
     use handlers::image_handler;
     use handlers::custom_config;
+    use handlers::overlay_searcher;
     use constants;
     
     constants::setup();
@@ -37,9 +39,12 @@ pub fn run() {
             http_handler::stop_server,
             constants::get_overlay_json_path,
             constants::get_config_json_path,
+            constants::get_code_dir,
+            constants::get_code_dir_image_path,
             image_handler::get_image_bytes,
             image_handler::copy_image,
             custom_config::setup_custom_config,
+            overlay_searcher::get_overlays_list,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

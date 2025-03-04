@@ -5,7 +5,7 @@ use std::{
 };
 use tokio::fs;
 
-use crate::constants::{self, get_code_dir_image_path};
+use crate::constants::get_code_dir_image_path;
 
 /// Copies the image from bytes to the image in the code directory
 /// 
@@ -34,9 +34,9 @@ pub async fn copy_image(bytes: Vec<u8>) -> Result<String, String> {
 /// * `Ok(Vec<u8>>` - If the read is successful it will send the data to the frontend
 /// * 'Err(String)` - If the read fails, it will send the error to the frontend and the default image will be displayed
 #[tauri::command]
-pub fn get_image_bytes() -> Result<Vec<u8>, String> {
+pub fn get_image_bytes(image_path: String) -> Result<Vec<u8>, String> {
     let image: Result<File, std::io::Error> =
-        File::open(constants::get_code_dir_image_path());
+        File::open(image_path);
 
     if image.is_err() {
         return Err(image.unwrap_err().to_string());

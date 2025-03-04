@@ -2,7 +2,8 @@
 const invoke = window.__TAURI__.core.invoke;
 
 /** Global access to the array of overlays */
-let overlays = ["ssbu", "kart", "overwatch", "rocketLeague", "splat", "val", "hearth", "lol", "chess", "madden", "nba2K"];
+// let overlays = ["ssbu", "kart", "overwatch", "rocketLeague", "splat", "val", "hearth", "lol", "chess", "madden", "nba2K"];
+let overlays;
 
 /** Map of the sport titles */
 let nameMap = {
@@ -28,6 +29,8 @@ let firstRun = true;
  */
 async function setupApp() {
     if (firstRun) {
+        overlays = await invoke('get_overlays_list');
+        
         // Check if the app should auto update or auto start the server
         setTimeout(async () => {
             if (await readConfigJSON("autoUpdate") === "true") {

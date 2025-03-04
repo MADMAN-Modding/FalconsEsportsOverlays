@@ -19,6 +19,7 @@ async function setupConfig() {
     // Sets the checkbox values
     document.getElementById("autoUpdate").checked = (await readConfigJSON("autoUpdate") === "true");
     document.getElementById("autoServer").checked = (await readConfigJSON("autoServer") === "true");
+    document.getElementById("overlayURL").value = await readConfigJSON("overlayURL");
 
     setImage();
 }
@@ -37,7 +38,14 @@ function generateCheckBoxes() {
 
     // Makes the checkboxes
     overlays.forEach(overlay => {
-        checkBoxes.innerHTML += `<input type="checkbox" onchange="toggleSport()" id="${overlay}" name="${overlay}"><label for="${overlay}">${nameMap[overlay]}</label><br>`
+        let name;
+        if (nameMap[overlay] === undefined) {
+            name = overlay;
+        } else {
+            name = nameMap[overlay];
+        }
+
+        checkBoxes.innerHTML += `<input type="checkbox" onchange="toggleSport()" id="${overlay}" name="${overlay}"><label for="${overlay}">${name}</label><br>`
     });
 }
 
@@ -148,7 +156,9 @@ async function updateImage() {
 async function setImage() {
     let bytes;
     
-    bytes = await invoke('get_image_bytes')
+    let imagePath = await invoke("get_code_dir_image_path");
+
+    bytes = await invoke('get_image_bytes', {"imagePath" : imagePath})
         .then((value) => bytes = value)
         .catch((error) => {pushNotification(error); return;});
 
@@ -158,25 +168,6 @@ async function setImage() {
     const imageURL = URL.createObjectURL(blob);
 
     document.getElementById("esportsLogo").src = imageURL;
-}
-
-/**
- * Reads the supplied file as an `ArrayBuffer`
- * @param {File} file 
- * @returns {Promise<ArrayBuffer, Error>} Promise of the file
- */
-function readFile(file) {
-    return new Promise((resolve, reject) => {
-        // Create file reader
-        let reader = new FileReader();
-
-        // Register event listeners
-        reader.addEventListener("loadend", e => resolve(e.target.result));
-        reader.addEventListener("error", reject);
-
-        // Read file
-        reader.readAsArrayBuffer(file);
-    });
 }
 
 /**
@@ -252,4 +243,12 @@ async function setNewValues() {
     
     // Applies the new logo
     await setImage();
+}
+
+function changeOverlayURL() {
+    let url = document.getElementById("overlayURL").value;
+
+    writeConfigJSON("overlayURL", url);
+
+    pushNotification("Overlay URL Updated");
 }
