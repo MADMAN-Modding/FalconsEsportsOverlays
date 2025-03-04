@@ -5,6 +5,8 @@ use serde_json::{json, Value};
 
 use crate::constants;
 
+use super::download_handler::download_files;
+
 /// Reads the overlay json and returns the value of the requested key
 /// 
 /// # Arguments
@@ -181,6 +183,11 @@ pub fn reset_config() {
 
         write_config(key.0.to_owned(), value.as_str());
     }
+}
+
+#[tauri::command]
+pub fn get_names_json() {
+    let download = download_files("https://raw.githubusercontent.com/MADMAN-Modding/FalconsEsportsOverlays/refs/heads/main/rust_app/names.json", "names.json");
 }
 
 pub fn get_default_json_data() -> serde_json::Value {

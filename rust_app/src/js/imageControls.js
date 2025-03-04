@@ -15,7 +15,7 @@ async function getImage(path) {
     
     bytes = await invoke('get_image_bytes', {"imagePath" : path})
         .then((value) => bytes = value)
-        .catch((error) => {pushNotification(error); return null;});
+        .catch((error) => {pushNotification("Error Loading Images. Check if the overlay is downloaded"); return null;});
 
     if (bytes === null) {
         return "images/missing.jpg";
