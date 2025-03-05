@@ -1,7 +1,7 @@
 //! Handles the `Esports-Logo.png` file
 use std::{
     fs::File,
-    io::{BufReader, Read}, thread::{self, JoinHandle},
+    io::{BufReader, Read}, thread::{self, JoinHandle}, vec,
 };
 use tokio::fs;
 
@@ -73,7 +73,7 @@ async fn threaded_get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Ve
                 File::open(image_path);
 
             if image.is_err() {
-                return Err(image.unwrap_err().to_string());
+                return Ok(vec![0 as u8]);
             }
             
             let mut reader: BufReader<File> = BufReader::new(image.unwrap());

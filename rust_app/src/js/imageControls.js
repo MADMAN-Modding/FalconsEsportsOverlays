@@ -47,18 +47,16 @@ async function getImageArray(paths) {
     let bytes = [];
     let urls = [];
 
-    // invoke('get_image_vec_bytes', {"imagePaths" : paths})
-    //     .then((value) => bytes = value)
-    //     .catch(() => {pushNotification("Error Loading Images. Check if the overlay is downloaded"); bytes.push(null);}
-    // );
-    
     bytes = await invoke('get_image_vec_bytes', {"imagePaths" : paths});
 
-    // Check for null values
+    console.log(bytes);
+
+    // Check if the image is missing
     for (let i = 0; i < bytes.length; i++) {
-        if (bytes[i] === null) {
-            bytes[i] = "images/missing.jpg";
+        if (bytes[i][0] === 0) {
+            urls.push("images/missing.jpg");
         } else {
+            // Convert the bytes to a Uint8Array
             bytes[i] = new Uint8Array(bytes[i]);
 
             const blob = new Blob([bytes[i]], { type: "image/png" });
@@ -97,7 +95,6 @@ async function genURLS() {
     let paths = [];
     let codeDir = await invoke("get_code_dir");
     overlays.forEach(overlay => {
-        console.log(overlay);
         paths.push(`${codeDir}/overlays/images/${overlay}.png`);
     });
 
