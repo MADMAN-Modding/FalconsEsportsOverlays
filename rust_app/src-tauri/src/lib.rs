@@ -44,6 +44,7 @@ pub fn run() {
             constants::get_code_dir_image_path,
             image_handler::get_image_bytes,
             image_handler::copy_image,
+            image_handler::get_image_vec_bytes,
             custom_config::setup_custom_config,
             overlay_searcher::get_overlays_list,
         ])

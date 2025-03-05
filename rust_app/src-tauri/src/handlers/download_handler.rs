@@ -21,7 +21,7 @@ use super::{config_handler, json_handler::read_config_json};
 /// Used to get the zip file for ```extract_files```
 ///
 /// # Returns
-/// `Ok([String; 2]` - Returns the filename and directory the zip file is in
+/// `Ok([String; 2])` - Returns the filename and directory the zip file is in
 ///
 /// `Box<dyn Error>>` - Returns an error if there's an issue downloading files
 pub fn download_files(url: &str, filename: &str) -> Result<[String; 2], String> {

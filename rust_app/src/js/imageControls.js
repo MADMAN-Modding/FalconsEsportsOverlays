@@ -7,7 +7,7 @@
  * Converts the `Uint8Array` into a `Blob` with the MIME type `image/png`.
  * 
  * Create of an `ObjectURL` of the blob
- * @returns {URL}
+ * @returns {Promise<URL>}
  * @async
 */
 async function getImage(path) {
@@ -15,7 +15,7 @@ async function getImage(path) {
     
     bytes = await invoke('get_image_bytes', {"imagePath" : path})
         .then((value) => bytes = value)
-        .catch((error) => {pushNotification("Error Loading Images. Check if the overlay is downloaded"); return null;});
+        .catch(() => {pushNotification("Error Loading Images. Check if the overlay is downloaded"); return null;});
 
     if (bytes === null) {
         return "images/missing.jpg";
@@ -27,6 +27,48 @@ async function getImage(path) {
     const imageURL = URL.createObjectURL(blob);
 
     return imageURL;
+}
+
+/**
+ * Retrieves the bytes of the code directory image.
+ * 
+ * Creates a `Uint8Array` from the retrieved bytes.
+ * 
+ * Converts the `Uint8Array` into a `Blob` with the MIME type `image/png`.
+ * 
+ * Create of an `ObjectURL` of the blob
+ * 
+ * @param {Array<String>} paths
+ * 
+ * @async 
+ * @returns {Promise<Array<URL>, Error>} Promise of the images
+ */
+async function getImageArray(paths) {
+    let bytes = [];
+    let urls = [];
+
+    // invoke('get_image_vec_bytes', {"imagePaths" : paths})
+    //     .then((value) => bytes = value)
+    //     .catch(() => {pushNotification("Error Loading Images. Check if the overlay is downloaded"); bytes.push(null);}
+    // );
+    
+    bytes = await invoke('get_image_vec_bytes', {"imagePaths" : paths});
+
+    // Check for null values
+    for (let i = 0; i < bytes.length; i++) {
+        if (bytes[i] === null) {
+            console.log("Error Loading Images. Check if the overlay is downloaded");
+            bytes[i] = "images/missing.jpg";
+        } else {
+            bytes[i] = new Uint8Array(bytes[i]);
+
+            const blob = new Blob([bytes[i]], { type: "image/png" });
+            urls.push(URL.createObjectURL(blob));
+            console.log(urls[i]);
+        }
+    }
+
+    return urls;
 }
 
 /**

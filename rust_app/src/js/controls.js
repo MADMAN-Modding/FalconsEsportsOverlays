@@ -4,6 +4,8 @@ let currentOverlay = "ssbu";
 /** Array of all the different `JSON` keys */
 let keys = ["scoreLeft", "scoreRight", "playerNamesLeft", "playerNamesRight", "teamNameLeft", "teamNameRight", "teamColorLeft", "teamColorRight", "week"];
 
+let urls = ["NOT_SET"];
+
 /**
  * Changes which sport's overlay is being displayed
  * @param {String} overlay 
@@ -128,23 +130,34 @@ async function setupControls() {
  * @var nameMap - This is used for the alt text of the images  
  * @returns {void}
  */
-function generateImages() {
-  overlays.forEach(async overlay => {
+async function generateImages() {
+  if (urls[0] === "NOT_SET") {
+    let paths = [];
+    let codeDir = await invoke("get_code_dir");
+    overlays.forEach(async overlay => {
+      paths.push(`${codeDir}/overlays/images/${overlay}.png`);
+    });
+  
+    urls = await getImageArray(paths);
+  }
+  
+  for (let index = 0; index < overlays.length; index++) {
+    let overlay = overlays[index];
+    
     let overlayButtons = document.getElementById("overlayButtons");
 
     let sportEnabled = await readConfigJSON(`${overlay}Checked`);
 
-    let codeDir = await invoke("get_code_dir");
-
     if (sportEnabled === "true") {
-      let url = await getImage(`${codeDir}/overlays/images/${overlay}.png`);
+      console.log(urls[index]);
+      let url = urls[index];
       
       overlayButtons.innerHTML += `
       <button id="${overlay}" class="overlay-button" onclick="switchOverlay('${overlay}')">
         <img src="${url}" alt="${nameMap[overlay]}" />
       </button>`
     }
-  });
+  };
 }
 
 /**

@@ -1,7 +1,7 @@
 //! Handles the `Esports-Logo.png` file
 use std::{
     fs::File,
-    io::{BufReader, Read},
+    io::{BufReader, Read}, thread,
 };
 use tokio::fs;
 
@@ -31,7 +31,7 @@ pub async fn copy_image(bytes: Vec<u8>) -> Result<String, String> {
 /// These bytes are used to display the image on the frontend
 /// 
 /// # Returns
-/// * `Ok(Vec<u8>>` - If the read is successful it will send the data to the frontend
+/// * `Ok(Vec<u8>)` - If the read is successful it will send the data to the frontend
 /// * 'Err(String)` - If the read fails, it will send the error to the frontend and the default image will be displayed
 #[tauri::command]
 pub fn get_image_bytes(image_path: String) -> Result<Vec<u8>, String> {
@@ -53,4 +53,41 @@ pub fn get_image_bytes(image_path: String) -> Result<Vec<u8>, String> {
         Err(error) => Err(error.to_string()),
     }
 
+}
+
+#[tauri::command]
+pub async fn get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Vec<u8>>, String> {
+    threaded_get_image_vec_bytes(image_paths).await
+}
+
+async fn threaded_get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Vec<u8>>, String> {
+    let mut image_vec: Vec<Vec<u8>> = Vec::new();
+    
+    // Loop through the image paths and read the images
+    for image_path in image_paths {
+        let thread = thread::spawn(move|| {    
+            // Open the image file
+            let image: Result<File, std::io::Error> =
+                File::open(image_path);
+
+            if image.is_err() {
+                return Err(image.unwrap_err().to_string());
+            }
+            
+            let mut reader: BufReader<File> = BufReader::new(image.unwrap());
+
+            let mut buffer: Vec<u8> = Vec::new();
+
+            reader.read_to_end(&mut buffer).map_err(|e| e.to_string()).unwrap();
+
+            Ok(buffer)
+        });
+
+        match thread.join().unwrap() {
+                Ok(buffer) => image_vec.push(buffer),
+                Err(error) => return Err(error.to_string()),
+            }
+    }
+    Ok(image_vec)
+        
 }
