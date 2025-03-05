@@ -131,14 +131,16 @@ async function setupControls() {
  * @returns {void}
  */
 async function generateImages() {
-  if (urls[0] === "NOT_SET") {
+  if (urls[0] == "NOT_SET") {
     let paths = [];
     let codeDir = await invoke("get_code_dir");
     overlays.forEach(async overlay => {
       paths.push(`${codeDir}/overlays/images/${overlay}.png`);
     });
   
-    urls = await getImageArray(paths);
+    await genURLS();
+  } else {
+    console.log("Images Already Generated");
   }
   
   for (let index = 0; index < overlays.length; index++) {

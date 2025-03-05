@@ -8,7 +8,7 @@ async function downloadFiles(action) {
     pushNotification(`${action.replace("Update", "Updat")}ing Overlays`);
 
     invoke('download_and_extract', { "preserve" : true})
-        .then(() => pushNotification(`${action} Complete`))
+        .then(() => {genURLS(); pushNotification(`${action} Complete`)})
         .catch((error) => pushNotification(`${action} Failed: ${error}`));
 }
 
@@ -21,6 +21,7 @@ function resetFiles() {
     pushNotification("Resetting Overlays");
 
     invoke('reset_overlays')
-        .then(() => pushNotification("Reset Complete"))
+        .then(() => {genURLS(); pushNotification("Reset Complete")})
         .catch((error) => pushNotification(`Reset Failed: ${error}`));
+
 }

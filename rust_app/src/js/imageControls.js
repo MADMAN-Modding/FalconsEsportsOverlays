@@ -87,3 +87,19 @@ function readFile(file) {
         reader.readAsArrayBuffer(file);
     });
 }
+
+/**
+ * Generates the URLs for the images
+ * @async
+ * @returns {Promise<void>}
+ */
+async function genURLS() {
+    let paths = [];
+    let codeDir = await invoke("get_code_dir");
+    overlays.forEach(overlay => {
+        console.log(overlay);
+        paths.push(`${codeDir}/overlays/images/${overlay}.png`);
+    });
+
+    urls = await getImageArray(paths);
+}
