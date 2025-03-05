@@ -1,7 +1,7 @@
 //! Handles the `Esports-Logo.png` file
 use std::{
     fs::File,
-    io::{BufReader, Read}, thread,
+    io::{BufReader, Read}, thread::{self, JoinHandle},
 };
 use tokio::fs;
 
@@ -63,9 +63,11 @@ pub async fn get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Vec<u8>
 async fn threaded_get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Vec<u8>>, String> {
     let mut image_vec: Vec<Vec<u8>> = Vec::new();
     
+    let mut threads: Vec<JoinHandle<Result<Vec<u8>, String>>> = Vec::new();
+
     // Loop through the image paths and read the images
     for image_path in image_paths {
-        let thread = thread::spawn(move|| {    
+        let thread: JoinHandle<Result<Vec<u8>, String>> = thread::spawn(move|| {    
             // Open the image file
             let image: Result<File, std::io::Error> =
                 File::open(image_path);
@@ -83,11 +85,16 @@ async fn threaded_get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Ve
             Ok(buffer)
         });
 
-        match thread.join().unwrap() {
-                Ok(buffer) => image_vec.push(buffer),
-                Err(error) => return Err(error.to_string()),
-            }
+        threads.push(thread);
     }
+
+    for thread in threads {
+        match thread.join().unwrap() {
+            Ok(bytes) => image_vec.push(bytes),
+            Err(err) => return Err(err),
+        }
+    }
+
     Ok(image_vec)
         
 }

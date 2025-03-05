@@ -57,14 +57,12 @@ async function getImageArray(paths) {
     // Check for null values
     for (let i = 0; i < bytes.length; i++) {
         if (bytes[i] === null) {
-            console.log("Error Loading Images. Check if the overlay is downloaded");
             bytes[i] = "images/missing.jpg";
         } else {
             bytes[i] = new Uint8Array(bytes[i]);
 
             const blob = new Blob([bytes[i]], { type: "image/png" });
             urls.push(URL.createObjectURL(blob));
-            console.log(urls[i]);
         }
     }
 
