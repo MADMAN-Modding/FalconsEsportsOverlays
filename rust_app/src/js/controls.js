@@ -150,7 +150,7 @@ async function generateImages() {
 
     let sportEnabled = await readConfigJSON(`${overlay}Checked`);
 
-    if (sportEnabled === "true") {
+    if (sportEnabled !== "false") {
       let url = urls[index];
       
       overlayButtons.innerHTML += `

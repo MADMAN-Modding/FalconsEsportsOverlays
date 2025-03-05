@@ -18,5 +18,7 @@ fn find_overlays() -> Vec<String> {
         }
     }
 
+    overlays.sort();
+
     overlays
 }
