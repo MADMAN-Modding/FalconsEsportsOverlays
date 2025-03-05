@@ -46,8 +46,8 @@ pub fn read_custom_json(key: &str) -> String {
 /// Reads the json at the supplied path and returns the value of the requested key
 /// 
 /// # Arguments
-/// * 'key: &str' - The key to be read from the json file
-/// * 'path': String' - The path to the json file
+/// * `key: &str` - The key to be read from the json file
+/// * `path: String` - The path to the json file
 /// 
 /// #Returns
 /// * 'String' - The data at the desired key
@@ -65,6 +65,11 @@ pub fn read_json(key: &str, path: String) -> String {
 /// 
 /// # Returns
 /// * `Value` - Contains the JSON data
+/// 
+/// # Examples
+/// ```ignore
+/// open_json("random_path/overlay.json");
+/// ```
 fn open_json(path: String) -> Value {
     let json_data: Value;
 
@@ -186,8 +191,10 @@ pub fn reset_config() {
 }
 
 #[tauri::command]
-pub fn get_names_json() {
+pub fn get_name_map() -> Value {
     let download = download_files("https://raw.githubusercontent.com/MADMAN-Modding/FalconsEsportsOverlays/refs/heads/main/rust_app/names.json", "names.json");
+
+    open_json(format!("{}/{}", download.as_ref().unwrap()[1], download.as_ref().unwrap()[0]))
 }
 
 pub fn get_default_json_data() -> serde_json::Value {

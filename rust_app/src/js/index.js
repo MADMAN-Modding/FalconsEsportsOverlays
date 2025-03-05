@@ -6,19 +6,20 @@ const invoke = window.__TAURI__.core.invoke;
 let overlays;
 
 /** Map of the sport titles */
-let nameMap = {
-    "ssbu": "Super Smash Bros. Ultimate",
-    "kart": "Mario Kart 8 Deluxe",
-    "overwatch": "Overwatch",
-    "rocketLeague": "Rocket League",
-    "splat": "Splatoon",
-    "val": "Valorant",
-    "hearth": "Hearth Stone",
-    "lol": "League of Legends",
-    "chess": "Chess",
-    "madden": "Madden",
-    "nba2K": "NBA 2K"
-};
+// let nameMap = {
+//     "ssbu": "Super Smash Bros. Ultimate",
+//     "kart": "Mario Kart 8 Deluxe",
+//     "overwatch": "Overwatch",
+//     "rocketLeague": "Rocket League",
+//     "splat": "Splatoon",
+//     "val": "Valorant",
+//     "hearth": "Hearth Stone",
+//     "lol": "League of Legends",
+//     "chess": "Chess",
+//     "madden": "Madden",
+//     "nba2K": "NBA 2K"
+// };
+let nameMap;
 
 let firstRun = true;
 
@@ -30,6 +31,8 @@ let firstRun = true;
 async function setupApp() {
     if (firstRun) {
         overlays = await invoke('get_overlays_list');
+
+        nameMap = await invoke('get_name_map');
         
         // Check if the app should auto update or auto start the server
         setTimeout(async () => {
@@ -44,6 +47,11 @@ async function setupApp() {
         setAppColor(await readConfigJSON('appColor'), true);
         setColumnColor(await readConfigJSON('columnColor'), true);
         firstRun = false;
+
+        // Check if the overlay file is empty
+        if (overlays.length === 0) {
+            pushNotification("No overlays have been found. Please download the overlays.");
+        }
     }
 
     // Used to generate the overlay file if it doesn't exist
