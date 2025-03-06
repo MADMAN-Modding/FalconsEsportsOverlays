@@ -143,7 +143,7 @@ async function generateImages() {
     console.log("Images Already Generated");
   }
   
-  overlayButtons.innerHTML += "<div class='row'>";
+  // overlayButtons.innerHTML += "<div class='row'>";
 
   for (let index = 0; index < overlays.length; index++) {
     let overlay = overlays[index];
@@ -165,7 +165,7 @@ async function generateImages() {
   };
 
 
-  overlayButtons.innerHTML += "</div>";
+  // overlayButtons.innerHTML += "</div>";
 }
 
 /**
