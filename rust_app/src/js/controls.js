@@ -143,6 +143,8 @@ async function generateImages() {
     console.log("Images Already Generated");
   }
   
+  overlayButtons.innerHTML += "<div class='row'>";
+
   for (let index = 0; index < overlays.length; index++) {
     let overlay = overlays[index];
     
@@ -154,11 +156,16 @@ async function generateImages() {
       let url = urls[index];
       
       overlayButtons.innerHTML += `
+      <div class="col">
       <button id="${overlay}" class="overlay-button" onclick="switchOverlay('${overlay}')">
-        <img src="${url}" alt="${nameMap[overlay]}" />
-      </button>`
+        <img src="${url}" class="img-fluid" alt="${nameMap[overlay]}" />
+      </button>
+      </div>`
     }
   };
+
+
+  overlayButtons.innerHTML += "</div>";
 }
 
 /**
