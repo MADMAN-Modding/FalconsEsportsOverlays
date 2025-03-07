@@ -192,7 +192,7 @@ pub fn reset_config() {
 
 #[tauri::command]
 pub fn get_name_map() -> Value {
-    let download = download_files("https://dchs-esports.org/static/names.json", "names.json");
+    let download = download_files("https://dchs-esports.org/static/overlay_data/names.json", "names.json");
 
     open_json(format!("{}/{}", download.as_ref().unwrap()[1], download.as_ref().unwrap()[0]))
 }
