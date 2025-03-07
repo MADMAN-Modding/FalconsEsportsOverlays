@@ -13,7 +13,7 @@ fn find_overlays() -> Vec<String> {
         let entry = entry.unwrap();
         
         // If the path is a file and it has a .html file, it will write the path to the config file
-        if entry.path().is_file() {
+        if entry.path().is_file() && entry.path().to_str().unwrap().contains(".html") {
             overlays.push(entry.file_name().into_string().unwrap().replace(".html", "").into());
         }
     }

@@ -13,7 +13,7 @@ async function setupConfig() {
     overlays.forEach(async overlay => {
         let value = await readConfigJSON(`${overlay}Checked`);
 
-        document.getElementById(`${overlay}`).checked = (value === "true");
+        document.getElementById(`${overlay}`).checked = (value !== "false");
     })
 
     // Sets the checkbox values
