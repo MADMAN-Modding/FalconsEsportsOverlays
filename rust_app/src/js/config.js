@@ -4,9 +4,11 @@
  * @async
 */
 async function setupConfig() {
-    let color = await readConfigJSON("appColor");
+    let appColor = await readConfigJSON("appColor");
+    let columnColor = await readConfigJSON("columnColor");
 
-    document.getElementById("appColorInput").value = `${color}`;
+    document.getElementById("appColorInput").value = `${appColor}`;
+    document.getElementById("columnColorInput").value = `${columnColor}`;
 
     generateCheckBoxes();
 
@@ -52,10 +54,10 @@ function generateCheckBoxes() {
 /**   
  * Gets the color when the new value is set and sends it over to @function setColor
 */
-function getColor() {
+function setAppColor() {
     let color = document.getElementById("appColorInput").value;
 
-    setAppColor(color, false);
+    updateAppColor(color, false);
 }
 
 /**
@@ -65,7 +67,7 @@ function getColor() {
  * @returns {void}
  * @async
  */
-async function setAppColor(color, setup) {
+async function updateAppColor(color, setup) {
     // Checks if the color is pure white
     if (color == "#ffffff") {
         pushNotification("Don't set the color to white...");
@@ -83,6 +85,12 @@ async function setAppColor(color, setup) {
     document.documentElement.style.setProperty('--app-color', `${color}`);
 }
 
+function setColumnColor() {
+    let color = document.getElementById("columnColorInput").value;
+
+    updateColumnColor(color, false);
+}
+
 /**
  * Sets the color of the column and saves it to the config
  * @param {String} color Color to set the column to 
@@ -90,7 +98,7 @@ async function setAppColor(color, setup) {
  * @returns {void}
  * @async
  */
-async function setColumnColor(color, setup) {
+async function updateColumnColor(color, setup) {
     // If this isn't the setup it will write the new value to the config and then notify the user
     if (!setup) {
         writeConfigJSON("columnColor", color);
@@ -101,6 +109,7 @@ async function setColumnColor(color, setup) {
     // Sets the color of the app
     document.documentElement.style.setProperty('--column-color', `${color}`);
 }
+
 
 /**
  * When any of the checkboxes are pressed;
@@ -196,10 +205,10 @@ async function reset_config() {
     await switchPage("config")
 
     // Set page color
-    setAppColor(await readConfigJSON("appColor"), false);
+    updateAppColor(await readConfigJSON("appColor"), false);
 
     // Set column color
-    setColumnColor(await readConfigJSON("columnColor"), false);
+    updateColumnColor(await readConfigJSON("columnColor"), false);
 
     // Notifies the user the reset completed
     pushNotification("Config Reset");
@@ -234,7 +243,7 @@ async function setNewValues() {
     console.log(appColor);
 
     // Sets the new value of the app color
-    setAppColor(appColor, true);
+    updateAppColor(appColor, true);
 
     document.getElementById("appColorInput").value = `${appColor}`;
 

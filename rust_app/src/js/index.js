@@ -44,8 +44,8 @@ async function setupApp() {
             }
         }, 1000);
 
-        setAppColor(await readConfigJSON('appColor'), true);
-        setColumnColor(await readConfigJSON('columnColor'), true);
+        updateAppColor(await readConfigJSON('appColor'), true);
+        updateColumnColor(await readConfigJSON('columnColor'), true);
         firstRun = false;
 
         // Check if the overlay file is empty
