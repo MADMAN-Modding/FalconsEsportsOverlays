@@ -1,8 +1,8 @@
 /** Invoke object for the whole app */
 const invoke = window.__TAURI__.core.invoke;
 
-/** Global access to the array of overlays */
-let overlays;
+/** Array of overlays */
+let overlays = [];
 
 /** Map of the sport titles */
 let nameMap;

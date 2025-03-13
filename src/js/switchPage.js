@@ -25,6 +25,8 @@ async function switchPage(page) {
         setupConfig(); // Setup the configuration page.
     } else if (page == "main") {
         setupApp(); // Setup the main app page.
+    } else if (page == "files") {
+        setupDownloads(); //SEtup the downloads page
     }
 }
 

@@ -4,6 +4,7 @@ let currentOverlay = "ssbu";
 /** Array of all the different `JSON` keys */
 let keys = ["scoreLeft", "scoreRight", "playerNamesLeft", "playerNamesRight", "teamNameLeft", "teamNameRight", "teamColorLeft", "teamColorRight", "week"];
 
+/**TAURI URLs for the overlay images */
 let urls = ["NOT_SET"];
 
 /**
@@ -139,21 +140,19 @@ async function generateImages() {
     });
   
     await genURLS();
-  } else {
-    console.log("Images Already Generated");
   }
   
   // overlayButtons.innerHTML += "<div class='row'>";
 
-  for (let index = 0; index < overlays.length; index++) {
-    let overlay = overlays[index];
+  for (let i = 0; i < overlays.length; i++) {
+    let overlay = overlays[i];
     
     let overlayButtons = document.getElementById("overlayButtons");
 
     let sportEnabled = await readConfigJSON(`${overlay}Checked`);
 
     if (sportEnabled !== "false") {
-      let url = urls[index];
+      let url = urls[i];
       
       overlayButtons.innerHTML += `
       <div class="col">
