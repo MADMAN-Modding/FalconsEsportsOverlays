@@ -21,6 +21,10 @@
   margin-left: 5px;
 }
 
+.overlay-buttons col {
+  max-width: 80px;
+}
+
 .overlay-button {
   background-color: transparent;
   border: none;

@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 
 falcons_esports_overlays_controller
+Cargo.lock

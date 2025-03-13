@@ -10,6 +10,8 @@ async function downloadFiles(action) {
     invoke('download_and_extract', { "preserve" : true})
         .then(() => {genURLS(); pushNotification(`${action} Complete`)})
         .catch((error) => pushNotification(`${action} Failed: ${error}`));
+
+    updateOverlayList();
 }
 
 /**
@@ -24,4 +26,5 @@ function resetFiles() {
         .then(() => {genURLS(); pushNotification("Reset Complete")})
         .catch((error) => pushNotification(`Reset Failed: ${error}`));
 
+    updateOverlayList();
 }
