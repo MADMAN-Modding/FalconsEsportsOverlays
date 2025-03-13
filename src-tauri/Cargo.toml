@@ -1,6 +1,6 @@
 [package]
 name = "falcons_esports_overlays_controller"
-version = "3.0.7"
+version = "3.1.0"
 description = "An Esports overlay controller with lots of flexibility"
 authors = ["MADMAN-Modding"]
 edition = "2021"
