@@ -3,7 +3,7 @@ use std::{fs, path::Path};
 
 use serde_json::{json, Value};
 
-use crate::constants;
+use crate::constants::{self, get_launch_json_path};
 
 use super::download_handler::download_files;
 
@@ -190,12 +190,22 @@ pub fn reset_config() {
     }
 }
 
+pub fn get_launch_json() -> Result<[String; 2], String> {
+    download_files("https://dchs-esports.org/static/overlay_data/launch.json", "launch.json")
+}
+
 #[tauri::command]
 pub fn get_name_map() -> Value {
-    let download = download_files("https://dchs-esports.org/static/overlay_data/names.json", "names.json");
-
-    open_json(format!("{}/{}", download.as_ref().unwrap()[1], download.as_ref().unwrap()[0]))
+    open_json(get_launch_json_path())["overlays"].clone()
 }
+
+pub fn get_overlay_info() -> Result<Value, String> {
+    let json = open_json(get_launch_json_path());
+
+    Ok(json["downloads"].clone())
+}
+
+
 
 pub fn get_default_json_data() -> serde_json::Value {
     json!({

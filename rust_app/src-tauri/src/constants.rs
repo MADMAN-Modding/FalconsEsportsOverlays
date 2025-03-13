@@ -1,3 +1,5 @@
+use std::fmt::format;
+
 use directories::ProjectDirs;
 use once_cell::sync::OnceCell;
 
@@ -65,4 +67,8 @@ pub fn get_code_dir_image_path() -> String {
 
 pub fn get_custom_config_path() -> String {
     format!("{}/custom_config.json", get_config_dir())
+}
+
+pub fn get_launch_json_path() -> String {
+    format!("{}/launch.json", get_code_dir())
 }
