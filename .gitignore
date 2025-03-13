@@ -1,55 +1,26 @@
-app/testing/*
-json/*
-app/build/*
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-config.json
+node_modules
+dist
+dist-ssr
+*.local
 
-# Miscellaneous
-app/*.class
-app/*.log
-app/*.pyc
-app/*.swp
-app/.DS_Store
-app/.atom/
-app/.buildlog/
-app/.history
-app/.svn/
-app/migrate_working_dir/
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# IntelliJ related
-app/*.iml
-app/*.ipr
-app/*.iws
-app/.idea/
-
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
-app/**/doc/api/
-app/**/ios/Flutter/.last_build_id
-app/.dart_tool/
-app/.flutter-plugins
-app/.flutter-plugins-dependencies
-app/.pub-cache/
-app/.pub/
-app/build/
-
-# Symbolication related
-app/app.*.symbols
-
-# Obfuscation related
-app/app.*.map.json
-
-# Android Studio will place build artifacts here
-app/android/app/debug
-app/android/app/profile
-app/android/app/release
-
-**generated**
-**Generated**
-**.lock
-app/macos/Flutter/ephemeral/**
-.vscode
+falcons_esports_overlays_controller
