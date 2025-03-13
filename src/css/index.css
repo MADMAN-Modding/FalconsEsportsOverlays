@@ -1,0 +1,64 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --column-color: #ffffff;
+}
+
+/* Navbar */
+#navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 100vh;
+  position: absolute;
+  background-color: var(--column-color);
+}
+
+#navbar li {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  display: block;
+  color: black;
+  text-align: center;
+  font-size: 15px;
+}
+
+#navbar li:hover {
+  cursor: pointer;
+}
+
+#page {
+  position: absolute;
+  left: 80px;
+  top: 0px;
+  width: calc(100vw - 80px);
+  height: 100vh;
+}
+
+#notification {
+  position: absolute;
+  right: 20px;
+  top: -80px;
+  width: 200px;
+  height: fit-content;
+  background-color: white;
+  border-radius: 20%;
+  transition: top 0.3s;
+}
+
+#notificationText {
+  color: black;
+  text-align: center;
+  height: fit-content;
+}
+
+a {
+  color: white;
+}
