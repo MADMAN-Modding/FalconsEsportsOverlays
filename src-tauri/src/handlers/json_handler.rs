@@ -1,5 +1,5 @@
 //! This module is used for read and writing the json data used for the overlays and the app
-use std::{fs, path::Path};
+use std::{collections::HashMap, fs, path::Path};
 
 use serde_json::{json, Value};
 
@@ -195,10 +195,12 @@ pub fn get_launch_json() -> Result<[String; 2], String> {
 }
 
 #[tauri::command]
-pub fn get_name_map() -> Value {
-    open_json(get_launch_json_path())["overlays"].clone()
-}
+pub fn get_name_map() -> HashMap<String, Value> {
+    let json = open_json(get_launch_json_path())["overlays"].clone();
 
+    // This makes it acceptable for JavaScript
+    json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
+}
 pub fn get_overlay_info() -> Result<Value, String> {
     let json = open_json(get_launch_json_path());
 

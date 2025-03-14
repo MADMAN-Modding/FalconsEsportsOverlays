@@ -166,3 +166,21 @@ fn preserve_data() {
         let _ = fs::copy(get_overlay_json_path(), get_config_dir_overlay_json_path());
     }
 }
+
+#[tauri::command]
+pub fn download_selected_overlay(overlay: String) -> Result<String, String> {
+    let url = "https://madman-modding.github.io/FalconsEsportsOverlaysData";
+
+    let code_dir = get_code_dir();
+
+    // Downloads the overlay html
+    let _ = download_files(format!("{}/overlays/{}.html", url, overlay).as_str(), format!("{}/overlays/{}.html", code_dir, overlay).as_str()).map_err(|e| e);
+
+    // Downloads the overlay css
+    let _ = download_files(format!("{}/css/{}.css", url, overlay).as_str(), format!("{}/css/{}.css", code_dir, overlay).as_str()).map_err(|e| e);
+
+    // Downloads the overlay javascript
+    let _ = download_files(format!("{}/js/{}.js", url, overlay).as_str(), format!("{}/js/{}.js", code_dir, overlay).as_str()).map_err(|e| e);
+
+    Ok("Overlay Obtained".to_string())
+}

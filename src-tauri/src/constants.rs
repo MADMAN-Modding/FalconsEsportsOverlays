@@ -68,7 +68,7 @@ pub fn get_custom_config_path() -> String {
 }
 
 pub fn get_launch_json_path() -> String {
-    format!("{}/launch.json", get_code_dir())
+    format!("{}/launch.json", get_config_dir())
 }
 
 pub fn get_overlays_path() -> String {
