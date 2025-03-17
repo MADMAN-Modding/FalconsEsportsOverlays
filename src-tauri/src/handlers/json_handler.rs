@@ -118,6 +118,8 @@ pub fn init_json(path: String) -> Value {
             "playerNamesLeft": "MADMAN-Modding",
             "playerNamesRight": "Check out my Github"
         });
+    } else if path.contains("launch.json") {
+        json_data = json!({"overlays" : []})
     } else {
         json_data = get_default_json_data();
     }
@@ -190,30 +192,23 @@ pub fn reset_config() {
     }
 }
 
-pub fn get_launch_json() -> Result<[String; 2], String> {
-    download_files("https://dchs-esports.org/static/overlay_data/launch.json", "launch.json")
+#[tauri::command]
+pub fn get_launch_json() {
+    let _ = download_files("https://dchs-esports.org/static/overlay_data/launch.json", "launch.json");
 }
 
 #[tauri::command]
 pub fn get_name_map() -> HashMap<String, Value> {
     let json = open_json(get_launch_json_path())["overlays"].clone();
 
-    // This makes it acceptable for JavaScript
     json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
 }
-pub fn get_overlay_info() -> Result<Value, String> {
-    let json = open_json(get_launch_json_path());
-
-    Ok(json["downloads"].clone())
-}
-
-
 
 pub fn get_default_json_data() -> serde_json::Value {
     json!({
         "appColor": "#bf0f35",
         "columnColor": "#ffffff",
-        "overlayURL" : "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlays/zip/refs/heads/main",
+        "overlayURL" : "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlaysData/zip/refs/heads/main",
         "overlay_dir": "FalconsEsportsOverlays-main",
         "ssbuChecked": true,
         "kartChecked": true,

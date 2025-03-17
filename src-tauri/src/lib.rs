@@ -36,6 +36,7 @@ pub fn run() {
             json_handler::write_json,
             json_handler::reset_config,
             json_handler::get_name_map,
+            json_handler::get_launch_json,
             http_handler::run_server,
             http_handler::stop_server,
             constants::get_overlay_json_path,

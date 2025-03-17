@@ -2,3 +2,14 @@
     width: 80px;
     height: 80px;
 }
+
+#overlayDownloads {
+    width: 240px;
+    padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#overlaysDownloads row col {
+    width: 80px;
+}

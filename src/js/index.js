@@ -16,6 +16,8 @@ let firstRun = true;
  */
 async function setupApp() {
     if (firstRun) {
+        await invoke("get_launch_json");
+
         updateOverlayList();
 
         nameMap = await invoke('get_name_map');
