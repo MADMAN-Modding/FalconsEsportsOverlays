@@ -55,7 +55,7 @@ async function setupDownloads() {
         html += `
         <div class="col" id="download">
             <button id="${overlay}-download" class="overlay-download" onclick="downloadOverlay('${overlay}')">
-                <p>${nameMap[overlay]}</p>
+                <p><div id="${overlay}-status" class="overlay-status"></div>${nameMap[overlay]}</p>
             </button>
         </div>`;
         i++;

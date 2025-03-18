@@ -33,3 +33,10 @@
     margin-left: 5px;
     margin-right: 5px;
 }
+
+.overlay-status {
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-color: black;
+}
