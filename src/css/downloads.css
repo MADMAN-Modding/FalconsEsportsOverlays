@@ -1,15 +1,35 @@
 .overlay-download {
+    width: 400px;
+    height: 80px;
+    background-color: transparent;
+    display: flex;
+    padding: 0px;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.overlay-download img {
     width: 80px;
     height: 80px;
 }
 
+.overlay-download p {
+    margin: auto;
+    font-size: 25px;
+}
+
 #overlayDownloads {
-    width: 240px;
+    /* width: 1200px; */
     padding: 0px;
     margin-left: auto;
     margin-right: auto;
 }
 
-#overlaysDownloads row col {
-    width: 80px;
+#download {
+    /* max-width: 400px; */
+    padding: 0;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
 }

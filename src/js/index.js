@@ -4,6 +4,9 @@ const invoke = window.__TAURI__.core.invoke;
 /** Array of overlays */
 let overlays = [];
 
+/**Array of available overlays */
+let downloadableOverlays = [];
+
 /** Map of the sport titles */
 let nameMap;
 
@@ -17,6 +20,8 @@ let firstRun = true;
 async function setupApp() {
     if (firstRun) {
         await invoke("get_launch_json");
+
+        downloadableOverlays = await invoke("get_name_map");
 
         updateOverlayList();
 
