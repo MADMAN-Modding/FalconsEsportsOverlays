@@ -70,7 +70,7 @@ async fn threaded_get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Ve
         let thread: JoinHandle<Result<Vec<u8>, String>> = thread::spawn(move|| {    
             // Open the image file
             let image: Result<File, std::io::Error> =
-                File::open(image_path);
+                File::open(image_path.clone());
 
             if image.is_err() {
                 return Ok(vec![0 as u8]);
@@ -82,7 +82,14 @@ async fn threaded_get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Ve
 
             reader.read_to_end(&mut buffer).map_err(|e| e.to_string()).unwrap();
 
+
+            // If the file is a "Resource Not Found" file, return a blank vector
+            if buffer.len() == 20 {
+                return Ok(vec![0 as u8]);
+            }
+
             Ok(buffer)
+        
         });
 
         threads.push(thread);

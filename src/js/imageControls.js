@@ -49,6 +49,8 @@ async function getImageArray(paths) {
 
     bytes = await invoke('get_image_vec_bytes', {"imagePaths" : paths});
 
+    console.log(bytes)
+
     // Check if the image is missing
     for (let i = 0; i < bytes.length; i++) {
         if (bytes[i][0] === 0) {
