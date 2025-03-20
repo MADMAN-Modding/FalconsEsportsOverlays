@@ -26,17 +26,6 @@ function resetFiles() {
 }
 
 async function setupDownloads() {
-    if (urls[0] === "NOT_SET") {
-        let paths = [];
-        let codeDir = await invoke("get_code_dir");
-
-        for (const overlay in downloadableOverlays.keys) {
-            console.log(overlay)
-            paths.push(`${codeDir}/overlays/images/${overlay}.png`);
-        }
-        await genURLS();
-    }
-
     let overlayDownloads = document.getElementById("overlayDownloads");
     let html = "";
 
@@ -50,12 +39,13 @@ async function setupDownloads() {
             html += "<div class=\"row\">";  // Start a new row
         }
 
-        // let url = urls[i];  // Current URL
-
         html += `
         <div class="col" id="download">
             <button id="${overlay}-download" class="overlay-download" onclick="downloadOverlay('${overlay}')">
-                <p><div id="${overlay}-status" class="overlay-status"></div>${nameMap[overlay]}</p>
+                <div class="content-wrapper">
+                    <div id="${overlay}-status" class="overlay-status"></div>
+                    <span>${nameMap[overlay]}</span>
+                </div>
             </button>
         </div>`;
         i++;
@@ -64,6 +54,8 @@ async function setupDownloads() {
     html += "</div>";  // Close the last row
     overlayDownloads.innerHTML = html;  // Assign content once for better performance
 }
+
+
 
 async function downloadOverlay(id) {
     invoke("download_selected_overlay", {"overlay" : id}).then(() => pushNotification(`Overlay ${nameMap[id]} Downloaded`));

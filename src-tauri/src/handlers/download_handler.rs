@@ -182,6 +182,7 @@ pub fn download_selected_overlay(overlay: String) -> Result<String, String> {
     // Downloads the overlay javascript
     let _ = download_files(format!("{}/js/{}.js", url, overlay).as_str(), format!("{}/js/{}.js", code_dir, overlay).as_str()).map_err(|e| e);
 
+    // Downloads the Logo
     let _ = download_files(format!("{}/overlays/images/{}.png", url, overlay).as_str(), format!("{}/overlays/images/{}.png", code_dir, overlay).as_str()).map_err(|e| e);
 
     Ok("Overlay Obtained".to_string())

@@ -3,6 +3,8 @@
     height: 80px;
     background-color: transparent;
     display: flex;
+    align-items: center;     /* Vertical centering */
+    justify-content: center; /* Horizontal centering */
     padding: 0px;
     color: white;
     margin-left: auto;
@@ -15,28 +17,35 @@
 }
 
 .overlay-download p {
-    margin: auto;
+    margin: 0;         /* Remove auto margin; handled by flex */
     font-size: 25px;
 }
 
 #overlayDownloads {
-    /* width: 1200px; */
     padding: 0px;
     margin-left: auto;
     margin-right: auto;
 }
 
 #download {
-    /* max-width: 400px; */
     padding: 0;
     margin-bottom: 10px;
     margin-left: 5px;
     margin-right: 5px;
 }
 
+.content-wrapper {
+    display: flex;
+    align-items: center;    /* Vertical centering */
+    justify-content: center; /* Horizontal centering */
+    width: 100%;             /* Ensures the wrapper fills the button */
+    height: 100%;            /* Ensures full height alignment */
+    gap: 8px;                /* Space between status and text */
+}
+
 .overlay-status {
-    width: 10px;
-    height: 10px;
-    background-color: green;
-    border-color: black;
+    width: 16px;
+    height: 16px;
+    background-color: gray;
+    border-radius: 4px;
 }
