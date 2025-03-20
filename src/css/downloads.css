@@ -9,6 +9,8 @@
     color: white;
     margin-left: auto;
     margin-right: auto;
+    border: 2px solid black;
+    border-radius: 10px;
 }
 
 .overlay-download img {
@@ -41,6 +43,11 @@
     width: 100%;             /* Ensures the wrapper fills the button */
     height: 100%;            /* Ensures full height alignment */
     gap: 8px;                /* Space between status and text */
+}
+
+.content-wrapper span:hover,
+.content-wrapper img:hover {
+    cursor: pointer;
 }
 
 .overlay-status {

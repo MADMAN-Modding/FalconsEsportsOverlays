@@ -43,13 +43,13 @@ async function setupDownloads() {
 
         html += `
         <div class="col" id="download">
-            <button id="${overlay}-download" class="overlay-download">
+            <div id="${overlay}-download" class="overlay-download">
                 <div class="content-wrapper">
-                    <div id="${overlay}-status" class="overlay-status" onclick="downloadOverlay('${overlay}')"></div>
-                    <span>${nameMap[overlay]}</span>
+                    <div id="${overlay}-status" class="overlay-status"></div>
+                    <span onclick="downloadOverlay('${overlay}')">${nameMap[overlay]}</span>
                     <img src="images/delete.png" style="width: 31px; height: 40px;" onclick="deleteOverlay('${overlay}')"/>
                 </div>
-            </button>
+            </div>
         </div>`;
         i++;
     }
@@ -59,8 +59,10 @@ async function setupDownloads() {
 }
 
 async function downloadOverlay(id) {
-    invoke("download_selected_overlay", {"overlay" : id}).then(() => pushNotification(`Overlay ${nameMap[id]} Downloaded`));
+    invoke("download_selected_overlay", {"overlay" : id});
 
-    updateOverlayList();
-    genURLS();
+    await updateOverlayList();
+    await genURLS();
+
+    pushNotification(`Overlay ${nameMap[id]} Downloaded`)
 }

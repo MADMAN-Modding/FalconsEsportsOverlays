@@ -90,6 +90,7 @@ function readFile(file) {
  * @returns {Promise<void>}
  */
 async function genURLS() {
+    pushNotification("Generating Image URLs...");
     let paths = [];
     let codeDir = await invoke("get_code_dir");
     overlays.forEach(overlay => {
@@ -97,4 +98,6 @@ async function genURLS() {
     });
 
     urls = await getImageArray(paths);
+
+    pushNotification("Generated Image URLs")
 }

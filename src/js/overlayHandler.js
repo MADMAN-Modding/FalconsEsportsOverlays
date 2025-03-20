@@ -1,6 +1,11 @@
-/**Simply calls the Rust get_overlays_list function adn assigns overlays to the unwrapped Ok(Vec<String>) value*/
-function updateOverlayList() {
-    invoke("get_overlays_list").then((value) => overlays = value);
+/**Simply calls the Rust get_overlays_list function adn assigns overlays to the unwrapped Ok(Vec<String>) value
+ * 
+ * @async
+*/
+async function updateOverlayList() {
+    pushNotification("Generating Overlay List...");
+    await invoke("get_overlays_list").then((value) => overlays = value);
+    pushNotification("Generated Overlay List");
 }
 
 /**
@@ -10,9 +15,10 @@ function updateOverlayList() {
  */
 async function deleteOverlay(id) {
     await invoke("delete_selected_overlay", { "overlay": id })
-        .then(() => pushNotification(`Removed ${nameMap[id]}`))
         .catch((error) => pushNotification(`Failed to remove ${nameMap[id]}\n\n${error}`));
 
-    updateOverlayList();
-    genURLS();
+    await updateOverlayList();
+    await genURLS();
+
+    pushNotification(`Removed ${nameMap[id]}`)
 }
