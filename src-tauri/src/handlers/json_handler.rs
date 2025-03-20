@@ -118,10 +118,12 @@ pub fn init_json(path: String) -> Value {
             "playerNamesLeft": "MADMAN-Modding",
             "playerNamesRight": "Check out my Github"
         });
-    } else if path.contains("launch.json") {
-        json_data = json!({"overlays" : []})
-    } else {
+    } else if path.contains("config.json") {
         json_data = get_default_json_data();
+    } else if path.contains("launch.json") {
+        json_data = json!({"overlays" : []});
+    } else {
+        json_data = json!({"versions" : []});
     }
 
     // Creating the JSON file
@@ -204,7 +206,14 @@ pub fn get_name_map() -> HashMap<String, Value> {
     json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
 }
 
-pub fn get_default_json_data() -> serde_json::Value {
+#[tauri::command]
+pub fn get_versions() -> HashMap<String, Value> {
+    let json = open_json(get_launch_json_path())["versions"].clone();
+
+    json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
+}
+
+fn get_default_json_data() -> serde_json::Value {
     json!({
         "appColor": "#bf0f35",
         "columnColor": "#ffffff",

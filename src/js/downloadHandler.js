@@ -29,6 +29,8 @@ async function setupDownloads() {
     let overlayDownloads = document.getElementById("overlayDownloads");
     let html = "";
 
+    let versions = await invoke("get_versions");
+
     let i = 0;
 
     for (const overlay in downloadableOverlays) {
@@ -41,10 +43,11 @@ async function setupDownloads() {
 
         html += `
         <div class="col" id="download">
-            <button id="${overlay}-download" class="overlay-download" onclick="downloadOverlay('${overlay}')">
+            <button id="${overlay}-download" class="overlay-download">
                 <div class="content-wrapper">
-                    <div id="${overlay}-status" class="overlay-status"></div>
+                    <div id="${overlay}-status" class="overlay-status" onclick="downloadOverlay('${overlay}')"></div>
                     <span>${nameMap[overlay]}</span>
+                    <img src="images/delete.png" style="width: 31px; height: 40px;" onclick="deleteOverlay('${overlay}')"/>
                 </div>
             </button>
         </div>`;
@@ -55,8 +58,9 @@ async function setupDownloads() {
     overlayDownloads.innerHTML = html;  // Assign content once for better performance
 }
 
-
-
 async function downloadOverlay(id) {
     invoke("download_selected_overlay", {"overlay" : id}).then(() => pushNotification(`Overlay ${nameMap[id]} Downloaded`));
+
+    updateOverlayList();
+    genURLS();
 }

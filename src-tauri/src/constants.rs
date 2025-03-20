@@ -74,3 +74,7 @@ pub fn get_launch_json_path() -> String {
 pub fn get_overlays_path() -> String {
     format!("{}/overlays", get_code_dir())
 }
+
+pub fn get_local_versions_path() -> String {
+    format!("{}/local_versions.json", get_config_dir())
+}
