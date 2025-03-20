@@ -52,6 +52,10 @@
   transform: scale(1.05);
 }
 
+.overlay-buttons div.col {
+  max-width: 80px;
+}
+
 .team-column {
   display: flex;
   flex-direction: column;
