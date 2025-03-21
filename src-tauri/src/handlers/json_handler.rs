@@ -204,7 +204,7 @@ pub fn reset_config() {
         write_config(key.0.to_owned(), value.as_str());
     }
 }
-
+/// Downloads launch.json from the resource URL
 #[tauri::command]
 pub fn get_launch_json() {
     let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/launch.json", "launch.json");
@@ -219,7 +219,9 @@ pub fn get_name_map() -> HashMap<String, Value> {
 
 #[tauri::command]
 pub fn get_versions() -> HashMap<String, Value> {
-    let json = open_json(get_launch_json_path())["versions"].clone();
+    let mut json = open_json(get_launch_json_path())["versions"].clone();
+
+    json.sort_all_objects();
 
     json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
 }
