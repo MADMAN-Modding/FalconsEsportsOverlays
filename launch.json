@@ -16,19 +16,19 @@
         "rivals":       "Marvel Rivals"
     },
     "versions": {
-        "ssbu" : "1.0",
-        "kart" : "1.0",
-        "overwatch" : "1.0",
-        "rocketLeague" : "1.0",
-        "splat" : "1.0",
-        "val" : "1.0",
-        "hearth" : "1.0",
-        "lol" : "1.0",
-        "chess" : "1.0",
-        "madden" : "1.0",
-        "nba2K" : "1.0",
-        "omega" : "1.0",
-        "siege" : "1.0",
-        "rivals" : "1.0"
+        "ssbu" : 1.0,
+        "kart" : 1.0,
+        "overwatch" : 1.0,
+        "rocketLeague" : 1.0,
+        "splat" : 1.0,
+        "val" : 1.0,
+        "hearth" : 1.0,
+        "lol" : 1.0,
+        "chess" : 1.0,
+        "madden" : 1.0,
+        "nba2K" : 1.0,
+        "omega" : 1.0,
+        "siege" : 1.0,
+        "rivals" : 1.0
     }
 }

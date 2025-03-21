@@ -1,6 +1,6 @@
 use std::{fs, path::Path};
 
-use crate::constants::{self, get_code_dir};
+use crate::{constants::{self, get_code_dir, get_local_versions_path}, handlers::json_handler::{get_versions, write_json}};
 
 use super::download_handler::download_files;
 
@@ -47,6 +47,16 @@ pub fn download_selected_overlay(overlay: String) -> Result<String, String> {
 
     // Downloads the Logo
     let _ = download_files(format!("{}/overlays/images/{}.png", url, overlay).as_str(), format!("{}/overlays/images/{}.png", code_dir, overlay).as_str()).map_err(|e| e);
+
+    // Used so the temporary value isn't dropped
+    let binding = get_versions();
+    let version = binding.get(&overlay);
+
+    // If the version number exists, write it to the local_version file, otherwise write -1
+    match version {
+        Some(version) => write_json(get_local_versions_path(), overlay, format!("version{version}")),
+        None => write_json(get_local_versions_path(), overlay, format!("version{}", -1)),
+    }
 
     Ok("Overlay Obtained".to_string())
 }

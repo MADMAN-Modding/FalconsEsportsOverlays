@@ -59,7 +59,7 @@ async function setupDownloads() {
 }
 
 async function downloadOverlay(id) {
-    invoke("download_selected_overlay", {"overlay" : id});
+    await invoke("download_selected_overlay", {"overlay" : id}).catch(() => {pushNotification("Download Failed"); return;});
 
     await updateOverlayList();
     await genURLS();

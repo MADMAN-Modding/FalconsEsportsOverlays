@@ -123,7 +123,7 @@ pub fn init_json(path: String) -> Value {
     } else if path.contains("launch.json") {
         json_data = json!({"overlays" : []});
     } else {
-        json_data = json!({"versions" : []});
+        json_data = json!({});
     }
 
     // Creating the JSON file
@@ -165,6 +165,15 @@ pub fn write_json(path: String, json_key: String, mut value: String) {
         };
 
         json_data[json_key] = serde_json::Value::Bool(bool_value);
+    // Writes an int to the json if the value contains "version"
+    } else if value.contains("version") {
+        let sub_string: &str = value.split_at(7).1;
+        println!("{}", sub_string);
+        let float_value: f64 = sub_string.parse().unwrap();
+
+        println!("{}", float_value);
+
+        json_data[json_key] = serde_json::Value::Number(float_value.into());
     } else {
         value = value.replace("\"", "");
 
@@ -196,7 +205,7 @@ pub fn reset_config() {
 
 #[tauri::command]
 pub fn get_launch_json() {
-    let _ = download_files("https://dchs-esports.org/static/overlay_data/launch.json", "launch.json");
+    let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/launch.json", "launch.json");
 }
 
 #[tauri::command]
