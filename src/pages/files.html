@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <center>
+            <h1>Click an Overlay to Download it!</h1>
+        </center>
         <!-- Bootstrap -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <script src="../js/bootstrap.js"></script>
@@ -12,4 +15,38 @@
              <div id="overlayDownloads"></div>
         </div>
     </body>
+    <footer>
+        <center>
+            <h3>Key</h3>
+        </center>
+        <div class="key-column">
+        
+        <div class="row">
+          <div class="col">
+            <div class="content-wrapper">
+              <div style="background-color: green;" class="overlay-status"></div>
+              <span>Downloaded and Up to Date</span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="content-wrapper">
+              <div style="background-color: yellow;" class="overlay-status"></div>
+              <span>Downloaded and Out of Date</span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="content-wrapper">
+              <div style="background-color: red;" class="overlay-status"></div>
+              <span>Not Downloaded</span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="content-wrapper">
+              <div style="background-color: purple;" class="overlay-status"></div>
+              <span>Custom or Invalid Version</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
 </html>

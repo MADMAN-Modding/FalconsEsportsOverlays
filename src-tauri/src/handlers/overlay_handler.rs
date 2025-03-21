@@ -73,5 +73,7 @@ pub fn delete_selected_overlay(overlay: String) -> Result<(), String> {
 
     let _ = fs::remove_file(format!("{}/overlays/images/{}.png", code_dir, overlay));
 
+    write_json(get_local_versions_path(), overlay, format!("version{}", -2));
+
     Ok(())
 }

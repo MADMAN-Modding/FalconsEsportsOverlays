@@ -30,11 +30,23 @@ async function setupDownloads() {
     let html = "";
 
     let versions = await invoke("get_versions");
+    let localVersions = await invoke("get_local_versions");
 
     let i = 0;
 
     for (const overlay in downloadableOverlays) {
         if (i >= downloadableOverlays.length) return;
+
+        let availableOverlayVersion = versions[overlay];
+        let localVersion = localVersions[overlay];
+
+        let color = "purple";
+
+        // Determines the color of the box
+        if (localVersion == availableOverlayVersion) {color = "green"}
+        // -2 means the overlay was deleted
+        else if (localVersion == "null" || localVersion == null || localVersion == -2) {color = "red"}
+        else if (availableOverlayVersion > localVersion) {color = "yellow"}
 
         if (i % 3 === 0) {
             if (i !== 0) html += "</div>";  // Close the previous row
@@ -43,9 +55,9 @@ async function setupDownloads() {
 
         html += `
         <div class="col" id="download">
-            <div id="${overlay}-download" class="overlay-download">
+            <div id="${overlay}Download" class="overlay-download">
                 <div class="content-wrapper">
-                    <div id="${overlay}-status" class="overlay-status"></div>
+                    <div id="${overlay}Status" style="background-color: ${color};" class="overlay-status"></div>
                     <span onclick="downloadOverlay('${overlay}')">${nameMap[overlay]}</span>
                     <img src="images/delete.png" style="width: 31px; height: 40px;" onclick="deleteOverlay('${overlay}')"/>
                 </div>
@@ -58,11 +70,13 @@ async function setupDownloads() {
     overlayDownloads.innerHTML = html;  // Assign content once for better performance
 }
 
-async function downloadOverlay(id) {
-    await invoke("download_selected_overlay", {"overlay" : id}).catch(() => {pushNotification("Download Failed"); return;});
+async function downloadOverlay(overlay) {
+    await invoke("download_selected_overlay", {"overlay" : overlay}).catch(() => {pushNotification("Download Failed"); return;});
 
     await updateOverlayList();
     await genURLS();
 
-    pushNotification(`Overlay ${nameMap[id]} Downloaded`)
+    document.getElementById(`${overlay}Status`).style.backgroundColor = "green";
+
+    pushNotification(`Overlay ${nameMap[overlay]} Downloaded`)
 }

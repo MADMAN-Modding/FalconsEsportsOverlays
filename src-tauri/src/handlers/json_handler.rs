@@ -3,7 +3,7 @@ use std::{collections::HashMap, fs, path::Path};
 
 use serde_json::{json, Value};
 
-use crate::constants::{self, get_launch_json_path};
+use crate::constants::{self, get_launch_json_path, get_local_versions_path};
 
 use super::download_handler::download_files;
 
@@ -167,13 +167,15 @@ pub fn write_json(path: String, json_key: String, mut value: String) {
         json_data[json_key] = serde_json::Value::Bool(bool_value);
     // Writes an int to the json if the value contains "version"
     } else if value.contains("version") {
+        // Get the version number from the value
         let sub_string: &str = value.split_at(7).1;
-        println!("{}", sub_string);
+        // Read the version number to a float
         let float_value: f64 = sub_string.parse().unwrap();
+        // Truncate any decimals
+        let int_value = float_value as i16;
 
-        println!("{}", float_value);
-
-        json_data[json_key] = serde_json::Value::Number(float_value.into());
+        // Updates the json variable with the int_value at the current key
+        json_data[json_key] = serde_json::Value::Number(int_value.into());
     } else {
         value = value.replace("\"", "");
 
@@ -218,6 +220,13 @@ pub fn get_name_map() -> HashMap<String, Value> {
 #[tauri::command]
 pub fn get_versions() -> HashMap<String, Value> {
     let json = open_json(get_launch_json_path())["versions"].clone();
+
+    json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
+}
+
+#[tauri::command]
+pub fn get_local_versions() -> HashMap<String, Value> {
+    let json = open_json(get_local_versions_path());
 
     json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
 }

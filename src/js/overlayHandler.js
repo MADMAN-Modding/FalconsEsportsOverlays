@@ -10,15 +10,17 @@ async function updateOverlayList() {
 
 /**
  * Deletes the selected overlay
- * @param {String} id - ID of the overlay to delete
+ * @param {String} overlay - ID of the overlay to delete
  * @async 
  */
-async function deleteOverlay(id) {
-    await invoke("delete_selected_overlay", { "overlay": id })
-        .catch((error) => pushNotification(`Failed to remove ${nameMap[id]}\n\n${error}`));
+async function deleteOverlay(overlay) {
+    await invoke("delete_selected_overlay", { "overlay": overlay })
+        .catch((error) => pushNotification(`Failed to remove ${nameMap[overlay]}\n\n${error}`));
 
     await updateOverlayList();
     await genURLS();
 
-    pushNotification(`Removed ${nameMap[id]}`)
+    document.getElementById(`${overlay}Status`).style.backgroundColor = "red";
+
+    pushNotification(`Removed ${nameMap[overlay]}`)
 }
