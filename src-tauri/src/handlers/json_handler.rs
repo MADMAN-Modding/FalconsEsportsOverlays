@@ -211,6 +211,7 @@ pub fn get_launch_json() {
     let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/launch.json", "launch.json");
 }
 
+/// Get all the available overlays
 #[tauri::command]
 pub fn get_name_map() -> HashMap<String, Value> {
     let json = open_json(get_launch_json_path())["overlays"].clone();
@@ -218,6 +219,7 @@ pub fn get_name_map() -> HashMap<String, Value> {
     json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
 }
 
+/// Get all the latest version for all the overlays
 #[tauri::command]
 pub fn get_versions() -> HashMap<String, Value> {
     let mut json = open_json(get_launch_json_path())["versions"].clone();
@@ -227,6 +229,7 @@ pub fn get_versions() -> HashMap<String, Value> {
     json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
 }
 
+/// Get the list of all the overlays local versions
 #[tauri::command]
 pub fn get_local_versions() -> HashMap<String, Value> {
     let json = open_json(get_local_versions_path());
@@ -234,6 +237,7 @@ pub fn get_local_versions() -> HashMap<String, Value> {
     json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
 }
 
+/// Gets the latest app version
 #[tauri::command]
 pub fn get_app_version() -> HashMap<String, Value> {
     let json = open_json(get_launch_json_path())["appVersion"].clone();
@@ -241,6 +245,7 @@ pub fn get_app_version() -> HashMap<String, Value> {
     json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
 }
 
+/// Default settings for the config
 fn get_default_json_data() -> serde_json::Value {
     json!({
         "appColor": "#bf0f35",

@@ -55,11 +55,13 @@ pub fn get_image_bytes(image_path: String) -> Result<Vec<u8>, String> {
 
 }
 
+/// Returns a Vec containing a Vec of bytes for each image
 #[tauri::command]
 pub async fn get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Vec<u8>>, String> {
     threaded_get_image_vec_bytes(image_paths).await
 }
 
+/// Multithreaded file to byte search
 async fn threaded_get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Vec<u8>>, String> {
     let mut image_vec: Vec<Vec<u8>> = Vec::new();
     

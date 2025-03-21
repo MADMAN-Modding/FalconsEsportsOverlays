@@ -25,6 +25,11 @@ function resetFiles() {
         .catch((error) => pushNotification(`Reset Failed: ${error}`));
 }
 
+/**
+ * Sets up the download page
+ * @returns {void}
+ * @async
+ */
 async function setupDownloads() {
     let overlayDownloads = document.getElementById("overlayDownloads");
     let html = "";
@@ -70,6 +75,12 @@ async function setupDownloads() {
     overlayDownloads.innerHTML = html;  // Assign content once for better performance
 }
 
+/**
+ * Downloads the specified overlay
+ * @param {String} overlay 
+ * @returns {void}
+ * @async
+ */
 async function downloadOverlay(overlay) {
     await invoke("download_selected_overlay", {"overlay" : overlay}).catch(() => {pushNotification("Download Failed"); return;});
 
