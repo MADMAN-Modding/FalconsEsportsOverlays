@@ -30,5 +30,10 @@
         "omega" : 1.0,
         "siege" : 1.0,
         "rivals" : 1.0
+    },
+    "appVersion": {
+        "version" : 3.1,
+        "subVersion" : 0,
+        "updateMessage" : "Improved Download System!"
     }
 }

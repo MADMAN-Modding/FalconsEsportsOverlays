@@ -204,6 +204,7 @@ pub fn reset_config() {
         write_config(key.0.to_owned(), value.as_str());
     }
 }
+
 /// Downloads launch.json from the resource URL
 #[tauri::command]
 pub fn get_launch_json() {
@@ -230,6 +231,13 @@ pub fn get_versions() -> HashMap<String, Value> {
 pub fn get_local_versions() -> HashMap<String, Value> {
     let json = open_json(get_local_versions_path());
 
+    json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
+}
+
+#[tauri::command]
+pub fn get_app_version() -> HashMap<String, Value> {
+    let json = open_json(get_launch_json_path())["appVersion"].clone();
+    
     json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
 }
 

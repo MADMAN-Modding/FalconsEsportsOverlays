@@ -45,8 +45,20 @@ async function setupApp() {
         if (overlays.length === 0) {
             pushNotification("No overlays have been found. Please download the overlays.");
         }
+
+        checkForUpdates();
     }
 
     // Used to generate the overlay file if it doesn't exist
     readOverlayJSON("overlay");
+}
+
+async function checkForUpdates() {
+    setTimeout(async () => {
+        let versions = await invoke("get_app_version");
+
+        if (!(versions["version"] == 3.1 && versions["subVersion"] == 0)) {
+            pushNotification("Update Available\n" + versions["updateMessage"]);
+        }
+    }, 5000);
 }

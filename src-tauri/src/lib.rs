@@ -39,6 +39,7 @@ pub fn run() {
             json_handler::get_launch_json,
             json_handler::get_versions,
             json_handler::get_local_versions,
+            json_handler::get_app_version,
             http_handler::run_server,
             http_handler::stop_server,
             constants::get_overlay_json_path,
