@@ -79,3 +79,7 @@ button {
   margin-bottom: 1%;
   list-style: decimal;
 }
+
+#instructions li a {
+  text-decoration: underline;
+}

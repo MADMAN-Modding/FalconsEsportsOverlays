@@ -19,9 +19,9 @@ async function setupConfig() {
     })
 
     // Sets the checkbox values
-    document.getElementById("autoUpdate").checked = (await readConfigJSON("autoUpdate") === "true");
+    // document.getElementById("autoUpdate").checked = (await readConfigJSON("autoUpdate") === "true");
     document.getElementById("autoServer").checked = (await readConfigJSON("autoServer") === "true");
-    document.getElementById("overlayURL").value = await readConfigJSON("overlayURL");
+    // document.getElementById("overlayURL").value = await readConfigJSON("overlayURL");
 
     setImage();
 }

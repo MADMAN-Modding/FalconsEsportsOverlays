@@ -74,9 +74,9 @@ function setupServer() {
     document.getElementById("serverImage").src = ("../images/Server" + (server ? "On.png" : "Off.png"));
 
     // Workaround: Fixes an issue with the image not centering properly.
-    document.getElementById("serverImage").style.width = "20px"; // Temporarily reduce the width.
+    // document.getElementById("serverImage").style.width = "20px"; // Temporarily reduce the width.
 
-    setTimeout(function() {
-        document.getElementById("serverImage").style.width = "200px"; // Restore the width after a short delay.
-    }, 200);
+    // setTimeout(function() {
+    //     document.getElementById("serverImage").style.width = "200px"; // Restore the width after a short delay.
+    // }, 200);
 }

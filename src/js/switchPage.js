@@ -26,7 +26,7 @@ async function switchPage(page) {
     } else if (page == "main") {
         setupApp(); // Setup the main app page.
     } else if (page == "files") {
-        setupDownloads(); //SEtup the downloads page
+        setupDownloads(); //Setup the downloads page
     }
 }
 
