@@ -1,5 +1,5 @@
 //! This module is used for read and writing the json data used for the overlays and the app
-use std::{collections::HashMap, fs, path::Path};
+use std::{collections::HashMap, fs::{self, File}, io::{BufReader, Read}, path::Path};
 
 use serde_json::{json, Value};
 
@@ -72,9 +72,21 @@ pub fn read_json(key: &str, path: String) -> String {
 /// ```
 fn open_json(path: String) -> Value {
     let json_data: Value;
-
+ 
     // Checks to make sure that the JSON file is there, if it isn't it makes it
     if Path::new(&path).exists() {
+        let mut reader: BufReader<File> = BufReader::new(File::open(&path).unwrap());
+
+        let mut buffer: Vec<u8> = Vec::new();
+
+        reader.read_to_end(&mut buffer).map_err(|e| e.to_string()).unwrap();
+
+
+        // If the file is a "Resource Not Found" file, return a blank vector
+        if buffer.len() == 0 {
+            return Value::default()
+        }
+        
         json_data = {
             let file_content: String = fs::read_to_string(&path).expect("File not found");
             serde_json::from_str::<Value>(&file_content).expect("Error serializing to JSON")
@@ -213,36 +225,60 @@ pub fn get_launch_json() {
 
 /// Get all the available overlays
 #[tauri::command]
-pub fn get_name_map() -> HashMap<String, Value> {
+pub fn get_name_map() -> Result<HashMap<String, Value>, String> {
     let json = open_json(get_launch_json_path())["overlays"].clone();
 
-    json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
+    let object = json.as_object();
+
+    if object.is_none() {
+        return Err("Error Reading JSON".to_string());
+    }
+
+    Ok(object.unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect())
 }
 
 /// Get all the latest version for all the overlays
 #[tauri::command]
-pub fn get_versions() -> HashMap<String, Value> {
+pub fn get_versions() -> Result<HashMap<String, Value>, String> {
     let mut json = open_json(get_launch_json_path())["versions"].clone();
 
     json.sort_all_objects();
 
-    json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
+    let object = json.as_object();
+
+    if object.is_none() {
+        return Err("Error Reading JSON".to_string());
+    }
+
+    Ok(object.unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect())
 }
 
 /// Get the list of all the overlays local versions
 #[tauri::command]
-pub fn get_local_versions() -> HashMap<String, Value> {
+pub fn get_local_versions() -> Result<HashMap<String, Value>, String> {
     let json = open_json(get_local_versions_path());
 
-    json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
+    let object = json.as_object();
+
+    if object.is_none() {
+        return Err("Error Reading JSON".to_string());
+    }
+
+    Ok(object.unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect())
 }
 
 /// Gets the latest app version
 #[tauri::command]
-pub fn get_app_version() -> HashMap<String, Value> {
+pub fn get_app_version() -> Result<HashMap<String, Value>, String> {
     let json = open_json(get_launch_json_path())["appVersion"].clone();
     
-    json.as_object().unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect()
+    let object = json.as_object();
+
+    if object.is_none() {
+        return Err("Error Reading JSON".to_string());
+    }
+
+    Ok(object.unwrap().clone().into_iter().map(|(k, v)| (k, v.clone())).collect())
 }
 
 /// Default settings for the config

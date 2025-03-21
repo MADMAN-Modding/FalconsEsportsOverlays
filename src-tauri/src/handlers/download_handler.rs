@@ -32,34 +32,43 @@ pub fn download_files(url: &str, filename: &str) -> Result<[String; 2], String> 
 
     // Name of the file from the directory because sometimes I download stuff and send it to a different directory
     let binding = path.to_path_buf();
-    let name_from_path = binding.file_name().unwrap().to_str().unwrap();
+    let name_from_path = binding
+        .file_name()
+        .ok_or_else(|| "Invalid file name".to_string())?
+        .to_str()
+        .ok_or_else(|| "Invalid UTF-8 in file name".to_string())?;
 
-    let new_director = path.to_str().unwrap().split_at(path.to_str().unwrap().find(name_from_path).unwrap());
+    let new_director = path
+        .to_str()
+        .ok_or_else(|| "Invalid UTF-8 in path".to_string())?
+        .split_at(path.to_str().unwrap().find(name_from_path).unwrap());
 
-    let _ = fs::create_dir_all(new_director.0).map_err(|e| e);
+    // Create the directory if it doesn't exist
+    fs::create_dir_all(new_director.0).map_err(|e| format!("Directory Creation Error: {}", e))?;
 
-
-    // Get the response from the url
+    // Get the response from the URL
     let response = get(url.to_string()).map_err(|err| format!("Get Error: {}", err))?;
 
-    // Removes the file if it already exists
+    // Remove the file if it already exists
     if Path::new(&path).exists() {
-        let _ = fs::remove_file(&path).map_err(|err| format!("File Removal Error: {}", err));
+        fs::remove_file(&path).map_err(|err| format!("File Removal Error: {}", err))?;
     }
 
     // Create a file to save the response to
     let mut file = File::create(&path).map_err(|err| format!("File Creation Error: {}", err))?;
 
     // Copy the response to the file
-    copy(&mut response.bytes().map_err(|error| error).unwrap().as_ref(), &mut file)
+    copy(&mut response.bytes().map_err(|error| format!("Bytes Error: {}", error))?.as_ref(), &mut file)
         .map_err(|err| format!("Download Copy Error: {}", err))?;
 
     let response: [String; 2] = [filename.to_string(), directory.to_string()];
 
     let overlay_path = get_config_dir_overlay_json_path();
 
+    // Copy the overlay JSON file if it exists
     if Path::new(&overlay_path).exists() {
-        let _ = fs::copy(constants::get_overlay_json_path(), overlay_path).map_err(|err| format!("Error Writing: {}", err));
+        fs::copy(constants::get_overlay_json_path(), overlay_path)
+            .map_err(|err| format!("Error Writing: {}", err))?;
     }
 
     Ok(response)

@@ -1,6 +1,6 @@
 use std::{fs, path::Path};
 
-use crate::{constants::{self, get_code_dir, get_config_dir, get_local_versions_path}, handlers::json_handler::{get_versions, write_json}};
+use crate::{constants::{self, get_code_dir, get_local_versions_path}, handlers::json_handler::{get_versions, write_json}};
 
 use super::download_handler::download_files;
 
@@ -56,19 +56,19 @@ pub fn download_selected_overlay(overlay: String) -> Result<String, String> {
     let code_dir = get_code_dir();
 
     // Downloads the overlay HTML file
-    let _ = download_files(format!("{}/overlays/{}.html", url, overlay).as_str(), format!("{}/overlays/{}.html", code_dir, overlay).as_str()).map_err(|e| e.to_string())?;
+    let _ = download_files(format!("{}/overlays/{}.html", url, overlay).as_str(), format!("{}/overlays/{}.html", code_dir, overlay).as_str()).map_err(|e| e.to_string());
 
     // Downloads the overlay CSS file
-    let _ = download_files(format!("{}/css/{}.css", url, overlay).as_str(), format!("{}/css/{}.css", code_dir, overlay).as_str()).map_err(|e| e.to_string())?;
+    let _ = download_files(format!("{}/css/{}.css", url, overlay).as_str(), format!("{}/css/{}.css", code_dir, overlay).as_str()).map_err(|e| e.to_string());
 
     // Downloads the overlay JavaScript file
-    let _ = download_files(format!("{}/js/{}.js", url, overlay).as_str(), format!("{}/js/{}.js", code_dir, overlay).as_str()).map_err(|e| e.to_string())?;
+    let _ = download_files(format!("{}/js/{}.js", url, overlay).as_str(), format!("{}/js/{}.js", code_dir, overlay).as_str()).map_err(|e| e.to_string());
 
     // Downloads the overlay logo (PNG file)
-    let _ = download_files(format!("{}/overlays/images/{}.png", url, overlay).as_str(), format!("{}/overlays/images/{}.png", code_dir, overlay).as_str()).map_err(|e| e.to_string())?;
+    let _ = download_files(format!("{}/overlays/images/{}.png", url, overlay).as_str(), format!("{}/overlays/images/{}.png", code_dir, overlay).as_str()).map_err(|e| e.to_string());
 
     // Retrieve the version number for the overlay
-    let binding = get_versions();
+    let binding = get_versions().unwrap();
     let version = binding.get(&overlay);
 
     // Write the version number to the local versions file, or -1 if the version is not found
@@ -116,8 +116,6 @@ pub fn delete_selected_overlay(overlay: String) -> Result<(), String> {
 pub fn setup_overlays() {
     // Downloads `index.html` if it doesn't exist
     if !Path::new(&format!("{}/index.html", get_code_dir())).exists() {
-        println!("Downloading Update");
-        println!("{}/{}/index.html", get_config_dir(), get_code_dir());
         let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/index.html", format!("{}/index.html", get_code_dir()).as_str());
         let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/css/index.css", format!("{}/css/index.css", get_code_dir()).as_str());
         let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/js/index.js", format!("{}/js/index.js", get_code_dir()).as_str());
@@ -126,11 +124,7 @@ pub fn setup_overlays() {
     }
 
     // Downloads the Esports logo if it doesn't exist
-    if !Path::new(&format!("{}/{}/images/Esports-Logo.png", get_config_dir(), get_code_dir())).exists() {
-        let result = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/images/Esports-Logo.png", format!("{}/images/Esports-Logo.png", get_code_dir()).as_str());
-
-        if result.is_err() {
-            println!("{}", result.unwrap_err());
-        }
+    if !Path::new(&format!("{}/images/Esports-Logo.png", get_code_dir())).exists() {
+        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/images/Esports-Logo.png", format!("{}/images/Esports-Logo.png", get_code_dir()).as_str());
     }   
 }
