@@ -1,6 +1,6 @@
 use std::{fs, path::Path};
 
-use crate::{constants::{self, get_code_dir, get_local_versions_path}, handlers::json_handler::{get_versions, write_json}};
+use crate::{constants::{self, get_code_dir, get_config_dir, get_local_versions_path}, handlers::json_handler::{get_versions, write_json}};
 
 use super::download_handler::download_files;
 
@@ -76,4 +76,27 @@ pub fn delete_selected_overlay(overlay: String) -> Result<(), String> {
     write_json(get_local_versions_path(), overlay, format!("version{}", -2));
 
     Ok(())
+}
+
+#[tauri::command]
+pub fn setup_overlays() {
+    // Downloads index.html if it doesn't exist
+    if !Path::new(&format!("{}/index.html", get_code_dir())).exists() {
+        println!("Downloading Update");
+        println!("{}/{}/index.html", get_config_dir(), get_code_dir());
+        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/index.html", format!("{}/index.html", get_code_dir()).as_str());
+        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/css/index.css", format!("{}/css/index.css", get_code_dir()).as_str());
+        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/js/index.js", format!("{}/js/index.js", get_code_dir()).as_str());
+        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/css/ethnocentric.woff", format!("{}/css/ethnocentric.woff", get_code_dir()).as_str());
+        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/js/overlays.js", format!("{}/js/overlays.js", get_code_dir()).as_str());
+    }
+
+    // Downloads the falcon logo if there is no logo
+    if !Path::new(&format!("{}/{}/images/Esports-Logo.png", get_config_dir(), get_code_dir())).exists() {
+        let result = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/images/Esports-Logo.png", format!("{}/images/Esports-Logo.png", get_code_dir()).as_str());
+
+        if result.is_err() {
+            println!("{}", result.unwrap_err());
+        }
+    }   
 }

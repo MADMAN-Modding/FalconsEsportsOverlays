@@ -109,7 +109,7 @@ function updateWins(team, wins) {
  */
 async function setupControls() {
   document.getElementById("preview-iframe").style.transform = `scale(${window.innerWidth * .8 / 1920})`;
-  generateImages();
+  await generateImages();
 
   // Delay to allow the page to load
   setTimeout(async function () {
@@ -122,7 +122,7 @@ async function setupControls() {
   let overlay = await readOverlayJSON("overlay");
 
   // Highlights the active overlay
-  // document.getElementById(overlay).style.backgroundColor = "gray";
+  document.getElementById(overlay).style.backgroundColor = "gray";
 }
 
 /**
@@ -130,6 +130,7 @@ async function setupControls() {
  * 
  * @var nameMap - This is used for the alt text of the images  
  * @returns {void}
+ * @async
  */
 async function generateImages() {
   if (urls[0] == "NOT_SET") {

@@ -41,10 +41,7 @@ async function setupApp() {
         updateColumnColor(await readConfigJSON('columnColor'), true);
         firstRun = false;
 
-        // Check if the overlay file is empty
-        if (overlays.length === 0) {
-            pushNotification("No overlays have been found. Please download the overlays.");
-        }
+        await invoke("setup_overlays");
 
         checkForUpdates();
     }

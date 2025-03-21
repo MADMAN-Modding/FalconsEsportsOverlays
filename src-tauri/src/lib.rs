@@ -52,7 +52,8 @@ pub fn run() {
             custom_config::setup_custom_config,
             overlay_handler::get_overlays_list,
             overlay_handler::download_selected_overlay,
-            overlay_handler::delete_selected_overlay
+            overlay_handler::delete_selected_overlay,
+            overlay_handler::setup_overlays
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

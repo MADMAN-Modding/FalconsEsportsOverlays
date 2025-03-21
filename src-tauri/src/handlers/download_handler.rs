@@ -27,8 +27,17 @@ use super::{config_handler, json_handler::read_config_json};
 pub fn download_files(url: &str, filename: &str) -> Result<[String; 2], String> {
     let directory: &str = &constants::get_config_dir();
 
-    // Download the requested file
+    // Get the path to the file
     let path = Path::new(directory).join(filename);
+
+    // Name of the file from the directory because sometimes I download stuff and send it to a different directory
+    let binding = path.to_path_buf();
+    let name_from_path = binding.file_name().unwrap().to_str().unwrap();
+
+    let new_director = path.to_str().unwrap().split_at(path.to_str().unwrap().find(name_from_path).unwrap());
+
+    let _ = fs::create_dir_all(new_director.0).map_err(|e| e);
+
 
     // Get the response from the url
     let response = get(url.to_string()).map_err(|err| format!("Get Error: {}", err))?;
@@ -50,7 +59,7 @@ pub fn download_files(url: &str, filename: &str) -> Result<[String; 2], String> 
     let overlay_path = get_config_dir_overlay_json_path();
 
     if Path::new(&overlay_path).exists() {
-        let _ = fs::copy(constants::get_overlay_json_path(), overlay_path).map_err(|err| err);
+        let _ = fs::copy(constants::get_overlay_json_path(), overlay_path).map_err(|err| format!("Error Writing: {}", err));
     }
 
     Ok(response)
