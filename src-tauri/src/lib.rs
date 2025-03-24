@@ -6,6 +6,7 @@ pub mod handlers {
     pub mod image_handler;
     pub mod custom_config;
     pub mod overlay_handler;
+    pub mod obs_handler;
 }
 
 pub mod constants;
@@ -20,11 +21,13 @@ pub fn run() {
     use handlers::image_handler;
     use handlers::custom_config;
     use handlers::overlay_handler;
+    use handlers::obs_handler;
     use constants;
     
     constants::setup();
     http_handler::setup();
     custom_config::search_overlay();
+    obs_handler::inject("Untitled", "scene");
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
