@@ -1,0 +1,31 @@
+{
+  "app-id": "com.madman_modding.FalconsEsportsOverlaysController",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "24.08",
+  "sdk": "org.freedesktop.Sdk",
+  "command": "falcons-esports-overlays-controller",
+  "finish-args": [
+    "--share=network",
+    "--filesystem=home"
+  ],
+  "modules": [
+    {
+      "name": "rust",
+      "buildsystem": "simple",
+      "build-commands": [
+        "cargo build --release",
+        "install -Dm755 target/release/falcons-esports-overlays-controller /app/bin/falcons-esports-overlays-controller"
+      ],
+      "sources": [
+        {
+          "type": "dir",
+          "path": "../",
+          "dest": "falcons-esports-overlays-controller"
+        }
+      ]
+    }
+  ],
+  "build-extensions": [
+    "org.freedesktop.Sdk.Extension.rust-stable"
+  ]
+}

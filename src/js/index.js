@@ -7,6 +7,7 @@ let overlays = [];
 /**Array of available overlays */
 let downloadableOverlays = [];
 
+
 /** Map of the sport titles */
 let nameMap;
 

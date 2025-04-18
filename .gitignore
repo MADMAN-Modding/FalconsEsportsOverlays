@@ -25,3 +25,7 @@ dist-ssr
 
 falcons_esports_overlays_controller
 Cargo.lock
+
+# Flatpak stuff
+.flatpak-builder
+build-dir
