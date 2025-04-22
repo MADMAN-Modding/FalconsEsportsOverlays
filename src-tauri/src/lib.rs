@@ -27,7 +27,6 @@ pub fn run() {
     constants::setup();
     http_handler::setup();
     custom_config::search_overlay();
-    obs_handler::inject("Untitled", "scene");
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -56,7 +55,9 @@ pub fn run() {
             overlay_handler::get_overlays_list,
             overlay_handler::download_selected_overlay,
             overlay_handler::delete_selected_overlay,
-            overlay_handler::setup_overlays
+            overlay_handler::setup_overlays,
+            obs_handler::inject,
+            obs_handler::get_scenes
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

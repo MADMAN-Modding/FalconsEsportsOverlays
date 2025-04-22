@@ -6,25 +6,32 @@ use users::get_current_username;
 
 use crate::handlers::json_handler::{get_json_length, iterate_json, read_json_as_value, write_nested_json_no_io};
 
-pub fn inject(profile: &str, scene: &str) {
-    let path = format!("{}{}.json", get_scene_path(), profile);
-
-    println!("{}", &path);
+#[tauri::command]
+pub fn inject(scene: &str) {
+    let path = format!("{}{}.json", get_scene_path(), scene);
 
     let json = read_json_as_value(path.clone());
     
     let items = json["sources"][0]["settings"]["items"].clone();
 
+    let sources = json["sources"].clone();
+
     let entries = iterate_json("name", &items);
 
-    if !entries.contains(&"Falcons Esports Overlays Browser".to_string()) {
-        println!("Browser not found!\nSHAME!");
+    let has_browser : bool;
 
+    has_browser = entries.iter().any(|entry| entry.replace("\"", "") == "Falcons Esports Overlays Browser");
+
+    if !has_browser {
         let item_count = get_json_length(&items);
 
-        let new_json = write_nested_json_no_io(json, format!("sources.[0]settings.items.[{}]", item_count + 1), get_obs_browser_source());
+        let json = write_nested_json_no_io(json, format!("sources.[0]settings.items.[{}]", item_count + 1), get_obs_browser_source());
 
-        let _ = fs::write(Path::new("/home/mad/Desktop/test.json"), serde_json::to_string_pretty(&new_json).expect("Error Serializing JSON"));
+        let source_count = get_json_length(&sources);
+
+        let json = write_nested_json_no_io(json, format!("sources.[{}]", source_count + 1), get_obs_browser_config());
+
+        let _ = fs::write(Path::new(&path), serde_json::to_string_pretty(&json).expect("Error Serializing JSON"));
     }
 }
 
@@ -44,6 +51,7 @@ pub fn get_profiles() -> Result<Vec<String>, String> {
     Ok(profiles)
 }
 
+#[tauri::command]
 pub fn get_scenes() -> Result<Vec<String>, String> {
     let path = get_scene_path();
 
@@ -52,7 +60,11 @@ pub fn get_scenes() -> Result<Vec<String>, String> {
     for scene in std::fs::read_dir(path).map_err(|e| e.to_string())? {
         let scene = scene.map_err(|e| e.to_string())?;
 
-        if scene.file_type().unwrap().is_dir() {
+        let length = scene.file_name().len();
+
+        let file_type = scene.file_name().into_string().unwrap().get(length-5..length).unwrap().to_owned();
+
+        if file_type == ".json" {
             scenes.push(scene.file_name().into_string().unwrap());
         }
     }
