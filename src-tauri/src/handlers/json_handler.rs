@@ -251,10 +251,21 @@ pub fn write_nested_json_no_io(mut json : Value, keys: String, value: Value) -> 
             // If char is a '['
             '[' => {
                 // Get the char from the string as a usize
+                let mut key = String::new();
+                
+                for char in keys.get(i..).unwrap().chars() {    
+                        if char != ']' {
+                            key.push(char);
+                        } else if char == ']' {
+                            break;
+                        }
+                }
+
                 let i_key = keys.get(i+1..i+2).unwrap().parse::<usize>().unwrap();
                 
+
                 // If the key doesn't exist, push the value and set the json equal to the new Vec
-                if json.as_array().unwrap().len() - 1 < i_key {
+                if json.as_array().unwrap().len() == 0 || json.as_array().unwrap().len() - 1 < i_key {
                     let mut json_vec = json.as_array().unwrap().to_owned();
 
                     json_vec.push(value);

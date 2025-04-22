@@ -16,8 +16,6 @@ pub fn inject(scene: &str) -> String {
         }
     }
 
-    println!("Scene: {:?}", scene);
-
     let path = format!("{}{}.json", get_scene_path(), scene);
 
     let json = read_json_as_value(path.clone());
