@@ -2,7 +2,7 @@
 use std::{fs, path::Path};
 
 use serde_json::{json, Value};
-use users::get_current_username;
+use whoami::fallible::username;
 
 use crate::handlers::json_handler::{get_json_length, iterate_json, read_json_as_value, write_nested_json_no_io};
 
@@ -91,9 +91,9 @@ fn get_os() -> String {
 }
 
 fn get_user() -> String {
-    let username = get_current_username();
+    let username = username();
     
-    username.unwrap().to_str().unwrap().to_string()
+    username.unwrap()
 }
 
 fn get_profile_path() -> String {
