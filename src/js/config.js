@@ -24,6 +24,15 @@ async function setupConfig() {
     // document.getElementById("overlayURL").value = await readConfigJSON("overlayURL");
 
     setImage();
+
+    let scenes = await getSceneList();
+
+    console.log(scenes)
+    
+    scenes.forEach(scene => {
+        document.getElementById("scenes").innerHTML += `<option value="${scene}">${scene}</option>`
+    });
+
 }
 
 

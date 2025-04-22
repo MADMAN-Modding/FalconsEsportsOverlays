@@ -7,7 +7,17 @@ use users::get_current_username;
 use crate::handlers::json_handler::{get_json_length, iterate_json, read_json_as_value, write_nested_json_no_io};
 
 #[tauri::command]
-pub fn inject(scene: &str) {
+pub fn inject(scene: &str) -> String {
+    let scenes = get_scenes();
+
+    if scenes.is_ok() {
+        if !scenes.unwrap().iter().any(|s| s == scene) {
+            return "Scene not Found".to_string();
+        }
+    }
+
+    println!("Scene: {:?}", scene);
+
     let path = format!("{}{}.json", get_scene_path(), scene);
 
     let json = read_json_as_value(path.clone());
@@ -32,7 +42,11 @@ pub fn inject(scene: &str) {
         let json = write_nested_json_no_io(json, format!("sources.[{}]", source_count + 1), get_obs_browser_config());
 
         let _ = fs::write(Path::new(&path), serde_json::to_string_pretty(&json).expect("Error Serializing JSON"));
+        
+        return format!("Scene {} injected", scene);
     }
+
+    format!("Scene {} already injected", scene)
 }
 
 pub fn get_profiles() -> Result<Vec<String>, String> {
@@ -47,6 +61,7 @@ pub fn get_profiles() -> Result<Vec<String>, String> {
             profiles.push(folder.file_name().into_string().unwrap());
         }
     }
+
 
     Ok(profiles)
 }
@@ -65,7 +80,8 @@ pub fn get_scenes() -> Result<Vec<String>, String> {
         let file_type = scene.file_name().into_string().unwrap().get(length-5..length).unwrap().to_owned();
 
         if file_type == ".json" {
-            scenes.push(scene.file_name().into_string().unwrap());
+            let file_name = scene.file_name().into_string().unwrap();
+            scenes.push(file_name.get(0..file_name.len()-5).unwrap().to_string());
         }
     }
 

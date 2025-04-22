@@ -55,6 +55,16 @@
             <p style="margin: 0;"><input type="checkbox" id="autoServer" name="autoServer" onclick="toggleSetting('autoServer')">
             <label for="autoServer">Auto Start Server</label><br>
             </p>
+
+            <!--Select OBS Scene to Inject  -->
+            <br>
+            <h4>Inject OBS Scene</h4>
+            <label for="scenes">Select a scene:</label>
+            <select id="scenes" name="scenes">
+                <option value="Select a scene">Select a Scene</option>
+            </select>
+            <button onclick="injectOBSScene()">Inject</button>
+
             <!-- Change Overlay URL -->
             <!-- <label for="overlayURL">Overlay URL</label>
             <textarea class="userInput" id="overlayURL"></textarea>
