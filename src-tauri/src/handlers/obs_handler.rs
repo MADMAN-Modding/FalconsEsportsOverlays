@@ -90,22 +90,28 @@ fn get_os() -> String {
     std::env::consts::OS.to_string()
 }
 
-fn get_user() -> String {
+fn get_username() -> String {
     let username = username();
     
     username.unwrap()
 }
 
 fn get_profile_path() -> String {
+    let username = get_username();
+
     match get_os().as_str() {
-       "linux" => format!("/home/{}/.var/app/com.obsproject.Studio/config/obs-studio/basic/profiles/", get_user()),
+       "linux" => format!("/home/{username}/.var/app/com.obsproject.Studio/config/obs-studio/basic/profiles/"),
+       "windows" => format!("C:/Users/{username}/AppData/Roaming/obs-studio/basic/profiles/"),
         _ => "".to_string()
     }
 }
 
 fn get_scene_path() -> String {
+    let username = get_username();
+
     match get_os().as_str() {
-        "linux" => format!("/home/{}/.var/app/com.obsproject.Studio/config/obs-studio/basic/scenes/", get_user()),
+        "linux" => format!("/home/{username}/.var/app/com.obsproject.Studio/config/obs-studio/basic/scenes/"),
+        "windows" => format!("C:/Users/{username}/AppData/Roaming/obs-studio/basic/scenes/"),
         _ => "".to_string()
     }
 }
