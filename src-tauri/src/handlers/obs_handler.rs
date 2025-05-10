@@ -6,6 +6,8 @@ use whoami::fallible::username;
 
 use crate::handlers::json_handler::{get_json_length, iterate_json, read_json_as_value, write_nested_json_no_io};
 
+use super::json_handler::write_json;
+
 #[tauri::command]
 pub fn inject(scene: &str) -> String {
     let scenes = get_scenes();
@@ -15,6 +17,8 @@ pub fn inject(scene: &str) -> String {
             return "Scene not Found".to_string();
         }
     }
+
+    enable_web_socket();
 
     let path = format!("{}{}.json", get_scene_path(), scene);
 
@@ -86,6 +90,12 @@ pub fn get_scenes() -> Result<Vec<String>, String> {
     Ok(scenes)
 }
 
+fn enable_web_socket() {
+    let path = get_ws_path();
+
+    write_json(path, "server_enabled".to_string(), "true".to_string());
+}
+
 fn get_os() -> String {
     std::env::consts::OS.to_string()
 }
@@ -112,6 +122,17 @@ fn get_scene_path() -> String {
     match get_os().as_str() {
         "linux" => format!("/home/{username}/.var/app/com.obsproject.Studio/config/obs-studio/basic/scenes/"),
         "windows" => format!("C:/Users/{username}/AppData/Roaming/obs-studio/basic/scenes/"),
+        _ => "".to_string()
+
+    }
+}
+
+fn get_ws_path() -> String {
+    let username = get_username();
+
+    match get_os().as_str() {
+        "linux" => format!("/home/{username}/.var/app/com.obsproject.Studio/config/obs-studio/plugin_config/obs-websocket/config.json"),
+        "windows" => format!("C:/Users/{username}/AppData/Roaming/obs-studio/plugin_config/obs-websocket/config.json"),
         _ => "".to_string()
     }
 }

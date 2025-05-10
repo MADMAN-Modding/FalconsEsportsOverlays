@@ -180,7 +180,7 @@ pub fn write_json(path: String, json_key: String, mut value: String) {
     let mut json_data = open_json(path.clone());
 
     // Writes a bool if the json_key is a checked value which must be a bool
-    if json_key.contains("Checked") || json_key.contains("autoUpdate") {
+    if value == "true" || value == "false" {
         let bool_value = match value.to_lowercase().as_str() {
             "true" => true,
             "false" => false,
