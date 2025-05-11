@@ -1,16 +1,13 @@
-
-use std::{fs, path::Path};
-
 use serde_json::{json, Value};
 use whoami::fallible::username;
 
-use crate::handlers::json_handler::{get_json_length, iterate_json, read_json_as_value, write_nested_json_no_io};
+use crate::handlers::json_handler::{iterate_json, read_json_as_value};
 
-use super::json_handler::write_json;
+use super::json_handler::{read_json, write_json};
 
 #[tauri::command]
 pub fn inject(scene: &str) -> String {
-    let scenes = get_scenes();
+    let scenes = get_scene_collection();
 
     if scenes.is_ok() {
         if !scenes.unwrap().iter().any(|s| s == scene) {
@@ -20,35 +17,37 @@ pub fn inject(scene: &str) -> String {
 
     enable_web_socket();
 
-    let path = format!("{}{}.json", get_scene_path(), scene);
+    // let path = format!("{}{}.json", get_scene_path(), scene);
 
-    let json = read_json_as_value(path.clone());
+    // let json = read_json_as_value(path.clone());
     
-    let items = json["sources"][0]["settings"]["items"].clone();
+    // let items = json["sources"][0]["settings"]["items"].clone();
 
-    let sources = json["sources"].clone();
+    // let sources = json["sources"].clone();
 
-    let entries = iterate_json("name", &items);
+    // let entries = iterate_json("name", &items);
 
-    let has_browser : bool;
+    // let has_browser : bool;
 
-    has_browser = entries.iter().any(|entry| entry.replace("\"", "") == "Falcons Esports Overlays Browser");
+    // has_browser = entries.iter().any(|entry| entry.replace("\"", "") == "Falcons Esports Overlays Browser");
 
-    if !has_browser {
-        let item_count = get_json_length(&items);
+    // if !has_browser {
+    //     let item_count = get_json_length(&items);
 
-        let json = write_nested_json_no_io(json, format!("sources.[0]settings.items.[{}]", item_count + 1), get_obs_browser_source());
+    //     let json = write_nested_json_no_io(json, format!("sources.[0]settings.items.[{}]", item_count + 1), get_obs_browser_source());
 
-        let source_count = get_json_length(&sources);
+    //     let source_count = get_json_length(&sources);
 
-        let json = write_nested_json_no_io(json, format!("sources.[{}]", source_count + 1), get_obs_browser_config());
+    //     let json = write_nested_json_no_io(json, format!("sources.[{}]", source_count + 1), get_obs_browser_config());
 
-        let _ = fs::write(Path::new(&path), serde_json::to_string_pretty(&json).expect("Error Serializing JSON"));
+    //     let _ = fs::write(Path::new(&path), serde_json::to_string_pretty(&json).expect("Error Serializing JSON"));
         
-        return format!("Scene {} injected", scene);
-    }
+    //     return format!("Scene {} injected", scene);
+    // }
 
-    format!("Scene {} already injected", scene)
+    // format!("Scene {} already injected", scene)
+
+    "Source Injected".to_string()
 }
 
 pub fn get_profiles() -> Result<Vec<String>, String> {
@@ -69,7 +68,7 @@ pub fn get_profiles() -> Result<Vec<String>, String> {
 }
 
 #[tauri::command]
-pub fn get_scenes() -> Result<Vec<String>, String> {
+pub fn get_scene_collection() -> Result<Vec<String>, String> {
     let path = get_scene_path();
 
     let mut scenes: Vec<String> = Vec::new();
@@ -90,6 +89,17 @@ pub fn get_scenes() -> Result<Vec<String>, String> {
     Ok(scenes)
 }
 
+#[tauri::command]
+pub fn get_scenes(collection: String) -> Vec<String> {
+    let path = format!("{}{}.json", get_scene_path(), collection);
+
+    let json = read_json_as_value(path);
+
+    let scenes = iterate_json("name", &json["scene_order"]);
+
+    scenes
+}
+
 fn enable_web_socket() {
     let path = get_ws_path();
 
@@ -104,6 +114,13 @@ fn get_username() -> String {
     let username = username();
     
     username.unwrap()
+}
+
+#[tauri::command]
+pub fn get_ws_password() -> String {
+    let path = get_ws_path();
+
+    read_json("server_password", path)
 }
 
 fn get_profile_path() -> String {

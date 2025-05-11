@@ -318,7 +318,7 @@ pub fn iterate_json(json_key: &str, json: &Value) -> Vec<String> {
     if json.is_array() {
         for value in json.as_array().unwrap().to_vec() {
             for v in iterate_json_map(json_key, &value) {
-                entries.push(v.to_string());
+                entries.push(v);
             }
         }
     } else {
@@ -336,10 +336,10 @@ fn iterate_json_map(json_key: &str, json: &Value) -> Vec<String> {
     for value in json.as_object().unwrap() {
         let (key, v) = value;
         if key == json_key {
-            entries.push(v.to_string());
+            entries.push(v.to_string().replace("\"", ""));
         } else if v.is_object() {
             for val in iterate_json(json_key, &v) {
-                entries.push(val.to_string());
+                entries.push(val);
             }
         }
     }

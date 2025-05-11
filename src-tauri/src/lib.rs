@@ -57,7 +57,9 @@ pub fn run() {
             overlay_handler::delete_selected_overlay,
             overlay_handler::setup_overlays,
             obs_handler::inject,
-            obs_handler::get_scenes
+            obs_handler::get_scene_collection,
+            obs_handler::get_scenes,
+            obs_handler::get_ws_password
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -25,12 +25,10 @@ async function setupConfig() {
 
     setImage();
 
-    let scenes = await getSceneList();
+    let scenes = await getSceneCollectionList();
 
-    console.log(scenes)
-    
     scenes.forEach(scene => {
-        document.getElementById("scenes").innerHTML += `<option value="${scene}">${scene}</option>`
+        document.getElementById("sceneCollections").innerHTML += `<option value="${scene}">${scene}</option>`
     });
 
 }

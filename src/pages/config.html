@@ -59,9 +59,14 @@
             <!--Select OBS Scene to Inject  -->
             <br>
             <h4>Inject OBS Scene</h4>
-            <label for="scenes">Select a scene:</label>
-            <select id="scenes" name="scenes">
-                <option value="Select a scene">Select a Scene</option>
+            <label for="sceneCollections">Select a Scene Collection:</label>
+            <select id="sceneCollections" name="sceneCollections" onchange="genScenes()">
+                <option value="Select a Scene Collection">Select a Scene Collection</option>
+            </select>
+            
+            <label for="scenes">Select a Scene</label>
+            <select name="scenes" id="scenes">
+                <option value="Select a Scene">Select a Scene</option>
             </select>
             <button id="inject" onclick="injectOBSScene()">Inject</button>
 
