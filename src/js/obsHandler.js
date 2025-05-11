@@ -19,18 +19,24 @@ async function getSceneCollectionList() {
 async function injectOBSScene() {
     const sceneCollection = document.getElementById("sceneCollections").value;
 
+    await invoke("inject");
+
     if (sceneCollection === "Select a Scene Collection") {
         pushNotification("Invalid Selection");
         return;
     }
 
-    if (!connected) {
-        await connectWS();
-    }
+    setTimeout(async () => {
+        if (!connected) {
+            await connectWS();
+        }
+    }, 5000)
 
-    await makeBrowser();
+    setTimeout(async () => {
+        await makeBrowser();
+    }, 4000)
 
-    invoke("inject", { scene: sceneCollection }).then((value) => pushNotification(value));
+    pushNotification("Scene Injected");
 }
 
 async function genScenes() {
@@ -98,8 +104,6 @@ async function connectWS() {
 async function makeBrowser() {
     const scene = document.getElementById("scenes").value;
     const inputName = "Falcons Esports Overlays Browser";
-
-    const result = await sendRequest("GetSceneList", {});
 
     try {
         // Create new browser source

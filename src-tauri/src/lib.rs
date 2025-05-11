@@ -7,6 +7,7 @@ pub mod handlers {
     pub mod custom_config;
     pub mod overlay_handler;
     pub mod obs_handler;
+    pub mod os_handler;
 }
 
 pub mod constants;

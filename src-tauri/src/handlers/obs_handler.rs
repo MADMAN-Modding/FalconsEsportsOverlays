@@ -1,53 +1,34 @@
+use std::process::Stdio;
+
 use serde_json::{json, Value};
-use whoami::fallible::username;
 
 use crate::handlers::json_handler::{iterate_json, read_json_as_value};
 
-use super::json_handler::{read_json, write_json};
+use super::{
+    json_handler::{read_json, write_json},
+    os_handler::{get_os, get_process_status, get_username, kill_process},
+};
 
 #[tauri::command]
-pub fn inject(scene: &str) -> String {
-    let scenes = get_scene_collection();
+pub fn inject() {
+    // If the web socket is set to false
+    let mut process_running = get_process_status("obs");
+    if !get_ws_status() {
 
-    if scenes.is_ok() {
-        if !scenes.unwrap().iter().any(|s| s == scene) {
-            return "Scene not Found".to_string();
+        if process_running {
+            kill_process("obs");
         }
+
+        enable_ws();
+    }
+    
+    if !process_running {
+        start_obs();
     }
 
-    enable_web_socket();
-
-    // let path = format!("{}{}.json", get_scene_path(), scene);
-
-    // let json = read_json_as_value(path.clone());
-    
-    // let items = json["sources"][0]["settings"]["items"].clone();
-
-    // let sources = json["sources"].clone();
-
-    // let entries = iterate_json("name", &items);
-
-    // let has_browser : bool;
-
-    // has_browser = entries.iter().any(|entry| entry.replace("\"", "") == "Falcons Esports Overlays Browser");
-
-    // if !has_browser {
-    //     let item_count = get_json_length(&items);
-
-    //     let json = write_nested_json_no_io(json, format!("sources.[0]settings.items.[{}]", item_count + 1), get_obs_browser_source());
-
-    //     let source_count = get_json_length(&sources);
-
-    //     let json = write_nested_json_no_io(json, format!("sources.[{}]", source_count + 1), get_obs_browser_config());
-
-    //     let _ = fs::write(Path::new(&path), serde_json::to_string_pretty(&json).expect("Error Serializing JSON"));
-        
-    //     return format!("Scene {} injected", scene);
-    // }
-
-    // format!("Scene {} already injected", scene)
-
-    "Source Injected".to_string()
+    while !process_running {
+        process_running = get_process_status("obs");
+    }
 }
 
 pub fn get_profiles() -> Result<Vec<String>, String> {
@@ -63,7 +44,6 @@ pub fn get_profiles() -> Result<Vec<String>, String> {
         }
     }
 
-
     Ok(profiles)
 }
 
@@ -78,11 +58,17 @@ pub fn get_scene_collection() -> Result<Vec<String>, String> {
 
         let length = scene.file_name().len();
 
-        let file_type = scene.file_name().into_string().unwrap().get(length-5..length).unwrap().to_owned();
+        let file_type = scene
+            .file_name()
+            .into_string()
+            .unwrap()
+            .get(length - 5..length)
+            .unwrap()
+            .to_owned();
 
         if file_type == ".json" {
             let file_name = scene.file_name().into_string().unwrap();
-            scenes.push(file_name.get(0..file_name.len()-5).unwrap().to_string());
+            scenes.push(file_name.get(0..file_name.len() - 5).unwrap().to_string());
         }
     }
 
@@ -100,20 +86,68 @@ pub fn get_scenes(collection: String) -> Vec<String> {
     scenes
 }
 
-fn enable_web_socket() {
+fn start_obs() {
+    use std::process::Command;
+
+    let os = get_os();
+
+    match os.as_str() {
+        "windows" => {
+            // Use "start" to launch the process in the background on Windows
+            let _ = Command::new("cmd")
+                .args([
+                    "/C",
+                    "start",
+                    "obs64.exe",
+                    "--disable-shutdown-check",
+                ])
+                .stdout(Stdio::null()) // Redirect output to prevent blocking
+                .stderr(Stdio::null()) // Redirect error output to prevent blocking
+                .spawn() // Use spawn to run asynchronously
+                .expect("Failed to start OBS on Windows");
+        }
+        "linux" => {
+            // Use "bash -c" and "&" to run in the background on Linux (Flatpak)
+            let _ = Command::new("bash")
+            .args([
+                "-c", 
+                "flatpak run com.obsproject.Studio --disable-shutdown-check &"
+            ])
+            .stdout(Stdio::null())  // Redirect output to prevent blocking
+            .stderr(Stdio::null())  // Redirect error output to prevent blocking
+            .spawn()                // Use spawn to run asynchronously
+            .expect("Failed to start OBS Flatpak on Linux in background");
+        }
+        "macos" => {
+            // Use "bash -c" and "&" to run in the background on macOS
+            let _ = Command::new("bash")
+                .args([
+                    "-c",
+                    "open -a OBS --args --disable-shutdown-check &",
+                ])
+                .stdout(Stdio::null()) // Redirect output to prevent blocking
+                .stderr(Stdio::null()) // Redirect error output to prevent blocking
+                .spawn() // Use spawn to run asynchronously
+                .expect("Failed to start OBS on macOS in background");
+        }
+        _ => {
+            eprintln!("Unsupported OS: {}", os);
+        }
+    }
+}
+
+fn enable_ws() {
     let path = get_ws_path();
 
     write_json(path, "server_enabled".to_string(), "true".to_string());
 }
 
-fn get_os() -> String {
-    std::env::consts::OS.to_string()
-}
+fn get_ws_status() -> bool {
+    let path = get_ws_path();
 
-fn get_username() -> String {
-    let username = username();
-    
-    username.unwrap()
+    read_json_as_value(path)["server_enabled"]
+        .as_bool()
+        .unwrap()
 }
 
 #[tauri::command]
@@ -127,9 +161,11 @@ fn get_profile_path() -> String {
     let username = get_username();
 
     match get_os().as_str() {
-       "linux" => format!("/home/{username}/.var/app/com.obsproject.Studio/config/obs-studio/basic/profiles/"),
-       "windows" => format!("C:/Users/{username}/AppData/Roaming/obs-studio/basic/profiles/"),
-        _ => "".to_string()
+        "linux" => format!(
+            "/home/{username}/.var/app/com.obsproject.Studio/config/obs-studio/basic/profiles/"
+        ),
+        "windows" => format!("C:/Users/{username}/AppData/Roaming/obs-studio/basic/profiles/"),
+        _ => "".to_string(),
     }
 }
 
@@ -137,10 +173,11 @@ fn get_scene_path() -> String {
     let username = get_username();
 
     match get_os().as_str() {
-        "linux" => format!("/home/{username}/.var/app/com.obsproject.Studio/config/obs-studio/basic/scenes/"),
+        "linux" => format!(
+            "/home/{username}/.var/app/com.obsproject.Studio/config/obs-studio/basic/scenes/"
+        ),
         "windows" => format!("C:/Users/{username}/AppData/Roaming/obs-studio/basic/scenes/"),
-        _ => "".to_string()
-
+        _ => "".to_string(),
     }
 }
 
