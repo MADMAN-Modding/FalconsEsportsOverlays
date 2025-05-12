@@ -81,7 +81,7 @@ pub fn stop_server() -> Result<String, String> {
 impl ThreadData {
 /// Handles the incoming server traffic to either send it to the request processor or exit this cycle of the loop
 /// 
-/// # Arguments
+/// # Parameters
 /// * `listener: TcpListener` - listener from binding the TCP address & port
 /// * `thread_data: Arc<Mutex<Self>>` - The variable storing the shared data
     fn handle_connection(listener: TcpListener, thread_data: Arc<Mutex<Self>>) {
@@ -111,7 +111,7 @@ impl ThreadData {
 /// * It will take care of any errors with the incoming request being invalid or if the client disconnects mid request
 /// * Filters out `?` from requests
 /// * Sends `404.html` if it can't find the requested resource
-/// # Arguments
+/// # Parameters
 /// * `mut stream: TcpSteam` - The incoming stream of data requested by the client 
 fn process_request(mut stream: TcpStream) {
     let buf_reader = BufReader::new(&stream).lines().next();

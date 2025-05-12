@@ -14,7 +14,7 @@ use super::download_handler::download_files;
 
 /// Reads the overlay json and returns the value of the requested key
 ///
-/// # Arguments
+/// # Parameters
 /// * `key: &str` - The key to be read from the json file
 ///
 /// # Returns
@@ -26,7 +26,7 @@ pub fn read_overlay_json(key: &str) -> String {
 
 /// Reads the config json and returns the value of the requested key
 ///
-/// # Arguments
+/// # Parameters
 /// * `key: &str` - The key to be read from the json file
 ///
 /// # Returns
@@ -38,7 +38,7 @@ pub fn read_config_json(key: &str) -> String {
 
 /// Reads the config json and returns the value of the requested key
 ///
-/// # Arguments
+/// # Parameters
 /// * `key: &str` - The key to be read from the json file
 ///
 /// # Returns
@@ -50,7 +50,7 @@ pub fn read_custom_json(key: &str) -> String {
 
 /// Reads the json at the supplied path and returns the value of the requested key
 ///
-/// # Arguments
+/// # Parameters
 /// * `key: &str` - The key to be read from the json file
 /// * `path: String` - The path to the json file
 ///
@@ -69,7 +69,7 @@ pub fn read_json_as_value(path: String) -> Value {
 
 /// Opens the json file with the supplied path
 ///
-/// # Arguments
+/// # Parameters
 /// * `path: String` - The path to the JSON file to read
 ///
 /// # Returns
@@ -114,7 +114,7 @@ fn open_json(path: String) -> Value {
 ///
 /// It after making the file it will try to read the file and then return that value
 ///
-/// # Arguments
+/// # Parameters
 /// * `path: String` - The path to the JSON file to read
 ///
 /// # Returns
@@ -165,7 +165,7 @@ pub fn init_json(path: String) -> Value {
 
 /// Writes to the JSON file at the supplied path
 ///
-/// # Arguments
+/// # Parameters
 /// * `path: String` - Path to the JSON file
 /// * `json_key: String` - Key to write to
 /// * `value: String` ` Value to write to the key`
@@ -216,7 +216,7 @@ pub fn write_json(path: String, json_key: String, mut value: String) {
 /// Recursively reads a JSON value and writes a new value to the specified key path.
 /// No IO means it won't write to file system
 /// 
-/// # Arguments
+/// # Parameters
 /// * `json` - The JSON value to be modified.
 /// * `keys` - A dot-separated string path specifying the keys/indexes to traverse. Array indices should be wrapped in square brackets, `arrayKey[0].nestedKey`.
 /// * `value` - The new value to write at the final key.
@@ -306,9 +306,9 @@ pub fn write_config(json_key: String, value: &str) {
 
 /// Iterate over a json object and return a Vec of key values
 ///
-/// # Arguments
+/// # Parameters
 /// * `json_key : &str` - Key to search for
-/// * `json : &Value` - JSON object
+/// * `json : &Value` - Reference to json object to be search
 ///
 /// # Returns
 /// 'Vec<String>' Contains all the found values
@@ -330,6 +330,14 @@ pub fn iterate_json(json_key: &str, json: &Value) -> Vec<String> {
     entries
 }
 
+/// Iterates over a json object
+/// 
+/// # Parameters
+/// * `json_key` : &str` - Key to search for
+/// * `json : &Value` - Reference to json object to be searched
+/// 
+/// # Returns
+/// `Vec<String>` Contains all the found values
 fn iterate_json_map(json_key: &str, json: &Value) -> Vec<String> {
     let mut entries: Vec<String> = Vec::new();
 
@@ -347,6 +355,13 @@ fn iterate_json_map(json_key: &str, json: &Value) -> Vec<String> {
     entries
 }
 
+/// Counts the length of a json object
+/// 
+/// # Parameters
+/// * `json : &Value` - JSON to be searched
+/// 
+/// # Returns
+/// * `u32` The length of the json
 pub fn get_json_length(json: &Value) -> u32 {
     let mut size: u32 = 0;
 

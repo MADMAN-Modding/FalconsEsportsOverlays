@@ -9,7 +9,7 @@ use crate::constants::get_code_dir_image_path;
 
 /// Copies the image from bytes to the image in the code directory
 /// 
-/// # Arguments
+/// # Parameters
 /// * `bytes: Vec<u8>` - A vector of all the bytes of the image
 /// 
 /// # Returns

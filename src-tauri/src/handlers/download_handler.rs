@@ -76,7 +76,7 @@ pub fn download_files(url: &str, filename: &str) -> Result<[String; 2], String> 
 
 /// Extracts files from a .zip to a directory
 ///
-/// # Arguments
+/// # Parameters
 /// * `file_path` - The path to the zip file
 /// * `output_dir` - The path to output the directed contents
 ///
@@ -119,7 +119,7 @@ fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
 
 /// Downloads a zip containing all of the overlays and extracts it
 ///
-/// # Arguments
+/// # Parameters
 /// * `preserve` - If true, it will preserve the data in the code directory
 ///
 /// # Returns

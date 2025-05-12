@@ -43,7 +43,7 @@ fn find_overlays() -> Result<Vec<String>, String> {
 
 /// Downloads the selected overlay files (HTML, CSS, JS, and PNG) from a remote URL.
 /// 
-/// # Arguments
+/// # Parameters
 /// * `overlay` - The name of the overlay to download.
 /// 
 /// # Returns
@@ -82,7 +82,7 @@ pub fn download_selected_overlay(overlay: String) -> Result<String, String> {
 
 /// Deletes the selected overlay files (HTML, CSS, JS, and PNG) from the local filesystem.
 /// 
-/// # Arguments
+/// # Parameters
 /// * `overlay` - The name of the overlay to delete.
 /// 
 /// # Returns

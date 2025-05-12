@@ -3,14 +3,29 @@ use std::process::Command;
 use sysinfo::System;
 use whoami::username;
 
+/// Gest the current OS
+/// 
+/// # Returns
+/// `String` OS of the device
 pub fn get_os() -> String {
     std::env::consts::OS.to_string()
 }
 
+/// Gets the name of the current user
+/// 
+/// # Returns
+/// `String` Username of current user
 pub fn get_username() -> String {
     username()
 }
 
+/// Returns if the requested process is running
+/// 
+/// # Parameters
+/// `process: &str` - Process to search for
+/// 
+/// # Returns
+/// `bool` Is the process running
 pub fn get_process_status<'a>(process: &'a str) -> bool {
     for running_process in get_running_processes() {
         if running_process.to_ascii_lowercase().contains(&process) {
@@ -21,6 +36,11 @@ pub fn get_process_status<'a>(process: &'a str) -> bool {
     false
 }
 
+/// Kills the supplied process
+/// It will find the first process the matches the inputted name
+/// 
+/// # Parameters
+/// `process: &str` - name of the process to kill 
 pub fn kill_process<'a>(process: &'a str) {
     let process = process.to_string();
     let os = get_os();
@@ -48,6 +68,11 @@ pub fn kill_process<'a>(process: &'a str) {
     }
 }
 
+
+/// Gets the names of all the running processes
+/// 
+/// # Returns
+/// `Vec<String>` Vector of all the processes
 fn get_running_processes() -> Vec<String> {
     let mut system = System::new_all();
     system.refresh_all();
@@ -62,6 +87,8 @@ fn get_running_processes() -> Vec<String> {
 
     processes
 }
+
+// Functions I wrote that I didn't end up needing, keeping them incase I want them latter 
 
 // fn get_process_name<'a>(process: &'a str) -> String {
 //     for running_process in get_running_processes() {

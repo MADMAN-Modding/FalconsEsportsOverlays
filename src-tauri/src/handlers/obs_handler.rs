@@ -1,7 +1,5 @@
 use std::process::Stdio;
 
-use serde_json::{json, Value};
-
 use crate::handlers::json_handler::{iterate_json, read_json_as_value};
 
 use super::{
@@ -10,6 +8,7 @@ use super::{
 };
 
 #[tauri::command]
+/// Adds the source to OBS
 pub fn inject() {
     // If the web socket is set to false
     let mut process_running = get_process_status("obs");
@@ -31,6 +30,7 @@ pub fn inject() {
     }
 }
 
+/// Returns all the profiles
 pub fn get_profiles() -> Result<Vec<String>, String> {
     let path = get_profile_path();
 
@@ -48,6 +48,7 @@ pub fn get_profiles() -> Result<Vec<String>, String> {
 }
 
 #[tauri::command]
+/// Returns the name of the scene collections
 pub fn get_scene_collection() -> Result<Vec<String>, String> {
     let path = get_scene_path();
 
@@ -76,6 +77,7 @@ pub fn get_scene_collection() -> Result<Vec<String>, String> {
 }
 
 #[tauri::command]
+/// Returns all the available scenes for a scene collection
 pub fn get_scenes(collection: String) -> Vec<String> {
     let path = format!("{}{}.json", get_scene_path(), collection);
 
@@ -86,6 +88,8 @@ pub fn get_scenes(collection: String) -> Vec<String> {
     scenes
 }
 
+/// Starts obs in the background
+/// Skips the check to see if it was force closed
 fn start_obs() {
     use std::process::Command;
 
@@ -136,12 +140,14 @@ fn start_obs() {
     }
 }
 
+/// Enables the websocket in the json
 fn enable_ws() {
     let path = get_ws_path();
 
     write_json(path, "server_enabled".to_string(), "true".to_string());
 }
 
+/// Is the websocket enabled?
 fn get_ws_status() -> bool {
     let path = get_ws_path();
 
@@ -151,12 +157,14 @@ fn get_ws_status() -> bool {
 }
 
 #[tauri::command]
+/// Gets the password of the websocket
 pub fn get_ws_password() -> String {
     let path = get_ws_path();
 
     read_json("server_password", path)
 }
 
+/// Path to the profiles
 fn get_profile_path() -> String {
     let username = get_username();
 
@@ -169,6 +177,7 @@ fn get_profile_path() -> String {
     }
 }
 
+/// Path to the scenes
 fn get_scene_path() -> String {
     let username = get_username();
 
@@ -181,6 +190,7 @@ fn get_scene_path() -> String {
     }
 }
 
+/// Path to the websocket json
 fn get_ws_path() -> String {
     let username = get_username();
 
@@ -189,103 +199,4 @@ fn get_ws_path() -> String {
         "windows" => format!("C:/Users/{username}/AppData/Roaming/obs-studio/plugin_config/obs-websocket/config.json"),
         _ => "".to_string()
     }
-}
-
-pub fn get_obs_browser_source() -> Value {
-    json!({
-        "name": "Falcons Esports Overlays Browser",
-        "source_uuid": "818eaee2-1c91-41be-91ff-9dc1a504a21a",
-        "visible": true,
-        "locked": false,
-        "rot": 0.0,
-        "scale_ref": {
-            "x": 1920.0,
-            "y": 1080.0
-        },
-        "align": 5,
-        "bounds_type": 0,
-        "bounds_align": 0,
-        "bounds_crop": false,
-        "crop_left": 0,
-        "crop_top": 0,
-        "crop_right": 0,
-        "crop_bottom": 0,
-        "id": 3,
-        "group_item_backup": false,
-        "pos": {
-            "x": 0.0,
-            "y": 0.0
-        },
-        "pos_rel": {
-            "x": -1.7777777910232544,
-            "y": -1.0
-        },
-        "scale": {
-            "x": 1.0,
-            "y": 1.0
-        },
-        "scale_rel": {
-            "x": 1.0,
-            "y": 1.0
-        },
-        "bounds": {
-            "x": 0.0,
-            "y": 0.0
-        },
-        "bounds_rel": {
-            "x": 0.0,
-            "y": 0.0
-        },
-        "scale_filter": "disable",
-        "blend_method": "default",
-        "blend_type": "normal",
-        "show_transition": {
-            "duration": 0
-        },
-        "hide_transition": {
-            "duration": 0
-        },
-        "private_settings": {}
-    }
-
-    )
-}
-
-pub fn get_obs_browser_config() -> Value {
-    json!({
-        "prev_ver": 520093699,
-        "name": "Falcons Esports Overlays Browser",
-        "uuid": "818eaee2-1c91-41be-91ff-9dc1a504a21a",
-        "id": "browser_source",
-        "versioned_id": "browser_source",
-        "settings": {
-            "width": 1920,
-            "height": 1080,
-            "url": "http://localhost:8080",
-            "fps": 60,
-            "css": ""
-        },
-        "mixers": 255,
-        "sync": 0,
-        "flags": 0,
-        "volume": 1.0,
-        "balance": 0.5,
-        "enabled": true,
-        "muted": false,
-        "push-to-mute": false,
-        "push-to-mute-delay": 0,
-        "push-to-talk": false,
-        "push-to-talk-delay": 0,
-        "hotkeys": {
-            "libobs.mute": [],
-            "libobs.unmute": [],
-            "libobs.push-to-mute": [],
-            "libobs.push-to-talk": [],
-            "ObsBrowser.Refresh": []
-        },
-        "deinterlace_mode": 0,
-        "deinterlace_field_order": 0,
-        "monitoring_type": 0,
-        "private_settings": {}
-    })
 }

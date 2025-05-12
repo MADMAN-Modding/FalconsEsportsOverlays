@@ -9,7 +9,7 @@ use crate::{constants::{
 
 /// Copies the necessary files to `config_dir` from the `code_dir`
 ///
-/// # Arguments
+/// # Parameters
 /// * `config_dir` - The config directory
 ///
 /// # Returns

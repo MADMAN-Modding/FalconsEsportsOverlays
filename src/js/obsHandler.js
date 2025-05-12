@@ -16,24 +16,30 @@ async function getSceneCollectionList() {
  * @async
  */
 async function injectOBSScene() {
+    
     const sceneCollection = document.getElementById("sceneCollections").value;
+    const scene = document.getElementById("scenes").value;
 
-    await invoke("inject");
-
-    if (sceneCollection === "Select a Scene Collection") {
+    
+    if (sceneCollection === "Select a Scene Collection" || scene == "Select a Scene") {
         pushNotification("Invalid Selection");
         return;
     }
+    
+    // Has the backend detect if the ws is enabled, kills obs if it isn't, enables it, then starts obs
+    await invoke("inject");
 
-    await setTimeout(async () => {
-        await connectWS();
-    }, 5000)
+    pushNotification("Injecting");
 
-    await setTimeout(async () => {
+    // Connect to the socket
+    await connectWS();
+
+    // Timers because I haven't figured out how to make it wait for a connection
+    setTimeout(async () => {
         await makeBrowser();
+        pushNotification("Scene Injected");
     }, 10000)
 
-    pushNotification("Scene Injected");
 }
 
 async function genScenes() {
@@ -123,7 +129,6 @@ async function makeBrowser() {
     }
 }
 
-// Utility: send OBS WebSocket request and await result
 function sendRequest(type, data) {
     return new Promise((resolve, reject) => {
         const id = crypto.randomUUID();
