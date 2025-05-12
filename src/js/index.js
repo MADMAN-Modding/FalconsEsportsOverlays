@@ -54,7 +54,7 @@ async function checkForUpdates() {
     setTimeout(async () => {
         let versions = await invoke("get_app_version");
 
-        if (!(versions["version"] == 3.1 && versions["subVersion"] == 0)) {
+        if (!(versions["version"] == 3.2 && versions["subVersion"] == 0)) {
             pushNotification("Update Available\n" + versions["updateMessage"]);
         }
     }, 5000);
