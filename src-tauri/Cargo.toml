@@ -45,9 +45,13 @@ upgrade-guid = "B36177BE-EA4D-44FB-B05C-EDDABDAA95CA"
 dialog = "icons/dialog.png"
 
 [package.metadata.appimage]
-auto_link = true
-auto_link_exclude_list = [
-    "libc.so*",
-    "libdl.so*",
-    "libpthread.so*",
-]
+auto_link = false
+
+[[package.metadata.appimage.include]]
+path = "/usr/lib/libz.so.1"
+
+[[package.metadata.appimage.include]]
+path = "/usr/lib/libssl.so.3"
+
+[[package.metadata.appimage.include]]
+path = "/usr/lib/libcrypto.so.3"
