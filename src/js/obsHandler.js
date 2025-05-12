@@ -1,5 +1,4 @@
 let socket;
-let connected = false;
 let pendingResponses = new Map(); // For awaiting responses by requestId
 
 /**
@@ -26,15 +25,13 @@ async function injectOBSScene() {
         return;
     }
 
-    setTimeout(async () => {
-        if (!connected) {
-            await connectWS();
-        }
+    await setTimeout(async () => {
+        await connectWS();
     }, 5000)
 
-    setTimeout(async () => {
+    await setTimeout(async () => {
         await makeBrowser();
-    }, 4000)
+    }, 10000)
 
     pushNotification("Scene Injected");
 }
