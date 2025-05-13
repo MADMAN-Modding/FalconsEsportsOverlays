@@ -1,4 +1,4 @@
-use std::process::Stdio;
+use std::{env::set_current_dir, process::Stdio};
 
 use crate::handlers::json_handler::{iterate_json, read_json_as_value};
 
@@ -97,12 +97,10 @@ fn start_obs() {
 
     match os.as_str() {
         "windows" => {
+            let _ = set_current_dir("C:/Program Files/obs-studio/bin/64bit");
             // Use "start" to launch the process in the background on Windows
-            let _ = Command::new("cmd")
+            let _ = Command::new("C:/Program Files/obs-studio/bin/64bit/obs64.exe")
                 .args([
-                    "/C",
-                    "start",
-                    "obs64.exe",
                     "--disable-shutdown-check",
                 ])
                 .stdout(Stdio::null()) // Redirect output to prevent blocking
