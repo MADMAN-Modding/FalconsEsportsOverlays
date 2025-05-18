@@ -27,6 +27,8 @@ async function switchPage(page) {
         setupApp(); // Setup the main app page.
     } else if (page == "files") {
         setupDownloads(); //Setup the downloads page
+    } else if (page == "editor") {
+        setupEditor();
     }
 }
 
