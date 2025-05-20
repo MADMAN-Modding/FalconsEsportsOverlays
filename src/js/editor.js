@@ -31,6 +31,11 @@ function addRect() {
     });
 }
 
+function addCircle() {
+    var circle = draw.ellipse(100, 100).fill('#ccc');
+    makeDraggable(circle);
+}
+
 function exportSVG() {
     const svgMarkup = draw.svg();
     console.log(svgMarkup);
