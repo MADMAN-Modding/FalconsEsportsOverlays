@@ -86,7 +86,7 @@ async fn threaded_get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Ve
 
 
             // If the file is a "Resource Not Found" file, return a blank vector
-            if buffer.len() == 20 {
+            if buffer.len() == 9379 || buffer.len() == 20 {
                 return Ok(vec![0 as u8]);
             }
 

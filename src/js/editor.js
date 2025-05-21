@@ -6,6 +6,12 @@ function makeDraggable(element) {
     });
 }
 
+function makeResizable(element) {
+    rect.on('resize', (event) => {
+        console.log(event.detail)
+    })
+}
+
 function addText() {
     const text = draw.text('Editable Text').move(100, 100).fill('#000').font({ size: 24 });
     makeDraggable(text);
@@ -24,6 +30,7 @@ function addText() {
 function addRect() {
     const rect = draw.rect(150, 100).move(200, 200).fill('#ccc');
     makeDraggable(rect);
+    makeResizable(rect);
 
     rect.on('click', () => {
         const color = document.getElementById('colorPicker')?.value || '#ccc';
@@ -43,10 +50,13 @@ function exportSVG() {
 }
 
 function setupEditor() {
-    draw = SVG().addTo('#svgCanvas').size('100%', '100%');
-
-    // Expose the functions globally
-    window.addText = addText;
-    window.addRect = addRect;
-    window.exportSVG = exportSVG;
+    draw = new SVG().addTo('#svgCanvas').size('100%', '100%');
+    draw.rect(50, 50).fill('red').select().resize()       
+    new SVG()
+  .addTo("#polygon_normal")
+  .size("100%", "100%")
+  .polygon("350,50 283,250 450,122 250,122 416,250")
+  .select()
+  .pointSelect()
+  .resize();
 };
