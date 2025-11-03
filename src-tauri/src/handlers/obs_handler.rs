@@ -13,9 +13,9 @@ pub fn inject() {
     // If the web socket is set to false
     let mut process_running = get_process_status("obs");
     if !get_ws_status() {
-
-        if process_running {
+        while process_running {
             kill_process("obs");
+            process_running = get_process_status("obs")
         }
 
         enable_ws();

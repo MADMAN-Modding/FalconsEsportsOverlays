@@ -25,3 +25,5 @@ dist-ssr
 
 falcons_esports_overlays_controller
 Cargo.lock
+
+target

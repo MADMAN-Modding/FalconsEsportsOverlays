@@ -35,11 +35,8 @@ async function injectOBSScene() {
     await connectWS();
 
     // Timers because I haven't figured out how to make it wait for a connection
-    setTimeout(async () => {
-        await makeBrowser();
-        pushNotification("Scene Injected");
-    }, 10000)
-
+    await makeBrowser();
+    pushNotification("Scene Injected");
 }
 
 async function genScenes() {
@@ -58,9 +55,11 @@ async function genScenes() {
 async function connectWS() {
     const password = await invoke("get_ws_password");
 
+    let errorCount = 0;
+
     socket = new WebSocket("ws://localhost:4455");
 
-    await new Promise((resolve, reject) => {
+    await new Promise(async (resolve, reject) => {
         socket.addEventListener("open", () => console.log("WebSocket opened."));
         
         socket.addEventListener("message", async (event) => {
@@ -98,13 +97,19 @@ async function connectWS() {
             }
         });
 
-        socket.addEventListener("error", (err) => {
-            reject(new Error("WebSocket connection failed."));
+        await socket.addEventListener("error", async () => {
+            if (errorCount >= 10) {
+                pushNotification("Error Threshold Reached")
+                reject(new Error("WebSocket connection failed."));
+            } else {
+                await connectWS()
+            }
         });
     });
 }
 
 async function makeBrowser() {
+    pushNotification("Making Browser Source...")
     const scene = document.getElementById("scenes").value;
     const inputName = "Falcons Esports Overlays Browser";
 
