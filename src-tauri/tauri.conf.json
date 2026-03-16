@@ -1,18 +1,20 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "falcons_esports_overlays_controller",
+  "productName": "falcons-esports-overlays-controller",
   "version": "0.1.0",
   "identifier": "com.madman_modding.falcons_esports_overlays_controller",
   "build": {
-    "frontendDist": "../src"
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
   },
   "app": {
-    "withGlobalTauri": true,
     "windows": [
       {
-        "title": "Falcons Esports Overlays Controller",
-        "width": 1386,
-        "height": 730
+        "title": "falcons-esports-overlays-controller",
+        "width": 800,
+        "height": 600
       }
     ],
     "security": {

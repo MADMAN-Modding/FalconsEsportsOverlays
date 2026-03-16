@@ -16,7 +16,7 @@ pub fn get_os() -> String {
 /// # Returns
 /// `String` Username of current user
 pub fn get_username() -> String {
-    username()
+    username().unwrap()
 }
 
 /// Returns if the requested process is running

@@ -6,7 +6,6 @@ authors = ["MADMAN-Modding"]
 edition = "2021"
 license = "MIT"
 homepage = "https://github.com/MADMAN-Modding/FalconsEsportsOverlays"
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
@@ -17,41 +16,17 @@ name = "falcons_esports_overlays_controller_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
-tauri-build = { version = "^2.2.0", features = [] }
+tauri-build = { version = "2", features = [] }
 
 [dependencies]
-tauri = { version = "2.9.2", features = [] }
-tauri-plugin-shell = "2.3.3"
-serde = { version = "1.0.218", features = ["derive"] }
-serde_json = "1.0.145"
-reqwest = { version = "0.12.24", features = ["blocking", "json"] }
-tokio = { version = "1.48.0", features = ["full"] }
-zip = "6.0.0"
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.13.2", features = ["blocking", "json"] }
 directories = "6.0.0"
-once_cell = "1.20.3"
-whoami = "1.6.1"
-sysinfo = "0.37.2"
-
-[package.metadata.wix]
-name = "Falcons Esports Overlays Controller"
-banner = "icons/banner.png"
-culture = "en-US"
-dbg-build = false
-dbg-name = false
-no-build = false
-path-guid = "BFD25009-65A4-4D1E-97F1-0030465D90D6"
-product-icon = "icons/icon.ico"
-upgrade-guid = "B36177BE-EA4D-44FB-B05C-EDDABDAA95CA"
-dialog = "icons/dialog.png"
-
-[package.metadata.appimage]
-auto_link = false
-
-[[package.metadata.appimage.include]]
-path = "/usr/lib/libz.so.1"
-
-[[package.metadata.appimage.include]]
-path = "/usr/lib/libssl.so.3"
-
-[[package.metadata.appimage.include]]
-path = "/usr/lib/libcrypto.so.3"
+once_cell = "1.21.4"
+whoami = "2.1.1"
+sysinfo = "0.38.4"
+tokio = "1.50.0"
+zip = "8.2.0"

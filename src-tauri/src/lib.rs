@@ -30,7 +30,7 @@ pub fn run() {
     custom_config::search_overlay();
 
     tauri::Builder::default()
-        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
             download_handler::download_and_extract,
             config_handler::reset_overlays,
