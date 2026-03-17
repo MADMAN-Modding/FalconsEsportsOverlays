@@ -12,9 +12,9 @@
   "app": {
     "windows": [
       {
-        "title": "falcons-esports-overlays-controller",
-        "width": 800,
-        "height": 600
+        "title": "Falcons Esports Overlays Controller",
+        "width": 1386,
+        "height": 730
       }
     ],
     "security": {

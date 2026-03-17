@@ -22,13 +22,21 @@ export const getOverlaysList = async (): Promise<string[]> => {
 
 export const checkForUpdates = async (): Promise<boolean> => {
   try {
-    await invoke('check_for_updates');
-    return true;
+    return await invoke('check_for_updates');
   } catch (error) {
     console.error('Error checking for updates:', error);
     return false;
   }
 };
+
+export const getUpdateMessage = async (): Promise<string> => {
+  try {
+    return await invoke('get_update_message');
+  } catch (error) {
+    console.error('Error retrieving update data: ', error);
+    return "Error fetching update data...";
+  }
+}
 
 export const setupOverlays = async (): Promise<void> => {
   try {

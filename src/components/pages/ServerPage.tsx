@@ -25,8 +25,8 @@ export const ServerPage: FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-12">
-      <div className="bg-white rounded-lg shadow-md p-8">
+    <div className="max-w-2xl mx-auto px-4 py-12 text-gray-100">
+      <div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-8">
         <h1 className="text-3xl font-bold mb-8 text-center">Server Control</h1>
 
         <div className="flex flex-col items-center gap-8">
@@ -56,8 +56,8 @@ export const ServerPage: FC = () => {
             </button>
           </div>
 
-          <div className="mt-8 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-            <p className="text-sm text-gray-700">
+          <div className="mt-8 p-4 bg-blue-900/20 rounded-lg border-l-4 border-blue-500">
+            <p className="text-sm text-gray-200">
               The server is used to stream the overlay to OBS. Make sure the server is running before starting a stream.
             </p>
           </div>

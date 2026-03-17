@@ -12,9 +12,9 @@ use zip::ZipArchive;
 use crate::{constants::{
     self, get_code_dir, get_code_dir_image_path, get_config_dir_image_path,
     get_config_dir_overlay_json_path, get_overlay_json_path,
-}, handlers::custom_config::search_overlay};
+}, handlers::{custom_config::search_overlay, json_handler::{get_app_version}}};
 
-use super::{config_handler, json_handler::read_config_json};
+use super::{config_handler};
 
 /// Downloads the data for the overlays on a separate thread
 ///
@@ -138,7 +138,7 @@ pub async fn download_and_extract(preserve: bool) -> Result<(), String> {
     }
 
     let thread =
-        thread::spawn(|| {download_files(&read_config_json("overlayURL"), "overlays.zip")});
+        thread::spawn(|| {download_files(&super::json_handler::read_config_json_string("overlayURL"), "overlays.zip")});
         
     let result = thread.join().unwrap();
 
@@ -173,6 +173,19 @@ pub async fn download_and_extract(preserve: bool) -> Result<(), String> {
     Ok(())
 }
 
+
+#[tauri::command]
+pub fn check_for_updates() -> bool {
+    let json = get_app_version();
+
+    if json.is_err() {
+        return false;
+    }
+
+    let json = json.unwrap();
+
+    return json["version"].as_f64().unwrap() > 3.1 || json["subVersion"].as_i64().unwrap() > 0;
+}
 
 /// Preserves the data in the code directory when downloading new overlays
 fn preserve_data() {

@@ -81,7 +81,7 @@ pub fn get_scene_collection() -> Result<Vec<String>, String> {
 pub fn get_scenes(collection: String) -> Vec<String> {
     let path = format!("{}{}.json", get_scene_path(), collection);
 
-    let json = read_json_as_value(path);
+    let json = read_json_as_value(&path);
 
     let scenes = iterate_json("name", &json["scene_order"]);
 
@@ -149,7 +149,7 @@ fn enable_ws() {
 fn get_ws_status() -> bool {
     let path = get_ws_path();
 
-    read_json_as_value(path)["server_enabled"]
+    read_json_as_value(&path)["server_enabled"]
         .as_bool()
         .unwrap()
 }

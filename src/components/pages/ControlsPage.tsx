@@ -92,12 +92,12 @@ export const ControlsPage: FC = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
       {showPreview && (
-        <div className="mb-8 bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="flex justify-between items-center p-4 bg-gray-100 border-b">
-            <h3 className="font-bold">Preview</h3>
+        <div className="mb-8 bg-gray-800 rounded-lg shadow-md shadow-black/30 overflow-hidden">
+          <div className="flex justify-between items-center p-4 bg-gray-700 border-b border-gray-600">
+            <h3 className="font-bold text-gray-100">Preview</h3>
             <button
               onClick={() => setShowPreview(false)}
-              className="text-gray-600 hover:text-gray-900"
+              className="text-gray-200 hover:text-white"
             >
               Close
             </button>
@@ -111,8 +111,8 @@ export const ControlsPage: FC = () => {
       )}
 
       {/* Overlay Selector */}
-      <div className="mb-8 bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-lg font-bold mb-4">Select Overlay</h2>
+      <div className="mb-8 bg-gray-800 rounded-lg shadow-md shadow-black/30 p-6">
+        <h2 className="text-lg font-bold mb-4 text-gray-100">Select Overlay</h2>
         <div className="flex flex-wrap gap-2">
           {overlays.map((overlay) => (
             <button
@@ -121,7 +121,7 @@ export const ControlsPage: FC = () => {
               className={`px-4 py-2 rounded-lg transition-colors ${
                 state.currentOverlay === overlay
                   ? 'bg-falcons-primary text-white'
-                  : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+                  : 'bg-gray-700 text-gray-100 hover:bg-gray-600'
               }`}
             >
               {nameMap[overlay] || overlay}
@@ -132,8 +132,8 @@ export const ControlsPage: FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Left Team */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold mb-4">Left Team</h2>
+        <div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-6">
+          <h2 className="text-xl font-bold mb-4 text-gray-100">Left Team</h2>
 
           <div className="mb-4">
             <label className="label">Games Won</label>
@@ -145,7 +145,7 @@ export const ControlsPage: FC = () => {
                   className={`py-2 rounded transition-colors ${
                     state.winsLeft === win
                       ? 'bg-falcons-primary text-white'
-                      : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+                      : 'bg-gray-700 text-gray-100 hover:bg-gray-600'
                   }`}
                 >
                   {win}
@@ -196,9 +196,9 @@ export const ControlsPage: FC = () => {
         </div>
 
         {/* Middle Section */}
-        <div className="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between">
+<div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-6 flex flex-col justify-between">
           <div>
-            <h2 className="text-xl font-bold mb-4">Actions</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-100">Actions</h2>
 
             <div className="space-y-3">
               <button onClick={handleUpdateOverlay} className="btn btn-primary w-full">
@@ -230,8 +230,8 @@ export const ControlsPage: FC = () => {
         </div>
 
         {/* Right Team */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold mb-4">Right Team</h2>
+        <div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-6">
+          <h2 className="text-xl font-bold mb-4 text-gray-100">Right Team</h2>
 
           <div className="mb-4">
             <label className="label">Games Won</label>
@@ -243,7 +243,7 @@ export const ControlsPage: FC = () => {
                   className={`py-2 rounded transition-colors ${
                     state.winsRight === win
                       ? 'bg-falcons-primary text-white'
-                      : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+                      : 'bg-gray-700 text-gray-100 hover:bg-gray-600'
                   }`}
                 >
                   {win}

@@ -3,6 +3,7 @@ import { useNotifications } from '../../hooks/useNotifications';
 import { useJsonHandler } from '../../hooks/useJsonHandler';
 import { useImageControls } from '../../hooks/useImageControls';
 import { useObsHandler } from '../../hooks/useObsHandler';
+import { useDownloader } from '../../hooks/useDownloader';
 import { getNameMap } from '../../utils/tauriHelpers';
 
 export const ConfigPage: FC = () => {
@@ -10,6 +11,7 @@ export const ConfigPage: FC = () => {
   const { readConfigJSON, writeConfigJSON } = useJsonHandler();
   const { } = useImageControls();
   const { getSceneCollectionList, getScenes } = useObsHandler();
+  const { getDownloadStatus } = useDownloader();
 
   const [appColor, setAppColor] = useState('#bf0f35');
   const [columnColor, setColumnColor] = useState('#000000');
@@ -21,37 +23,94 @@ export const ConfigPage: FC = () => {
   const [selectedCollection, setSelectedCollection] = useState('Select a Scene Collection');
   const [selectedScene, setSelectedScene] = useState('Select a Scene');
   const [enabledSports, setEnabledSports] = useState<Record<string, boolean>>({});
+  const [downloadStatus, setDownloadStatus] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const initialize = async () => {
       try {
-        const names = await getNameMap();
-        setNameMap(names);
-
-        const appColorValue = await readConfigJSON('appColor');
-        setAppColor(appColorValue);
-
-        const columnColorValue = await readConfigJSON('columnColor');
-        setColumnColor(columnColorValue);
-
-        const autoServerValue = await readConfigJSON('autoServer');
-        setAutoServer(autoServerValue === 'true');
-
-        const collections = await getSceneCollectionList();
-        setSceneCollections(collections);
-
-        // Load enabled sports
-        const sportStates: Record<string, boolean> = {};
-        for (const overlay of Object.keys(names)) {
-          const value = await readConfigJSON(`${overlay}Checked`);
-          sportStates[overlay] = value !== 'false';
+        // Step 1: Load name map
+        try {
+          const names = await getNameMap();
+          setNameMap(names);
+        } catch (e) {
+          console.warn('Failed to load name map:', e);
+          setNameMap({});
         }
-        setEnabledSports(sportStates);
 
-        setLoading(false);
+        // Step 2: Load color settings
+        try {
+          const appColorValue = await readConfigJSON('appColor');
+          if (appColorValue && appColorValue !== 'null' && appColorValue !== '{}') {
+            setAppColor(appColorValue);
+          } else {
+            setAppColor('#bf0f35');
+          }
+        } catch (e) {
+          console.warn('Failed to read appColor:', e);
+          setAppColor('#bf0f35');
+        }
+
+        try {
+          const columnColorValue = await readConfigJSON('columnColor');
+          if (columnColorValue && columnColorValue !== 'null' && columnColorValue !== '{}') {
+            setColumnColor(columnColorValue);
+          } else {
+            setColumnColor('#000000');
+          }
+        } catch (e) {
+          console.warn('Failed to read columnColor:', e);
+          setColumnColor('#000000');
+        }
+
+        // Step 3: Load auto server setting
+        try {
+          const autoServerValue = await readConfigJSON('autoServer');
+          setAutoServer(autoServerValue === 'true');
+        } catch (e) {
+          console.warn('Failed to read autoServer:', e);
+          setAutoServer(false);
+        }
+
+        // Step 4: Load scene collections
+        try {
+          const collections = await getSceneCollectionList();
+          setSceneCollections(collections);
+        } catch (e) {
+          console.warn('Failed to load scene collections:', e);
+          setSceneCollections([]);
+        }
+
+        // Step 5: Get download status
+        try {
+          const status = await getDownloadStatus();
+          setDownloadStatus(status);
+        } catch (e) {
+          console.warn('Failed to get download status:', e);
+          setDownloadStatus([]);
+        }
+
+        // Step 6: Load enabled sports
+        try {
+          const names = await getNameMap();
+          const sportStates: Record<string, boolean> = {};
+          for (const overlay of Object.keys(names)) {
+            try {
+              const value = await readConfigJSON(`${overlay}Checked`);
+              sportStates[overlay] = value !== 'false';
+            } catch (e) {
+              console.warn(`Failed to read ${overlay}Checked:`, e);
+              sportStates[overlay] = true;
+            }
+          }
+          setEnabledSports(sportStates);
+        } catch (e) {
+          console.warn('Failed to load enabled sports:', e);
+          setEnabledSports({});
+        }
       } catch (error) {
-        console.error('Error initializing config page:', error);
+        console.error('Unexpected error during config page initialization:', error);
+      } finally {
         setLoading(false);
       }
     };
@@ -111,23 +170,23 @@ export const ConfigPage: FC = () => {
   };
 
   if (loading) {
-    return <div className="text-center py-12">Loading...</div>;
+    return <div className="text-center py-12 text-gray-100">Loading...</div>;
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
+    <div className="max-w-6xl mx-auto px-4 py-12 text-gray-100">
       <h1 className="text-3xl font-bold mb-8">Configuration</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Appearance Column */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-6">
           <h2 className="text-xl font-bold mb-4">Appearance</h2>
 
           <div className="mb-6">
             <img
               src={teamImage}
               alt="Team Logo"
-              className="w-full h-40 object-contain rounded-lg mb-4 bg-gray-100"
+              className="w-full h-40 object-contain rounded-lg mb-4 bg-gray-700"
             />
             <label className="label">Set a logo for your team:</label>
             <input
@@ -160,11 +219,16 @@ export const ConfigPage: FC = () => {
         </div>
 
         {/* Enabled Sports Column */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-6">
           <h2 className="text-xl font-bold mb-4">Enabled Sports</h2>
 
           <div className="space-y-3">
-            {Object.entries(nameMap).map(([overlay, displayName]) => (
+            {Object.entries(nameMap)
+              .filter(([overlay]) => {
+                const status = downloadStatus.find((d) => d.overlay === overlay);
+                return status && (status.status === 'downloaded' || status.status === 'update-available');
+              })
+              .map(([overlay, displayName]) => (
               <div key={overlay} className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -182,7 +246,7 @@ export const ConfigPage: FC = () => {
         </div>
 
         {/* Other Settings Column */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-6">
           <h2 className="text-xl font-bold mb-4">Other Settings</h2>
 
           <div className="mb-6">

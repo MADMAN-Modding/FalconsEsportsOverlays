@@ -60,7 +60,7 @@ export const useDownloader = () => {
 
         if (local === available) {
           status = 'downloaded';
-        } else if (local === 'null' || local === null || local === -2) {
+        } else if (local === 'null' || local === null || local === 0) {
           status = 'not-downloaded';
         } else if ((local as number) < (available as number)) {
           status = 'update-available';

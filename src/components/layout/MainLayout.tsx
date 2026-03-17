@@ -6,7 +6,7 @@ interface LayoutProps {
 
 export const MainLayout: FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900 text-gray-100">
       {children}
     </div>
   );

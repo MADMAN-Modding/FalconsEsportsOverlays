@@ -2,7 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useNotifications } from './hooks/useNotifications';
 import { useJsonHandler } from './hooks/useJsonHandler';
-import { getNameMap, getLaunchJSON, setupOverlays, checkForUpdates } from './utils/tauriHelpers';
+import { useTheme } from './hooks/useTheme';
+import { getNameMap, getLaunchJSON, setupOverlays, checkForUpdates, getUpdateMessage } from './utils/tauriHelpers';
 import { Navigation } from './components/layout/Navigation';
 import { NotificationDisplay } from './components/layout/NotificationDisplay';
 import { MainLayout } from './components/layout/MainLayout';
@@ -16,6 +17,7 @@ import './App.css';
 function App() {
   const { notifications, pushNotification } = useNotifications();
   const { readConfigJSON } = useJsonHandler();
+  useTheme();
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
@@ -37,7 +39,9 @@ function App() {
           // Auto-start server logic
         }
 
-        await checkForUpdates();
+        if (await checkForUpdates()) {
+          console.log(getUpdateMessage())
+        };
         setIsInitialized(true);
       } catch (error) {
         console.error('Error initializing app:', error);
@@ -50,10 +54,10 @@ function App() {
 
   if (!isInitialized) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">Loading...</h1>
-          <p>Initializing Falcons Esports Overlays Controller</p>
+          <h1 className="text-3xl font-bold mb-4 text-gray-100">Loading...</h1>
+          <p className="text-gray-300">Initializing Falcons Esports Overlays Controller</p>
         </div>
       </div>
     );

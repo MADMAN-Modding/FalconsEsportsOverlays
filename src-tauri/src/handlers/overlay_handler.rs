@@ -104,8 +104,8 @@ pub fn delete_selected_overlay(overlay: String) -> Result<(), String> {
     // Delete the overlay logo (PNG file)
     let _ = fs::remove_file(format!("{}/overlays/images/{}.png", code_dir, overlay)).map_err(|e| e.to_string())?;
 
-    // Mark the overlay as deleted in the local versions file by setting its version to -2
-    write_json(get_local_versions_path(), overlay, format!("version{}", -2));
+    // Mark the overlay as deleted in the local versions file by setting its version to 0
+    write_json(get_local_versions_path(), overlay, format!("version{}", 0));
 
     Ok(())
 }

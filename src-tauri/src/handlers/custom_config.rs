@@ -1,4 +1,5 @@
 use std::{fs, path::Path};
+use serde_json;
 
 use super::json_handler::{read_custom_json, write_config, write_json};
 
@@ -15,10 +16,20 @@ pub fn setup_custom_config(config_file: Vec<u8>) -> Result<String, String> {
     let custom_keys: Vec<&str> = ["columnColor", "overlayURL", "appColor", "overlay_dir"].to_vec();
 
     for key in custom_keys {
-        if read_custom_json(key) == "null" {
-            continue;
+        let value = read_custom_json(key);
+        
+        // If the value exists and is not "null", copy it to config
+        if let Ok(val) = value {
+            if val.to_string() != "\"null\"" {
+                let value_str = match val {
+                    serde_json::Value::String(s) => s,
+                    serde_json::Value::Bool(b) => b.to_string(),
+                    serde_json::Value::Number(n) => n.to_string(),
+                    _ => val.to_string().replace("\"", ""),
+                };
+                update_config(key, value_str);
+            }
         }
-        update_config(key, read_custom_json(key));
     }
 
     match fs::remove_file(get_custom_config_path()) {

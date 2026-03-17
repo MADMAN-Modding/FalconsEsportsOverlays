@@ -5,3 +5,4 @@ export { useServer } from './useServer';
 export { useOverlayHandler } from './useOverlayHandler';
 export { useDownloader } from './useDownloader';
 export { useObsHandler } from './useObsHandler';
+export { useTheme } from './useTheme';

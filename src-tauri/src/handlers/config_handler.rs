@@ -23,7 +23,7 @@ use crate::{constants::{
 /// assert_eq!(setup_result, Ok(()));
 /// ```
 pub fn setup_config_dir(config_dir: String) -> Result<(), String> {
-    json_handler::init_json(format!("{}/overlay.json", get_config_dir()));
+    json_handler::init_json(&format!("{}/overlay.json", get_config_dir()));
 
     let overlay_config = format!(
         "{}{}",

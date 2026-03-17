@@ -18,10 +18,10 @@ use super::download_handler::download_files;
 /// * `key: &str` - The key to be read from the json file
 ///
 /// # Returns
-/// * `String` - The data at the desired key
+/// * `Result<Value, String>` - The data at the desired key or an error
 #[tauri::command]
-pub fn read_overlay_json(key: &str) -> String {
-    read_json(key, constants::get_overlay_json_path())
+pub fn read_overlay_json(key: &str) -> Result<Value, String> {
+    read_json_value(key, &constants::get_overlay_json_path())
 }
 
 /// Reads the config json and returns the value of the requested key
@@ -30,40 +30,104 @@ pub fn read_overlay_json(key: &str) -> String {
 /// * `key: &str` - The key to be read from the json file
 ///
 /// # Returns
-/// * `String` - The data at the desired key
+/// * `Result<Value, String>` - The data at the desired key or an error
 #[tauri::command]
-pub fn read_config_json(key: &str) -> String {
-    read_json(key, constants::get_config_json_path())
+pub fn read_config_json(key: &str) -> Result<Value, String> {
+    read_json_value(key, &constants::get_config_json_path())
 }
 
-/// Reads the config json and returns the value of the requested key
+/// Reads the custom json and returns the value of the requested key
 ///
 /// # Parameters
 /// * `key: &str` - The key to be read from the json file
 ///
 /// # Returns
-/// * `String` - The data at the desired key
+/// * `Result<Value, String>` - The data at the desired key or an error
 #[tauri::command]
-pub fn read_custom_json(key: &str) -> String {
-    read_json(key, constants::get_custom_config_path())
+pub fn read_custom_json(key: &str) -> Result<Value, String> {
+    read_json_value(key, &constants::get_custom_config_path())
 }
 
 /// Reads the json at the supplied path and returns the value of the requested key
 ///
 /// # Parameters
 /// * `key: &str` - The key to be read from the json file
-/// * `path: String` - The path to the json file
+/// * `path: &str` - The path to the json file
 ///
-/// #Returns
-/// * 'String' - The data at the desired key
-#[tauri::command]
-pub fn read_json(key: &str, path: String) -> String {
-    let json_data: Value = open_json(path);
+/// # Returns
+/// * `Result<Value, String>` - The data at the desired key or an error
+fn read_json_value(key: &str, path: &str) -> Result<Value, String> {
+    let path_obj = Path::new(path);
 
-    json_data[key].to_string().replace("\"", "")
+    if path_obj.exists() {
+        let json_data = open_json(path);
+        
+        if let Some(value) = json_data.get(key) {
+            Ok(value.clone())
+        } else {
+            Err(format!("Key '{}' not found in JSON", key))
+        }
+    } else {
+        Err(format!("File not found: {}", path))
+    }
 }
 
-pub fn read_json_as_value(path: String) -> Value {
+/// Legacy string-based read for backward compatibility (deprecated)
+#[tauri::command]
+pub fn read_json(key: &str, path: String) -> String {
+    let path_obj = Path::new(&path);
+
+    if path_obj.exists() {
+        let json_data = open_json(path_obj.to_str().unwrap());
+        json_data[key].to_string().replace("\"", "")
+    } else {
+        "{}".to_string()
+    }
+}
+
+/// Internal helper: Read config JSON as string (for backward compatibility with internal code)
+pub fn read_config_json_string(key: &str) -> String {
+    read_json_value(key, &constants::get_config_json_path())
+        .and_then(|v| {
+            match v {
+                Value::String(s) => Ok(s),
+                Value::Bool(b) => Ok(b.to_string()),
+                Value::Number(n) => Ok(n.to_string()),
+                _ => Ok(v.to_string().replace("\"", "")),
+            }
+        })
+        .unwrap_or_else(|_| "null".to_string())
+}
+
+/// Internal helper: Read custom JSON as string (for backward compatibility with internal code)
+pub fn read_custom_json_string(key: &str) -> String {
+    read_json_value(key, &constants::get_custom_config_path())
+        .and_then(|v| {
+            match v {
+                Value::String(s) => Ok(s),
+                Value::Bool(b) => Ok(b.to_string()),
+                Value::Number(n) => Ok(n.to_string()),
+                _ => Ok(v.to_string().replace("\"", "")),
+            }
+        })
+        .unwrap_or_else(|_| "null".to_string())
+}
+
+/// Internal helper: Read overlay JSON as string (for backward compatibility with internal code)
+pub fn read_overlay_json_string(key: &str) -> String {
+    read_json_value(key, &constants::get_overlay_json_path())
+        .and_then(|v| {
+            match v {
+                Value::String(s) => Ok(s),
+                Value::Bool(b) => Ok(b.to_string()),
+                Value::Number(n) => Ok(n.to_string()),
+                _ => Ok(v.to_string().replace("\"", "")),
+            }
+        })
+        .unwrap_or_else(|_| "null".to_string())
+}
+
+pub fn read_json_as_value(path: &str) -> Value {
     open_json(path).clone()
 }
 
@@ -79,7 +143,7 @@ pub fn read_json_as_value(path: String) -> Value {
 /// ```ignore
 /// open_json("random_path/overlay.json");
 /// ```
-fn open_json(path: String) -> Value {
+fn open_json(path: &str) -> Value {
     let json_data: Value;
 
     // Checks to make sure that the JSON file is there, if it isn't it makes it
@@ -119,7 +183,7 @@ fn open_json(path: String) -> Value {
 ///
 /// # Returns
 /// * `Value` - Contains the JSON data
-pub fn init_json(path: String) -> Value {
+pub fn init_json(path: &str) -> Value {
     // Creating the directories
     let _ = std::fs::create_dir_all(Path::new(&path).parent().unwrap());
 
@@ -168,7 +232,28 @@ pub fn init_json(path: String) -> Value {
 /// # Parameters
 /// * `path: String` - Path to the JSON file
 /// * `json_key: String` - Key to write to
-/// * `value: String` ` Value to write to the key`
+/// * `value: Value` - Value to write to the key (properly typed)
+///
+/// # Returns
+/// * `Result<(), String>` - Success or error message
+#[tauri::command]
+pub fn write_json_value(path: String, json_key: String, value: Value) -> Result<(), String> {
+    let mut json_data = open_json(&path);
+
+    json_data[json_key] = value;
+
+    fs::write(&path, serde_json::to_string_pretty(&json_data).map_err(|e| e.to_string())?)
+        .map_err(|e| format!("Error writing file: {}", e))?;
+
+    Ok(())
+}
+
+/// Writes to the JSON file at the supplied path (legacy string-based, for backward compatibility)
+///
+/// # Parameters
+/// * `path: String` - Path to the JSON file
+/// * `json_key: String` - Key to write to
+/// * `value: String` - Value to write to the key
 ///
 /// # Examples
 /// ```ignore
@@ -176,8 +261,7 @@ pub fn init_json(path: String) -> Value {
 /// ```
 #[tauri::command]
 pub fn write_json(path: String, json_key: String, mut value: String) {
-    // Cloning the data because a borrow won't work in this case
-    let mut json_data = open_json(path.clone());
+    let mut json_data = open_json(&path);
 
     // Writes a bool if the json_key is a checked value which must be a bool
     if value == "true" || value == "false" {
@@ -212,18 +296,17 @@ pub fn write_json(path: String, json_key: String, mut value: String) {
     .expect("Error writing file");
 }
 
-
 /// Recursively reads a JSON value and writes a new value to the specified key path.
 /// No IO means it won't write to file system
-/// 
+///
 /// # Parameters
 /// * `json` - The JSON value to be modified.
 /// * `keys` - A dot-separated string path specifying the keys/indexes to traverse. Array indices should be wrapped in square brackets, `arrayKey[0].nestedKey`.
 /// * `value` - The new value to write at the final key.
-/// 
+///
 /// # Returns
 /// * `Value` - The modified JSON with the new value inserted.
-/// 
+///
 /// # Example
 /// ```ignore
 /// use serde_json::{json, Value};
@@ -236,48 +319,57 @@ pub fn write_json(path: String, json_key: String, mut value: String) {
 ///
 /// assert_eq!(new_json, json!({"key": [{"nestedKey": "newValue"}]}));
 /// ```
-pub fn write_nested_json_no_io(mut json : Value, keys: String, value: Value) -> Value {
+pub fn write_nested_json_no_io(mut json: Value, keys: String, value: Value) -> Value {
     // Makes the key variable to keep track of characters
     let mut key = String::new();
 
     // Iterates through every char while keeping track of the index
-    for (i , char) in keys.chars().enumerate() {
+    for (i, char) in keys.chars().enumerate() {
         match char {
             // If char is a '.', set json[key] equal to the next nested key
             '.' => {
-                json[key] = write_nested_json_no_io(json[&key].clone(), keys.clone().split_at(i + 1).1.to_owned(), value);
+                json[key] = write_nested_json_no_io(
+                    json[&key].clone(),
+                    keys.clone().split_at(i + 1).1.to_owned(),
+                    value,
+                );
                 break;
-            },
+            }
             // If char is a '['
             '[' => {
                 // Get the char from the string as a usize
                 let mut key = String::new();
-                
-                for char in keys.get(i..).unwrap().chars() {    
-                        if char != ']' {
-                            key.push(char);
-                        } else if char == ']' {
-                            break;
-                        }
+
+                for char in keys.get(i..).unwrap().chars() {
+                    if char != ']' {
+                        key.push(char);
+                    } else if char == ']' {
+                        break;
+                    }
                 }
 
-                let i_key = keys.get(i+1..i+2).unwrap().parse::<usize>().unwrap();
-                
+                let i_key = keys.get(i + 1..i + 2).unwrap().parse::<usize>().unwrap();
 
                 // If the key doesn't exist, push the value and set the json equal to the new Vec
-                if json.as_array().unwrap().len() == 0 || json.as_array().unwrap().len() - 1 < i_key {
+                if json.as_array().unwrap().len() == 0 || json.as_array().unwrap().len() - 1 < i_key
+                {
                     let mut json_vec = json.as_array().unwrap().to_owned();
 
                     json_vec.push(value);
 
                     json = Value::Array(json_vec);
-                } else { // If the key exists, set it equal to the next nested value
-                    json[i_key] = write_nested_json_no_io(json[i_key].clone(), keys.clone().split_at(i + 3).1.to_owned(), value);
+                } else {
+                    // If the key exists, set it equal to the next nested value
+                    json[i_key] = write_nested_json_no_io(
+                        json[i_key].clone(),
+                        keys.clone().split_at(i + 3).1.to_owned(),
+                        value,
+                    );
                 }
-                
+
                 // Escape the loop
                 break;
-            },
+            }
             // If char is a ']' do nothing
             ']' => (),
             // If char is anything else, add it to the key
@@ -286,10 +378,11 @@ pub fn write_nested_json_no_io(mut json : Value, keys: String, value: Value) -> 
 
         // If i is the last character, or if the next character is ']' and i is the second to last character
         // Write the inputted value to the json
-        if i == keys.len() - 1 || (keys.get(i..i+1).unwrap() == "]".to_string() && i == keys.len() - 2){
+        if i == keys.len() - 1
+            || (keys.get(i..i + 1).unwrap() == "]".to_string() && i == keys.len() - 2)
+        {
             json[key.clone()] = value.clone();
         }
-  
     }
 
     // Returns the json object
@@ -331,11 +424,11 @@ pub fn iterate_json(json_key: &str, json: &Value) -> Vec<String> {
 }
 
 /// Iterates over a json object
-/// 
+///
 /// # Parameters
 /// * `json_key` : &str` - Key to search for
 /// * `json : &Value` - Reference to json object to be searched
-/// 
+///
 /// # Returns
 /// `Vec<String>` Contains all the found values
 fn iterate_json_map(json_key: &str, json: &Value) -> Vec<String> {
@@ -356,10 +449,10 @@ fn iterate_json_map(json_key: &str, json: &Value) -> Vec<String> {
 }
 
 /// Counts the length of a json object
-/// 
+///
 /// # Parameters
 /// * `json : &Value` - JSON to be searched
-/// 
+///
 /// # Returns
 /// * `u32` The length of the json
 pub fn get_json_length(json: &Value) -> u32 {
@@ -404,7 +497,7 @@ pub fn get_launch_json() {
 /// Get all the available overlays
 #[tauri::command]
 pub fn get_name_map() -> Result<HashMap<String, Value>, String> {
-    let json = open_json(get_launch_json_path())["overlays"].clone();
+    let json = open_json(&get_launch_json_path())["overlays"].clone();
 
     let object = json.as_object();
 
@@ -423,7 +516,7 @@ pub fn get_name_map() -> Result<HashMap<String, Value>, String> {
 /// Get all the latest version for all the overlays
 #[tauri::command]
 pub fn get_versions() -> Result<HashMap<String, Value>, String> {
-    let mut json = open_json(get_launch_json_path())["versions"].clone();
+    let mut json = open_json(&get_launch_json_path())["versions"].clone();
 
     json.sort_all_objects();
 
@@ -444,7 +537,7 @@ pub fn get_versions() -> Result<HashMap<String, Value>, String> {
 /// Get the list of all the overlays local versions
 #[tauri::command]
 pub fn get_local_versions() -> Result<HashMap<String, Value>, String> {
-    let json = open_json(get_local_versions_path());
+    let json = open_json(&get_local_versions_path());
 
     let object = json.as_object();
 
@@ -463,7 +556,7 @@ pub fn get_local_versions() -> Result<HashMap<String, Value>, String> {
 /// Gets the latest app version
 #[tauri::command]
 pub fn get_app_version() -> Result<HashMap<String, Value>, String> {
-    let json = open_json(get_launch_json_path())["appVersion"].clone();
+    let json = open_json(&get_launch_json_path())["appVersion"].clone();
 
     let object = json.as_object();
 
@@ -477,6 +570,14 @@ pub fn get_app_version() -> Result<HashMap<String, Value>, String> {
         .into_iter()
         .map(|(k, v)| (k, v.clone()))
         .collect())
+}
+
+#[tauri::command]
+pub fn get_update_message() -> String {
+    let binding = open_json(&get_launch_json_path());
+    let json = binding.as_object().unwrap();
+
+    return json["appVersion"]["updateMessage"].as_str().unwrap().to_string();
 }
 
 /// Default settings for the config

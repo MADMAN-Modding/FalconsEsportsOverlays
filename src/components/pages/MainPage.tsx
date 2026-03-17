@@ -4,7 +4,7 @@ import { OVERLAY_SERVER_URL, OVERLAY_DIMENSIONS } from '../../utils/constants';
 export const MainPage: FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <div className="bg-white rounded-lg shadow-md p-8">
+      <div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-8">
         <h1 className="text-4xl font-bold mb-4 text-center text-falcons-primary">
           Welcome to the Falcons Esports Overlays Controller!
         </h1>
@@ -16,7 +16,7 @@ export const MainPage: FC = () => {
             <span className="text-falcons-primary font-bold">•</span>
             <span>
               You can select overlays from the{' '}
-              <a href="/files" className="text-blue-600 hover:text-blue-800 underline">
+              <a href="/files" className="text-sky-300 hover:text-sky-200 underline">
                 Overlay Files
               </a>{' '}
               Page

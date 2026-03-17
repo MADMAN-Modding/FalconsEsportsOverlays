@@ -4,20 +4,20 @@ import { Link, useLocation } from 'react-router-dom';
 export const Navigation: FC = () => {
   const location = useLocation();
 
-  const isActive = (path: string) => location.pathname === path ? 'bg-falcons-primary text-white' : 'text-gray-700 hover:bg-gray-100';
+  const isActive = (path: string) => location.pathname === path ? 'bg-falcons-primary text-white' : 'text-gray-300 hover:bg-gray-400';
 
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-gray-900 shadow-md shadow-black/30">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-bold text-falcons-primary">Falcons Overlays</h1>
           </div>
 
-          <div className="flex gap-1">
+          <div className="flex items-center gap-1">
             <Link
               to="/"
-              className={`px-4 py-2 rounded-md transition-colors ${isActive('/')}`}
+              className={`px-4 py-2 rounded-md text-gray-100 transition-colors ${isActive('/')}`}
             >
               Home
             </Link>
@@ -41,7 +41,7 @@ export const Navigation: FC = () => {
             </Link>
             <Link
               to="/files"
-              className={`px-4 py-2 rounded-md transition-colors ${isActive('/files')}`}
+              className={`px-4 py-2 rounded-md text-gray-100 transition-colors ${isActive('/files')}`}
             >
               Files
             </Link>
