@@ -1,6 +1,6 @@
 use std::{fs, path::Path};
 
-use crate::{constants::{self, get_code_dir, get_local_versions_path}, handlers::json_handler::{get_versions, write_json}};
+use crate::{constants::{self, get_code_dir, get_local_versions_path}, handlers::json_handler::{self, get_versions, write_json}};
 
 use super::download_handler::download_files;
 
@@ -108,6 +108,37 @@ pub fn delete_selected_overlay(overlay: String) -> Result<(), String> {
     write_json(get_local_versions_path(), overlay, format!("version{}", 0));
 
     Ok(())
+}
+
+/// Gets the path to an overlay's image file.
+/// 
+/// # Parameters
+/// * `overlay` - The name of the overlay.
+/// 
+/// # Returns
+/// * `Ok(String)` - The file path to the overlay's image PNG file.
+/// * `Err(String)` - An error message if the path cannot be determined.
+#[tauri::command]
+pub fn get_overlay_image_path(overlay: String) -> Result<String, String> {
+    let code_dir = get_code_dir();
+    let image_path = format!("{}/overlays/images/{}.png", code_dir, overlay);
+    
+    if Path::new(&image_path).exists() {
+        Ok(image_path)
+    } else {
+        Err(format!("Image not found for overlay: {}", overlay))
+    }
+}
+
+#[tauri::command]
+pub fn get_overlay_enabled(overlay: &str) -> bool {
+    let overlay_status = &json_handler::get_name_map().map_err(|_| false).unwrap()[overlay];
+    
+    if overlay_status.is_boolean() {
+        overlay_status.as_bool().unwrap()
+    } else {
+        false
+    }
 }
 
 /// Sets up the initial overlay files by downloading them if they do not already exist.

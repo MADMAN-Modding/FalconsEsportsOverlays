@@ -4,16 +4,20 @@ import { useJsonHandler } from '../../hooks/useJsonHandler';
 import { getNameMap } from '../../utils/tauriHelpers';
 import { useDownloader } from '../../hooks/useDownloader';
 import { useOverlayHandler } from '../../hooks/useOverlayHandler';
+import { useOverlayImages } from '../../hooks/useOverlayImages';
 import deleteIcon from '../../images/delete.png';
+import { invoke } from '@tauri-apps/api/core';
 
 export const FilesPage: FC = () => {
   const { pushNotification } = useNotifications();
   const { } = useJsonHandler();
   const { downloadOverlay, getDownloadStatus } = useDownloader();
   const { updateOverlayList, deleteOverlay } = useOverlayHandler();
+  const { getMultipleOverlayImages, imageCache } = useOverlayImages();
   const [nameMap, setNameMap] = useState<Record<string, string>>({});
   const [downloadStatus, setDownloadStatus] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [codeDir, setCodeDir] = useState<string>('');
 
   useEffect(() => {
     const initialize = async () => {
@@ -24,6 +28,9 @@ export const FilesPage: FC = () => {
         const status = await getDownloadStatus();
         setDownloadStatus(status);
 
+        const code = await invoke<string>('get_code_dir');
+        setCodeDir(code);
+
         setLoading(false);
       } catch (error) {
         console.error('Error initializing files page:', error);
@@ -33,6 +40,23 @@ export const FilesPage: FC = () => {
 
     initialize();
   }, []);
+
+  useEffect(() => {
+    // Load images for all downloaded overlays
+    const loadImages = async () => {
+      if (downloadStatus.length > 0 && codeDir) {
+        const downloadedOverlays = downloadStatus
+          .filter((item) => item.status === 'downloaded')
+          .map((item) => item.overlay);
+
+        if (downloadedOverlays.length > 0) {
+          await getMultipleOverlayImages(downloadedOverlays, codeDir);
+        }
+      }
+    };
+
+    loadImages();
+  }, [downloadStatus, codeDir, getMultipleOverlayImages]);
 
   const handleDownload = async (overlay: string) => {
     try {
@@ -62,15 +86,30 @@ export const FilesPage: FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'downloaded':
-        return 'bg-green-500';
+        return 'bg-green-500/20 border-green-600 text-green-300';
       case 'update-available':
-        return 'bg-yellow-500';
+        return 'bg-yellow-500/20 border-yellow-600 text-yellow-300';
       case 'not-downloaded':
-        return 'bg-red-500';
+        return 'bg-red-500/20 border-red-600 text-red-300';
       case 'deleted':
-        return 'bg-red-500';
+        return 'bg-red-500/20 border-red-600 text-red-300';
       default:
-        return 'bg-purple-500';
+        return 'bg-purple-500/20 border-purple-600 text-purple-300';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'downloaded':
+        return 'Downloaded';
+      case 'update-available':
+        return 'Update Available';
+      case 'not-downloaded':
+        return 'Not Downloaded';
+      case 'deleted':
+        return 'Deleted';
+      default:
+        return 'Unknown';
     }
   };
 
@@ -92,15 +131,33 @@ export const FilesPage: FC = () => {
             const bName = nameMap[b.overlay] || b.overlay;
             return aName.localeCompare(bName);
           }).map((item) => (
-            <div key={item.overlay} className="border border-gray-700 rounded-lg p-4 hover:shadow-lg shadow-black/20 transition-shadow bg-gray-900">
+            <div key={item.overlay} className="border border-gray-700 rounded-lg p-4 hover:shadow-lg shadow-black/20 transition-shadow bg-gray-900 overflow-hidden">
+              {/* Image or placeholder */}
+              <div className="mb-4 h-40 bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center">
+                {imageCache[item.overlay] && imageCache[item.overlay] !== 'images/missing.jpg' ? (
+                  <img
+                    src={imageCache[item.overlay]}
+                    alt={nameMap[item.overlay] || item.overlay}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="text-gray-400 text-center">
+                    <div className="mb-2 text-2xl">📁</div>
+                    <span className="text-sm">{item.status === 'downloaded' ? 'Loading...' : 'Not downloaded'}</span>
+                  </div>
+                )}
+              </div>
+
               <div className="flex items-start justify-between mb-4">
-                <div>
+                <div className="flex-1">
                   <p className="font-bold text-lg text-gray-100">{nameMap[item.overlay] || item.overlay}</p>
-                  <p className="text-sm text-gray-300">
+                  <p className="text-sm text-gray-400">
                     Local: {item.localVersion === null || item.localVersion === 'null' ? '0' : item.localVersion} | Available: {item.availableVersion}
                   </p>
                 </div>
-                <div className={`w-4 h-4 rounded-full ${getStatusColor(item.status)}`}></div>
+                <div className={`px-3 py-1 rounded-full text-sm font-semibold border ${getStatusColor(item.status)} whitespace-nowrap ml-2`}>
+                  {getStatusText(item.status)}
+                </div>
               </div>
 
               <div className="flex gap-2">
@@ -112,7 +169,7 @@ export const FilesPage: FC = () => {
                 </button>
                 <button
                   onClick={() => handleDelete(item.overlay)}
-                  className="btn btn-danger p-2"
+                  className="btn btn-danger p-2 hover:bg-red-600 transition-colors"
                   title="Delete"
                 >
                   <img src={deleteIcon} alt="Delete" className="w-5 h-5" />

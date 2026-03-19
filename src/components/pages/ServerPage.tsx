@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { useNotifications } from '../../hooks/useNotifications';
 import { useServer } from '../../hooks/useServer';
+import serverOnIcon from '../../images/ServerOn.png';
+import serverOffIcon from '../../images/ServerOff.png';
 
 export const ServerPage: FC = () => {
   const { pushNotification } = useNotifications();
@@ -31,11 +33,15 @@ export const ServerPage: FC = () => {
 
         <div className="flex flex-col items-center gap-8">
           <div className="text-center">
-            <div
-              className={`w-40 h-40 rounded-lg flex items-center justify-center text-white text-2xl font-bold transition-all ${ isServerRunning ? 'bg-green-500' : 'bg-red-500'
-              }`}
-            >
-              {isServerRunning ? 'Server ON' : 'Server OFF'}
+            <div className="flex flex-col items-center gap-4">
+              <img
+                src={isServerRunning ? serverOnIcon : serverOffIcon}
+                alt={isServerRunning ? 'Server ON' : 'Server OFF'}
+                className="w-40 h-40 rounded-lg shadow-lg"
+              />
+              <p className={`text-2xl font-bold ${isServerRunning ? 'text-green-400' : 'text-red-400'}`}>
+                {isServerRunning ? 'Server ON' : 'Server OFF'}
+              </p>
             </div>
           </div>
 

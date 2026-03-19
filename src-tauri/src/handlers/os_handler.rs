@@ -88,7 +88,7 @@ fn get_running_processes() -> Vec<String> {
     processes
 }
 
-// Functions I wrote that I didn't end up needing, keeping them incase I want them latter 
+// Functions I wrote that I didn't end up needing, keeping them in case I want them latter 
 
 // fn get_process_name<'a>(process: &'a str) -> String {
 //     for running_process in get_running_processes() {

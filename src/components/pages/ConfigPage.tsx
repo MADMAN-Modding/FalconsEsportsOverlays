@@ -97,12 +97,14 @@ export const ConfigPage: FC = () => {
           for (const overlay of Object.keys(names)) {
             try {
               const value = await readConfigJSON(`${overlay}Checked`);
-              sportStates[overlay] = value !== 'false';
+              console.log(overlay + " " + value);
+              sportStates[overlay] = value.trim().toLowerCase().endsWith("true");
             } catch (e) {
-              console.warn(`Failed to read ${overlay}Checked:`, e);
+              // console.warn(`Failed to read ${overlay}Checked:`, e);
               sportStates[overlay] = true;
             }
           }
+          console.log(sportStates)
           setEnabledSports(sportStates);
         } catch (e) {
           console.warn('Failed to load enabled sports:', e);
@@ -229,15 +231,15 @@ export const ConfigPage: FC = () => {
                 return status && (status.status === 'downloaded' || status.status === 'update-available');
               })
               .map(([overlay, displayName]) => (
-              <div key={overlay} className="flex items-center gap-2">
+              <div key={overlay} className="flex items-center gap-2 p-2 rounded hover:bg-gray-700 transition-colors">
                 <input
                   type="checkbox"
                   id={overlay}
                   checked={enabledSports[overlay] || false}
                   onChange={(e) => handleSportToggle(overlay, e.target.checked)}
-                  className="w-4 h-4"
+                  className="w-4 h-4 cursor-pointer"
                 />
-                <label htmlFor={overlay} className="cursor-pointer">
+                <label htmlFor={overlay} className="cursor-pointer flex-1">
                   {displayName}
                 </label>
               </div>
@@ -250,15 +252,15 @@ export const ConfigPage: FC = () => {
           <h2 className="text-xl font-bold mb-4">Other Settings</h2>
 
           <div className="mb-6">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-4 p-2 rounded hover:bg-gray-700 transition-colors cursor-pointer">
               <input
                 type="checkbox"
                 id="autoServer"
                 checked={autoServer}
                 onChange={(e) => handleAutoServerChange(e.target.checked)}
-                className="w-4 h-4"
+                className="w-4 h-4 cursor-pointer"
               />
-              <label htmlFor="autoServer" className="cursor-pointer">
+              <label htmlFor="autoServer" className="cursor-pointer flex-1">
                 Auto Start Server
               </label>
             </div>

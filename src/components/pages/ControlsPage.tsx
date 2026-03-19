@@ -2,14 +2,19 @@ import { FC, useState, useEffect } from 'react';
 import { useNotifications } from '../../hooks/useNotifications';
 import { useJsonHandler } from '../../hooks/useJsonHandler';
 import { useOverlayHandler } from '../../hooks/useOverlayHandler';
+import { useOverlayImages } from '../../hooks/useOverlayImages';
 import { getNameMap } from '../../utils/tauriHelpers';
 import { OVERLAY_KEYS } from '../../utils/constants';
+import { invoke } from '@tauri-apps/api/core';
+import './ControlsPage.css';
 
 export const ControlsPage: FC = () => {
   const { pushNotification } = useNotifications();
   const { writeOverlayJSON } = useJsonHandler();
   const { overlays, updateOverlayList } = useOverlayHandler();
+  const { getMultipleOverlayImages, imageCache } = useOverlayImages();
   const [nameMap, setNameMap] = useState<Record<string, string>>({});
+  const [codeDir, setCodeDir] = useState<string>('');
 
   const [state, setState] = useState({
     scoreLeft: '0',
@@ -33,6 +38,8 @@ export const ControlsPage: FC = () => {
       try {
         const names = await getNameMap();
         setNameMap(names);
+        const code = await invoke<string>('get_code_dir');
+        setCodeDir(code);
         await updateOverlayList();
       } catch (error) {
         console.error('Error initializing controls page:', error);
@@ -41,6 +48,17 @@ export const ControlsPage: FC = () => {
 
     initialize();
   }, []);
+
+  useEffect(() => {
+    // Load images for all overlays
+    const loadImages = async () => {
+      if (overlays.length > 0 && codeDir) {
+        await getMultipleOverlayImages(overlays, codeDir);
+      }
+    };
+
+    loadImages();
+  }, [overlays, codeDir, getMultipleOverlayImages]);
 
   const handleStateChange = (key: string, value: string | number) => {
     setState((prev) => ({
@@ -91,46 +109,60 @@ export const ControlsPage: FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
-      {showPreview && (
-        <div className="mb-8 bg-gray-800 rounded-lg shadow-md shadow-black/30 overflow-hidden">
-          <div className="flex justify-between items-center p-4 bg-gray-700 border-b border-gray-600">
-            <h3 className="font-bold text-gray-100">Preview</h3>
-            <button
-              onClick={() => setShowPreview(false)}
-              className="text-gray-200 hover:text-white"
-            >
-              Close
-            </button>
-          </div>
-          <iframe
-            src="http://127.0.0.1:8080/"
-            className="w-full h-96 border-0"
-            title="Overlay Preview"
-          />
-        </div>
-      )}
+      <div id="preview" className={showPreview ? 'active' : ''}>
+        <button
+          id="preview-button"
+          onClick={() => setShowPreview(false)}
+        >
+          ×
+        </button>
+        <iframe
+          id="preview-iframe"
+          src="http://127.0.0.1:8080/"
+          title="Overlay Preview"
+        />
+      </div>
 
       {/* Overlay Selector */}
       <div className="mb-8 bg-gray-800 rounded-lg shadow-md shadow-black/30 p-6">
         <h2 className="text-lg font-bold mb-4 text-gray-100">Select Overlay</h2>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-6 justify-center">
           {overlays.map((overlay) => (
-            <button
-              key={overlay}
-              onClick={() => handleSwitchOverlay(overlay)}
-              className={`px-4 py-2 rounded-lg transition-colors ${
-                state.currentOverlay === overlay
-                  ? 'bg-falcons-primary text-white'
-                  : 'bg-gray-700 text-gray-100 hover:bg-gray-600'
-              }`}
-            >
-              {nameMap[overlay] || overlay}
-            </button>
+            <div key={overlay} className="flex flex-col items-center gap-2">
+              <button
+                onClick={() => handleSwitchOverlay(overlay)}
+                className={`relative group rounded-lg transition-all overflow-hidden ${
+                  state.currentOverlay === overlay
+                    ? 'ring-4 ring-falcons-primary shadow-lg shadow-falcons-primary'
+                    : 'hover:shadow-lg shadow-black/30'
+                }`}
+                title={nameMap[overlay] || overlay}
+              >
+                {imageCache[overlay] && imageCache[overlay] !== 'images/missing.jpg' ? (
+                  <img
+                    src={imageCache[overlay]}
+                    alt={nameMap[overlay] || overlay}
+                    className="w-24 h-24 object-cover rounded-lg"
+                  />
+                ) : (
+                  <div className="w-24 h-24 bg-gray-700 rounded-lg flex items-center justify-center">
+                    <span className="text-xs text-gray-500 text-center px-2">
+                      {nameMap[overlay] || overlay}
+                    </span>
+                  </div>
+                )} 
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  <span className="text-white text-xs font-bold text-center px-2">
+                    {nameMap[overlay] || overlay}
+                  </span>
+                </div>
+              </button>
+            </div>
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
         {/* Left Team */}
         <div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-6">
           <h2 className="text-xl font-bold mb-4 text-gray-100">Left Team</h2>
@@ -160,7 +192,7 @@ export const ControlsPage: FC = () => {
               type="number"
               value={state.scoreLeft}
               onChange={(e) => handleStateChange('scoreLeft', e.target.value)}
-              className="input w-full"
+              className="input w-full text-gray-900"
             />
           </div>
 
@@ -169,7 +201,7 @@ export const ControlsPage: FC = () => {
             <textarea
               value={state.playerNamesLeft}
               onChange={(e) => handleStateChange('playerNamesLeft', e.target.value)}
-              className="input w-full"
+              className="input w-full text-gray-900"
               rows={3}
             />
           </div>
@@ -179,7 +211,7 @@ export const ControlsPage: FC = () => {
             <textarea
               value={state.teamNameLeft}
               onChange={(e) => handleStateChange('teamNameLeft', e.target.value)}
-              className="input w-full"
+              className="input w-full text-gray-900"
               rows={2}
             />
           </div>
@@ -196,7 +228,7 @@ export const ControlsPage: FC = () => {
         </div>
 
         {/* Middle Section */}
-<div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-6 flex flex-col justify-between">
+        <div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-6 flex flex-col justify-between">
           <div>
             <h2 className="text-xl font-bold mb-4 text-gray-100">Actions</h2>
 
@@ -224,7 +256,7 @@ export const ControlsPage: FC = () => {
               type="number"
               value={state.week}
               onChange={(e) => handleStateChange('week', Number(e.target.value))}
-              className="input w-full"
+              className="input w-full text-gray-900"
             />
           </div>
         </div>
@@ -258,7 +290,7 @@ export const ControlsPage: FC = () => {
               type="number"
               value={state.scoreRight}
               onChange={(e) => handleStateChange('scoreRight', e.target.value)}
-              className="input w-full"
+              className="input w-full text-gray-900"
             />
           </div>
 
@@ -267,7 +299,7 @@ export const ControlsPage: FC = () => {
             <textarea
               value={state.playerNamesRight}
               onChange={(e) => handleStateChange('playerNamesRight', e.target.value)}
-              className="input w-full"
+              className="input w-full text-gray-900"
               rows={3}
             />
           </div>
@@ -277,7 +309,7 @@ export const ControlsPage: FC = () => {
             <textarea
               value={state.teamNameRight}
               onChange={(e) => handleStateChange('teamNameRight', e.target.value)}
-              className="input w-full"
+              className="input w-full text-gray-900"
               rows={2}
             />
           </div>
