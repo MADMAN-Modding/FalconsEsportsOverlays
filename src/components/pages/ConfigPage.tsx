@@ -5,6 +5,7 @@ import { useImageControls } from '../../hooks/useImageControls';
 import { useObsHandler } from '../../hooks/useObsHandler';
 import { useDownloader } from '../../hooks/useDownloader';
 import { getNameMap } from '../../utils/tauriHelpers';
+import { invoke } from '@tauri-apps/api/core';
 
 export const ConfigPage: FC = () => {
   const { pushNotification } = useNotifications();
@@ -16,7 +17,7 @@ export const ConfigPage: FC = () => {
   const [appColor, setAppColor] = useState('#bf0f35');
   const [columnColor, setColumnColor] = useState('#000000');
   const [autoServer, setAutoServer] = useState(false);
-  const [teamImage] = useState<string>('');
+  const [teamImage, setTeamImage] = useState<string>('http://127.0.0.1:8080/images/Esports-Logo.png');
   const [nameMap, setNameMap] = useState<Record<string, string>>({});
   const [sceneCollections, setSceneCollections] = useState<string[]>([]);
   const [scenes, setScenes] = useState<string[]>([]);
@@ -164,10 +165,32 @@ export const ConfigPage: FC = () => {
     if (!file) return;
 
     try {
-      // TODO: Implement image upload to Tauri backend
-      pushNotification('Image upload feature coming soon');
+      // Read file as array buffer
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const arrayBuffer = event.target?.result as ArrayBuffer;
+        const bytes = Array.from(new Uint8Array(arrayBuffer));
+        
+        // Send to backend
+        try {
+          const result = await invoke<string>('copy_image', {
+            bytes: bytes,
+          });
+          
+          // Update local state with the new image URL (bust cache)
+          const newImageUrl = `http://127.0.0.1:8080/images/Esports-Logo.png?t=${Date.now()}`;
+          setTeamImage(newImageUrl);
+          
+          pushNotification('Team logo updated successfully');
+        } catch (error) {
+          pushNotification('Failed to upload image to server');
+          console.error('Error uploading image:', error);
+        }
+      };
+      reader.readAsArrayBuffer(file);
     } catch (error) {
-      pushNotification('Failed to upload image');
+      pushNotification('Failed to process image');
+      console.error('Error processing image:', error);
     }
   };
 
