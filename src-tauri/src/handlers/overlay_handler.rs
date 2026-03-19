@@ -132,12 +132,18 @@ pub fn get_overlay_image_path(overlay: String) -> Result<String, String> {
 
 #[tauri::command]
 pub fn get_overlay_enabled(overlay: &str) -> bool {
-    let overlay_status = &json_handler::get_name_map().map_err(|_| false).unwrap()[overlay];
-    
-    if overlay_status.is_boolean() {
-        overlay_status.as_bool().unwrap()
-    } else {
-        false
+    let config_key = format!("{}Checked", overlay);
+    match json_handler::read_config_json(&config_key) {
+        Ok(value) => {
+            if let Some(b) = value.as_bool() {
+                b
+            } else if let Some(s) = value.as_str() {
+                s.trim().to_lowercase() == "true"
+            } else {
+                false
+            }
+        }
+        Err(_) => false,
     }
 }
 

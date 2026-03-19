@@ -1,10 +1,10 @@
 //! Handles the HTTP server for the overlays
 use std::{
     fs,
-    io::{prelude::*, BufReader},
+    io::{BufReader, prelude::*},
     net::{TcpListener, TcpStream},
     path::Path,
-    sync::{Arc, Mutex},
+    sync::{Arc, LazyLock, Mutex},
     thread::{self},
 };
 
@@ -13,6 +13,8 @@ use once_cell::sync::OnceCell;
 use crate::{constants::get_code_dir, thread_data::{thread_data_setup, ThreadData}};
 
 static THREAD_DATA: OnceCell<Arc<Mutex<ThreadData>>> = OnceCell::new();
+
+static SERVER_RUNNING: LazyLock<Arc<Mutex<bool>>> = LazyLock::new(|| {Arc::new(Mutex::new(false))});
 
 /// Sets the `THREAD_DATA` variable to a new `ThreadData` struct
 pub fn setup() {
@@ -39,8 +41,25 @@ pub fn run_server() -> Result<String, String> {
             .name("http_server_thread".to_string())
             .spawn(move || ThreadData::handle_connection(listener.unwrap(), thread_data.clone()));
 
+        match SERVER_RUNNING.lock() {
+            Ok(mut v) => {
+                *v = true;
+            }
+            Err(e) => {
+                eprintln!("Failed to acquire lock on SERVER_RUNNING: {e}");
+                return Err("Failed to start the server: Unable to acquire lock".to_string());
+            } 
+        };
         Ok("Server Started".to_string())
     } else {
+        match SERVER_RUNNING.lock() {
+            Ok(mut v) => {
+                *v = false;
+            }
+            Err(e) => {
+                eprintln!("Failed to acquire lock on SERVER_RUNNING: {e}");
+            }
+        }
         Err(format!("Error Starting Server: {}", listener.unwrap_err()))
     }
 }
@@ -69,12 +88,32 @@ pub fn stop_server() -> Result<String, String> {
             Ok(mut stream) => {
                 stream.write("SHUTDOWN".as_bytes()).unwrap();
 
+                match SERVER_RUNNING.lock() {
+                    Ok(mut v) => {
+                        *v = false;
+                    }
+                    Err(e) => {
+                        eprintln!("Failed to acquire lock on SERVER_RUNNING: {e}");
+                    }
+                };
+
                 Ok("Server Stopped".to_string())
             }
             Err(error) => Err(format!("Has the server been started? {}", error)),
         }
     } else {
         Err("Failed to stop the server: THREAD_DATA not initialized".to_string())
+    }
+}
+
+#[tauri::command]
+pub fn is_server_running() -> bool {
+    match SERVER_RUNNING.lock() {
+        Ok(v) => *v,
+        Err(e) => {
+            eprintln!("Failed to acquire lock on SERVER_RUNNING: {e}");
+            false
+        }
     }
 }
 

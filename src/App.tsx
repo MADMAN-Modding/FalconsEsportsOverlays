@@ -36,6 +36,8 @@ function App() {
         // Check if auto-start server is enabled
         const autoServer = await readConfigJSON('autoServer');
         if (autoServer === 'true') {
+          console.log("starting server...")
+          // await startServer()
           // Auto-start server logic
         }
 

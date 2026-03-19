@@ -10,14 +10,15 @@ import { invoke } from '@tauri-apps/api/core';
 export const ConfigPage: FC = () => {
   const { pushNotification } = useNotifications();
   const { readConfigJSON, writeConfigJSON } = useJsonHandler();
-  const { } = useImageControls();
+  const { getImage } = useImageControls();
   const { getSceneCollectionList, getScenes } = useObsHandler();
   const { getDownloadStatus } = useDownloader();
 
   const [appColor, setAppColor] = useState('#bf0f35');
   const [columnColor, setColumnColor] = useState('#000000');
   const [autoServer, setAutoServer] = useState(false);
-  const [teamImage, setTeamImage] = useState<string>('http://127.0.0.1:8080/images/Esports-Logo.png');
+  const [teamImage, setTeamImage] = useState<string>('');
+  const [codeDir, setCodeDir] = useState<string>('');
   const [nameMap, setNameMap] = useState<Record<string, string>>({});
   const [sceneCollections, setSceneCollections] = useState<string[]>([]);
   const [scenes, setScenes] = useState<string[]>([]);
@@ -30,6 +31,26 @@ export const ConfigPage: FC = () => {
   useEffect(() => {
     const initialize = async () => {
       try {
+        // Step 0: Load code directory
+        let dir = '';
+        try {
+          dir = await invoke<string>('get_code_dir');
+          setCodeDir(dir);
+        } catch (e) {
+          console.warn('Failed to load code directory:', e);
+        }
+
+        // Step 0.5: Load team logo
+        if (dir) {
+          try {
+            const imagePath = `${dir}/images/Esports-Logo.png`;
+            const imageUrl = await getImage(imagePath);
+            setTeamImage(imageUrl);
+          } catch (e) {
+            console.warn('Failed to load team image:', e);
+          }
+        }
+
         // Step 1: Load name map
         try {
           const names = await getNameMap();
@@ -95,17 +116,17 @@ export const ConfigPage: FC = () => {
         try {
           const names = await getNameMap();
           const sportStates: Record<string, boolean> = {};
-          for (const overlay of Object.keys(names)) {
+          const sortedOverlays = Object.keys(names).sort();
+          
+          for (const overlay of sortedOverlays) {
             try {
-              const value = await readConfigJSON(`${overlay}Checked`);
-              console.log(overlay + " " + value);
-              sportStates[overlay] = value.trim().toLowerCase().endsWith("true");
+              const enabled = await invoke<boolean>('get_overlay_enabled', { overlay });
+              sportStates[overlay] = enabled;
             } catch (e) {
-              // console.warn(`Failed to read ${overlay}Checked:`, e);
-              sportStates[overlay] = true;
+              console.warn(`Failed to check if ${overlay} is enabled:`, e);
+              sportStates[overlay] = false;
             }
           }
-          console.log(sportStates)
           setEnabledSports(sportStates);
         } catch (e) {
           console.warn('Failed to load enabled sports:', e);
@@ -173,13 +194,16 @@ export const ConfigPage: FC = () => {
         
         // Send to backend
         try {
-          const result = await invoke<string>('copy_image', {
+          await invoke<string>('copy_image', {
             bytes: bytes,
           });
           
-          // Update local state with the new image URL (bust cache)
-          const newImageUrl = `http://127.0.0.1:8080/images/Esports-Logo.png?t=${Date.now()}`;
-          setTeamImage(newImageUrl);
+          // Reload the team image from the backend
+          if (codeDir) {
+            const imagePath = `${codeDir}/images/Esports-Logo.png`;
+            const imageUrl = await getImage(imagePath);
+            setTeamImage(imageUrl);
+          }
           
           pushNotification('Team logo updated successfully');
         } catch (error) {
@@ -214,12 +238,15 @@ export const ConfigPage: FC = () => {
               className="w-full h-40 object-contain rounded-lg mb-4 bg-gray-700"
             />
             <label className="label">Set a logo for your team:</label>
-            <input
-              type="file"
-              accept="image/png"
-              onChange={handleImageUpload}
-              className="w-full"
-            />
+            <label className="w-full px-4 py-2 bg-gray-700 rounded border border-gray-600 cursor-pointer hover:bg-gray-600 transition-colors block text-center">
+              <span>Choose a PNG file</span>
+              <input
+                type="file"
+                accept="image/png"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+            </label>
           </div>
 
           <div className="mb-4">
@@ -249,6 +276,7 @@ export const ConfigPage: FC = () => {
 
           <div className="space-y-3">
             {Object.entries(nameMap)
+              .sort(([, nameA], [, nameB]) => nameA.localeCompare(nameB))
               .filter(([overlay]) => {
                 const status = downloadStatus.find((d) => d.overlay === overlay);
                 return status && (status.status === 'downloaded' || status.status === 'update-available');
@@ -296,7 +324,7 @@ export const ConfigPage: FC = () => {
             <select
               value={selectedCollection}
               onChange={(e) => handleCollectionChange(e.target.value)}
-              className="input w-full"
+              className="input w-full text-gray-900"
             >
               <option>Select a Scene Collection</option>
               {sceneCollections.map((collection) => (
@@ -307,12 +335,12 @@ export const ConfigPage: FC = () => {
             </select>
           </div>
 
-          <div className="mb-4">
+          <div className="mb-4 ">
             <label className="label">Select a Scene</label>
             <select
               value={selectedScene}
               onChange={(e) => setSelectedScene(e.target.value)}
-              className="input w-full"
+              className="input w-full text-gray-900"
             >
               <option>Select a Scene</option>
               {scenes.map((scene) => (

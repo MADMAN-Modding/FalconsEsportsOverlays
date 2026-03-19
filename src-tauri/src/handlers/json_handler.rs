@@ -434,6 +434,10 @@ pub fn iterate_json(json_key: &str, json: &Value) -> Vec<String> {
 fn iterate_json_map(json_key: &str, json: &Value) -> Vec<String> {
     let mut entries: Vec<String> = Vec::new();
 
+    if !json.is_object() {
+        return Vec::new();
+    }
+
     for value in json.as_object().unwrap() {
         let (key, v) = value;
         if key == json_key {

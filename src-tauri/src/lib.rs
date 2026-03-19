@@ -49,6 +49,7 @@ pub fn run() {
             download_handler::check_for_updates,
             http_handler::run_server,
             http_handler::stop_server,
+            http_handler::is_server_running,
             constants::get_overlay_json_path,
             constants::get_config_json_path,
             constants::get_code_dir,

@@ -1,8 +1,23 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 
 export const useServer = () => {
-  const [isServerRunning, setIsServerRunning] = useState(false);
+  const [isServerRunning, setIsServerRunning] = useState<boolean>(false);
+
+  const getServerStatus = useCallback(async (): Promise<void> => {
+    try {
+      const status = await invoke<boolean>('is_server_running');
+      console.log("fetched server status: ", status);
+      setIsServerRunning(status);
+    } catch (error) {
+      console.error('Error getting server status:', error);
+      setIsServerRunning(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    getServerStatus();
+  }, [getServerStatus]);
 
   const startServer = useCallback(async (): Promise<string> => {
     try {
@@ -30,5 +45,6 @@ export const useServer = () => {
     isServerRunning,
     startServer,
     stopServer,
+    refreshServerStatus: getServerStatus,
   };
 };

@@ -1,6 +1,6 @@
 use std::{env::set_current_dir, process::Stdio};
 
-use crate::handlers::json_handler::{iterate_json, read_json_as_value};
+use crate::handlers::json_handler::read_json_as_value;
 
 use super::{
     json_handler::{read_json, write_json},
@@ -20,7 +20,7 @@ pub fn inject() {
 
         enable_ws();
     }
-    
+
     if !process_running {
         start_obs();
     }
@@ -83,9 +83,19 @@ pub fn get_scenes(collection: String) -> Vec<String> {
 
     let json = read_json_as_value(&path);
 
-    let scenes = iterate_json("name", &json["scene_order"]);
+    // scene_order is an array of objects with "name" field
+    if let Some(scene_order) = json.get("scene_order") {
+        if scene_order.is_array() {
+            return scene_order
+                .as_array()
+                .unwrap()
+                .iter()
+                .filter_map(|v| v.get("name").and_then(|name| name.as_str()).map(|s| s.to_string()))
+                .collect();
+        }
+    }
 
-    scenes
+    Vec::new()
 }
 
 /// Starts obs in the background
@@ -100,9 +110,7 @@ fn start_obs() {
             let _ = set_current_dir("C:/Program Files/obs-studio/bin/64bit");
             // Use "start" to launch the process in the background on Windows
             let _ = Command::new("C:/Program Files/obs-studio/bin/64bit/obs64.exe")
-                .args([
-                    "--disable-shutdown-check",
-                ])
+                .args(["--disable-shutdown-check"])
                 .stdout(Stdio::null()) // Redirect output to prevent blocking
                 .stderr(Stdio::null()) // Redirect error output to prevent blocking
                 .spawn() // Use spawn to run asynchronously
@@ -111,22 +119,19 @@ fn start_obs() {
         "linux" => {
             // Use "bash -c" and "&" to run in the background on Linux (Flatpak)
             let _ = Command::new("bash")
-            .args([
-                "-c", 
-                "flatpak run com.obsproject.Studio --disable-shutdown-check &"
-            ])
-            .stdout(Stdio::null())  // Redirect output to prevent blocking
-            .stderr(Stdio::null())  // Redirect error output to prevent blocking
-            .spawn()                // Use spawn to run asynchronously
-            .expect("Failed to start OBS Flatpak on Linux in background");
+                .args([
+                    "-c",
+                    "flatpak run com.obsproject.Studio --disable-shutdown-check &",
+                ])
+                .stdout(Stdio::null()) // Redirect output to prevent blocking
+                .stderr(Stdio::null()) // Redirect error output to prevent blocking
+                .spawn() // Use spawn to run asynchronously
+                .expect("Failed to start OBS Flatpak on Linux in background");
         }
         "macos" => {
             // Use "bash -c" and "&" to run in the background on macOS
             let _ = Command::new("bash")
-                .args([
-                    "-c",
-                    "open -a OBS --args --disable-shutdown-check &",
-                ])
+                .args(["-c", "/Applications/OBS.app/Contents/MacOS/OBS --args --disable-shutdown-check &"])
                 .stdout(Stdio::null()) // Redirect output to prevent blocking
                 .stderr(Stdio::null()) // Redirect error output to prevent blocking
                 .spawn() // Use spawn to run asynchronously
@@ -171,6 +176,9 @@ fn get_profile_path() -> String {
             "/home/{username}/.var/app/com.obsproject.Studio/config/obs-studio/basic/profiles/"
         ),
         "windows" => format!("C:/Users/{username}/AppData/Roaming/obs-studio/basic/profiles/"),
+        "macos" => {
+            format!("/Users/{username}/Library/Application Support/obs-studio/basic/profiles/")
+        }
         _ => "".to_string(),
     }
 }
@@ -184,6 +192,7 @@ fn get_scene_path() -> String {
             "/home/{username}/.var/app/com.obsproject.Studio/config/obs-studio/basic/scenes/"
         ),
         "windows" => format!("C:/Users/{username}/AppData/Roaming/obs-studio/basic/scenes/"),
+        "macos" => format!("/Users/{username}/Library/Application Support/obs-studio/basic/scenes/"),
         _ => "".to_string(),
     }
 }
