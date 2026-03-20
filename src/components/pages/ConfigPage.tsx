@@ -64,7 +64,7 @@ export const ConfigPage: FC = () => {
         try {
           const appColorValue = await readConfigJSON('appColor');
           if (appColorValue && appColorValue !== 'null' && appColorValue !== '{}') {
-            setAppColor(appColorValue);
+            setAppColor(appColorValue.toString());
           } else {
             setAppColor('#bf0f35');
           }
@@ -76,7 +76,7 @@ export const ConfigPage: FC = () => {
         try {
           const columnColorValue = await readConfigJSON('columnColor');
           if (columnColorValue && columnColorValue !== 'null' && columnColorValue !== '{}') {
-            setColumnColor(columnColorValue);
+            setColumnColor(columnColorValue.toString());
           } else {
             setColumnColor('#000000');
           }
@@ -88,7 +88,8 @@ export const ConfigPage: FC = () => {
         // Step 3: Load auto server setting
         try {
           const autoServerValue = await readConfigJSON('autoServer');
-          setAutoServer(autoServerValue === 'true');
+          console.log("autoServerValue from config: ", autoServerValue);
+          setAutoServer(autoServerValue?.toString() === 'true');
         } catch (e) {
           console.warn('Failed to read autoServer:', e);
           setAutoServer(false);

@@ -72,9 +72,9 @@ export const useJsonHandler = () => {
     }
   };
 
-  const readConfigJSON = async (key: string): Promise<string> => {
+  const readConfigJSON = async (key: string): Promise<JsonValue> => {
     try {
-      const value = await invoke<string>('read_config_json', { key });
+      const value = await invoke<JsonValue>('read_config_json', { key });
       return value;
     } catch (error) {
       console.error('Error reading config JSON:', error);

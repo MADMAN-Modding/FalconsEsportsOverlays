@@ -13,6 +13,7 @@ import { ConfigPage } from './components/pages/ConfigPage';
 import { ServerPage } from './components/pages/ServerPage';
 import { FilesPage } from './components/pages/FilesPage';
 import './App.css';
+import { getServerState, startServer } from './hooks/useServer';
 
 function App() {
   const { notifications, pushNotification } = useNotifications();
@@ -35,10 +36,10 @@ function App() {
 
         // Check if auto-start server is enabled
         const autoServer = await readConfigJSON('autoServer');
-        if (autoServer === 'true') {
-          console.log("starting server...")
-          // await startServer()
-          // Auto-start server logic
+        console.log("autoServer setting: ", autoServer);
+        if (autoServer == true && await getServerState() == false) {
+          pushNotification("Starting server...");
+          await startServer()
         }
 
         if (await checkForUpdates()) {

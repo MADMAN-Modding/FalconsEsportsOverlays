@@ -14,7 +14,7 @@ use crate::{constants::get_code_dir, thread_data::{thread_data_setup, ThreadData
 
 static THREAD_DATA: OnceCell<Arc<Mutex<ThreadData>>> = OnceCell::new();
 
-static SERVER_RUNNING: LazyLock<Arc<Mutex<bool>>> = LazyLock::new(|| {Arc::new(Mutex::new(false))});
+static SERVER_RUNNING: LazyLock<Arc<Mutex<bool>>> = LazyLock::new(|| Arc::new(Mutex::new(false)));
 
 /// Sets the `THREAD_DATA` variable to a new `ThreadData` struct
 pub fn setup() {
@@ -35,14 +35,28 @@ pub fn run_server() -> Result<String, String> {
     // Binds a port for the server
     let listener = TcpListener::bind("127.0.0.1:8080");
 
+    match SERVER_RUNNING.try_lock() {
+        Ok(v) => {
+            if *v {
+                println!("Server is already running");
+                return Ok("Server is already running".to_string());
+            } 
+        }
+        Err(e) => {
+            eprintln!("Failed to acquire lock on SERVER_RUNNING: {e}");
+            return Err("Failed to start the server: Unable to acquire lock".to_string());
+        }
+    };
+
     // If the listen doesn't error, build a new thread to listen for incoming traffic
     if listener.is_ok() {
         let _ = thread::Builder::new()
             .name("http_server_thread".to_string())
             .spawn(move || ThreadData::handle_connection(listener.unwrap(), thread_data.clone()));
 
-        match SERVER_RUNNING.lock() {
+        match SERVER_RUNNING.try_lock() {
             Ok(mut v) => {
+                println!("Server Started");
                 *v = true;
             }
             Err(e) => {
@@ -52,8 +66,9 @@ pub fn run_server() -> Result<String, String> {
         };
         Ok("Server Started".to_string())
     } else {
-        match SERVER_RUNNING.lock() {
+        match SERVER_RUNNING.try_lock() {
             Ok(mut v) => {
+                println!("Server Failed to Start");
                 *v = false;
             }
             Err(e) => {
@@ -80,6 +95,7 @@ pub fn stop_server() -> Result<String, String> {
     if let Some(thread_data) = THREAD_DATA.get() {
         let mut data = thread_data.lock().unwrap();
         data.set_stop(true);
+        drop(data); // Explicitly drop the lock before connecting to the server
 
         // Connects to the server and writes it so that it reads the stop variable
         let stream = TcpStream::connect("127.0.0.1:8080");
@@ -88,8 +104,9 @@ pub fn stop_server() -> Result<String, String> {
             Ok(mut stream) => {
                 stream.write("SHUTDOWN".as_bytes()).unwrap();
 
-                match SERVER_RUNNING.lock() {
+                match SERVER_RUNNING.try_lock() {
                     Ok(mut v) => {
+                        println!("Server Stopped");
                         *v = false;
                     }
                     Err(e) => {
@@ -108,7 +125,7 @@ pub fn stop_server() -> Result<String, String> {
 
 #[tauri::command]
 pub fn is_server_running() -> bool {
-    match SERVER_RUNNING.lock() {
+    match SERVER_RUNNING.try_lock() {
         Ok(v) => *v,
         Err(e) => {
             eprintln!("Failed to acquire lock on SERVER_RUNNING: {e}");

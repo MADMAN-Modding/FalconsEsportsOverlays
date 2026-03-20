@@ -6,7 +6,7 @@ export const useServer = () => {
 
   const getServerStatus = useCallback(async (): Promise<void> => {
     try {
-      const status = await invoke<boolean>('is_server_running');
+      const status = await getServerState();
       console.log("fetched server status: ", status);
       setIsServerRunning(status);
     } catch (error) {
@@ -48,3 +48,23 @@ export const useServer = () => {
     refreshServerStatus: getServerStatus,
   };
 };
+
+export async function startServer() { 
+    try {
+      const message = await invoke<string>('run_server');
+      return message;
+    } catch (error) {
+      console.error('Error starting server:', error);
+      throw error;
+    }
+} 
+
+export async function getServerState(): Promise<boolean> {
+  try {
+    const status = await invoke<boolean>('is_server_running');
+    return status;
+  } catch (error) {
+    console.error('Error getting server status:', error);
+    return false;
+  }
+}

@@ -20,7 +20,7 @@ use super::download_handler::download_files;
 /// # Returns
 /// * `Result<Value, String>` - The data at the desired key or an error
 #[tauri::command]
-pub fn read_overlay_json(key: &str) -> Result<Value, String> {
+pub fn read_overlay_json(key: &str) -> Result<Value, Value> {
     read_json_value(key, &constants::get_overlay_json_path())
 }
 
@@ -32,7 +32,7 @@ pub fn read_overlay_json(key: &str) -> Result<Value, String> {
 /// # Returns
 /// * `Result<Value, String>` - The data at the desired key or an error
 #[tauri::command]
-pub fn read_config_json(key: &str) -> Result<Value, String> {
+pub fn read_config_json(key: &str) -> Result<Value, Value> {
     read_json_value(key, &constants::get_config_json_path())
 }
 
@@ -44,7 +44,7 @@ pub fn read_config_json(key: &str) -> Result<Value, String> {
 /// # Returns
 /// * `Result<Value, String>` - The data at the desired key or an error
 #[tauri::command]
-pub fn read_custom_json(key: &str) -> Result<Value, String> {
+pub fn read_custom_json(key: &str) -> Result<Value, Value> {
     read_json_value(key, &constants::get_custom_config_path())
 }
 
@@ -56,7 +56,7 @@ pub fn read_custom_json(key: &str) -> Result<Value, String> {
 ///
 /// # Returns
 /// * `Result<Value, String>` - The data at the desired key or an error
-fn read_json_value(key: &str, path: &str) -> Result<Value, String> {
+fn read_json_value(key: &str, path: &str) -> Result<Value, Value> {
     let path_obj = Path::new(path);
 
     if path_obj.exists() {
@@ -65,10 +65,10 @@ fn read_json_value(key: &str, path: &str) -> Result<Value, String> {
         if let Some(value) = json_data.get(key) {
             Ok(value.clone())
         } else {
-            Err(format!("Key '{}' not found in JSON", key))
+            Err(Value::from(format!("Key '{}' not found in JSON", key)))
         }
     } else {
-        Err(format!("File not found: {}", path))
+        Err(Value::from(format!("File not found: {}", path)))
     }
 }
 
