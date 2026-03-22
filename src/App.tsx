@@ -49,6 +49,7 @@ function App() {
       } catch (error) {
         console.error('Error initializing app:', error);
         pushNotification('Error initializing application');
+        initializeApp();
       }
     };
 
@@ -60,7 +61,7 @@ function App() {
       <div className="flex items-center justify-center min-h-screen bg-gray-900">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4 text-gray-100">Loading...</h1>
-          <p className="text-gray-300">Initializing Falcons Esports Overlays Controller</p>
+          <p className="text-gray-300">Initializing Falcons Esports Overlays Controller, this step requires a network connection (which you should have for streaming anyways)</p>
         </div>
       </div>
     );

@@ -35,7 +35,7 @@ pub fn get_config_dir() -> String {
 
 #[tauri::command]
 pub fn get_code_dir() -> String {
-    format!("{}/{}", get_config_dir(), super::handlers::json_handler::read_config_json_string("overlay_dir"))
+    format!("{}/{}", get_config_dir(), super::handlers::json_handler::read_config_json_string("overlayDir"))
 }
 
 #[tauri::command]

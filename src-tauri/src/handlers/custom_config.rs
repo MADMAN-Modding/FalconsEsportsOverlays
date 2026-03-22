@@ -13,7 +13,7 @@ fn update_config(key: &str, value: String) {
 pub fn setup_custom_config(config_file: Vec<u8>) -> Result<String, String> {
     let _ = std::fs::write(get_custom_config_path(), config_file).map_err(|err| return err.to_string());
 
-    let custom_keys: Vec<&str> = ["columnColor", "overlayURL", "appColor", "overlay_dir"].to_vec();
+    let custom_keys: Vec<&str> = ["columnColor", "overlayURL", "appColor", "overlayDir"].to_vec();
 
     for key in custom_keys {
         let value = read_custom_json(key);
@@ -50,7 +50,7 @@ pub fn search_overlay() {
         // If the path is a directory and it has a index.html file, it will write the path to the config file
         if path.is_dir() {
             if Path::new(&format!("{}/index.html", path.to_str().unwrap())).exists() {
-                write_config("overlay_dir".to_string(), path.file_name().unwrap().to_str().unwrap());
+                write_config("overlayDir".to_string(), path.file_name().unwrap().to_str().unwrap());
                 return;
             }
         }

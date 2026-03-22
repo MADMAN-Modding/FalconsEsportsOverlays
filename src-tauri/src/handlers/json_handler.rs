@@ -68,7 +68,13 @@ fn read_json_value(key: &str, path: &str) -> Result<Value, Value> {
             Err(Value::from(format!("Key '{}' not found in JSON", key)))
         }
     } else {
-        Err(Value::from(format!("File not found: {}", path)))
+        if !path.contains("overlay.json") && !path.contains("config.json") && !path.contains("launch.json") {
+            return Err(Value::from(format!("File not found: {}", path)));
+        } else {
+            // If the file doesn't exist, initialize it and then try to read the value again
+            let _ = init_json(path);
+            read_json_value(key, path)
+        }
     }
 }
 
@@ -96,7 +102,7 @@ pub fn read_config_json_string(key: &str) -> String {
                 _ => Ok(v.to_string().replace("\"", "")),
             }
         })
-        .unwrap_or_else(|_| "null".to_string())
+        .unwrap_or_else(|_| get_default_json_data()[key].to_string().replace("\"", ""))
 }
 
 /// Internal helper: Read custom JSON as string (for backward compatibility with internal code)
@@ -590,7 +596,7 @@ fn get_default_json_data() -> Value {
         "appColor": "#bf0f35",
         "columnColor": "#ffffff",
         "overlayURL" : "https://codeload.github.com/MADMAN-Modding/FalconsEsportsOverlaysData/zip/refs/heads/main",
-        "overlay_dir": "FalconsEsportsOverlays-main",
+        "overlayDir": "FalconsEsportsOverlays-main",
         "ssbuChecked": true,
         "kartChecked": true,
         "overwatchChecked": true,
