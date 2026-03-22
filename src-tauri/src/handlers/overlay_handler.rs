@@ -147,6 +147,21 @@ pub fn get_overlay_enabled(overlay: &str) -> bool {
     }
 }
 
+#[tauri::command]
+pub fn get_current_overlay() -> Result<String, String> {
+    let config_key = "overlay";
+    match json_handler::read_overlay_json(config_key) {
+        Ok(value) => {
+            if let Some(s) = value.as_str() {
+                Ok(s.to_string())
+            } else {
+                Err("Current overlay value is not a string".to_string())
+            }
+        }
+        Err(e) => Err(format!("Error reading current overlay: {}", e)),
+    }
+}
+
 /// Sets up the initial overlay files by downloading them if they do not already exist.
 /// This includes the main `index.html`, associated CSS, JS, and font files, as well as the Esports logo.
 #[tauri::command]

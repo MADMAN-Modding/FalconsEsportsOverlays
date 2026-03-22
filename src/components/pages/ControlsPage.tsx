@@ -41,6 +41,12 @@ export const ControlsPage: FC = () => {
         const code = await invoke<string>('get_code_dir');
         setCodeDir(code);
         await updateOverlayList();
+        const overlay = await invoke<string>('get_current_overlay');
+        setState((prev) => ({
+          ...prev,
+          currentOverlay: overlay,
+        }));
+
       } catch (error) {
         console.error('Error initializing controls page:', error);
       }
@@ -106,6 +112,7 @@ export const ControlsPage: FC = () => {
     writeOverlayJSON('overlay', overlay);
     pushNotification(`Overlay Changed to ${nameMap[overlay] || overlay}`);
   };
+
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
