@@ -51,9 +51,6 @@ export async function getOverlayStateJSON(): Promise<OverlayState> {
 
     const state = await invoke<OverlayState>('get_overlay_state');
 
-    console.log("Raw overlay state from backend: ", state);
-
-
     let newState: OverlayState = {
       overlay: "",
       playerNamesLeft: "",

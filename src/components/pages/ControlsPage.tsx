@@ -7,6 +7,7 @@ import { getNameMap } from '../../utils/tauriHelpers';
 import { OVERLAY_KEYS } from '../../utils/constants';
 import { invoke } from '@tauri-apps/api/core';
 import './ControlsPage.css';
+import { ColorPicker } from './ColorPicker';
 
 export const ControlsPage: FC = () => {
   const { pushNotification } = useNotifications();
@@ -48,8 +49,6 @@ export const ControlsPage: FC = () => {
         }));
 
         const state = await getOverlayStateJSON();
-
-        console.log("Fetched overlay state: ", state);
 
         setState((prev) => ({
           ...prev,
@@ -234,11 +233,9 @@ export const ControlsPage: FC = () => {
 
           <div>
             <label className="label">Team Color</label>
-            <input
-              type="color"
+            <ColorPicker
               value={state.teamColorLeft}
-              onChange={(e) => handleStateChange('teamColorLeft', e.target.value)}
-              className="color-input"
+              onChange={(color) => {handleStateChange('teamColorLeft', color), writeOverlayJSON("teamColorLeft", color)}}
             />
           </div>
         </div>
@@ -332,11 +329,9 @@ export const ControlsPage: FC = () => {
 
           <div>
             <label className="label">Team Color</label>
-            <input
-              type="color"
+            <ColorPicker
               value={state.teamColorRight}
-              onChange={(e) => handleStateChange('teamColorRight', e.target.value)}
-              className="color-input"
+              onChange={(color) => {handleStateChange('teamColorRight', color), writeOverlayJSON("teamColorRight", color)}}
             />
           </div>
         </div>
