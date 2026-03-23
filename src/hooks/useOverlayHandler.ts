@@ -7,7 +7,6 @@ export const useOverlayHandler = (enabledOnly: boolean) => {
   const updateOverlayList = useCallback(async (): Promise<void> => {
     try {
       let list = await invoke<string[]>('get_overlays_list');
-      console.log(list)
 
       if (enabledOnly) {
         let enabledOverlays = [];
@@ -23,13 +22,12 @@ export const useOverlayHandler = (enabledOnly: boolean) => {
         list = enabledOverlays
       }
 
-      console.log(list)
       setOverlays(list);
     } catch (error) {
       console.error('Error updating overlay list:', error);
       throw error;
     }
-  }, []);
+  }, [enabledOnly]);
 
   const deleteOverlay = useCallback(
     async (overlay: string): Promise<void> => {

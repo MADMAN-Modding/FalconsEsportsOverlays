@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "falcons-esports-overlays-controller",
+  "productName": "Falcons Esports Overlays Controller",
   "version": "3.3.0",
   "identifier": "com.madman-modding.falcons-esports-overlays-controller",
   "build": {
