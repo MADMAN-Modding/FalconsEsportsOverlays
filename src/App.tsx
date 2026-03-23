@@ -36,14 +36,14 @@ function App() {
 
         // Check if auto-start server is enabled
         const autoServer = await readConfigJSON('autoServer');
-        console.log("autoServer setting: ", autoServer);
         if (autoServer == true && await getServerState() == false) {
           pushNotification("Starting server...");
           await startServer()
         }
 
         if (await checkForUpdates()) {
-          console.log(getUpdateMessage())
+          console.log(await getUpdateMessage())
+          pushNotification("Update available: " + await getUpdateMessage());
         };
         setIsInitialized(true);
       } catch (error) {

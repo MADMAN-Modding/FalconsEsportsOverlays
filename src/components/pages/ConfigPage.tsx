@@ -88,7 +88,6 @@ export const ConfigPage: FC = () => {
         // Step 3: Load auto server setting
         try {
           const autoServerValue = await readConfigJSON('autoServer');
-          console.log("autoServerValue from config: ", autoServerValue);
           setAutoServer(autoServerValue?.toString() === 'true');
         } catch (e) {
           console.warn('Failed to read autoServer:', e);

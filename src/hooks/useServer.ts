@@ -7,7 +7,6 @@ export const useServer = () => {
   const getServerStatus = useCallback(async (): Promise<void> => {
     try {
       const status = await getServerState();
-      console.log("fetched server status: ", status);
       setIsServerRunning(status);
     } catch (error) {
       console.error('Error getting server status:', error);

@@ -20,7 +20,7 @@ export const DEFAULT_OVERLAY_STATE = {
   winsLeft: 0,
   winsRight: 0,
   week: 1,
-  overlay: 'ssbu',
+  overlay: '',
 };
 
 export const OVERLAY_KEYS = [

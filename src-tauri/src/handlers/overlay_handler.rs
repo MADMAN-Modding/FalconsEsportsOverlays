@@ -1,8 +1,26 @@
 use std::{fs, path::Path};
 
+use serde_json::Value;
+
 use crate::{constants::{self, get_code_dir, get_local_versions_path}, handlers::json_handler::{self, get_versions, write_json}};
 
 use super::download_handler::download_files;
+
+#[derive(serde::Serialize)]
+pub struct OverlayState {
+  pub overlay: String,
+  pub player_names_left: String,
+  pub player_names_right: String,
+  pub score_left: String,
+  pub score_right: String,
+  pub team_color_left: String,
+  pub team_color_right: String,
+  pub team_name_left: String,
+  pub team_name_right: String,
+  pub week: String,
+  pub wins_left: String,
+  pub wins_right: String
+}
 
 /// Retrieves the list of downloaded overlays by scanning the overlays directory.
 /// 
@@ -160,6 +178,26 @@ pub fn get_current_overlay() -> Result<String, String> {
         }
         Err(e) => Err(format!("Error reading current overlay: {}", e)),
     }
+}
+
+#[tauri::command]
+pub fn get_overlay_state() -> OverlayState {
+    let overlay_state = OverlayState {
+        overlay: json_handler::read_overlay_json("overlay").unwrap_or_else(|_| Value::Null).to_string(),
+        player_names_left: json_handler::read_overlay_json("playerNamesLeft").unwrap_or_else(|_| Value::Null).to_string(),
+        player_names_right: json_handler::read_overlay_json("playerNamesRight").unwrap_or_else(|_| Value::Null).to_string(),
+        score_left: json_handler::read_overlay_json("scoreLeft").unwrap_or_else(|_| Value::Null).to_string(),
+        score_right: json_handler::read_overlay_json("scoreRight").unwrap_or_else(|_| Value::Null).to_string(),
+        team_color_left: json_handler::read_overlay_json("teamColorLeft").unwrap_or_else(|_| Value::Null).to_string(),
+        team_color_right: json_handler::read_overlay_json("teamColorRight").unwrap_or_else(|_| Value::Null).to_string(),
+        team_name_left: json_handler::read_overlay_json("teamNameLeft").unwrap_or_else(|_| Value::Null).to_string(),
+        team_name_right: json_handler::read_overlay_json("teamNameRight").unwrap_or_else(|_| Value::Null).to_string(),
+        week: json_handler::read_overlay_json("week").unwrap_or_else(|_| Value::Null).to_string(),
+        wins_left: json_handler::read_overlay_json("winsLeft").unwrap_or_else(|_| Value::Null).to_string(),
+        wins_right: json_handler::read_overlay_json("winsRight").unwrap_or_else(|_| Value::Null).to_string()
+    };
+
+    overlay_state
 }
 
 /// Sets up the initial overlay files by downloading them if they do not already exist.

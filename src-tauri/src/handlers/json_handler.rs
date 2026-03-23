@@ -55,20 +55,23 @@ pub fn read_custom_json(key: &str) -> Result<Value, Value> {
 /// * `path: &str` - The path to the json file
 ///
 /// # Returns
-/// * `Result<Value, String>` - The data at the desired key or an error
+/// * `Result<Value, Value>` - The data at the desired key or an error
 fn read_json_value(key: &str, path: &str) -> Result<Value, Value> {
     let path_obj = Path::new(path);
 
     if path_obj.exists() {
         let json_data = open_json(path);
-        
+
         if let Some(value) = json_data.get(key) {
             Ok(value.clone())
         } else {
             Err(Value::from(format!("Key '{}' not found in JSON", key)))
         }
     } else {
-        if !path.contains("overlay.json") && !path.contains("config.json") && !path.contains("launch.json") {
+        if !path.contains("overlay.json")
+            && !path.contains("config.json")
+            && !path.contains("launch.json")
+        {
             return Err(Value::from(format!("File not found: {}", path)));
         } else {
             // If the file doesn't exist, initialize it and then try to read the value again
@@ -94,13 +97,11 @@ pub fn read_json(key: &str, path: String) -> String {
 /// Internal helper: Read config JSON as string (for backward compatibility with internal code)
 pub fn read_config_json_string(key: &str) -> String {
     read_json_value(key, &constants::get_config_json_path())
-        .and_then(|v| {
-            match v {
-                Value::String(s) => Ok(s),
-                Value::Bool(b) => Ok(b.to_string()),
-                Value::Number(n) => Ok(n.to_string()),
-                _ => Ok(v.to_string().replace("\"", "")),
-            }
+        .and_then(|v| match v {
+            Value::String(s) => Ok(s),
+            Value::Bool(b) => Ok(b.to_string()),
+            Value::Number(n) => Ok(n.to_string()),
+            _ => Ok(v.to_string().replace("\"", "")),
         })
         .unwrap_or_else(|_| get_default_json_data()[key].to_string().replace("\"", ""))
 }
@@ -108,13 +109,11 @@ pub fn read_config_json_string(key: &str) -> String {
 /// Internal helper: Read custom JSON as string (for backward compatibility with internal code)
 pub fn read_custom_json_string(key: &str) -> String {
     read_json_value(key, &constants::get_custom_config_path())
-        .and_then(|v| {
-            match v {
-                Value::String(s) => Ok(s),
-                Value::Bool(b) => Ok(b.to_string()),
-                Value::Number(n) => Ok(n.to_string()),
-                _ => Ok(v.to_string().replace("\"", "")),
-            }
+        .and_then(|v| match v {
+            Value::String(s) => Ok(s),
+            Value::Bool(b) => Ok(b.to_string()),
+            Value::Number(n) => Ok(n.to_string()),
+            _ => Ok(v.to_string().replace("\"", "")),
         })
         .unwrap_or_else(|_| "null".to_string())
 }
@@ -122,13 +121,11 @@ pub fn read_custom_json_string(key: &str) -> String {
 /// Internal helper: Read overlay JSON as string (for backward compatibility with internal code)
 pub fn read_overlay_json_string(key: &str) -> String {
     read_json_value(key, &constants::get_overlay_json_path())
-        .and_then(|v| {
-            match v {
-                Value::String(s) => Ok(s),
-                Value::Bool(b) => Ok(b.to_string()),
-                Value::Number(n) => Ok(n.to_string()),
-                _ => Ok(v.to_string().replace("\"", "")),
-            }
+        .and_then(|v| match v {
+            Value::String(s) => Ok(s),
+            Value::Bool(b) => Ok(b.to_string()),
+            Value::Number(n) => Ok(n.to_string()),
+            _ => Ok(v.to_string().replace("\"", "")),
         })
         .unwrap_or_else(|_| "null".to_string())
 }
@@ -248,8 +245,11 @@ pub fn write_json_value(path: String, json_key: String, value: Value) -> Result<
 
     json_data[json_key] = value;
 
-    fs::write(&path, serde_json::to_string_pretty(&json_data).map_err(|e| e.to_string())?)
-        .map_err(|e| format!("Error writing file: {}", e))?;
+    fs::write(
+        &path,
+        serde_json::to_string_pretty(&json_data).map_err(|e| e.to_string())?,
+    )
+    .map_err(|e| format!("Error writing file: {}", e))?;
 
     Ok(())
 }
@@ -587,7 +587,10 @@ pub fn get_update_message() -> String {
     let binding = open_json(&get_launch_json_path());
     let json = binding.as_object().unwrap();
 
-    return json["appVersion"]["updateMessage"].as_str().unwrap().to_string();
+    return json["appVersion"]["updateMessage"]
+        .as_str()
+        .unwrap()
+        .to_string();
 }
 
 /// Default settings for the config

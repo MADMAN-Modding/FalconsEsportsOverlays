@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import { useNotifications } from '../../hooks/useNotifications';
 import { useJsonHandler } from '../../hooks/useJsonHandler';
-import { useOverlayHandler } from '../../hooks/useOverlayHandler';
+import { getOverlayStateJSON, useOverlayHandler } from '../../hooks/useOverlayHandler';
 import { useOverlayImages } from '../../hooks/useOverlayImages';
 import { getNameMap } from '../../utils/tauriHelpers';
 import { OVERLAY_KEYS } from '../../utils/constants';
@@ -21,14 +21,14 @@ export const ControlsPage: FC = () => {
     scoreRight: '0',
     playerNamesLeft: '',
     playerNamesRight: '',
-    teamNameLeft: '',
+    teamNameLeft: '', 
     teamNameRight: '',
     teamColorLeft: '#be0f32',
     teamColorRight: '#ffffff',
     winsLeft: 0,
     winsRight: 0,
     week: 1,
-    currentOverlay: 'ssbu',
+    currentOverlay: '',
   });
 
   const [showPreview, setShowPreview] = useState(false);
@@ -45,6 +45,15 @@ export const ControlsPage: FC = () => {
         setState((prev) => ({
           ...prev,
           currentOverlay: overlay,
+        }));
+
+        const state = await getOverlayStateJSON();
+
+        console.log("Fetched overlay state: ", state);
+
+        setState((prev) => ({
+          ...prev,
+          ...state,
         }));
 
       } catch (error) {
