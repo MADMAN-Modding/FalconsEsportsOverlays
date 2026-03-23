@@ -12,7 +12,7 @@ export const FilesPage: FC = () => {
   const { pushNotification } = useNotifications();
   const { } = useJsonHandler();
   const { downloadOverlay, getDownloadStatus } = useDownloader();
-  const { updateOverlayList, deleteOverlay } = useOverlayHandler();
+  const { updateOverlayList, deleteOverlay } = useOverlayHandler(false);
   const { getMultipleOverlayImages, imageCache } = useOverlayImages();
   const [nameMap, setNameMap] = useState<Record<string, string>>({});
   const [downloadStatus, setDownloadStatus] = useState<any[]>([]);

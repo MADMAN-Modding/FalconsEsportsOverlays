@@ -11,7 +11,7 @@ import './ControlsPage.css';
 export const ControlsPage: FC = () => {
   const { pushNotification } = useNotifications();
   const { writeOverlayJSON } = useJsonHandler();
-  const { overlays, updateOverlayList } = useOverlayHandler();
+  let { overlays, updateOverlayList } = useOverlayHandler(true);
   const { getMultipleOverlayImages, imageCache } = useOverlayImages();
   const [nameMap, setNameMap] = useState<Record<string, string>>({});
   const [codeDir, setCodeDir] = useState<string>('');

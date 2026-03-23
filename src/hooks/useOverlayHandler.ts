@@ -1,12 +1,29 @@
 import { useState, useCallback } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 
-export const useOverlayHandler = () => {
+export const useOverlayHandler = (enabledOnly: boolean) => {
   const [overlays, setOverlays] = useState<string[]>([]);
 
   const updateOverlayList = useCallback(async (): Promise<void> => {
     try {
-      const list = await invoke<string[]>('get_overlays_list');
+      let list = await invoke<string[]>('get_overlays_list');
+      console.log(list)
+
+      if (enabledOnly) {
+        let enabledOverlays = [];
+
+        for (let overlay of list) {
+          console.log(overlay)
+
+          if (await invoke<boolean>('get_overlay_enabled', { overlay })) {
+
+            enabledOverlays.push(overlay);
+          }
+        }
+        list = enabledOverlays
+      }
+
+      console.log(list)
       setOverlays(list);
     } catch (error) {
       console.error('Error updating overlay list:', error);
