@@ -50,11 +50,7 @@ export const useOverlayHandler = (enabledOnly: boolean) => {
 export async function getOverlayStateJSON(): Promise<OverlayState> {
   const state = await invoke<RawOverlayState>('get_overlay_state');
 
-  console.log(state.week)
-
   let newState: OverlayState = mapState(state);
-
-  console.log(newState.week);
 
   return newState;
 }

@@ -42,7 +42,6 @@ function App() {
         }
 
         if (await checkForUpdates()) {
-          console.log(await getUpdateMessage())
           pushNotification("Update available: " + await getUpdateMessage());
         };
         setIsInitialized(true);
