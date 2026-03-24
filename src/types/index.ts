@@ -19,6 +19,21 @@ export interface OverlayState {
   overlay: string;
 }
 
+export interface RawOverlayState {
+  overlay: string;
+  player_names_left: string;
+  player_names_right: string;
+  score_left: string;
+  score_right: string;
+  team_color_left: string;
+  team_color_right: string;
+  team_name_left: string;
+  team_name_right: string;
+  week: number;
+  wins_left: number;
+  wins_right: number;
+}
+
 export interface ConfigState {
   appColor: string;
   columnColor: string;

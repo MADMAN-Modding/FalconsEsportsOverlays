@@ -184,7 +184,7 @@ pub fn check_for_updates() -> bool {
 
     let json = json.unwrap();
 
-    return json["version"].as_f64().unwrap() > 3.1 || json["subVersion"].as_i64().unwrap() > 0;
+    return json["version"].as_f64().unwrap() > constants::MAJOR_VERSION.into() || json["subVersion"].as_i64().unwrap() > constants::MINOR_VERSION.into();
 }
 
 /// Preserves the data in the code directory when downloading new overlays

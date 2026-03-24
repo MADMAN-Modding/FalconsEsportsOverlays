@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { NotificationItem } from '../../types';
+import parse from "html-react-parser";
 
 interface NotificationProps {
   notifications: NotificationItem[];
@@ -13,7 +14,7 @@ export const NotificationDisplay: FC<NotificationProps> = ({ notifications }) =>
           key={notification.id}
           className="fixed top-5 right-5 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg dark:shadow-gray-900 animate-slideIn z-50"
         >
-          {notification.text}
+          {parse(notification.text)}
         </div>
       ))}
     </>

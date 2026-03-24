@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { invoke } from '@tauri-apps/api/core';
-import { OverlayState } from '../types';
+import { OverlayState, RawOverlayState } from '../types';
 
 export const useOverlayHandler = (enabledOnly: boolean) => {
   const [overlays, setOverlays] = useState<string[]>([]);
@@ -48,36 +48,31 @@ export const useOverlayHandler = (enabledOnly: boolean) => {
 };
 
 export async function getOverlayStateJSON(): Promise<OverlayState> {
+  const state = await invoke<RawOverlayState>('get_overlay_state');
 
-    const state = await invoke<OverlayState>('get_overlay_state');
+  console.log(state.week)
 
-    let newState: OverlayState = {
-      overlay: "",
-      playerNamesLeft: "",
-      playerNamesRight: "",
-      scoreLeft: "",
-      scoreRight: "",
-      teamNameLeft: "",
-      teamNameRight: "",
-      teamColorLeft: "",
-      teamColorRight: "",
-      winsLeft: 0,
-      winsRight: 0,
-      week: 0,
-    };
+  let newState: OverlayState = mapState(state);
 
-    newState.overlay = state["overlay"].replace("\"", '').replace("\"", '');
-    newState.playerNamesLeft = state["player_names_left"].replace("\"", '').replace("\"", '');
-    newState.playerNamesRight = state["player_names_right"].replace("\"", '').replace("\"", '');
-    newState.teamNameLeft = state["team_name_left"].replace("\"", '').replace("\"", '');
-    newState.teamNameRight = state["team_name_right"].replace("\"", '').replace("\"", '');
-    newState.teamColorLeft = state["team_color_left"].replace("\"", '').replace("\"", '');
-    newState.teamColorRight = state["team_color_right"].replace("\"", '').replace("\"", '');
-    newState.winsLeft = parseInt(state["wins_left"].toString().replace("\"", '').replace("\"", '')) || 0;
-    newState.winsRight = parseInt(state["wins_right"].toString().replace("\"", '').replace("\"", '')) || 0;
-    newState.week = parseInt(state["week"].toString().replace("\"", '').replace("\"", '')) || 0;
-    newState.scoreLeft = state["score_left"].replace("\"", '').replace("\"", '');
-    newState.scoreRight = state["score_right"].replace("\"", '').replace("\"", '');
+  console.log(newState.week);
 
-    return newState;  
+  return newState;
 }
+
+const stripQuotes = (value: unknown): string =>
+  String(value).replace(/"/g, '');
+
+const mapState = (state: RawOverlayState): OverlayState => ({
+  overlay: stripQuotes(state.overlay),
+  playerNamesLeft: stripQuotes(state.player_names_left),
+  playerNamesRight: stripQuotes(state.player_names_right),
+  teamNameLeft: stripQuotes(state.team_name_left),
+  teamNameRight: stripQuotes(state.team_name_right),
+  teamColorLeft: stripQuotes(state.team_color_left),
+  teamColorRight: stripQuotes(state.team_color_right),
+  scoreLeft: stripQuotes(state.score_left),
+  scoreRight: stripQuotes(state.score_right),
+  winsLeft: parseInt(stripQuotes(state.wins_left)),
+  winsRight: parseInt(stripQuotes(state.wins_right)),
+  week: parseInt(stripQuotes(state.week)),
+});

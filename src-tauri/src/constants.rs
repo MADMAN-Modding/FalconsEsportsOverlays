@@ -76,3 +76,6 @@ pub fn get_overlays_path() -> String {
 pub fn get_local_versions_path() -> String {
     format!("{}/local_versions.json", get_config_dir())
 }
+
+pub const MAJOR_VERSION: f32 = 3.3;
+pub const MINOR_VERSION: u8 = 0;
