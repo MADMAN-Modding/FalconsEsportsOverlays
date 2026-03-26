@@ -4,7 +4,7 @@ import { useJsonHandler } from '../../hooks/useJsonHandler';
 import { useImageControls } from '../../hooks/useImageControls';
 import { useObsHandler } from '../../hooks/useObsHandler';
 import { useDownloader } from '../../hooks/useDownloader';
-import { getNameMap } from '../../utils/tauriHelpers';
+import { getCodeDir, getNameMap } from '../../utils/tauriHelpers';
 import { invoke } from '@tauri-apps/api/core';
 
 export const ConfigPage: FC = () => {
@@ -14,8 +14,8 @@ export const ConfigPage: FC = () => {
   const { getSceneCollectionList, getScenes } = useObsHandler();
   const { getDownloadStatus } = useDownloader();
 
-  const [appColor, setAppColor] = useState('#bf0f35');
-  const [columnColor, setColumnColor] = useState('#000000');
+  const [_appColor, setAppColor] = useState('#bf0f35');
+  const [_columnColor, setColumnColor] = useState('#000000');
   const [autoServer, setAutoServer] = useState(false);
   const [teamImage, setTeamImage] = useState<string>('');
   const [codeDir, setCodeDir] = useState<string>('');
@@ -34,7 +34,7 @@ export const ConfigPage: FC = () => {
         // Step 0: Load code directory
         let dir = '';
         try {
-          dir = await invoke<string>('get_code_dir');
+          dir = await getCodeDir();
           setCodeDir(dir);
         } catch (e) {
           console.warn('Failed to load code directory:', e);
@@ -142,22 +142,23 @@ export const ConfigPage: FC = () => {
     initialize();
   }, []);
 
-  const handleAppColorChange = async (color: string) => {
-    if (color === '#ffffff') {
-      pushNotification("Don't set the color to white...");
-      return;
-    }
+  // const handleAppColorChange = async (color: string) => {
+  //   if (color === '#ffffff') {
+  //     pushNotification("Don't set the color to white...");
+  //     return;
+  //   }
 
-    setAppColor(color);
-    await writeConfigJSON('appColor', color);
-    pushNotification(`Color Updated to ${color}`);
-  };
+  //   setAppColor(color);
+  //   await writeConfigJSON('appColor', color);
+  //   pushNotification(`Color Updated to ${color}`);
+  // };
 
-  const handleColumnColorChange = async (color: string) => {
-    setColumnColor(color);
-    await writeConfigJSON('columnColor', color);
-    pushNotification(`Column Color Updated to ${color}`);
-  };
+  // const handleColumnColorChange = async (color: string) => {
+  //   setColumnColor(color);
+
+  //   await writeConfigJSON('columnColor', color);
+  //   pushNotification(`Column Color Updated to ${color}`);
+  // };
 
   const handleAutoServerChange = async (checked: boolean) => {
     setAutoServer(checked);
@@ -249,25 +250,21 @@ export const ConfigPage: FC = () => {
             </label>
           </div>
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="label">App Color</label>
-            <input
-              type="color"
+            <ColorPicker
               value={appColor}
-              onChange={(e) => handleAppColorChange(e.target.value)}
-              className="color-input"
+              onChange={(value) => handleAppColorChange(value)}
             />
           </div>
 
           <div>
-            <label className="label">Column Color</label>
-            <input
-              type="color"
+            <label className="label">Accent Color</label>
+            <ColorPicker
               value={columnColor}
-              onChange={(e) => handleColumnColorChange(e.target.value)}
-              className="color-input"
+              onChange={(value) => handleColumnColorChange(value)}
             />
-          </div>
+          </div> */}
         </div>
 
         {/* Enabled Sports Column */}

@@ -3,7 +3,7 @@ import { useNotifications } from '../../hooks/useNotifications';
 import { useJsonHandler } from '../../hooks/useJsonHandler';
 import { getOverlayStateJSON, useOverlayHandler } from '../../hooks/useOverlayHandler';
 import { useOverlayImages } from '../../hooks/useOverlayImages';
-import { getNameMap } from '../../utils/tauriHelpers';
+import { getCodeDir, getNameMap } from '../../utils/tauriHelpers';
 import { OVERLAY_KEYS } from '../../utils/constants';
 import { invoke } from '@tauri-apps/api/core';
 import './ControlsPage.css';
@@ -39,7 +39,7 @@ export const ControlsPage: FC = () => {
       try {
         const names = await getNameMap();
         setNameMap(names);
-        const code = await invoke<string>('get_code_dir');
+        const code = await getCodeDir();
         setCodeDir(code);
         await updateOverlayList();
         const overlay = await invoke<string>('get_current_overlay');

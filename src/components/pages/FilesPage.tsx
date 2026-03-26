@@ -1,12 +1,11 @@
 import { FC, useState, useEffect } from 'react';
 import { useNotifications } from '../../hooks/useNotifications';
 import { useJsonHandler } from '../../hooks/useJsonHandler';
-import { getNameMap } from '../../utils/tauriHelpers';
+import { getCodeDir, getNameMap } from '../../utils/tauriHelpers';
 import { useDownloader } from '../../hooks/useDownloader';
 import { useOverlayHandler } from '../../hooks/useOverlayHandler';
 import { useOverlayImages } from '../../hooks/useOverlayImages';
 import deleteIcon from '../../images/delete.png';
-import { invoke } from '@tauri-apps/api/core';
 
 export const FilesPage: FC = () => {
   const { pushNotification } = useNotifications();
@@ -28,7 +27,7 @@ export const FilesPage: FC = () => {
         const status = await getDownloadStatus();
         setDownloadStatus(status);
 
-        const code = await invoke<string>('get_code_dir');
+        const code = await getCodeDir();
         setCodeDir(code);
 
         setLoading(false);

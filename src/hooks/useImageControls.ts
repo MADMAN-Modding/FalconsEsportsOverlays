@@ -64,7 +64,7 @@ export const useImageControls = () => {
   const genURLS = useCallback(async (overlays: string[]): Promise<string[]> => {
     try {
       const paths: string[] = [];
-      const codeDir = await invoke<string>('get_code_dir');
+      const codeDir = await getCodeDir;
       
       overlays.forEach((overlay) => {
         paths.push(`${codeDir}/overlays/images/${overlay}.png`);
