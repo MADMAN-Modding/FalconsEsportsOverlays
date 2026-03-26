@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { invoke } from '@tauri-apps/api/core';
+import { getCodeDir } from '../utils/tauriHelpers';
 
 export const useImageControls = () => {
   const getImage = useCallback(async (path: string): Promise<string> => {
@@ -64,7 +65,7 @@ export const useImageControls = () => {
   const genURLS = useCallback(async (overlays: string[]): Promise<string[]> => {
     try {
       const paths: string[] = [];
-      const codeDir = await getCodeDir;
+      const codeDir = await getCodeDir();
       
       overlays.forEach((overlay) => {
         paths.push(`${codeDir}/overlays/images/${overlay}.png`);
