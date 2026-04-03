@@ -16,7 +16,7 @@ export const Navigation: FC = () => {
             <h1 className="text-2xl font-bold text-falcons-primary">Falcons Overlays</h1>
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 *:hover:text-gray-100">
             <Link
               to="/"
               className={`px-4 py-2 rounded-md text-gray-100 transition-colors ${isActive('/')}`}

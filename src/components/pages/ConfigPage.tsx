@@ -314,7 +314,7 @@ export const ConfigPage: FC = () => {
             </div>
           </div>
 
-          <h3 className="text-lg font-bold mb-3">Inject OBS Scene</h3>
+          {/* <h3 className="text-lg font-bold mb-3">Inject OBS Scene</h3>
 
           <div className="mb-4">
             <label className="label">Select a Scene Collection:</label>
@@ -346,9 +346,9 @@ export const ConfigPage: FC = () => {
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
 
-          <button className="btn btn-primary w-full">Inject</button>
+          {/* <button className="btn btn-primary w-full">Inject</button> */}
         </div>
       </div>
     </div>

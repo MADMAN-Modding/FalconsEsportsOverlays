@@ -31,7 +31,7 @@ export const MainPage: FC = () => {
             <span className="text-falcons-primary font-bold">•</span>
             <span>
               The config can be modified from the{' '}
-              <a href="/config" className="text-blue-600 hover:text-blue-800 underline">
+              <a href="/config" className="text-sky-300 hover:text-blue-800 underline">
                 Config
               </a>{' '}
               Page
@@ -42,7 +42,7 @@ export const MainPage: FC = () => {
             <span className="text-falcons-primary font-bold">•</span>
             <span>
               Turn on the overlay server from the{' '}
-              <a href="/server" className="text-blue-600 hover:text-blue-800 underline">
+              <a href="/server" className="text-sky-300 hover:text-blue-800 underline">
                 Server
               </a>{' '}
               Page
@@ -53,7 +53,7 @@ export const MainPage: FC = () => {
             <span className="text-falcons-primary font-bold">•</span>
             <span>
               Control the overlays from the{' '}
-              <a href="/controls" className="text-blue-600 hover:text-blue-800 underline">
+              <a href="/controls" className="text-sky-300 hover:text-blue-800 underline">
                 Control
               </a>{' '}
               Page
@@ -63,11 +63,12 @@ export const MainPage: FC = () => {
           <li className="flex items-start gap-3">
             <span className="text-falcons-primary font-bold">•</span>
             <span>
-              Make sure to add the overlay as a browser in OBS, it can also be set from the{' '}
-              <a href="/config" className="text-blue-600 hover:text-blue-800 underline">
+              Make sure to add the overlay as a browser in OBS
+              {/* , it can also be set from the{' '}
+              <a href="/config" className="text-sky-300 hover:text-blue-800 underline">
                 Config
               </a>{' '}
-              Page using the Inject button
+              Page using the Inject button */}
             </span>
           </li>
 
@@ -75,7 +76,7 @@ export const MainPage: FC = () => {
             <span className="text-falcons-primary font-bold">•</span>
             <span>
               The URL is{' '}
-              <a href={OVERLAY_SERVER_URL} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">
+              <a href={OVERLAY_SERVER_URL} target="_blank" rel="noopener noreferrer" className="text-sky-300 hover:text-blue-800 underline">
                 {OVERLAY_SERVER_URL}
               </a>{' '}
               and the dimensions are {OVERLAY_DIMENSIONS.width}x{OVERLAY_DIMENSIONS.height}
@@ -86,7 +87,7 @@ export const MainPage: FC = () => {
             <span className="text-falcons-primary font-bold">•</span>
             <span>
               You can change the Falcon logo by going to the{' '}
-              <a href="/config" className="text-blue-600 hover:text-blue-800 underline">
+              <a href="/config" className="text-sky-300 hover:text-blue-800 underline">
                 Config
               </a>{' '}
               Page and pressing the image button
