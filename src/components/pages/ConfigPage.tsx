@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import { useNotifications } from '../../hooks/useNotifications';
 import { useJsonHandler } from '../../hooks/useJsonHandler';
 import { useImageControls } from '../../hooks/useImageControls';
-import { useObsHandler } from '../../hooks/useObsHandler';
+// import { useObsHandler } from '../../hooks/useObsHandler';
 import { useDownloader } from '../../hooks/useDownloader';
 import { getCodeDir, getNameMap } from '../../utils/tauriHelpers';
 import { invoke } from '@tauri-apps/api/core';
@@ -11,7 +11,7 @@ export const ConfigPage: FC = () => {
   const { pushNotification } = useNotifications();
   const { readConfigJSON, writeConfigJSON } = useJsonHandler();
   const { getImage } = useImageControls();
-  const { getSceneCollectionList, getScenes } = useObsHandler();
+  // const { getSceneCollectionList, getScenes } = useObsHandler();
   const { getDownloadStatus } = useDownloader();
 
   const [_appColor, setAppColor] = useState('#bf0f35');
@@ -20,10 +20,10 @@ export const ConfigPage: FC = () => {
   const [teamImage, setTeamImage] = useState<string>('');
   const [codeDir, setCodeDir] = useState<string>('');
   const [nameMap, setNameMap] = useState<Record<string, string>>({});
-  const [sceneCollections, setSceneCollections] = useState<string[]>([]);
-  const [scenes, setScenes] = useState<string[]>([]);
-  const [selectedCollection, setSelectedCollection] = useState('Select a Scene Collection');
-  const [selectedScene, setSelectedScene] = useState('Select a Scene');
+  // const [sceneCollections, setSceneCollections] = useState<string[]>([]);
+  // const [scenes, setScenes] = useState<string[]>([]);
+  // const [selectedCollection, setSelectedCollection] = useState('Select a Scene Collection');
+  // const [selectedScene, setSelectedScene] = useState('Select a Scene');
   const [enabledSports, setEnabledSports] = useState<Record<string, boolean>>({});
   const [downloadStatus, setDownloadStatus] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -96,11 +96,11 @@ export const ConfigPage: FC = () => {
 
         // Step 4: Load scene collections
         try {
-          const collections = await getSceneCollectionList();
-          setSceneCollections(collections);
+          // const collections = await getSceneCollectionList();
+          // setSceneCollections(collections);
         } catch (e) {
           console.warn('Failed to load scene collections:', e);
-          setSceneCollections([]);
+          // setSceneCollections([]);
         }
 
         // Step 5: Get download status
@@ -171,16 +171,16 @@ export const ConfigPage: FC = () => {
     await writeConfigJSON(`${overlay}Checked`, checked.toString());
   };
 
-  const handleCollectionChange = async (collection: string) => {
-    setSelectedCollection(collection);
-    if (collection !== 'Select a Scene Collection') {
-      const sceneList = await getScenes(collection);
-      setScenes(sceneList);
-    } else {
-      setScenes([]);
-    }
-    setSelectedScene('Select a Scene');
-  };
+  // const handleCollectionChange = async (collection: string) => {
+  //   // setSelectedCollection(collection);
+  //   if (collection !== 'Select a Scene Collection') {
+  //     // const sceneList = await getScenes(collection);
+  //     // setScenes(sceneList);
+  //   } else {
+  //     // setScenes([]);
+  //   }
+  //   // setSelectedScene('Select a Scene');
+  // };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
