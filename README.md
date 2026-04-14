@@ -4,7 +4,7 @@ This is an overlay to be used for esports teams to stream; it has a nice gui app
 
 <h1>Setup</h1>
 
-<p>Go to the latest release on the releases tab, download the version for your device. The app will explained the rest.</p>
+<p>Go to the latest release on the releases tab, download the version for your device. The app will explain the rest.</p>
 <p>If you have any questions or issues you can email me or message me on Discord, these can be found on my <a href="https://github.com/MADMAN-Modding" target="_blank">profile</a></p>
 
 <h1>Overlay Status</h1>
