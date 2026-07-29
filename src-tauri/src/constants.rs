@@ -78,4 +78,4 @@ pub fn get_local_versions_path() -> String {
 }
 
 pub const MAJOR_VERSION: f64 = 3.3;
-pub const MINOR_VERSION: i64 = 0;
+pub const MINOR_VERSION: i64 = 1;
