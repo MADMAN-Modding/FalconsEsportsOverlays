@@ -48,7 +48,8 @@ pub fn search_overlay() {
         let path = entry.path();
 
         // If the path is a directory and it has a index.html file, it will write the path to the config file
-        if path.is_dir() {
+        // Hidden directories hold in-progress installs and backups
+        if path.is_dir() && !entry.file_name().to_string_lossy().starts_with('.') {
             if Path::new(&format!("{}/index.html", path.to_str().unwrap())).exists() {
                 write_config("overlayDir".to_string(), path.file_name().unwrap().to_str().unwrap());
                 return;

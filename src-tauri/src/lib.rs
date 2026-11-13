@@ -6,6 +6,7 @@ pub mod handlers {
     pub mod image_handler;
     pub mod custom_config;
     pub mod overlay_handler;
+    pub mod package_handler;
     pub mod obs_handler;
     pub mod os_handler;
 }
@@ -27,6 +28,7 @@ pub fn run() {
     
     constants::setup();
     http_handler::setup();
+    handlers::package_handler::recover_interrupted_install();
     custom_config::search_overlay();
 
     tauri::Builder::default()

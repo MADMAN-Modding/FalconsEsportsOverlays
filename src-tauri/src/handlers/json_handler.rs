@@ -3,13 +3,30 @@ use std::{
     collections::HashMap,
     fs,
     path::Path,
+    sync::Mutex,
 };
 
 use serde_json::{json, Value};
 
-use crate::constants::{self, get_launch_json_path, get_local_versions_path};
+use crate::constants::{self, get_launch_json_path, get_local_versions_path, DATA_BASE_URL};
 
-use super::download_handler::download_files;
+use super::download_handler::download_bytes;
+
+/// Serializes read-modify-write cycles so concurrent updates can't overwrite each other
+static WRITE_LOCK: Mutex<()> = Mutex::new(());
+
+fn lock_writes() -> std::sync::MutexGuard<'static, ()> {
+    WRITE_LOCK.lock().unwrap_or_else(|e| e.into_inner())
+}
+
+/// Writes a JSON file by replacing it in one step, so readers never see a half-written file
+pub fn write_json_file(path: &str, value: &Value) -> Result<(), String> {
+    let contents = serde_json::to_string_pretty(value).map_err(|e| e.to_string())?;
+    let temp_path = format!("{}.tmp", path);
+
+    fs::write(&temp_path, contents).map_err(|e| format!("Error writing file: {}", e))?;
+    fs::rename(&temp_path, path).map_err(|e| format!("Error writing file: {}", e))
+}
 
 /// Reads the overlay json and returns the value of the requested key
 ///
@@ -184,20 +201,7 @@ pub fn init_json(path: &str) -> Value {
     let json_data: Value;
 
     if path.contains("overlay.json") {
-        json_data = json!({
-            "teamNameLeft": "DC Falcons Red",
-            "teamNameRight": "That other team",
-            "winsLeft": "0",
-            "winsRight": "0",
-            "teamColorLeft": "#BE0F32",
-            "teamColorRight": "#0120AC",
-            "overlay": "kart",
-            "week": "0",
-            "scoreLeft": "0",
-            "scoreRight": "0",
-            "playerNamesLeft": "MADMAN-Modding",
-            "playerNamesRight": "Check out my Github"
-        });
+        json_data = default_overlay_json();
     } else if path.contains("config.json") {
         json_data = get_default_json_data();
     } else if path.contains("launch.json") {
@@ -207,17 +211,36 @@ pub fn init_json(path: &str) -> Value {
     }
 
     // Creating the JSON file
-    fs::write(
-        &path,
-        serde_json::to_string_pretty(&json_data).expect(
-            "Error 
-    serializing to JSON",
-        ),
-    )
-    .expect("Error writing file");
+    write_json_file(path, &json_data).expect("Error writing file");
 
     // Trying to open the JSON again
     open_json(path)
+}
+
+/// The overlay settings a fresh install starts with
+pub fn default_overlay_json() -> Value {
+    json!({
+        "teamNameLeft": "DC Falcons Red",
+        "teamNameRight": "That other team",
+        "winsLeft": "0",
+        "winsRight": "0",
+        "teamColorLeft": "#BE0F32",
+        "teamColorRight": "#0120AC",
+        "overlay": "kart",
+        "week": "0",
+        "scoreLeft": "0",
+        "scoreRight": "0",
+        "playerNamesLeft": "MADMAN-Modding",
+        "playerNamesRight": "Check out my Github"
+    })
+}
+
+/// The default value of a config key as a string
+pub fn default_config_value(key: &str) -> String {
+    get_default_json_data()[key]
+        .as_str()
+        .unwrap_or_default()
+        .to_string()
 }
 
 /// Writes to the JSON file at the supplied path
@@ -231,17 +254,12 @@ pub fn init_json(path: &str) -> Value {
 /// * `Result<(), String>` - Success or error message
 #[tauri::command]
 pub fn write_json_value(path: String, json_key: String, value: Value) -> Result<(), String> {
+    let _guard = lock_writes();
     let mut json_data = open_json(&path);
 
     json_data[json_key] = value;
 
-    fs::write(
-        &path,
-        serde_json::to_string_pretty(&json_data).map_err(|e| e.to_string())?,
-    )
-    .map_err(|e| format!("Error writing file: {}", e))?;
-
-    Ok(())
+    write_json_file(&path, &json_data)
 }
 
 /// Writes several keys to the JSON file at the supplied path with a single read and write
@@ -254,19 +272,14 @@ pub fn write_json_value(path: String, json_key: String, value: Value) -> Result<
 /// * `Result<(), String>` - Success or error message
 #[tauri::command]
 pub fn write_json_values(path: String, values: HashMap<String, Value>) -> Result<(), String> {
+    let _guard = lock_writes();
     let mut json_data = open_json(&path);
 
     for (key, value) in values {
         json_data[key] = value;
     }
 
-    fs::write(
-        &path,
-        serde_json::to_string_pretty(&json_data).map_err(|e| e.to_string())?,
-    )
-    .map_err(|e| format!("Error writing file: {}", e))?;
-
-    Ok(())
+    write_json_file(&path, &json_data)
 }
 
 /// Writes to the JSON file at the supplied path (legacy string-based, for backward compatibility)
@@ -282,6 +295,7 @@ pub fn write_json_values(path: String, values: HashMap<String, Value>) -> Result
 /// ```
 #[tauri::command]
 pub fn write_json(path: String, json_key: String, mut value: String) {
+    let _guard = lock_writes();
     let mut json_data = open_json(&path);
 
     // Writes a bool if the json_key is a checked value which must be a bool
@@ -310,11 +324,7 @@ pub fn write_json(path: String, json_key: String, mut value: String) {
         json_data[json_key] = serde_json::Value::String(value);
     }
 
-    fs::write(
-        path,
-        serde_json::to_string_pretty(&json_data).expect("Error serializing to JSON"),
-    )
-    .expect("Error writing file");
+    write_json_file(&path, &json_data).expect("Error writing file");
 }
 
 /// Recursively reads a JSON value and writes a new value to the specified key path.
@@ -511,12 +521,20 @@ pub fn reset_config() {
 }
 
 /// Downloads launch.json from the resource URL
+///
+/// The existing file is kept unless the download is valid JSON
 #[tauri::command]
-pub fn get_launch_json() {
-    let _ = download_files(
-        "https://madman-modding.github.io/FalconsEsportsOverlaysData/launch.json",
-        "launch.json",
-    );
+pub async fn get_launch_json() -> Result<(), String> {
+    tauri::async_runtime::spawn_blocking(|| {
+        let bytes = download_bytes(&format!("{}/launch.json", DATA_BASE_URL))?;
+        let json: Value =
+            serde_json::from_slice(&bytes).map_err(|e| format!("Invalid launch.json: {}", e))?;
+
+        let _guard = lock_writes();
+        write_json_file(&get_launch_json_path(), &json)
+    })
+    .await
+    .map_err(|e| format!("Download task failed: {}", e))?
 }
 
 /// Get all the available overlays

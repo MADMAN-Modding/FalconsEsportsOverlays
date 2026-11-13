@@ -1,6 +1,6 @@
 [package]
 name = "falcons_esports_overlays_controller"
-version = "3.3.1"
+version = "5.0.0"
 description = "An Esports overlay controller with lots of flexibility"
 authors = ["MADMAN-Modding"]
 edition = "2021"
@@ -30,6 +30,7 @@ whoami = "2.1.1"
 sysinfo = "0.38.4"
 tokio = "1.50.0"
 zip = "8.2.0"
+sha2 = "0.10"
 
 [profile.release]
 codegen-units = 1

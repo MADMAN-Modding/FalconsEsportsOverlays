@@ -66,7 +66,7 @@ export const FilesPage: FC = () => {
       setDownloadStatus(status);
       pushNotification(`Downloaded ${nameMap[overlay] || overlay}`);
     } catch (error: any) {
-      pushNotification(`Download failed: ${error.message}`);
+      pushNotification(`Download failed: ${String(error?.message ?? error)}`);
     }
   };
 
@@ -78,7 +78,7 @@ export const FilesPage: FC = () => {
       setDownloadStatus(status);
       pushNotification(`Deleted ${nameMap[overlay] || overlay}`);
     } catch (error: any) {
-      pushNotification(`Delete failed: ${error.message}`);
+      pushNotification(`Delete failed: ${String(error?.message ?? error)}`);
     }
   };
 

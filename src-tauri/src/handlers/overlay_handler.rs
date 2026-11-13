@@ -1,10 +1,10 @@
-use std::{collections::HashMap, fs, path::Path};
+use std::{collections::HashMap, path::Path};
 
 use serde_json::Value;
 
-use crate::{constants::{self, get_code_dir, get_local_versions_path}, handlers::json_handler::{self, get_versions, write_json}};
+use crate::{constants::{self, get_local_versions_path}, handlers::json_handler::{self, get_versions, write_json}};
 
-use super::download_handler::download_files;
+use super::package_handler;
 
 #[derive(serde::Serialize)]
 pub struct OverlayState {
@@ -59,7 +59,9 @@ fn find_overlays() -> Result<Vec<String>, String> {
     Ok(overlays)
 }
 
-/// Downloads the selected overlay files (HTML, CSS, JS, and PNG) from a remote URL.
+/// Downloads the selected overlay and the files it needs, checking each against the manifest.
+/// 
+/// Nothing is installed or recorded as downloaded unless every file is valid.
 /// 
 /// # Parameters
 /// * `overlay` - The name of the overlay to download.
@@ -68,37 +70,26 @@ fn find_overlays() -> Result<Vec<String>, String> {
 /// * `Ok(String)` - A success message indicating the overlay was downloaded.
 /// * `Err(String)` - An error message if the download fails.
 #[tauri::command]
-pub fn download_selected_overlay(overlay: String) -> Result<String, String> {
-    let url = "https://madman-modding.github.io/FalconsEsportsOverlaysData";
+pub async fn download_selected_overlay(overlay: String) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        package_handler::install_overlay(&overlay)?;
 
-    let code_dir = get_code_dir();
+        // Retrieve the version number for the overlay
+        let versions = get_versions()?;
 
-    // Downloads the overlay HTML file
-    let _ = download_files(format!("{}/overlays/{}.html", url, overlay).as_str(), format!("{}/overlays/{}.html", code_dir, overlay).as_str()).map_err(|e| e.to_string());
+        // Write the version number to the local versions file, or -1 if the version is not found
+        match versions.get(&overlay) {
+            Some(version) => write_json(get_local_versions_path(), overlay, format!("version{version}")),
+            None => write_json(get_local_versions_path(), overlay, format!("version{}", -1)),
+        }
 
-    // Downloads the overlay CSS file
-    let _ = download_files(format!("{}/css/{}.css", url, overlay).as_str(), format!("{}/css/{}.css", code_dir, overlay).as_str()).map_err(|e| e.to_string());
-
-    // Downloads the overlay JavaScript file
-    let _ = download_files(format!("{}/js/{}.js", url, overlay).as_str(), format!("{}/js/{}.js", code_dir, overlay).as_str()).map_err(|e| e.to_string());
-
-    // Downloads the overlay logo (PNG file)
-    let _ = download_files(format!("{}/overlays/images/{}.png", url, overlay).as_str(), format!("{}/overlays/images/{}.png", code_dir, overlay).as_str()).map_err(|e| e.to_string());
-
-    // Retrieve the version number for the overlay
-    let binding = get_versions().unwrap();
-    let version = binding.get(&overlay);
-
-    // Write the version number to the local versions file, or -1 if the version is not found
-    match version {
-        Some(version) => write_json(get_local_versions_path(), overlay, format!("version{version}")),
-        None => write_json(get_local_versions_path(), overlay, format!("version{}", -1)),
-    }
-
-    Ok("Overlay Obtained".to_string())
+        Ok("Overlay Obtained".to_string())
+    })
+    .await
+    .map_err(|e| format!("Download task failed: {}", e))?
 }
 
-/// Deletes the selected overlay files (HTML, CSS, JS, and PNG) from the local filesystem.
+/// Deletes the selected overlay's files, keeping any that other installed overlays still use.
 /// 
 /// # Parameters
 /// * `overlay` - The name of the overlay to delete.
@@ -107,25 +98,17 @@ pub fn download_selected_overlay(overlay: String) -> Result<String, String> {
 /// * `Ok(())` - Indicates successful deletion.
 /// * `Err(String)` - An error message if the deletion fails.
 #[tauri::command]
-pub fn delete_selected_overlay(overlay: String) -> Result<(), String> {
-    let code_dir = get_code_dir();
-    
-    // Delete the overlay HTML file
-    let _ = fs::remove_file(format!("{}/overlays/{}.html", code_dir, overlay)).map_err(|e| e.to_string())?;
+pub async fn delete_selected_overlay(overlay: String) -> Result<(), String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        package_handler::remove_overlay(&overlay)?;
 
-    // Delete the overlay CSS file
-    let _ = fs::remove_file(format!("{}/css/{}.css", code_dir, overlay)).map_err(|e| e.to_string())?;
+        // Mark the overlay as deleted in the local versions file by setting its version to 0
+        write_json(get_local_versions_path(), overlay, format!("version{}", 0));
 
-    // Delete the overlay JavaScript file
-    let _ = fs::remove_file(format!("{}/js/{}.js", code_dir, overlay)).map_err(|e| e.to_string())?;
-
-    // Delete the overlay logo (PNG file)
-    let _ = fs::remove_file(format!("{}/overlays/images/{}.png", code_dir, overlay)).map_err(|e| e.to_string())?;
-
-    // Mark the overlay as deleted in the local versions file by setting its version to 0
-    write_json(get_local_versions_path(), overlay, format!("version{}", 0));
-
-    Ok(())
+        Ok(())
+    })
+    .await
+    .map_err(|e| format!("Delete task failed: {}", e))?
 }
 
 /// Gets the path to an overlay's image file.
@@ -138,7 +121,7 @@ pub fn delete_selected_overlay(overlay: String) -> Result<(), String> {
 /// * `Err(String)` - An error message if the path cannot be determined.
 #[tauri::command]
 pub fn get_overlay_image_path(overlay: String) -> Result<String, String> {
-    let code_dir = get_code_dir();
+    let code_dir = constants::get_code_dir();
     let image_path = format!("{}/overlays/images/{}.png", code_dir, overlay);
     
     if Path::new(&image_path).exists() {
@@ -220,21 +203,10 @@ pub fn get_overlay_state() -> OverlayState {
     }
 }
 
-/// Sets up the initial overlay files by downloading them if they do not already exist.
-/// This includes the main `index.html`, associated CSS, JS, and font files, as well as the Esports logo.
+/// Keeps the shared files (`index.html`, CSS, JS and the font) up to date and adds the default team logo if it's missing.
 #[tauri::command]
-pub fn setup_overlays() {
-    // Downloads `index.html` if it doesn't exist
-    if !Path::new(&format!("{}/index.html", get_code_dir())).exists() {
-        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/index.html", format!("{}/index.html", get_code_dir()).as_str());
-        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/css/index.css", format!("{}/css/index.css", get_code_dir()).as_str());
-        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/js/index.js", format!("{}/js/index.js", get_code_dir()).as_str());
-        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/css/ethnocentric.woff", format!("{}/css/ethnocentric.woff", get_code_dir()).as_str());
-        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/js/overlays.js", format!("{}/js/overlays.js", get_code_dir()).as_str());
-    }
-
-    // Downloads the Esports logo if it doesn't exist
-    if !Path::new(&format!("{}/images/Esports-Logo.png", get_code_dir())).exists() {
-        let _ = download_files("https://madman-modding.github.io/FalconsEsportsOverlaysData/images/Esports-Logo.png", format!("{}/images/Esports-Logo.png", get_code_dir()).as_str());
-    }   
+pub async fn setup_overlays() -> Result<(), String> {
+    tauri::async_runtime::spawn_blocking(package_handler::sync_shared)
+        .await
+        .map_err(|e| format!("Setup task failed: {}", e))?
 }

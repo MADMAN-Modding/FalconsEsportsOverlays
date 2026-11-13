@@ -77,5 +77,18 @@ pub fn get_local_versions_path() -> String {
     format!("{}/local_versions.json", get_config_dir())
 }
 
-pub const MAJOR_VERSION: f64 = 3.3;
-pub const MINOR_VERSION: i64 = 1;
+/// Where a new package is unpacked and verified before it replaces the live one
+pub fn get_staging_dir() -> String {
+    format!("{}/.staging", get_config_dir())
+}
+
+/// Holds the previous package while a new one is swapped in, so it can be restored
+pub fn get_backup_dir() -> String {
+    format!("{}/.backup", get_config_dir())
+}
+
+/// Version of this app, taken from `Cargo.toml`
+pub const APP_VERSION: &str = env!("CARGO_PKG_VERSION");
+
+/// Where the overlay data repo is published
+pub const DATA_BASE_URL: &str = "https://madman-modding.github.io/FalconsEsportsOverlaysData";

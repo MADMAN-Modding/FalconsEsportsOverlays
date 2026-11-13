@@ -23,8 +23,8 @@ static SERVER_RUNNING: LazyLock<Arc<Mutex<bool>>> = LazyLock::new(|| Arc::new(Mu
 /// Maximum number of connections served at the same time
 const MAX_CONNECTIONS: usize = 32;
 
-/// Maximum size of the request line in bytes
-const MAX_REQUEST_LINE: u64 = 8192;
+/// Maximum size of the request line and headers in bytes
+const MAX_REQUEST_LINE: u64 = 16384;
 
 /// How long a client may stall on a read or write before it's dropped
 const IO_TIMEOUT: Duration = Duration::from_secs(5);
@@ -206,6 +206,7 @@ impl ThreadData {
 /// * Gives the client the request data as bytes
 /// * It will take care of any errors with the incoming request being invalid or if the client disconnects mid request
 /// * Only serves files that resolve to a location inside the code directory
+/// * Sends a content type and a validator so clients can revalidate with a cheap `304`
 /// * Drops clients that stall for longer than `IO_TIMEOUT`
 /// # Parameters
 /// * `mut stream: TcpSteam` - The incoming stream of data requested by the client 
@@ -214,38 +215,144 @@ fn process_request(mut stream: TcpStream) {
     let _ = stream.set_write_timeout(Some(IO_TIMEOUT));
 
     let mut request_line = String::new();
+    let mut if_none_match: Option<String> = None;
 
-    // Reads only the request line, capped so a client can't send unbounded data
-    match BufReader::new((&stream).take(MAX_REQUEST_LINE)).read_line(&mut request_line) {
-        Ok(n) if n > 0 => (),
-        _ => return,
+    // Reads only the request line and headers, capped so a client can't send unbounded data
+    {
+        let mut reader = BufReader::new((&stream).take(MAX_REQUEST_LINE));
+
+        match reader.read_line(&mut request_line) {
+            Ok(n) if n > 0 => (),
+            _ => return,
+        }
+
+        loop {
+            let mut header = String::new();
+
+            match reader.read_line(&mut header) {
+                Ok(0) | Err(_) => break,
+                Ok(_) => (),
+            }
+
+            let header = header.trim_end();
+
+            if header.is_empty() {
+                break;
+            }
+
+            if let Some((name, value)) = header.split_once(':') {
+                if name.eq_ignore_ascii_case("if-none-match") {
+                    if_none_match = Some(value.trim().to_string());
+                }
+            }
+        }
     }
 
     let mut parts = request_line.split_whitespace();
     let method = parts.next().unwrap_or_default();
     let target = parts.next().unwrap_or_default();
 
-    let (status_line, contents) = if method != "GET" {
-        (
-            "HTTP/1.1 405 METHOD NOT ALLOWED",
-            "<h1>405 Method Not Allowed</h1>".as_bytes().to_vec(),
-        )
-    } else {
-        match resolve_request_path(target).and_then(|path| fs::read(path).ok()) {
-            Some(bytes) => ("HTTP/1.1 200 OK", bytes),
-            None => (
-                "HTTP/1.1 404 NOT FOUND",
-                "<h1>404 Not Found</h1>".as_bytes().to_vec(),
-            ),
-        }
+    if method != "GET" {
+        send_response(
+            &mut stream,
+            "405 METHOD NOT ALLOWED",
+            "text/html; charset=utf-8",
+            None,
+            Some(b"<h1>405 Method Not Allowed</h1>"),
+        );
+        return;
+    }
+
+    let Some(path) = resolve_request_path(target) else {
+        send_not_found(&mut stream);
+        return;
     };
 
-    let length = contents.len();
+    let Ok(bytes) = fs::read(&path) else {
+        send_not_found(&mut stream);
+        return;
+    };
 
-    // Format the data and write the header, a failed write means the client left
-    let header = format!("{status_line}\r\nContent-Length: {length}\r\n\r\n");
+    let etag = file_etag(&path, bytes.len());
+
+    // The client already has the current version
+    if if_none_match.as_deref().is_some_and(|sent| sent.split(',').any(|tag| tag.trim() == etag)) {
+        send_response(&mut stream, "304 NOT MODIFIED", content_type(&path), Some(&etag), None);
+        return;
+    }
+
+    send_response(&mut stream, "200 OK", content_type(&path), Some(&etag), Some(&bytes));
+}
+
+fn send_not_found(stream: &mut TcpStream) {
+    send_response(
+        stream,
+        "404 NOT FOUND",
+        "text/html; charset=utf-8",
+        None,
+        Some(b"<h1>404 Not Found</h1>"),
+    );
+}
+
+/// Writes a response, a failed write means the client left
+///
+/// `no-cache` lets clients keep a copy but makes them check it first, so changes show up right away
+fn send_response(
+    stream: &mut TcpStream,
+    status: &str,
+    content_type: &str,
+    etag: Option<&str>,
+    body: Option<&[u8]>,
+) {
+    let length = body.map_or(0, |b| b.len());
+    let etag_header = etag.map_or(String::new(), |tag| format!("ETag: {tag}\r\n"));
+
+    let header = format!(
+        "HTTP/1.1 {status}\r\nContent-Type: {content_type}\r\nContent-Length: {length}\r\nCache-Control: no-cache\r\n{etag_header}Connection: close\r\n\r\n"
+    );
+
     if stream.write_all(header.as_bytes()).is_ok() {
-        let _ = stream.write_all(&contents);
+        if let Some(body) = body {
+            let _ = stream.write_all(body);
+        }
+    }
+}
+
+/// Validator that changes whenever the file's size or modified time does
+fn file_etag(path: &Path, length: usize) -> String {
+    let modified = fs::metadata(path)
+        .and_then(|m| m.modified())
+        .ok()
+        .and_then(|time| time.duration_since(std::time::UNIX_EPOCH).ok())
+        .map_or(0, |d| d.as_nanos());
+
+    format!("\"{:x}-{:x}\"", length, modified)
+}
+
+fn content_type(path: &Path) -> &'static str {
+    let extension = path
+        .extension()
+        .and_then(|e| e.to_str())
+        .map(|e| e.to_ascii_lowercase());
+
+    match extension.as_deref() {
+        Some("html") | Some("htm") => "text/html; charset=utf-8",
+        Some("css") => "text/css; charset=utf-8",
+        Some("js") | Some("mjs") => "text/javascript; charset=utf-8",
+        Some("json") => "application/json; charset=utf-8",
+        Some("png") => "image/png",
+        Some("jpg") | Some("jpeg") => "image/jpeg",
+        Some("gif") => "image/gif",
+        Some("webp") => "image/webp",
+        Some("svg") => "image/svg+xml",
+        Some("ico") => "image/x-icon",
+        Some("woff") => "font/woff",
+        Some("woff2") => "font/woff2",
+        Some("ttf") => "font/ttf",
+        Some("otf") => "font/otf",
+        Some("mp4") => "video/mp4",
+        Some("webm") => "video/webm",
+        _ => "application/octet-stream",
     }
 }
 
@@ -304,4 +411,24 @@ fn percent_decode(input: &str) -> Option<String> {
     }
 
     String::from_utf8(out).ok()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn percent_decode_handles_escapes() {
+        assert_eq!(percent_decode("/a%20b.html").as_deref(), Some("/a b.html"));
+        assert_eq!(percent_decode("/%2e%2e/x").as_deref(), Some("/../x"));
+        assert_eq!(percent_decode("/bad%2"), None);
+        assert_eq!(percent_decode("/bad%zz"), None);
+    }
+
+    #[test]
+    fn content_types_by_extension() {
+        assert_eq!(content_type(Path::new("a/b.CSS")), "text/css; charset=utf-8");
+        assert_eq!(content_type(Path::new("a/b.png")), "image/png");
+        assert_eq!(content_type(Path::new("a/b")), "application/octet-stream");
+    }
 }
