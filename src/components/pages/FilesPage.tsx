@@ -186,7 +186,11 @@ export const FilesPage: FC = () => {
     const working = busy[item.overlay];
 
     return (
-      <li key={item.overlay} className="grid grid-cols-[64px_1fr_168px_104px_96px] items-center gap-5 px-5 py-4">
+      <li
+        key={item.overlay}
+        className={`grid grid-cols-[64px_1fr_168px_104px_96px] items-center gap-5 px-5 py-4 ${kind === 'soon' ? 'opacity-50' : ''}`}
+        aria-disabled={kind === 'soon'}
+      >
         <div className="flex h-16 w-16 items-center justify-center overflow-hidden border border-ink-600 bg-ink-900">
           {hasImage ? (
             <img src={image} alt="" className="h-full w-full object-cover" />

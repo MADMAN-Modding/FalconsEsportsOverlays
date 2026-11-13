@@ -1,4 +1,4 @@
-use std::{collections::HashMap, path::Path};
+use std::{collections::HashMap, fs, path::Path};
 
 use serde_json::Value;
 
@@ -24,12 +24,21 @@ pub struct OverlayState {
 
 /// Retrieves the list of downloaded overlays by scanning the overlays directory.
 /// 
+/// Pages for overlays that aren't made yet are left out, so they can't be picked.
+/// 
 /// # Returns
 /// * `Ok(Vec<String>)` - A sorted list of overlay names (without the `.html` extension).
 /// * `Err(String)` - An error message if the directory cannot be read.
 #[tauri::command]
 pub fn get_overlays_list() -> Result<Vec<String>, String> {
     return find_overlays();
+}
+
+/// Text the data repo puts in the page of an overlay that isn't made yet
+const PLACEHOLDER_MARKER: &str = "Not yet implemented";
+
+fn is_placeholder(page: &Path) -> bool {
+    fs::read_to_string(page).map_or(false, |text| text.contains(PLACEHOLDER_MARKER))
 }
 
 /// Scans the overlays directory for `.html` files and returns their names.
@@ -46,8 +55,8 @@ fn find_overlays() -> Result<Vec<String>, String> {
         for entry in std::fs::read_dir(constants::get_overlays_path()).map_err(|e| e.to_string())? {
             let entry = entry.map_err(|e| e.to_string())?;
             
-            // If the path is a file and has a `.html` extension, add its name to the list
-            if entry.path().is_file() && entry.path().to_str().unwrap().contains(".html") {
+            // If the path is a real overlay page with a `.html` extension, add its name to the list
+            if entry.path().is_file() && entry.path().to_str().unwrap().contains(".html") && !is_placeholder(&entry.path()) {
                 overlays.push(entry.file_name().into_string().unwrap().replace(".html", "").into());
             }
         }
@@ -221,4 +230,26 @@ pub async fn setup_overlays() -> Result<(), String> {
     tauri::async_runtime::spawn_blocking(package_handler::sync_shared)
         .await
         .map_err(|e| format!("Setup task failed: {}", e))?
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn placeholder_pages_are_detected() {
+        let dir = std::env::temp_dir().join(format!("falcons-overlays-{}", std::process::id()));
+        fs::create_dir_all(&dir).unwrap();
+
+        let placeholder = dir.join("soon.html");
+        let real = dir.join("real.html");
+        fs::write(&placeholder, "<h1 style=\"color: white\">Not yet implemented</h1>").unwrap();
+        fs::write(&real, "<html><body id=\"body\"></body></html>").unwrap();
+
+        assert!(is_placeholder(&placeholder));
+        assert!(!is_placeholder(&real));
+        assert!(!is_placeholder(&dir.join("missing.html")));
+
+        let _ = fs::remove_dir_all(&dir);
+    }
 }
