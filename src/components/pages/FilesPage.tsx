@@ -1,183 +1,305 @@
-import { FC, useState, useEffect } from 'react';
-import { useNotifications } from '../../hooks/useNotifications';
+import { FC, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { invoke } from '@tauri-apps/api/core';
+import { DownloadInfo, useDownloader } from '../../hooks/useDownloader';
 import { useJsonHandler } from '../../hooks/useJsonHandler';
-import { getCodeDir, getNameMap } from '../../utils/tauriHelpers';
-import { useDownloader } from '../../hooks/useDownloader';
+import { useNotifications } from '../../hooks/useNotifications';
 import { useOverlayHandler } from '../../hooks/useOverlayHandler';
 import { useOverlayImages } from '../../hooks/useOverlayImages';
-import deleteIcon from '../../images/delete.png';
+import { getCodeDir, getNameMap } from '../../utils/tauriHelpers';
+import { PageHeader, Switch, DownloadIcon, TrashIcon, XIcon } from '../ui';
+
+const isInstalled = (item: DownloadInfo) => item.status === 'downloaded' || item.status === 'update-available';
+
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase();
+
+const versionText = (item: DownloadInfo) => {
+  const local = item.localVersion === null || item.localVersion === 'null' ? 0 : item.localVersion;
+
+  if (item.status === 'update-available') return `v${local} → v${item.availableVersion}`;
+  if (item.status === 'downloaded') return `v${local}`;
+  return `v${item.availableVersion}`;
+};
+
+interface SectionProps {
+  title: string;
+  count: number;
+  children: ReactNode;
+}
+
+const Section: FC<SectionProps> = ({ title, count, children }) => (
+  <section className="mb-8">
+    <h2 className="mb-3 flex items-baseline gap-2 font-display text-[15px] font-semibold uppercase tracking-[0.16em] text-ink-300">
+      {title}
+      <span className="font-mono text-xs text-ink-500">{count}</span>
+    </h2>
+    <ul className="panel divide-y divide-ink-600">{children}</ul>
+  </section>
+);
 
 export const FilesPage: FC = () => {
   const { pushNotification } = useNotifications();
-  const { } = useJsonHandler();
+  const { writeConfigJSON } = useJsonHandler();
   const { downloadOverlay, getDownloadStatus } = useDownloader();
   const { updateOverlayList, deleteOverlay } = useOverlayHandler(false);
   const { getMultipleOverlayImages, imageCache } = useOverlayImages();
+
   const [nameMap, setNameMap] = useState<Record<string, string>>({});
-  const [downloadStatus, setDownloadStatus] = useState<any[]>([]);
+  const [status, setStatus] = useState<DownloadInfo[]>([]);
+  const [available, setAvailable] = useState<Set<string> | null>(null);
+  const [enabled, setEnabled] = useState<Record<string, boolean>>({});
+  const [codeDir, setCodeDir] = useState('');
   const [loading, setLoading] = useState(true);
-  const [codeDir, setCodeDir] = useState<string>('');
+  const [busy, setBusy] = useState<Record<string, boolean>>({});
+  const [confirming, setConfirming] = useState<string | null>(null);
+
+  const nameOf = useCallback((overlay: string) => nameMap[overlay] || overlay, [nameMap]);
+
+  const refresh = useCallback(async () => {
+    const list = await getDownloadStatus();
+    setStatus(list);
+
+    const installed = list.filter(isInstalled).map((item) => item.overlay);
+    const states = await invoke<Record<string, boolean>>('get_overlays_enabled', { overlays: installed });
+    setEnabled(states);
+  }, [getDownloadStatus]);
 
   useEffect(() => {
     const initialize = async () => {
       try {
-        const names = await getNameMap();
+        const [names, dir] = await Promise.all([getNameMap(), getCodeDir()]);
         setNameMap(names);
-
-        const status = await getDownloadStatus();
-        setDownloadStatus(status);
-
-        const code = await getCodeDir();
-        setCodeDir(code);
-
-        setLoading(false);
+        setCodeDir(dir);
+        await refresh();
       } catch (error) {
-        console.error('Error initializing files page:', error);
+        console.error('Error initializing overlays page:', error);
+      } finally {
         setLoading(false);
       }
+
+      // Without the list every overlay is treated as installable
+      invoke<string[]>('get_available_overlays')
+        .then((names) => setAvailable(new Set(names)))
+        .catch(() => setAvailable(null));
     };
 
     initialize();
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
-    // Load images for all downloaded overlays
-    const loadImages = async () => {
-      if (downloadStatus.length > 0 && codeDir) {
-        const downloadedOverlays = downloadStatus
-          .filter((item) => item.status === 'downloaded')
-          .map((item) => item.overlay);
+    const installed = status.filter(isInstalled).map((item) => item.overlay);
 
-        if (downloadedOverlays.length > 0) {
-          await getMultipleOverlayImages(downloadedOverlays, codeDir);
-        }
-      }
+    if (installed.length > 0 && codeDir) {
+      getMultipleOverlayImages(installed, codeDir);
+    }
+  }, [status, codeDir, getMultipleOverlayImages]);
+
+  const run = async (overlay: string, task: () => Promise<void>, failure: string) => {
+    setBusy((prev) => ({ ...prev, [overlay]: true }));
+
+    try {
+      await task();
+    } catch (error) {
+      pushNotification(`${failure}: ${String((error as Error)?.message ?? error)}`, 'error');
+    } finally {
+      setBusy((prev) => ({ ...prev, [overlay]: false }));
+    }
+  };
+
+  const install = (overlay: string) =>
+    run(
+      overlay,
+      async () => {
+        const wasInstalled = status.some((item) => item.overlay === overlay && isInstalled(item));
+
+        await downloadOverlay(overlay);
+
+        // A new overlay should be usable straight away, not hidden until it's switched on elsewhere
+        if (!wasInstalled) await writeConfigJSON(`${overlay}Checked`, 'true');
+
+        await updateOverlayList();
+        await refresh();
+        pushNotification(`${nameOf(overlay)} installed`, 'success');
+      },
+      `Could not install ${nameOf(overlay)}`
+    );
+
+  const remove = (overlay: string) => {
+    setConfirming(null);
+
+    return run(
+      overlay,
+      async () => {
+        await deleteOverlay(overlay);
+        await refresh();
+        pushNotification(`${nameOf(overlay)} removed`, 'success');
+      },
+      `Could not remove ${nameOf(overlay)}`
+    );
+  };
+
+  const toggleEnabled = async (overlay: string, value: boolean) => {
+    setEnabled((prev) => ({ ...prev, [overlay]: value }));
+
+    try {
+      await writeConfigJSON(`${overlay}Checked`, String(value));
+    } catch {
+      setEnabled((prev) => ({ ...prev, [overlay]: !value }));
+      pushNotification('Could not save that change', 'error');
+    }
+  };
+
+  const updateAll = async () => {
+    for (const item of status.filter((entry) => entry.status === 'update-available')) {
+      await install(item.overlay);
+    }
+  };
+
+  const { installed, installable, soon } = useMemo(() => {
+    const byName = (a: DownloadInfo, b: DownloadInfo) => nameOf(a.overlay).localeCompare(nameOf(b.overlay));
+    const rest = status.filter((item) => !isInstalled(item));
+    const canInstall = (item: DownloadInfo) => available === null || available.has(item.overlay);
+
+    return {
+      installed: status.filter(isInstalled).sort(byName),
+      installable: rest.filter(canInstall).sort(byName),
+      soon: rest.filter((item) => !canInstall(item)).sort(byName),
     };
+  }, [status, available, nameOf]);
 
-    loadImages();
-  }, [downloadStatus, codeDir, getMultipleOverlayImages]);
-
-  const handleDownload = async (overlay: string) => {
-    try {
-      pushNotification(`Downloading ${nameMap[overlay] || overlay}...`);
-      await downloadOverlay(overlay);
-      await updateOverlayList();
-      const status = await getDownloadStatus();
-      setDownloadStatus(status);
-      pushNotification(`Downloaded ${nameMap[overlay] || overlay}`);
-    } catch (error: any) {
-      pushNotification(`Download failed: ${String(error?.message ?? error)}`);
-    }
-  };
-
-  const handleDelete = async (overlay: string) => {
-    try {
-      pushNotification(`Deleting ${nameMap[overlay] || overlay}...`);
-      await deleteOverlay(overlay);
-      const status = await getDownloadStatus();
-      setDownloadStatus(status);
-      pushNotification(`Deleted ${nameMap[overlay] || overlay}`);
-    } catch (error: any) {
-      pushNotification(`Delete failed: ${String(error?.message ?? error)}`);
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'downloaded':
-        return 'bg-green-500/20 border-green-600 text-green-300';
-      case 'update-available':
-        return 'bg-yellow-500/20 border-yellow-600 text-yellow-300';
-      case 'not-downloaded':
-        return 'bg-red-500/20 border-red-600 text-red-300';
-      case 'deleted':
-        return 'bg-red-500/20 border-red-600 text-red-300';
-      default:
-        return 'bg-purple-500/20 border-purple-600 text-purple-300';
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'downloaded':
-        return 'Downloaded';
-      case 'update-available':
-        return 'Update Available';
-      case 'not-downloaded':
-        return 'Not Downloaded';
-      case 'deleted':
-        return 'Deleted';
-      default:
-        return 'Unknown';
-    }
-  };
+  const updates = installed.filter((item) => item.status === 'update-available').length;
 
   if (loading) {
-    return (
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        <div className="text-center text-gray-100">Loading...</div>
-      </div>
-    );
+    return <p className="py-16 text-center font-mono text-sm text-ink-400">Loading overlays...</p>;
   }
-  return (
-    <div className="max-w-6xl mx-auto px-4 py-12 text-gray-100">
-      <div className="bg-gray-800 rounded-lg shadow-md shadow-black/30 p-8">
-        <h1 className="text-3xl font-bold mb-8 text-gray-100">Overlay Management</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...downloadStatus].sort((a, b) => {
-            const aName = nameMap[a.overlay] || a.overlay;
-            const bName = nameMap[b.overlay] || b.overlay;
-            return aName.localeCompare(bName);
-          }).map((item) => (
-            <div key={item.overlay} className="border border-gray-700 rounded-lg p-4 hover:shadow-lg shadow-black/20 transition-shadow bg-gray-900 overflow-hidden">
-              {/* Image or placeholder */}
-              <div className="mb-4 h-40 bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center">
-                {imageCache[item.overlay] && imageCache[item.overlay] !== 'images/missing.jpg' ? (
-                  <img
-                    src={imageCache[item.overlay]}
-                    alt={nameMap[item.overlay] || item.overlay}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="text-gray-400 text-center">
-                    <div className="mb-2 text-2xl">📁</div>
-                    <span className="text-sm">{item.status === 'downloaded' ? 'Loading...' : 'Not downloaded'}</span>
-                  </div>
-                )}
-              </div>
+  const renderRow = (item: DownloadInfo, kind: 'installed' | 'installable' | 'soon') => {
+    const name = nameOf(item.overlay);
+    const image = imageCache[item.overlay];
+    const hasImage = kind === 'installed' && image && image !== 'images/missing.jpg';
+    const working = busy[item.overlay];
 
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <p className="font-bold text-lg text-gray-100">{nameMap[item.overlay] || item.overlay}</p>
-                  <p className="text-sm text-gray-400">
-                    Local: {item.localVersion === null || item.localVersion === 'null' ? '0' : item.localVersion} | Available: {item.availableVersion}
-                  </p>
-                </div>
-                <div className={`px-3 py-1 rounded-full text-sm font-semibold border ${getStatusColor(item.status)} whitespace-nowrap ml-2`}>
-                  {getStatusText(item.status)}
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                <button
-                  onClick={() => handleDownload(item.overlay)}
-                  className="btn btn-primary flex-1"
-                >
-                  {item.status === 'downloaded' ? 'Re-download' : 'Download'}
-                </button>
-                <button
-                  onClick={() => handleDelete(item.overlay)}
-                  className="btn btn-danger p-2 hover:bg-red-600 transition-colors"
-                  title="Delete"
-                >
-                  <img src={deleteIcon} alt="Delete" className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-          ))}
+    return (
+      <li key={item.overlay} className="grid grid-cols-[64px_1fr_168px_104px_96px] items-center gap-5 px-5 py-4">
+        <div className="flex h-16 w-16 items-center justify-center overflow-hidden border border-ink-600 bg-ink-900">
+          {hasImage ? (
+            <img src={image} alt="" className="h-full w-full object-cover" />
+          ) : (
+            <span className="font-display text-xl font-bold tracking-wider text-ink-500">{initials(name)}</span>
+          )}
         </div>
-      </div>
-    </div>
+
+        <div className="min-w-0">
+          <div className="flex items-center gap-3">
+            <h3 className="truncate font-display text-xl font-semibold uppercase tracking-[0.06em] text-white">{name}</h3>
+            {item.status === 'update-available' && <span className="tag tag-warn">Update</span>}
+            {kind === 'soon' && <span className="tag tag-off">Coming soon</span>}
+          </div>
+          <p className="mt-0.5 font-mono text-xs text-ink-400">{kind === 'soon' ? 'Not published yet' : versionText(item)}</p>
+        </div>
+
+        <div className="flex justify-end">
+          {kind === 'installed' && (
+            <label className="flex items-center gap-2.5 text-sm text-ink-300">
+              <span className="font-display text-[13px] uppercase tracking-[0.12em]">In controls</span>
+              <Switch
+                checked={enabled[item.overlay] ?? false}
+                onChange={(value) => toggleEnabled(item.overlay, value)}
+                label={`Show ${name} in Controls`}
+              />
+            </label>
+          )}
+        </div>
+
+        <div className="flex justify-end">
+          {kind === 'installable' && (
+            <button onClick={() => install(item.overlay)} disabled={working} className="btn btn-primary">
+              <DownloadIcon size={16} /> {working ? 'Installing...' : 'Install'}
+            </button>
+          )}
+
+          {kind === 'installed' && item.status === 'update-available' && (
+            <button onClick={() => install(item.overlay)} disabled={working} className="btn btn-primary">
+              {working ? 'Updating...' : 'Update'}
+            </button>
+          )}
+        </div>
+
+        <div className="flex justify-end">
+          {kind === 'installed' &&
+            (confirming === item.overlay ? (
+              <div className="flex items-center gap-1">
+                <button onClick={() => remove(item.overlay)} className="btn btn-danger btn-sm">
+                  Remove
+                </button>
+                <button
+                  onClick={() => setConfirming(null)}
+                  className="btn btn-ghost btn-sm btn-icon"
+                  aria-label="Cancel"
+                >
+                  <XIcon size={16} />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setConfirming(item.overlay)}
+                disabled={working}
+                className="btn btn-ghost btn-sm btn-icon"
+                aria-label={`Remove ${name}`}
+                title="Remove"
+              >
+                <TrashIcon size={16} />
+              </button>
+            ))}
+        </div>
+      </li>
+    );
+  };
+
+  return (
+    <>
+      <PageHeader
+        eyebrow="Library"
+        title="Overlays"
+        description="Install the games you broadcast. Installed overlays can be switched on for Controls."
+        actions={
+          updates > 0 ? (
+            <button onClick={updateAll} className="btn btn-primary">
+              Update all ({updates})
+            </button>
+          ) : undefined
+        }
+      />
+
+      {installed.length > 0 && (
+        <Section title="Installed" count={installed.length}>
+          {installed.map((item) => renderRow(item, 'installed'))}
+        </Section>
+      )}
+
+      {installable.length > 0 && (
+        <Section title="Available" count={installable.length}>
+          {installable.map((item) => renderRow(item, 'installable'))}
+        </Section>
+      )}
+
+      {soon.length > 0 && (
+        <Section title="Coming soon" count={soon.length}>
+          {soon.map((item) => renderRow(item, 'soon'))}
+        </Section>
+      )}
+
+      {status.length === 0 && (
+        <p className="panel px-6 py-10 text-center text-ink-300">
+          The overlay list couldn't be loaded. Check your connection and reopen the app.
+        </p>
+      )}
+    </>
   );
 };

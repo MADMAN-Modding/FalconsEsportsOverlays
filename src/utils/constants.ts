@@ -1,4 +1,5 @@
-export const OVERLAY_SERVER_URL = 'http://127.0.0.1:8080';
+export const OVERLAY_SERVER_PORT = 8080;
+export const OVERLAY_SERVER_URL = `http://127.0.0.1:${OVERLAY_SERVER_PORT}`;
 export const OVERLAY_DIMENSIONS = { width: 1920, height: 1080 };
 export const OBS_WS_URL = 'ws://localhost:4455';
 

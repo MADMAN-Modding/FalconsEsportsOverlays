@@ -1,59 +1,75 @@
-import { FC } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { FC, useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { getVersion } from '@tauri-apps/api/app';
 import esportsLogo from '../../images/Esports-Logo.png';
+import { useServer } from '../../hooks/useServer';
+import { CogIcon, DashboardIcon, LayersIcon, ServerIcon, SlidersIcon } from '../ui';
+import { OVERLAY_SERVER_PORT } from '../../utils/constants';
+
+const ITEMS = [
+  { to: '/', label: 'Start', icon: DashboardIcon },
+  { to: '/files', label: 'Overlays', icon: LayersIcon },
+  { to: '/server', label: 'Server', icon: ServerIcon },
+  { to: '/controls', label: 'Controls', icon: SlidersIcon },
+  { to: '/config', label: 'Settings', icon: CogIcon },
+];
 
 export const Navigation: FC = () => {
-  const location = useLocation();
+  const { isServerRunning } = useServer();
+  const [version, setVersion] = useState('');
 
-  const isActive = (path: string) => location.pathname === path ? 'bg-falcons-primary text-white' : 'text-gray-300 hover:bg-gray-700';
+  useEffect(() => {
+    getVersion().then(setVersion).catch(() => setVersion(''));
+  }, []);
 
   return (
-    <nav className="bg-gray-900 shadow-md shadow-black/30">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center gap-3">
-            <img src={esportsLogo} alt="Falcons" className="w-8 h-8 rounded" />
-            <h1 className="text-2xl font-bold text-falcons-primary">Falcons Overlays</h1>
-          </div>
-
-          <div className="flex items-center gap-1 *:hover:text-gray-100">
-            <Link
-              to="/"
-              className={`px-4 py-2 rounded-md text-gray-100 transition-colors ${isActive('/')}`}
-              title="Home"
-            >
-              Home
-            </Link>
-            <Link
-              to="/controls"
-              className={`px-4 py-2 rounded-md transition-colors ${isActive('/controls')}`}
-              title="Controls"
-            >
-              Controls
-            </Link>
-            <Link
-              to="/config"
-              className={`px-4 py-2 rounded-md transition-colors ${isActive('/config')}`}
-              title="Configuration"
-            >
-              Config
-            </Link>
-            <Link
-              to="/server"
-              className={`px-4 py-2 rounded-md transition-colors ${isActive('/server')}`}
-              title="Server"
-            >
-              Server
-            </Link>
-            <Link
-              to="/files"
-              className={`px-4 py-2 rounded-md text-gray-100 transition-colors ${isActive('/files')}`}
-              title="Files"
-            >
-              Files
-            </Link>
-          </div>
+    <nav className="flex w-56 shrink-0 flex-col border-r border-ink-600 bg-ink-950" aria-label="Main">
+      <div className="flex items-center gap-3 border-b border-ink-600 px-5 py-5">
+        <img src={esportsLogo} alt="" className="h-10 w-10 object-contain" />
+        <div className="leading-none">
+          <p className="font-display text-[22px] font-bold uppercase tracking-[0.06em] text-white">Falcons</p>
+          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-400">Overlay control</p>
         </div>
+      </div>
+
+      <ul className="flex-1 py-3">
+        {ITEMS.map(({ to, label, icon: Icon }) => (
+          <li key={to}>
+            <NavLink
+              to={to}
+              end={to === '/'}
+              className={({ isActive }) =>
+                `relative flex h-11 items-center gap-3 px-5 font-display text-[17px] font-medium uppercase tracking-[0.1em] transition-colors ${
+                  isActive
+                    ? 'bg-ink-800 text-white before:absolute before:inset-y-0 before:left-0 before:w-[3px] before:bg-falcons-primary'
+                    : 'text-ink-300 hover:bg-ink-850 hover:text-white'
+                }`
+              }
+            >
+              <Icon />
+              {label}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+
+      <div className="border-t border-ink-600 p-4">
+        <NavLink
+          to="/server"
+          className="flex items-center gap-3 border border-ink-600 bg-ink-900 px-3 py-2.5 transition-colors hover:border-ink-500"
+        >
+          <span
+            className={`h-2.5 w-2.5 shrink-0 ${isServerRunning ? 'animate-livePulse bg-signal' : 'bg-ink-500'}`}
+            aria-hidden="true"
+          />
+          <span className="leading-tight">
+            <span className={`block font-display text-[15px] font-semibold uppercase tracking-[0.12em] ${isServerRunning ? 'text-signal' : 'text-ink-300'}`}>
+              {isServerRunning ? 'Server live' : 'Server off'}
+            </span>
+            <span className="block font-mono text-[11px] text-ink-400">:{OVERLAY_SERVER_PORT}</span>
+          </span>
+        </NavLink>
+        {version && <p className="mt-3 text-center font-mono text-[11px] text-ink-500">v{version}</p>}
       </div>
     </nav>
   );

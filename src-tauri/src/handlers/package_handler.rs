@@ -206,6 +206,13 @@ fn download_verified(entry: &FileEntry, destination: &Path) -> Result<(), String
     fs::write(destination, bytes).map_err(|e| format!("File Write Error: {}", e))
 }
 
+/// The overlays the data repo currently publishes files for, sorted by name
+pub fn available_overlays() -> Result<Vec<String>, String> {
+    let mut names: Vec<String> = fetch_manifest()?.overlays.into_keys().collect();
+    names.sort();
+    Ok(names)
+}
+
 /// Installs an overlay and the files it depends on
 pub fn install_overlay(overlay: &str) -> Result<(), String> {
     if !is_valid_overlay_id(overlay) {

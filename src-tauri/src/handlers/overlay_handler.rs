@@ -207,6 +207,14 @@ pub fn get_overlay_state() -> OverlayState {
     }
 }
 
+/// Lists the overlays that can be installed right now, the others are still being made.
+#[tauri::command]
+pub async fn get_available_overlays() -> Result<Vec<String>, String> {
+    tauri::async_runtime::spawn_blocking(package_handler::available_overlays)
+        .await
+        .map_err(|e| format!("Lookup task failed: {}", e))?
+}
+
 /// Keeps the shared files (`index.html`, CSS, JS and the font) up to date and adds the default team logo if it's missing.
 #[tauri::command]
 pub async fn setup_overlays() -> Result<(), String> {

@@ -88,27 +88,28 @@ export const ColorPicker: FC<Props> = ({ value, onChange }) => {
         <button
           type="button"
           onClick={() => open ? handleClose() : setOpen(true)}
-          className="w-10 h-10 rounded border-2 border-gray-600 shadow-inner flex-shrink-0"
+          className="h-10 w-10 shrink-0 border border-ink-500"
           style={{ backgroundColor: hex }}
+          aria-label="Open colour picker"
         />
         <input
           type="text"
           value={hex}
           onChange={(e) => handleHexInput(e.target.value)}
           onBlur={() => onChange(hex)}
-          className="input text-gray-900 w-full font-mono"
+          className="field font-mono"
           placeholder="#000000"
           maxLength={7}
         />
       </div>
 
       {open && (
-        <div className="absolute z-50 mt-2 p-4 bg-gray-900 border border-gray-700 rounded-lg shadow-xl w-56">
-          <div className="w-full h-8 rounded mb-3 border border-gray-700" style={{ backgroundColor: hex }} />
+        <div className="absolute bottom-full z-50 mb-2 w-60 border border-ink-500 bg-ink-850 p-4 shadow-xl shadow-black/60">
+          <div className="mb-3 h-8 w-full border border-ink-600" style={{ backgroundColor: hex }} />
 
           {(['h', 's', 'l'] as const).map((type, i) => (
             <div key={type} className="mb-3">
-              <div className="flex justify-between text-xs text-gray-400 mb-1">
+              <div className="mb-1 flex justify-between font-mono text-[11px] uppercase text-ink-300">
                 <span>{type === 'h' ? 'Hue' : type === 's' ? 'Saturation' : 'Lightness'}</span>
                 <span>{hsl[i]}{type !== 'h' ? '%' : '°'}</span>
               </div>
@@ -122,7 +123,7 @@ export const ColorPicker: FC<Props> = ({ value, onChange }) => {
                   updated[i] = Number(e.target.value);
                   applyHsl(...updated);
                 }}
-                className="w-full h-3 rounded cursor-pointer appearance-none"
+                className="h-3 w-full cursor-pointer appearance-none"
                 style={{ background: makeSliderBackground(type) }}
               />
             </div>
@@ -134,7 +135,7 @@ export const ColorPicker: FC<Props> = ({ value, onChange }) => {
                 key={color}
                 type="button"
                 onClick={() => { setHex(color); setHsl(hexToHsl(color)); setOpen(false); onChange(color); }}
-                className={`w-7 h-7 rounded border-2 hover:scale-110 transition-transform ${hex === color ? 'border-white' : 'border-gray-600'}`}
+                className={`h-7 w-7 border transition-transform hover:scale-110 ${hex === color ? 'border-white ring-1 ring-white' : 'border-ink-500'}`}
                 style={{ backgroundColor: color }}
                 title={color}
               />

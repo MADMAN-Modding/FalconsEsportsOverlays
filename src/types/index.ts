@@ -1,6 +1,9 @@
+export type NotificationKind = 'info' | 'success' | 'error';
+
 export interface NotificationItem {
   id: number;
   text: string;
+  kind: NotificationKind;
   timestamp: number;
 }
 

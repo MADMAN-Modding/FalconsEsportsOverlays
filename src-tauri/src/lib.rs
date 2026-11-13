@@ -66,6 +66,7 @@ pub fn run() {
             overlay_handler::delete_selected_overlay,
             overlay_handler::get_overlay_image_path,
             overlay_handler::setup_overlays,
+            overlay_handler::get_available_overlays,
             overlay_handler::get_overlay_enabled,
             overlay_handler::get_overlays_enabled,
             overlay_handler::get_current_overlay,

@@ -4,91 +4,154 @@
 
 @layer base {
   html {
-    @apply scroll-smooth;
+    color-scheme: dark;
   }
 
   body {
-    @apply bg-gray-900 text-gray-100;
+    @apply bg-ink-900 font-sans text-ink-100 antialiased;
   }
 
-  h1 {
-    @apply text-3xl font-bold;
+  ::selection {
+    @apply bg-falcons-primary text-white;
   }
 
-  h2 {
-    @apply text-2xl font-bold;
+  :focus-visible {
+    outline: 2px solid theme('colors.falcons.bright');
+    outline-offset: 2px;
   }
 
-  h3 {
-    @apply text-xl font-bold;
+  button {
+    @apply cursor-pointer;
   }
 
-  h4 {
-    @apply text-lg font-bold;
+  button:disabled {
+    @apply cursor-not-allowed;
   }
 
-  p {
-    @apply text-base;
+  /* Square thumb to match the rest of the controls, the browser default is a round blue dot */
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 8px;
+    height: 18px;
+    background: #fff;
+    border: 2px solid #0c0c10;
   }
 
-  a {
-    @apply text-blue-600 hover:text-blue-800 underline cursor-pointer;
+  input[type='range']::-moz-range-thumb {
+    width: 4px;
+    height: 14px;
+    background: #fff;
+    border: 2px solid #0c0c10;
+    border-radius: 0;
   }
 }
 
 @layer components {
+  /* Buttons are cut at two opposite corners, the one shape that repeats across the app */
   .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200 cursor-pointer;
+    @apply inline-flex h-10 items-center justify-center gap-2 px-5 font-display text-[15px] font-semibold uppercase tracking-[0.08em] transition-colors disabled:pointer-events-none disabled:opacity-40;
+    clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+  }
+
+  /* An outline would be clipped by the cut corners, so focus is drawn inside the shape */
+  .btn:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px #fff;
   }
 
   .btn-primary {
-    @apply btn bg-falcons-primary text-white hover:bg-red-700;
+    @apply bg-falcons-primary text-white hover:bg-falcons-bright active:bg-falcons-deep;
   }
 
   .btn-secondary {
-    @apply btn bg-gray-700 text-gray-100 hover:bg-gray-600;
+    @apply bg-ink-700 text-ink-100 hover:bg-ink-600;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-ink-200 hover:bg-ink-700 hover:text-white;
+  }
+
+  .btn-danger {
+    @apply bg-ink-700 text-falcons-bright hover:bg-falcons-primary hover:text-white;
   }
 
   .btn-sm {
-    @apply px-3 py-1 text-sm;
+    @apply h-8 px-3 text-[13px];
   }
 
-  .input {
-    @apply px-3 py-2 border border-gray-300 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+  .btn-icon {
+    @apply h-8 w-8 px-0;
   }
 
-  .color-input {
-    @apply cursor-pointer h-10 w-16 border border-gray-300 rounded;
+  .field {
+    @apply block w-full border border-ink-600 bg-ink-900 px-3 py-2 text-ink-100 transition-colors placeholder:text-ink-400 hover:border-ink-500 focus:border-falcons-bright focus:outline-none focus:ring-1 focus:ring-falcons-bright;
   }
 
   .label {
-    @apply block text-sm font-medium text-gray-200 mb-1;
+    @apply mb-1.5 block font-display text-[13px] font-medium uppercase tracking-[0.14em] text-ink-300;
   }
 
-  .section {
-    @apply bg-gray-800 rounded-lg shadow text-gray-100 p-6 mb-4;
+  .panel {
+    @apply border border-ink-600 bg-ink-850;
   }
 
-  .section-title {
-    @apply text-xl font-bold mb-4;
+  .panel-header {
+    @apply flex h-11 items-center justify-between gap-3 border-b border-ink-600 px-5;
+  }
+
+  /* The slanted red block in front of a panel title */
+  .panel-title {
+    @apply flex items-center font-display text-[15px] font-semibold uppercase tracking-[0.14em] text-ink-100;
+  }
+
+  .panel-title::before {
+    content: '';
+    @apply mr-3 inline-block h-3.5 w-1.5 bg-falcons-primary;
+    transform: skewX(-20deg);
+  }
+
+  .tag {
+    @apply inline-flex h-6 items-center gap-1.5 px-2 font-display text-[13px] font-semibold uppercase tracking-[0.1em];
+  }
+
+  .tag-ok {
+    @apply bg-signal/10 text-signal;
+  }
+
+  .tag-warn {
+    @apply bg-caution/10 text-caution;
+  }
+
+  .tag-off {
+    @apply bg-ink-700 text-ink-300;
   }
 }
 
-/* Scrollbar styling */
+/* Scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
+  background: #2a2a34;
+  border: 2px solid #0c0c10;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #3b3b48;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
