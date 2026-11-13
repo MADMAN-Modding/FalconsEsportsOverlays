@@ -1,11 +1,12 @@
 //! This module downloads and extracts the overlays
 //!
 //! It also copies stuff from the config directory to the code directory
-use reqwest::blocking::get;
+use reqwest::blocking::Client;
 use std::{
     fs::{self, File},
     io::{self, copy, BufReader},
-    path::Path, thread,
+    path::Path,
+    sync::LazyLock,
 };
 use zip::ZipArchive;
 
@@ -15,6 +16,9 @@ use crate::{constants::{
 }, handlers::{custom_config::search_overlay, json_handler::{get_app_version}}};
 
 use super::{config_handler};
+
+/// Shared so connections are pooled across downloads
+static HTTP_CLIENT: LazyLock<Client> = LazyLock::new(Client::new);
 
 /// Downloads the data for the overlays on a separate thread
 ///
@@ -47,7 +51,10 @@ pub fn download_files(url: &str, filename: &str) -> Result<[String; 2], String> 
     fs::create_dir_all(new_director.0).map_err(|e| format!("Directory Creation Error: {}", e))?;
 
     // Get the response from the URL
-    let response = get(url.to_string()).map_err(|err| format!("Get Error: {}", err))?;
+    let response = HTTP_CLIENT
+        .get(url)
+        .send()
+        .map_err(|err| format!("Get Error: {}", err))?;
 
     // Remove the file if it already exists
     if Path::new(&path).exists() {
@@ -96,8 +103,13 @@ fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
         // Name of the file or folder
         let mut file = archive.by_index(i)?;
 
+        // Skips entries with unsafe paths (absolute or containing `..`)
+        let Some(enclosed) = file.enclosed_name() else {
+            continue;
+        };
+
         // Complete path to the folder holding the file or folder
-        let out_path = Path::new(output_dir).join(file.enclosed_name().unwrap());
+        let out_path = Path::new(output_dir).join(enclosed);
 
         // If the file is a folder make a folder with that path
         if file.is_dir() {
@@ -127,6 +139,13 @@ fn extract_files(file_path: &str, output_dir: &str) -> io::Result<()> {
 /// * `Err(String)` - If a function fails it will return the error from that function
 #[tauri::command]
 pub async fn download_and_extract(preserve: bool) -> Result<(), String> {
+    // Blocking network and file work runs on the blocking pool instead of the async executor
+    tauri::async_runtime::spawn_blocking(move || download_and_extract_blocking(preserve))
+        .await
+        .map_err(|e| format!("Download task failed: {}", e))?
+}
+
+fn download_and_extract_blocking(preserve: bool) -> Result<(), String> {
     // Preserves the data in the code directory
     if preserve {
         preserve_data()
@@ -137,18 +156,8 @@ pub async fn download_and_extract(preserve: bool) -> Result<(), String> {
         let _ = fs::remove_dir_all(get_code_dir()).map_err(|err| return err);
     }
 
-    let thread =
-        thread::spawn(|| {download_files(&super::json_handler::read_config_json_string("overlayURL"), "overlays.zip")});
-        
-    let result = thread.join().unwrap();
-
     // Values to be used when extracting the zip
-    let array: [String; 2];
-
-    match result {
-        Ok(value) => array = value,
-        Err(e) => return Err(e.to_string())
-    };
+    let array = download_files(&super::json_handler::read_config_json_string("overlayURL"), "overlays.zip")?;
 
     let file = format!("{}/{}", array[1].to_string(), &array[0].to_string());
     let dir = array[1].to_string();

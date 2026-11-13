@@ -1,8 +1,4 @@
 //! Handles the `Esports-Logo.png` file
-use std::{
-    fs::File,
-    io::{BufReader, Read}, thread::{self, JoinHandle}, vec,
-};
 use tokio::fs;
 
 use crate::constants::get_code_dir_image_path;
@@ -35,75 +31,31 @@ pub async fn copy_image(bytes: Vec<u8>) -> Result<String, String> {
 /// * 'Err(String)` - If the read fails, it will send the error to the frontend and the default image will be displayed
 #[tauri::command]
 pub fn get_image_bytes(image_path: String) -> Result<Vec<u8>, String> {
-    let image: Result<File, std::io::Error> =
-        File::open(image_path);
-
-    if image.is_err() {
-        return Err(image.unwrap_err().to_string());
-    }
-    
-    let mut reader: BufReader<File> = BufReader::new(image.unwrap());
-
-    let mut buffer: Vec<u8> = Vec::new();
-
-    let read_result = reader.read_to_end(&mut buffer);
-
-    match read_result {
-        Ok(_) => Ok(buffer),
-        Err(error) => Err(error.to_string()),
-    }
-
+    std::fs::read(image_path).map_err(|e| e.to_string())
 }
 
 /// Returns a Vec containing a Vec of bytes for each image
 #[tauri::command]
 pub async fn get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Vec<u8>>, String> {
-    threaded_get_image_vec_bytes(image_paths).await
-}
+    // Every read runs concurrently as an async task
+    let tasks: Vec<_> = image_paths
+        .into_iter()
+        .map(|image_path| {
+            tauri::async_runtime::spawn(async move {
+                match fs::read(image_path).await {
+                    // Placeholder sizes of a "Resource Not Found" file are treated as missing
+                    Ok(buffer) if buffer.len() != 9379 && buffer.len() != 20 => buffer,
+                    _ => vec![0_u8],
+                }
+            })
+        })
+        .collect();
 
-/// Multithreaded file to byte search
-async fn threaded_get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Vec<u8>>, String> {
-    let mut image_vec: Vec<Vec<u8>> = Vec::new();
-    
-    let mut threads: Vec<JoinHandle<Result<Vec<u8>, String>>> = Vec::new();
+    let mut image_vec: Vec<Vec<u8>> = Vec::with_capacity(tasks.len());
 
-    // Loop through the image paths and read the images
-    for image_path in image_paths {
-        let thread: JoinHandle<Result<Vec<u8>, String>> = thread::spawn(move|| {    
-            // Open the image file
-            let image: Result<File, std::io::Error> =
-                File::open(image_path.clone());
-
-            if image.is_err() {
-                return Ok(vec![0 as u8]);
-            }
-            
-            let mut reader: BufReader<File> = BufReader::new(image.unwrap());
-
-            let mut buffer: Vec<u8> = Vec::new();
-
-            reader.read_to_end(&mut buffer).map_err(|e| e.to_string()).unwrap();
-
-
-            // If the file is a "Resource Not Found" file, return a blank vector
-            if buffer.len() == 9379 || buffer.len() == 20 {
-                return Ok(vec![0 as u8]);
-            }
-
-            Ok(buffer)
-        
-        });
-
-        threads.push(thread);
-    }
-
-    for thread in threads {
-        match thread.join().unwrap() {
-            Ok(bytes) => image_vec.push(bytes),
-            Err(err) => return Err(err),
-        }
+    for task in tasks {
+        image_vec.push(task.await.map_err(|e| e.to_string())?);
     }
 
     Ok(image_vec)
-        
 }

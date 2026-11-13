@@ -28,6 +28,13 @@ export const ConfigPage: FC = () => {
   const [downloadStatus, setDownloadStatus] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Frees the previous blob URL when the logo is replaced and on unmount
+  useEffect(() => {
+    return () => {
+      if (teamImage.startsWith('blob:')) URL.revokeObjectURL(teamImage);
+    };
+  }, [teamImage]);
+
   useEffect(() => {
     const initialize = async () => {
       try {
@@ -52,8 +59,9 @@ export const ConfigPage: FC = () => {
         }
 
         // Step 1: Load name map
+        let names: Record<string, string> = {};
         try {
-          const names = await getNameMap();
+          names = await getNameMap();
           setNameMap(names);
         } catch (e) {
           console.warn('Failed to load name map:', e);
@@ -112,21 +120,11 @@ export const ConfigPage: FC = () => {
           setDownloadStatus([]);
         }
 
-        // Step 6: Load enabled sports
+        // Step 6: Load enabled sports with a single backend call
         try {
-          const names = await getNameMap();
-          const sportStates: Record<string, boolean> = {};
-          const sortedOverlays = Object.keys(names).sort();
-          
-          for (const overlay of sortedOverlays) {
-            try {
-              const enabled = await invoke<boolean>('get_overlay_enabled', { overlay });
-              sportStates[overlay] = enabled;
-            } catch (e) {
-              console.warn(`Failed to check if ${overlay} is enabled:`, e);
-              sportStates[overlay] = false;
-            }
-          }
+          const sportStates = await invoke<Record<string, boolean>>('get_overlays_enabled', {
+            overlays: Object.keys(names),
+          });
           setEnabledSports(sportStates);
         } catch (e) {
           console.warn('Failed to load enabled sports:', e);
@@ -223,6 +221,8 @@ export const ConfigPage: FC = () => {
     return <div className="text-center py-12 text-gray-100">Loading...</div>;
   }
 
+  const statusByOverlay = new Map(downloadStatus.map((d) => [d.overlay, d]));
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-12 text-gray-100">
       <h1 className="text-3xl font-bold mb-8">Configuration</h1>
@@ -275,7 +275,7 @@ export const ConfigPage: FC = () => {
             {Object.entries(nameMap)
               .sort(([, nameA], [, nameB]) => nameA.localeCompare(nameB))
               .filter(([overlay]) => {
-                const status = downloadStatus.find((d) => d.overlay === overlay);
+                const status = statusByOverlay.get(overlay);
                 return status && (status.status === 'downloaded' || status.status === 'update-available');
               })
               .map(([overlay, displayName]) => (

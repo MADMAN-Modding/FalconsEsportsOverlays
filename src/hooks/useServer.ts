@@ -18,15 +18,10 @@ export const useServer = () => {
     getServerStatus();
   }, [getServerStatus]);
 
-  const startServer = useCallback(async (): Promise<string> => {
-    try {
-      const message = await invoke<string>('run_server');
-      setIsServerRunning(true);
-      return message;
-    } catch (error) {
-      console.error('Error starting server:', error);
-      throw error;
-    }
+  const startServerAndTrack = useCallback(async (): Promise<string> => {
+    const message = await startServer();
+    setIsServerRunning(true);
+    return message;
   }, []);
 
   const stopServer = useCallback(async (): Promise<string> => {
@@ -42,7 +37,7 @@ export const useServer = () => {
 
   return {
     isServerRunning,
-    startServer,
+    startServer: startServerAndTrack,
     stopServer,
     refreshServerStatus: getServerStatus,
   };

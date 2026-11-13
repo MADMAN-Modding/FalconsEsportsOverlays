@@ -11,7 +11,7 @@ import { ColorPicker } from './ColorPicker';
 
 export const ControlsPage: FC = () => {
   const { pushNotification } = useNotifications();
-  const { writeOverlayJSON } = useJsonHandler();
+  const { writeOverlayJSON, writeOverlayJSONValues } = useJsonHandler();
   let { overlays, updateOverlayList } = useOverlayHandler(true);
   const { getMultipleOverlayImages, imageCache } = useOverlayImages();
   const [nameMap, setNameMap] = useState<Record<string, string>>({});
@@ -37,22 +37,21 @@ export const ControlsPage: FC = () => {
   useEffect(() => {
     const initialize = async () => {
       try {
-        const names = await getNameMap();
+        // The calls are independent so they run concurrently
+        const [names, code, , overlay, overlayState] = await Promise.all([
+          getNameMap(),
+          getCodeDir(),
+          updateOverlayList(),
+          invoke<string>('get_current_overlay'),
+          getOverlayStateJSON(),
+        ]);
+
         setNameMap(names);
-        const code = await getCodeDir();
         setCodeDir(code);
-        await updateOverlayList();
-        const overlay = await invoke<string>('get_current_overlay');
         setState((prev) => ({
           ...prev,
           currentOverlay: overlay,
-        }));
-
-        const state = await getOverlayStateJSON();
-
-        setState((prev) => ({
-          ...prev,
-          ...state,
+          ...overlayState,
         }));
 
       } catch (error) {
@@ -83,10 +82,12 @@ export const ControlsPage: FC = () => {
 
   const handleUpdateOverlay = async () => {
     try {
+      const values: Record<string, string> = {};
       for (const key of OVERLAY_KEYS) {
-        const value = state[key as keyof typeof state];
-        await writeOverlayJSON(key, String(value));
+        // Quotes are stripped to match what the single-key write does
+        values[key] = String(state[key as keyof typeof state]).replace(/"/g, '');
       }
+      await writeOverlayJSONValues(values);
       pushNotification('Overlays Updated');
     } catch (error) {
       pushNotification('Failed to update overlays');

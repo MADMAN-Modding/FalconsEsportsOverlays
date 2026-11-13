@@ -2,6 +2,19 @@ import { invoke } from '@tauri-apps/api/core';
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
+// File locations never change at runtime, so each is fetched once
+const pathCache: Record<string, Promise<string>> = {};
+
+const getCachedPath = (command: string): Promise<string> => {
+  if (!pathCache[command]) {
+    pathCache[command] = invoke<string>(command).catch((error) => {
+      delete pathCache[command];
+      throw error;
+    });
+  }
+  return pathCache[command];
+};
+
 export const useJsonHandler = () => {
   // New typed versions that work with proper JSON values
   const readOverlayJSONValue = async (key: string): Promise<JsonValue> => {
@@ -60,12 +73,23 @@ export const useJsonHandler = () => {
 
   const writeOverlayJSON = async (key: string, value: string): Promise<void> => {
     try {
-      const jsonPath = await invoke<string>('get_overlay_json_path');
+      const jsonPath = await getCachedPath('get_overlay_json_path');
       await invoke('write_json', {
         path: jsonPath,
         jsonKey: key,
         value: value,
       });
+    } catch (error) {
+      console.error('Error writing overlay JSON:', error);
+      throw error;
+    }
+  };
+
+  // Writes every key with a single read and write of the overlay file
+  const writeOverlayJSONValues = async (values: Record<string, string>): Promise<void> => {
+    try {
+      const jsonPath = await getCachedPath('get_overlay_json_path');
+      await invoke('write_json_values', { path: jsonPath, values });
     } catch (error) {
       console.error('Error writing overlay JSON:', error);
       throw error;
@@ -84,7 +108,7 @@ export const useJsonHandler = () => {
 
   const writeConfigJSON = async (key: string, value: string): Promise<void> => {
     try {
-      const jsonPath = await invoke<string>('get_config_json_path');
+      const jsonPath = await getCachedPath('get_config_json_path');
       await invoke('write_json', {
         path: jsonPath,
         jsonKey: key,
@@ -105,6 +129,7 @@ export const useJsonHandler = () => {
     // Legacy string versions
     readOverlayJSON,
     writeOverlayJSON,
+    writeOverlayJSONValues,
     readConfigJSON,
     writeConfigJSON,
   };

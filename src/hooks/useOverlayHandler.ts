@@ -10,14 +10,10 @@ export const useOverlayHandler = (enabledOnly: boolean) => {
       let list = await invoke<string[]>('get_overlays_list');
 
       if (enabledOnly) {
-        let enabledOverlays = [];
-
-        for (let overlay of list) {
-          if (await invoke<boolean>('get_overlay_enabled', { overlay })) {
-            enabledOverlays.push(overlay);
-          }
-        }
-        list = enabledOverlays
+        const enabled = await invoke<Record<string, boolean>>('get_overlays_enabled', {
+          overlays: list,
+        });
+        list = list.filter((overlay) => enabled[overlay]);
       }
 
       setOverlays(list);

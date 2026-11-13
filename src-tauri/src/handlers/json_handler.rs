@@ -1,8 +1,7 @@
 //! This module is used for read and writing the json data used for the overlays and the app
 use std::{
     collections::HashMap,
-    fs::{self, File},
-    io::{BufReader, Read},
+    fs,
     path::Path,
 };
 
@@ -131,7 +130,7 @@ pub fn read_overlay_json_string(key: &str) -> String {
 }
 
 pub fn read_json_as_value(path: &str) -> Value {
-    open_json(path).clone()
+    open_json(path)
 }
 
 /// Opens the json file with the supplied path
@@ -151,24 +150,15 @@ fn open_json(path: &str) -> Value {
 
     // Checks to make sure that the JSON file is there, if it isn't it makes it
     if Path::new(&path).exists() {
-        let mut reader: BufReader<File> = BufReader::new(File::open(&path).unwrap());
-
-        let mut buffer: Vec<u8> = Vec::new();
-
-        reader
-            .read_to_end(&mut buffer)
-            .map_err(|e| e.to_string())
-            .unwrap();
+        let file_content: String = fs::read_to_string(&path).expect("File not found");
 
         // If the file is a "Resource Not Found" file, return a blank vector
-        if buffer.len() == 0 {
+        if file_content.is_empty() {
             return Value::default();
         }
 
-        json_data = {
-            let file_content: String = fs::read_to_string(&path).expect("File not found");
-            serde_json::from_str::<Value>(&file_content).expect("Error serializing to JSON")
-        };
+        json_data =
+            serde_json::from_str::<Value>(&file_content).expect("Error serializing to JSON");
     } else {
         json_data = init_json(path);
     }
@@ -244,6 +234,31 @@ pub fn write_json_value(path: String, json_key: String, value: Value) -> Result<
     let mut json_data = open_json(&path);
 
     json_data[json_key] = value;
+
+    fs::write(
+        &path,
+        serde_json::to_string_pretty(&json_data).map_err(|e| e.to_string())?,
+    )
+    .map_err(|e| format!("Error writing file: {}", e))?;
+
+    Ok(())
+}
+
+/// Writes several keys to the JSON file at the supplied path with a single read and write
+///
+/// # Parameters
+/// * `path: String` - Path to the JSON file
+/// * `values: HashMap<String, Value>` - Keys and the values to write to them
+///
+/// # Returns
+/// * `Result<(), String>` - Success or error message
+#[tauri::command]
+pub fn write_json_values(path: String, values: HashMap<String, Value>) -> Result<(), String> {
+    let mut json_data = open_json(&path);
+
+    for (key, value) in values {
+        json_data[key] = value;
+    }
 
     fs::write(
         &path,

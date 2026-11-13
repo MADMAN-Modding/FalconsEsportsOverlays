@@ -1,9 +1,20 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useImageControls } from './useImageControls';
 
 export const useOverlayImages = () => {
   const { getImage, getImageArray } = useImageControls();
   const [imageCache, setImageCache] = useState<Record<string, string>>({});
+  const cacheRef = useRef(imageCache);
+  cacheRef.current = imageCache;
+
+  // Frees the cached blob URLs on unmount
+  useEffect(() => {
+    return () => {
+      Object.values(cacheRef.current).forEach((url) => {
+        if (url.startsWith('blob:')) URL.revokeObjectURL(url);
+      });
+    };
+  }, []);
 
   const getOverlayImageUrl = useCallback(
     async (overlay: string, codePath: string): Promise<string | null> => {

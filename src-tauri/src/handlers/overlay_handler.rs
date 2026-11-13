@@ -1,4 +1,4 @@
-use std::{fs, path::Path};
+use std::{collections::HashMap, fs, path::Path};
 
 use serde_json::Value;
 
@@ -152,16 +152,34 @@ pub fn get_overlay_image_path(overlay: String) -> Result<String, String> {
 pub fn get_overlay_enabled(overlay: &str) -> bool {
     let config_key = format!("{}Checked", overlay);
     match json_handler::read_config_json(&config_key) {
-        Ok(value) => {
-            if let Some(b) = value.as_bool() {
-                b
-            } else if let Some(s) = value.as_str() {
-                s.trim().to_lowercase() == "true"
-            } else {
-                false
-            }
-        }
+        Ok(value) => value_is_true(&value),
         Err(_) => false,
+    }
+}
+
+/// Returns whether each of the supplied overlays is enabled, reading the config once
+#[tauri::command]
+pub fn get_overlays_enabled(overlays: Vec<String>) -> HashMap<String, bool> {
+    let config = json_handler::read_json_as_value(&constants::get_config_json_path());
+
+    overlays
+        .into_iter()
+        .map(|overlay| {
+            let enabled = config
+                .get(format!("{}Checked", overlay))
+                .map_or(false, value_is_true);
+            (overlay, enabled)
+        })
+        .collect()
+}
+
+fn value_is_true(value: &Value) -> bool {
+    if let Some(b) = value.as_bool() {
+        b
+    } else if let Some(s) = value.as_str() {
+        s.trim().to_lowercase() == "true"
+    } else {
+        false
     }
 }
 
@@ -182,22 +200,24 @@ pub fn get_current_overlay() -> Result<String, String> {
 
 #[tauri::command]
 pub fn get_overlay_state() -> OverlayState {
-    let overlay_state = OverlayState {
-        overlay: json_handler::read_overlay_json("overlay").unwrap_or_else(|_| Value::Null).to_string(),
-        player_names_left: json_handler::read_overlay_json("playerNamesLeft").unwrap_or_else(|_| Value::Null).to_string(),
-        player_names_right: json_handler::read_overlay_json("playerNamesRight").unwrap_or_else(|_| Value::Null).to_string(),
-        score_left: json_handler::read_overlay_json("scoreLeft").unwrap_or_else(|_| Value::Null).to_string(),
-        score_right: json_handler::read_overlay_json("scoreRight").unwrap_or_else(|_| Value::Null).to_string(),
-        team_color_left: json_handler::read_overlay_json("teamColorLeft").unwrap_or_else(|_| Value::Null).to_string(),
-        team_color_right: json_handler::read_overlay_json("teamColorRight").unwrap_or_else(|_| Value::Null).to_string(),
-        team_name_left: json_handler::read_overlay_json("teamNameLeft").unwrap_or_else(|_| Value::Null).to_string(),
-        team_name_right: json_handler::read_overlay_json("teamNameRight").unwrap_or_else(|_| Value::Null).to_string(),
-        week: json_handler::read_overlay_json("week").unwrap_or_else(|_| Value::Null).to_string(),
-        wins_left: json_handler::read_overlay_json("winsLeft").unwrap_or_else(|_| Value::Null).to_string(),
-        wins_right: json_handler::read_overlay_json("winsRight").unwrap_or_else(|_| Value::Null).to_string()
-    };
+    // Reads the file once, missing keys become null like before
+    let json = json_handler::read_json_as_value(&constants::get_overlay_json_path());
+    let get = |key: &str| json.get(key).unwrap_or(&Value::Null).to_string();
 
-    overlay_state
+    OverlayState {
+        overlay: get("overlay"),
+        player_names_left: get("playerNamesLeft"),
+        player_names_right: get("playerNamesRight"),
+        score_left: get("scoreLeft"),
+        score_right: get("scoreRight"),
+        team_color_left: get("teamColorLeft"),
+        team_color_right: get("teamColorRight"),
+        team_name_left: get("teamNameLeft"),
+        team_name_right: get("teamNameRight"),
+        week: get("week"),
+        wins_left: get("winsLeft"),
+        wins_right: get("winsRight")
+    }
 }
 
 /// Sets up the initial overlay files by downloading them if they do not already exist.
