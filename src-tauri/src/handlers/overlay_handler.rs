@@ -121,6 +121,10 @@ pub async fn delete_selected_overlay(overlay: String) -> Result<(), String> {
 /// * `Err(String)` - An error message if the path cannot be determined.
 #[tauri::command]
 pub fn get_overlay_image_path(overlay: String) -> Result<String, String> {
+    if !package_handler::is_valid_overlay_id(&overlay) {
+        return Err(format!("Invalid overlay name: {}", overlay));
+    }
+
     let code_dir = constants::get_code_dir();
     let image_path = format!("{}/overlays/images/{}.png", code_dir, overlay);
     

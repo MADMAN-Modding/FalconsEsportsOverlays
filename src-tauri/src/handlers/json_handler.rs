@@ -615,15 +615,50 @@ pub fn get_app_version() -> Result<HashMap<String, Value>, String> {
         .collect())
 }
 
+/// The message shown when an update is available
+///
+/// `updateText` and `updateUrl` are escaped before they're put in a link. Older data files
+/// only have an HTML `updateMessage`, which is used when those aren't there.
 #[tauri::command]
 pub fn get_update_message() -> String {
-    let binding = open_json(&get_launch_json_path());
-    let json = binding.as_object().unwrap();
+    let json = open_json(&get_launch_json_path());
+    let app = &json["appVersion"];
 
-    return json["appVersion"]["updateMessage"]
+    if let (Some(text), Some(url)) = (app["updateText"].as_str(), app["updateUrl"].as_str()) {
+        if url.starts_with("https://github.com/MADMAN-Modding/") {
+            return format!(
+                "<a style='color: black;' href='{}' target='_blank'>{}</a>",
+                escape_html(url),
+                escape_html(text)
+            );
+        }
+    }
+
+    app["updateMessage"]
         .as_str()
-        .unwrap()
-        .to_string();
+        .unwrap_or("A new version is available")
+        .to_string()
+}
+
+fn escape_html(text: &str) -> String {
+    text.replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+        .replace('"', "&quot;")
+        .replace('\'', "&#39;")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn escapes_html_special_characters() {
+        assert_eq!(
+            escape_html("<a href='x'>&\"</a>"),
+            "&lt;a href=&#39;x&#39;&gt;&amp;&quot;&lt;/a&gt;"
+        );
+    }
 }
 
 /// Default settings for the config

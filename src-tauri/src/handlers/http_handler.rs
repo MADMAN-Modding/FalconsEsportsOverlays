@@ -9,19 +9,20 @@ use std::{
         Arc, LazyLock, Mutex,
     },
     thread::{self},
-    time::Duration,
+    time::{Duration, Instant},
 };
 
 use once_cell::sync::OnceCell;
+use serde_json::Value;
 
-use crate::{constants::get_code_dir, thread_data::{thread_data_setup, ThreadData}};
+use crate::{constants::{get_code_dir, get_overlay_json_path}, thread_data::{thread_data_setup, ThreadData}};
 
 static THREAD_DATA: OnceCell<Arc<Mutex<ThreadData>>> = OnceCell::new();
 
 static SERVER_RUNNING: LazyLock<Arc<Mutex<bool>>> = LazyLock::new(|| Arc::new(Mutex::new(false)));
 
-/// Maximum number of connections served at the same time
-const MAX_CONNECTIONS: usize = 32;
+/// Maximum number of connections served at the same time, event streams hold one each
+const MAX_CONNECTIONS: usize = 64;
 
 /// Maximum size of the request line and headers in bytes
 const MAX_REQUEST_LINE: u64 = 16384;
@@ -30,6 +31,16 @@ const MAX_REQUEST_LINE: u64 = 16384;
 const IO_TIMEOUT: Duration = Duration::from_secs(5);
 
 static ACTIVE_CONNECTIONS: AtomicUsize = AtomicUsize::new(0);
+
+/// Changes every time the server stops, so event streams from the old run know to end
+static SERVER_GENERATION: AtomicUsize = AtomicUsize::new(0);
+
+/// How often an event stream checks the overlay file for changes
+const EVENT_CHECK_INTERVAL: Duration = Duration::from_millis(250);
+
+/// Event streams send the full state this often even when nothing changed,
+/// which lets a page recover from a missed update and shows when a client has left
+const EVENT_RESEND_INTERVAL: Duration = Duration::from_secs(10);
 
 /// Decrements `ACTIVE_CONNECTIONS` when dropped, even if the handler panics
 struct ConnectionGuard;
@@ -170,6 +181,7 @@ impl ThreadData {
             if thread_data.lock().unwrap().get_stop() {
                 // Set the stop variable to false so the server can be started again
                 Self::set_stop(&mut *thread_data.lock().unwrap(), false);
+                SERVER_GENERATION.fetch_add(1, Ordering::SeqCst);
                 break;
             }
 
@@ -207,10 +219,20 @@ impl ThreadData {
 /// * It will take care of any errors with the incoming request being invalid or if the client disconnects mid request
 /// * Only serves files that resolve to a location inside the code directory
 /// * Sends a content type and a validator so clients can revalidate with a cheap `304`
+/// * Streams overlay state changes as server-sent events from `/events`
 /// * Drops clients that stall for longer than `IO_TIMEOUT`
 /// # Parameters
 /// * `mut stream: TcpSteam` - The incoming stream of data requested by the client 
-fn process_request(mut stream: TcpStream) {
+fn process_request(stream: TcpStream) {
+    handle_request(
+        stream,
+        Path::new(&get_code_dir()),
+        Path::new(&get_overlay_json_path()),
+        SERVER_GENERATION.load(Ordering::SeqCst),
+    );
+}
+
+fn handle_request(mut stream: TcpStream, code_dir: &Path, overlay_json: &Path, generation: usize) {
     let _ = stream.set_read_timeout(Some(IO_TIMEOUT));
     let _ = stream.set_write_timeout(Some(IO_TIMEOUT));
 
@@ -252,6 +274,11 @@ fn process_request(mut stream: TcpStream) {
     let method = parts.next().unwrap_or_default();
     let target = parts.next().unwrap_or_default();
 
+    if method == "GET" && target.split(['?', '#']).next() == Some("/events") {
+        stream_events(stream, overlay_json, generation);
+        return;
+    }
+
     if method != "GET" {
         send_response(
             &mut stream,
@@ -263,7 +290,7 @@ fn process_request(mut stream: TcpStream) {
         return;
     }
 
-    let Some(path) = resolve_request_path(target) else {
+    let Some(path) = resolve_request_path(code_dir, target) else {
         send_not_found(&mut stream);
         return;
     };
@@ -318,6 +345,46 @@ fn send_response(
     }
 }
 
+/// Keeps the connection open and sends the overlay state whenever it changes
+///
+/// Ends when a write fails or the server that accepted it has stopped
+fn stream_events(mut stream: TcpStream, overlay_json: &Path, generation: usize) {
+    let header = "HTTP/1.1 200 OK\r\nContent-Type: text/event-stream\r\nCache-Control: no-cache\r\nConnection: keep-alive\r\n\r\nretry: 1000\n\n";
+
+    if stream.write_all(header.as_bytes()).is_err() {
+        return;
+    }
+
+    let mut last_stamp = None;
+    let mut last_sent: Option<Instant> = None;
+
+    while SERVER_GENERATION.load(Ordering::SeqCst) == generation {
+        let stamp = fs::metadata(overlay_json)
+            .ok()
+            .map(|m| (m.len(), m.modified().ok()));
+
+        let due = last_sent.map_or(true, |sent| sent.elapsed() >= EVENT_RESEND_INTERVAL);
+
+        if stamp != last_stamp || due {
+            let state = fs::read_to_string(overlay_json)
+                .ok()
+                .and_then(|text| serde_json::from_str::<Value>(&text).ok());
+
+            if let Some(state) = state {
+                // A compact `Value` is a single line, as an event's data has to be
+                if stream.write_all(format!("data: {state}\n\n").as_bytes()).is_err() {
+                    return;
+                }
+
+                last_stamp = stamp;
+                last_sent = Some(Instant::now());
+            }
+        }
+
+        thread::sleep(EVENT_CHECK_INTERVAL);
+    }
+}
+
 /// Validator that changes whenever the file's size or modified time does
 fn file_etag(path: &Path, length: usize) -> String {
     let modified = fs::metadata(path)
@@ -361,12 +428,12 @@ fn content_type(path: &Path) -> &'static str {
 /// # Returns
 /// * `Some(PathBuf)` - Canonical path to an existing file inside the code directory
 /// * `None` - If the target is malformed, escapes the code directory, or doesn't exist
-fn resolve_request_path(target: &str) -> Option<PathBuf> {
+fn resolve_request_path(code_dir: &Path, target: &str) -> Option<PathBuf> {
     // Drops the query string and fragment
     let raw = target.split(['?', '#']).next()?;
     let decoded = percent_decode(raw)?;
 
-    let root = Path::new(&get_code_dir()).canonicalize().ok()?;
+    let root = code_dir.canonicalize().ok()?;
     let mut path = root.clone();
 
     // Empty segments cover the leading and any duplicate '/'
@@ -430,5 +497,121 @@ mod tests {
         assert_eq!(content_type(Path::new("a/b.CSS")), "text/css; charset=utf-8");
         assert_eq!(content_type(Path::new("a/b.png")), "image/png");
         assert_eq!(content_type(Path::new("a/b")), "application/octet-stream");
+    }
+
+    struct TestServer {
+        dir: PathBuf,
+        address: std::net::SocketAddr,
+    }
+
+    impl TestServer {
+        /// Serves a temp directory with one connection handled per request
+        fn start(name: &str) -> TestServer {
+            let dir = std::env::temp_dir().join(format!("falcons-http-{}-{}", name, std::process::id()));
+            let _ = fs::remove_dir_all(&dir);
+            fs::create_dir_all(dir.join("json")).unwrap();
+            fs::write(dir.join("index.html"), "<h1>home</h1>").unwrap();
+            fs::write(dir.join("json/overlay.json"), r#"{"week": "1"}"#).unwrap();
+
+            let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+            let address = listener.local_addr().unwrap();
+            let (root, json) = (dir.clone(), dir.join("json/overlay.json"));
+
+            thread::spawn(move || {
+                for stream in listener.incoming().flatten() {
+                    let (root, json) = (root.clone(), json.clone());
+                    let generation = SERVER_GENERATION.load(Ordering::SeqCst);
+                    thread::spawn(move || handle_request(stream, &root, &json, generation));
+                }
+            });
+
+            TestServer { dir, address }
+        }
+
+        fn request(&self, request: &str) -> String {
+            let mut stream = TcpStream::connect(self.address).unwrap();
+            stream.write_all(request.as_bytes()).unwrap();
+
+            let mut response = String::new();
+            stream.read_to_string(&mut response).unwrap();
+            response
+        }
+    }
+
+    impl Drop for TestServer {
+        fn drop(&mut self) {
+            let _ = fs::remove_dir_all(&self.dir);
+        }
+    }
+
+    #[test]
+    fn serves_files_with_a_content_type_and_validator() {
+        let server = TestServer::start("serve");
+        let response = server.request("GET / HTTP/1.1\r\nHost: x\r\n\r\n");
+
+        assert!(response.starts_with("HTTP/1.1 200 OK"));
+        assert!(response.contains("Content-Type: text/html; charset=utf-8"));
+        assert!(response.contains("Cache-Control: no-cache"));
+        assert!(response.ends_with("<h1>home</h1>"));
+    }
+
+    #[test]
+    fn answers_a_matching_validator_with_304() {
+        let server = TestServer::start("etag");
+        let first = server.request("GET /index.html HTTP/1.1\r\n\r\n");
+
+        let etag = first
+            .lines()
+            .find_map(|line| line.strip_prefix("ETag: "))
+            .unwrap()
+            .to_string();
+
+        let second = server.request(&format!("GET /index.html HTTP/1.1\r\nIf-None-Match: {etag}\r\n\r\n"));
+
+        assert!(second.starts_with("HTTP/1.1 304 NOT MODIFIED"));
+        assert!(!second.contains("<h1>"));
+    }
+
+    #[test]
+    fn refuses_paths_outside_the_directory_and_other_methods() {
+        let server = TestServer::start("refuse");
+        let secret = server.dir.parent().unwrap().join(format!("secret-{}.txt", std::process::id()));
+        fs::write(&secret, "secret").unwrap();
+        let name = secret.file_name().unwrap().to_string_lossy().to_string();
+
+        for target in [format!("/../{name}"), format!("/%2e%2e/{name}"), format!("/..%2f{name}")] {
+            let response = server.request(&format!("GET {target} HTTP/1.1\r\n\r\n"));
+            assert!(response.starts_with("HTTP/1.1 404"), "{target} was served");
+            assert!(!response.contains("secret"));
+        }
+
+        assert!(server.request("POST /index.html HTTP/1.1\r\n\r\n").starts_with("HTTP/1.1 405"));
+        let _ = fs::remove_file(secret);
+    }
+
+    #[test]
+    fn event_stream_sends_the_state_and_then_each_change() {
+        let server = TestServer::start("events");
+        let mut stream = TcpStream::connect(server.address).unwrap();
+        stream.set_read_timeout(Some(Duration::from_secs(5))).unwrap();
+        stream.write_all(b"GET /events HTTP/1.1\r\n\r\n").unwrap();
+
+        let mut seen = String::new();
+
+        fn read_until(stream: &mut TcpStream, seen: &mut String, needle: &str) {
+            let mut buffer = [0u8; 1024];
+
+            while !seen.contains(needle) {
+                let n = stream.read(&mut buffer).expect("event stream went quiet");
+                assert!(n > 0, "event stream closed");
+                seen.push_str(&String::from_utf8_lossy(&buffer[..n]));
+            }
+        }
+
+        read_until(&mut stream, &mut seen, r#"data: {"week":"1"}"#);
+        assert!(seen.contains("Content-Type: text/event-stream"));
+
+        fs::write(server.dir.join("json/overlay.json"), r#"{"week": "22"}"#).unwrap();
+        read_until(&mut stream, &mut seen, r#"data: {"week":"22"}"#);
     }
 }

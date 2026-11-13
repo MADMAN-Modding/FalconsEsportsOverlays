@@ -218,7 +218,15 @@ pub fn install_overlay(overlay: &str) -> Result<(), String> {
         .get(overlay)
         .ok_or_else(|| format!("{} is not available yet", overlay))?;
 
-    install_files(&entry.files)
+    // The shared files come along so an overlay never depends on a stale copy
+    let files: Vec<FileEntry> = manifest
+        .shared
+        .iter()
+        .chain(entry.files.iter())
+        .cloned()
+        .collect();
+
+    install_files(&files)
 }
 
 /// Brings the shared files up to date and adds the default files that are missing
