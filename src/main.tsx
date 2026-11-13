@@ -9,6 +9,11 @@ import "@fontsource/barlow-condensed/latin-700.css";
 import "@fontsource/jetbrains-mono/latin-400.css";
 import "@fontsource/jetbrains-mono/latin-500.css";
 import App from "./App";
+import { applyAccent, rememberedAccent } from "./utils/color";
+
+// Before the first render, so the launch screen is already in the chosen accent
+const accent = rememberedAccent();
+if (accent) applyAccent(accent);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

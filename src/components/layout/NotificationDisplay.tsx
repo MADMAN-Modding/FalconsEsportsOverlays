@@ -6,7 +6,7 @@ import { NotificationKind } from '../../types';
 const KINDS: Record<NotificationKind, { label: string; accent: string; text: string }> = {
   info: { label: 'Info', accent: 'border-l-ink-300', text: 'text-ink-300' },
   success: { label: 'Done', accent: 'border-l-signal', text: 'text-signal' },
-  error: { label: 'Error', accent: 'border-l-falcons-bright', text: 'text-falcons-bright' },
+  error: { label: 'Error', accent: 'border-l-danger', text: 'text-danger' },
 };
 
 export const NotificationDisplay: FC = () => {

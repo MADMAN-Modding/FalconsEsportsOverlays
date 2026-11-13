@@ -3,6 +3,7 @@ import { FC, ReactNode, useEffect, useState } from 'react';
 import { useNotifications } from './hooks/useNotifications';
 import { useJsonHandler } from './hooks/useJsonHandler';
 import { useTheme } from './hooks/useTheme';
+import { useAccent } from './hooks/useAccent';
 import { getLaunchJSON, setupOverlays, checkForUpdates, getUpdateMessage } from './utils/tauriHelpers';
 import { MainLayout } from './components/layout/MainLayout';
 import { MainPage } from './components/pages/MainPage';
@@ -30,6 +31,7 @@ function App() {
   const { pushNotification } = useNotifications();
   const { readConfigJSON } = useJsonHandler();
   useTheme();
+  useAccent();
   const [isInitialized, setIsInitialized] = useState(false);
   const [initFailed, setInitFailed] = useState(false);
   const [initRun, setInitRun] = useState(0);

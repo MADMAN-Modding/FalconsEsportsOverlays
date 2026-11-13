@@ -320,7 +320,7 @@ export const ControlsPage: FC = () => {
                       </span>
                     )}
                     {active && (
-                      <span className="absolute left-0 top-0 bg-falcons-primary px-2 py-0.5 font-display text-[11px] font-bold uppercase tracking-[0.16em] text-white">
+                      <span className="absolute left-0 top-0 bg-falcons-primary px-2 py-0.5 font-display text-[11px] font-bold uppercase tracking-[0.16em] text-falcons-on">
                         On air
                       </span>
                     )}

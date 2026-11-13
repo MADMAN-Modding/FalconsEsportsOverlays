@@ -20,7 +20,7 @@ export const Switch: FC<SwitchProps> = ({ checked, onChange, label }) => (
   >
     <span
       className={`absolute top-0.5 h-4 w-4 transition-all ${
-        checked ? 'left-[calc(100%-1.125rem)] bg-white' : 'left-0.5 bg-ink-300'
+        checked ? 'left-[calc(100%-1.125rem)] bg-falcons-on' : 'left-0.5 bg-ink-300'
       }`}
     />
   </button>
@@ -43,7 +43,7 @@ export const Segmented: FC<SegmentedProps> = ({ options, value, onChange, label 
         aria-checked={value === option}
         onClick={() => onChange(option)}
         className={`h-10 border-r border-ink-600 font-display text-lg font-semibold transition-colors last:border-r-0 ${
-          value === option ? 'bg-falcons-primary text-white' : 'bg-ink-900 text-ink-300 hover:bg-ink-700 hover:text-white'
+          value === option ? 'bg-falcons-primary text-falcons-on' : 'bg-ink-900 text-ink-300 hover:bg-ink-700 hover:text-white'
         }`}
       >
         {option}

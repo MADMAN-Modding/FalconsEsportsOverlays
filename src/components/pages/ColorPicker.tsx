@@ -1,37 +1,13 @@
 import { FC, useState, useEffect, useRef } from 'react';
+import { hexToHsl, hslToHex, isHexColor } from '../../utils/color';
 
 interface Props {
   value: string;
   onChange: (color: string) => void;
+  // Called while a colour is being dragged or typed, before it's committed
+  onLiveChange?: (color: string) => void;
+  direction?: 'up' | 'down';
 }
-
-const hexToHsl = (hex: string): [number, number, number] => {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h = 0, s = 0;
-  const l = (max + min) / 2;
-  if (max !== min) {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
-      case g: h = ((b - r) / d + 2) / 6; break;
-      case b: h = ((r - g) / d + 4) / 6; break;
-    }
-  }
-  return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
-};
-
-const hslToHex = (h: number, s: number, l: number): string => {
-  s /= 100; l /= 100;
-  const k = (n: number) => (n + h / 30) % 12;
-  const a = s * Math.min(l, 1 - l);
-  const f = (n: number) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-  const toHex = (x: number) => Math.round(x * 255).toString(16).padStart(2, '0');
-  return `#${toHex(f(0))}${toHex(f(8))}${toHex(f(4))}`;
-};
 
 const PRESETS = [
   '#be0f32', '#ffffff', '#000000', '#1a1a2e',
@@ -39,7 +15,7 @@ const PRESETS = [
   '#6a0dad', '#00bcd4', '#ff4081', '#607d8b',
 ];
 
-export const ColorPicker: FC<Props> = ({ value, onChange }) => {
+export const ColorPicker: FC<Props> = ({ value, onChange, onLiveChange, direction = 'up' }) => {
   const [open, setOpen] = useState(false);
   const [hex, setHex] = useState(value);
   const [hsl, setHsl] = useState<[number, number, number]>(() => hexToHsl(value));
@@ -47,31 +23,43 @@ export const ColorPicker: FC<Props> = ({ value, onChange }) => {
 
   useEffect(() => { setHex(value); setHsl(hexToHsl(value)); }, [value]);
 
+  // A half-typed value isn't a colour, so it's put back instead of being sent on
+  const commit = () => {
+    if (isHexColor(hex)) {
+      onChange(hex);
+    } else {
+      setHex(value);
+      setHsl(hexToHsl(value));
+    }
+  };
+
   const handleClose = () => {
     setOpen(false);
-    onChange(hex);
+    commit();
   };
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (open && containerRef.current && !containerRef.current.contains(e.target as Node)) {
         handleClose();
       }
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
-  }, [hex]);
+  }, [hex, open, value]);
 
   const applyHsl = (h: number, s: number, l: number) => {
     const newHex = hslToHex(h, s, l);
     setHsl([h, s, l]);
     setHex(newHex);
+    onLiveChange?.(newHex);
   };
 
   const handleHexInput = (raw: string) => {
     setHex(raw);
-    if (/^#[0-9a-fA-F]{6}$/.test(raw)) {
+    if (isHexColor(raw)) {
       setHsl(hexToHsl(raw));
+      onLiveChange?.(raw);
     }
   };
 
@@ -96,7 +84,7 @@ export const ColorPicker: FC<Props> = ({ value, onChange }) => {
           type="text"
           value={hex}
           onChange={(e) => handleHexInput(e.target.value)}
-          onBlur={() => onChange(hex)}
+          onBlur={commit}
           className="field font-mono"
           placeholder="#000000"
           maxLength={7}
@@ -104,7 +92,7 @@ export const ColorPicker: FC<Props> = ({ value, onChange }) => {
       </div>
 
       {open && (
-        <div className="absolute bottom-full z-50 mb-2 w-60 border border-ink-500 bg-ink-850 p-4 shadow-xl shadow-black/60">
+        <div className={`absolute z-50 w-60 border border-ink-500 bg-ink-850 p-4 shadow-xl shadow-black/60 ${direction === 'up' ? 'bottom-full mb-2' : 'top-full mt-2'}`}>
           <div className="mb-3 h-8 w-full border border-ink-600" style={{ backgroundColor: hex }} />
 
           {(['h', 's', 'l'] as const).map((type, i) => (
@@ -134,7 +122,7 @@ export const ColorPicker: FC<Props> = ({ value, onChange }) => {
               <button
                 key={color}
                 type="button"
-                onClick={() => { setHex(color); setHsl(hexToHsl(color)); setOpen(false); onChange(color); }}
+                onClick={() => { setHex(color); setHsl(hexToHsl(color)); setOpen(false); onLiveChange?.(color); onChange(color); }}
                 className={`h-7 w-7 border transition-transform hover:scale-110 ${hex === color ? 'border-white ring-1 ring-white' : 'border-ink-500'}`}
                 style={{ backgroundColor: color }}
                 title={color}

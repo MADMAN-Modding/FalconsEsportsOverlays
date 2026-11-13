@@ -3,6 +3,13 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --accent: 191 15 53;
+    --accent-bright: 224 21 63;
+    --accent-deep: 141 11 39;
+    --accent-on: 255 255 255;
+  }
+
   html {
     color-scheme: dark;
   }
@@ -12,11 +19,11 @@
   }
 
   ::selection {
-    @apply bg-falcons-primary text-white;
+    @apply bg-falcons-primary text-falcons-on;
   }
 
   :focus-visible {
-    outline: 2px solid theme('colors.falcons.bright');
+    outline: 2px solid rgb(var(--accent-bright));
     outline-offset: 2px;
   }
 
@@ -57,11 +64,11 @@
   /* An outline would be clipped by the cut corners, so focus is drawn inside the shape */
   .btn:focus-visible {
     outline: none;
-    box-shadow: inset 0 0 0 2px #fff;
+    box-shadow: inset 0 0 0 2px currentColor;
   }
 
   .btn-primary {
-    @apply bg-falcons-primary text-white hover:bg-falcons-bright active:bg-falcons-deep;
+    @apply bg-falcons-primary text-falcons-on hover:bg-falcons-bright active:bg-falcons-deep;
   }
 
   .btn-secondary {
@@ -73,7 +80,7 @@
   }
 
   .btn-danger {
-    @apply bg-ink-700 text-falcons-bright hover:bg-falcons-primary hover:text-white;
+    @apply bg-ink-700 text-danger hover:bg-danger hover:text-white;
   }
 
   .btn-sm {

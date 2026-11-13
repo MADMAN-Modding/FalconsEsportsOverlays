@@ -5,7 +5,21 @@ import { useImageControls } from '../../hooks/useImageControls';
 import { useJsonHandler } from '../../hooks/useJsonHandler';
 import { useNotifications } from '../../hooks/useNotifications';
 import { getCodeDir } from '../../utils/tauriHelpers';
+import { DEFAULT_ACCENT, applyAccent, isHexColor, rememberAccent } from '../../utils/color';
+import { ColorPicker } from './ColorPicker';
 import { PageHeader, Panel, Switch, UploadIcon } from '../ui';
+
+const ACCENT_PRESETS = [
+  { name: 'Falcons red', hex: DEFAULT_ACCENT },
+  { name: 'Orange', hex: '#ff6a1a' },
+  { name: 'Amber', hex: '#f2a51a' },
+  { name: 'Green', hex: '#2fbf71' },
+  { name: 'Teal', hex: '#14b8a6' },
+  { name: 'Blue', hex: '#2f7df6' },
+  { name: 'Violet', hex: '#8b5cf6' },
+  { name: 'Pink', hex: '#e83e8c' },
+  { name: 'Silver', hex: '#d4d4dc' },
+];
 
 interface RowProps {
   title: string;
@@ -30,6 +44,7 @@ export const ConfigPage: FC = () => {
   const { downloadFiles, resetFiles } = useDownloader();
 
   const [autoServer, setAutoServer] = useState(false);
+  const [accent, setAccent] = useState(DEFAULT_ACCENT);
   const [teamImage, setTeamImage] = useState('');
   const [codeDir, setCodeDir] = useState('');
   const [working, setWorking] = useState<'download' | 'reset' | null>(null);
@@ -53,13 +68,28 @@ export const ConfigPage: FC = () => {
 
       try {
         setAutoServer(String(await readConfigJSON('autoServer')) === 'true');
+
+        const savedAccent = String(await readConfigJSON('appColor'));
+        if (isHexColor(savedAccent)) setAccent(savedAccent);
       } catch (error) {
-        console.warn('Failed to read autoServer:', error);
+        console.warn('Failed to read settings:', error);
       }
     };
 
     initialize();
   }, []);
+
+  const saveAccent = async (color: string) => {
+    setAccent(color);
+    applyAccent(color);
+    rememberAccent(color);
+
+    try {
+      await writeConfigJSON('appColor', color);
+    } catch {
+      pushNotification('Could not save the accent colour', 'error');
+    }
+  };
 
   const handleAutoServerChange = async (checked: boolean) => {
     setAutoServer(checked);
@@ -123,6 +153,42 @@ export const ConfigPage: FC = () => {
       <PageHeader eyebrow="Preferences" title="Settings" />
 
       <div className="space-y-6">
+        <Panel title="Accent colour" bodyClassName="flex items-start gap-10 p-6">
+          <div className="w-64 shrink-0">
+            <p className="label">Custom colour</p>
+            <ColorPicker value={accent} direction="down" onLiveChange={applyAccent} onChange={saveAccent} />
+            <button
+              onClick={() => saveAccent(DEFAULT_ACCENT)}
+              disabled={accent.toLowerCase() === DEFAULT_ACCENT}
+              className="btn btn-ghost btn-sm mt-4"
+            >
+              Reset to Falcons red
+            </button>
+          </div>
+
+          <div>
+            <p className="label">Presets</p>
+            <div className="grid grid-cols-9 gap-2">
+              {ACCENT_PRESETS.map((preset) => (
+                <button
+                  key={preset.hex}
+                  onClick={() => saveAccent(preset.hex)}
+                  title={preset.name}
+                  aria-label={preset.name}
+                  aria-pressed={accent.toLowerCase() === preset.hex}
+                  className={`h-9 w-9 border transition-transform hover:scale-105 ${
+                    accent.toLowerCase() === preset.hex ? 'border-white ring-1 ring-white' : 'border-ink-500'
+                  }`}
+                  style={{ backgroundColor: preset.hex }}
+                />
+              ))}
+            </div>
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-300">
+              Used for buttons, highlights and the overlay that's on air. Very dark colours are brightened a little so they stay visible.
+            </p>
+          </div>
+        </Panel>
+
         <Panel title="Team logo" bodyClassName="flex items-center gap-8 p-6">
           <div className="flex h-36 w-36 shrink-0 items-center justify-center border border-ink-600 bg-[repeating-conic-gradient(#16161c_0%_25%,#0c0c10_0%_50%)] bg-[length:16px_16px]">
             {teamImage && <img src={teamImage} alt="Team logo" className="max-h-full max-w-full object-contain p-2" />}
