@@ -2,50 +2,54 @@ import { useCallback } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 import { getCodeDir } from '../utils/tauriHelpers';
 
+const missingImage = 'images/missing.jpg';
+
+const toBlobURL = (bytes: BlobPart): string =>
+  URL.createObjectURL(new Blob([bytes], { type: 'image/png' }));
+
 export const useImageControls = () => {
   const getImage = useCallback(async (path: string): Promise<string> => {
     try {
-      const bytes = await invoke<number[]>('get_image_bytes', {
+      const bytes = await invoke<ArrayBuffer>('get_image_bytes', {
         imagePath: path,
       });
 
-      if (!bytes) {
-        return 'images/missing.jpg';
+      if (!bytes || bytes.byteLength === 0) {
+        return missingImage;
       }
 
-      const uint8Array = new Uint8Array(bytes);
-      const blob = new Blob([uint8Array], { type: 'image/png' });
-      const imageURL = URL.createObjectURL(blob);
-
-      return imageURL;
+      return toBlobURL(bytes);
     } catch (error) {
       console.error('Error loading image:', error);
-      return 'images/missing.jpg';
+      return missingImage;
     }
   }, []);
 
+  // The backend packs every image into one buffer: u32 count, then a u32 length and the bytes per image
   const getImageArray = useCallback(async (paths: string[]): Promise<string[]> => {
     try {
-      const bytes = await invoke<number[][]>('get_image_vec_bytes', {
+      const buffer = await invoke<ArrayBuffer>('get_image_vec_bytes', {
         imagePaths: paths,
       });
 
+      const view = new DataView(buffer);
+      const count = view.getUint32(0, true);
       const urls: string[] = [];
+      let offset = 4;
 
-      for (let i = 0; i < bytes.length; i++) {
-        if (bytes[i][0] === 0) {
-          urls.push('images/missing.jpg');
-        } else {
-          const uint8Array = new Uint8Array(bytes[i]);
-          const blob = new Blob([uint8Array], { type: 'image/png' });
-          urls.push(URL.createObjectURL(blob));
-        }
+      for (let i = 0; i < count; i++) {
+        const length = view.getUint32(offset, true);
+        offset += 4;
+
+        // A length of 0 means the image is missing
+        urls.push(length === 0 ? missingImage : toBlobURL(new Uint8Array(buffer, offset, length)));
+        offset += length;
       }
 
       return urls;
     } catch (error) {
       console.error('Error loading images:', error);
-      return paths.map(() => 'images/missing.jpg');
+      return paths.map(() => missingImage);
     }
   }, []);
 

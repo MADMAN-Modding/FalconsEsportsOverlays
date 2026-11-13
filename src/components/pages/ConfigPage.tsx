@@ -189,13 +189,10 @@ export const ConfigPage: FC = () => {
       const reader = new FileReader();
       reader.onload = async (event) => {
         const arrayBuffer = event.target?.result as ArrayBuffer;
-        const bytes = Array.from(new Uint8Array(arrayBuffer));
         
-        // Send to backend
+        // Send to backend as raw bytes
         try {
-          await invoke<string>('copy_image', {
-            bytes: bytes,
-          });
+          await invoke<string>('copy_image', new Uint8Array(arrayBuffer));
           
           // Reload the team image from the backend
           if (codeDir) {

@@ -1,19 +1,23 @@
 //! Handles the `Esports-Logo.png` file
+use tauri::ipc::{InvokeBody, Request, Response};
 use tokio::fs;
 
 use crate::constants::get_code_dir_image_path;
 
-/// Copies the image from bytes to the image in the code directory
+/// Copies the image from the raw request body to the image in the code directory
 /// 
-/// # Parameters
-/// * `bytes: Vec<u8>` - A vector of all the bytes of the image
+/// The frontend sends the image as an `ArrayBuffer`/`Uint8Array` so it isn't serialized to JSON
 /// 
 /// # Returns
 /// * `Ok(String)` - Value to pushed to the fronted on success
 /// * 'Err(String)` - Value to push to the frontend of error
 /// 
 #[tauri::command]
-pub async fn copy_image(bytes: Vec<u8>) -> Result<String, String> {
+pub async fn copy_image(request: Request<'_>) -> Result<String, String> {
+    let InvokeBody::Raw(bytes) = request.body() else {
+        return Err("Expected the image as raw bytes".to_string());
+    };
+
     let write_result = fs::write(get_code_dir_image_path(), bytes).await;
 
     match write_result {
@@ -22,21 +26,26 @@ pub async fn copy_image(bytes: Vec<u8>) -> Result<String, String> {
     }
 }
 
-/// Returns the bytes of the image in the code dir as bytes
+/// Returns the bytes of the image at the path as raw binary
 /// 
 /// These bytes are used to display the image on the frontend
 /// 
 /// # Returns
-/// * `Ok(Vec<u8>)` - If the read is successful it will send the data to the frontend
+/// * `Ok(Response)` - The file contents, received as an `ArrayBuffer` on the frontend
 /// * 'Err(String)` - If the read fails, it will send the error to the frontend and the default image will be displayed
 #[tauri::command]
-pub fn get_image_bytes(image_path: String) -> Result<Vec<u8>, String> {
-    std::fs::read(image_path).map_err(|e| e.to_string())
+pub fn get_image_bytes(image_path: String) -> Result<Response, String> {
+    std::fs::read(image_path)
+        .map(Response::new)
+        .map_err(|e| e.to_string())
 }
 
-/// Returns a Vec containing a Vec of bytes for each image
+/// Returns every image packed into one binary buffer
+/// 
+/// Layout, all integers are little-endian `u32`: the image count, then for each image its
+/// byte length followed by its bytes. A length of `0` means the image is missing.
 #[tauri::command]
-pub async fn get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Vec<u8>>, String> {
+pub async fn get_image_vec_bytes(image_paths: Vec<String>) -> Result<Response, String> {
     // Every read runs concurrently as an async task
     let tasks: Vec<_> = image_paths
         .into_iter()
@@ -45,17 +54,20 @@ pub async fn get_image_vec_bytes(image_paths: Vec<String>) -> Result<Vec<Vec<u8>
                 match fs::read(image_path).await {
                     // Placeholder sizes of a "Resource Not Found" file are treated as missing
                     Ok(buffer) if buffer.len() != 9379 && buffer.len() != 20 => buffer,
-                    _ => vec![0_u8],
+                    _ => Vec::new(),
                 }
             })
         })
         .collect();
 
-    let mut image_vec: Vec<Vec<u8>> = Vec::with_capacity(tasks.len());
+    let mut packed: Vec<u8> = Vec::new();
+    packed.extend_from_slice(&(tasks.len() as u32).to_le_bytes());
 
     for task in tasks {
-        image_vec.push(task.await.map_err(|e| e.to_string())?);
+        let image = task.await.map_err(|e| e.to_string())?;
+        packed.extend_from_slice(&(image.len() as u32).to_le_bytes());
+        packed.extend_from_slice(&image);
     }
 
-    Ok(image_vec)
+    Ok(Response::new(packed))
 }
